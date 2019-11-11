@@ -81,7 +81,7 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     var showPopUpView = true
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! ExampleViewController
+        var vc = segue.destination as! ExampleViewController
         vc.pickedImage = self.tappedImage
         vc.ShowPopUpView = self.showPopUpView
         
