@@ -431,11 +431,19 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     }
     @IBAction func editButtonTapped(_ sender: Any) {
         let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
-        
+        imageCollectionView.delegate = self
         self.navigationController?.pushViewController(imageCollectionView, animated: true)
+        print("editButtonTapped")
     }
     
 }
+
+extension ExampleViewController: ClassBDelegate {
+        func childVCDidComplete( with image: UIImage?) {
+            self.pickedImage = image!
+        }
+}
+
  
 // custom FlowLayout class to left-align collection view cells
 // found here: https://stackoverflow.com/a/49717759/6257435

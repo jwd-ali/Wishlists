@@ -608,7 +608,6 @@
                                         <state key="normal" title="Button" image="editButton"/>
                                         <connections>
                                             <action selector="editButtonTapped:" destination="DPe-W4-bLW" eventType="touchUpInside" id="Wnf-LW-5sA"/>
-                                            <segue destination="poD-Yb-Ot2" kind="show" id="tSK-6Q-qAJ"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rqU-i4-Ta6">
@@ -755,7 +754,6 @@
                     <navigationItem key="navigationItem" id="Lwg-w1-4ZO"/>
                     <connections>
                         <outlet property="imageCollectionView" destination="dnE-az-rv4" id="8Jw-r6-pTS"/>
-                        <segue destination="DPe-W4-bLW" kind="show" identifier="backToPopUpView" id="62K-Jh-erI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t23-0s-99g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -792,7 +790,4 @@
         <image name="imagePreview " width="150" height="150"/>
         <image name="wishButton" width="82" height="82"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="tSK-6Q-qAJ"/>
-    </inferredMetricsTieBreakers>
 </document>
