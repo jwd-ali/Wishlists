@@ -149,12 +149,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func transitionToHome () {
-        
-        let homeViewCotnroller =
-            storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? ExampleViewController
-        
-        view.window?.rootViewController = homeViewCotnroller
-        view.window?.makeKeyAndVisible()
+
+    let homeViewCotnroller =
+    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? ExampleViewController
+    let navigationController = UINavigationController(rootViewController: homeViewCotnroller!)
+
+    view.window?.rootViewController = navigationController
+    view.window?.makeKeyAndVisible()
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {

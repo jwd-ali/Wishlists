@@ -237,9 +237,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     var theData: [String] = [String]()
     var imageData: [UIImage] = [UIImage]()
     
-    var ShowPopUpView: Bool!
-    var pickedImage = UIImage()
-    
+    var image: UIImage?
+
    
     func styleTextField(_ textfield:UITextField) {
     }
@@ -251,22 +250,12 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         imagePreview.image = UIImage(named: "logoGroß")
         imagePreview.layer.cornerRadius = 3
         
+        //set up popUpView
         self.createListButton.layer.cornerRadius = 2
         self.listNameTextfield.tintColor = .lightGray
         self.listNameTextfield.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
-            if ShowPopUpView == true{
-            // let newListView appear
-                imagePreview.image = pickedImage
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.blurrImage.alpha = 0.96
-                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
-                self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
-                self.view.layoutIfNeeded()
-            })
-            }else {
-                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
-                self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
-        }
+        self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
+        self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
        
         //set CollectionView to bottom
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 500)
@@ -313,6 +302,12 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         self.view.sendSubviewToBack(backGroundImage)
        
  
+    }
+    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
    
     // DonMag3 - change "sender: Any" to "sender: Any?" so we can call this
@@ -367,7 +362,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
         // DonMag3 -- change cell.theLabel to cell.testLabel
            cell.testLabel.text = theData[indexPath.item - 1]
-        cell.testImage.image = self.pickedImage
+        cell.testImage.image = self.image
             cell.testImage.image = imageData[indexPath.item - 1]
             
            return cell
@@ -432,7 +427,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBAction func editButtonTapped(_ sender: Any) {
         let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
         imageCollectionView.delegate = self
-        self.navigationController?.pushViewController(imageCollectionView, animated: true)
+        if (self.navigationController == nil){
+            print("fuck")
+        }
+        self.navigationController?.present(imageCollectionView, animated: true)
         print("editButtonTapped")
     }
     
@@ -440,7 +438,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
 
 extension ExampleViewController: ClassBDelegate {
         func childVCDidComplete( with image: UIImage?) {
-            self.pickedImage = image!
+            self.image = image!
         }
 }
 

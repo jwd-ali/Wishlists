@@ -660,38 +660,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEQ-Pj-2E7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4373.913043478261" y="-301.33928571428572"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="Ef6-Nb-xYl">
-            <objects>
-                <viewController id="E8e-cx-RYs" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dmQ-Wl-iGG">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AEK-lT-scp">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="kQt-dn-Vnu">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="regular"/>
-                            </visualEffectView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="AEK-lT-scp" secondAttribute="trailing" id="Iea-RG-EnF"/>
-                            <constraint firstAttribute="bottom" secondItem="AEK-lT-scp" secondAttribute="bottom" id="X1p-3o-K1r"/>
-                            <constraint firstItem="AEK-lT-scp" firstAttribute="leading" secondItem="dmQ-Wl-iGG" secondAttribute="leading" id="eYl-B6-xyL"/>
-                            <constraint firstItem="AEK-lT-scp" firstAttribute="top" secondItem="dmQ-Wl-iGG" secondAttribute="top" id="gTd-oO-Lm0"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="BXI-EY-szQ"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3fQ-ce-iWC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5357" y="-769"/>
+            <point key="canvasLocation" x="5284.057971014493" y="-301.33928571428572"/>
         </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">
@@ -758,7 +727,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t23-0s-99g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5460.8695652173919" y="108.48214285714285"/>
+            <point key="canvasLocation" x="6333" y="121"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LRe-qB-ahk">

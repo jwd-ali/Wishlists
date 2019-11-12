@@ -73,24 +73,13 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     var tappedImage = UIImage()
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       tappedImage = images[indexPath.row]
-       delegate?.childVCDidComplete(with: tappedImage)
-       navigationController?.popViewController(animated: true)
+        tappedImage = images[indexPath.row]
+        delegate?.childVCDidComplete(with: tappedImage)
+        self.dismiss(animated: true)
     }
     
-    var showPopUpView = true
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        var vc = segue.destination as! ExampleViewController
-//        vc.pickedImage = self.tappedImage
-//        vc.ShowPopUpView = self.showPopUpView
-//
-//    }
-    
     @IBAction func closeButtonTapped(_ sender: Any) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let HomeViewController = storyBoard.instantiateViewController(withIdentifier: "HomeVC") as! ExampleViewController
-                self.present(HomeViewController, animated: false, completion: nil)
+        self.dismiss(animated: true)
     }
 }
 
