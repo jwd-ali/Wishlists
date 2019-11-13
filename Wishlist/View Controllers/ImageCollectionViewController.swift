@@ -31,11 +31,11 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
         
     ]
     
-    let columnLayout = FlowLayout(
-        itemSize: CGSize(width: 150, height: 150),
-        minimumInteritemSpacing: 30,
-        minimumLineSpacing: 10,
-        sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
+    let columnLayout = CenterAlignedCollectionViewFlowLayout(
+//        itemSize: CGSize(width: 150, height: 150),
+//        minimumInteritemSpacing: 25,
+//        minimumLineSpacing: 10,
+//        sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
         
     )
     
@@ -63,7 +63,6 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCollectionViewCell
-        
         cell.imageView.image = images[indexPath.item]
         cell.layer.cornerRadius = 2
         return cell

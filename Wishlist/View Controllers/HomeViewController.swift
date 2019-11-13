@@ -92,7 +92,7 @@ class ContentCell: UICollectionViewCell {
     let testImage: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = UIImage(named: "logoGroß")
+//        v.image = UIImage(named: "logoGroß")
         v.backgroundColor = .cyan
         return v
     }()
@@ -248,7 +248,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
         
         imagePreview.image = UIImage(named: "logoGroß")
-        imagePreview.layer.cornerRadius = 3
+        imagePreview.layer.cornerRadius = 5
         
         //set up popUpView
         self.createListButton.layer.cornerRadius = 2
@@ -362,7 +362,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
         // DonMag3 -- change cell.theLabel to cell.testLabel
            cell.testLabel.text = theData[indexPath.item - 1]
-        cell.testImage.image = self.image
+            cell.testImage.image = self.image
             cell.testImage.image = imageData[indexPath.item - 1]
             
            return cell
@@ -406,7 +406,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
            
             // append user-entered text to the data array
             self.theData.append(txt)
-            self.imageData.append(UIImage(named: "logoGroß")!)
+            self.imageData.append(self.image!)
             // reload the collection view
             theCollectionView.reloadData()
             theCollectionView.performBatchUpdates(nil, completion: {
@@ -439,6 +439,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
 extension ExampleViewController: ClassBDelegate {
         func childVCDidComplete( with image: UIImage?) {
             self.image = image!
+            self.imagePreview.image = image!
+            
         }
 }
 
@@ -446,40 +448,121 @@ extension ExampleViewController: ClassBDelegate {
 // custom FlowLayout class to left-align collection view cells
 // found here: https://stackoverflow.com/a/49717759/6257435
 class FlowLayout: UICollectionViewFlowLayout {
- 
+
     required init(itemSize: CGSize, minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 0, sectionInset: UIEdgeInsets = .zero) {
         super.init()
- 
+
         self.itemSize = itemSize
         self.minimumInteritemSpacing = minimumInteritemSpacing
         self.minimumLineSpacing = minimumLineSpacing
         self.sectionInset = sectionInset
         sectionInsetReference = .fromSafeArea
     }
- 
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-   
+
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let layoutAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
         guard scrollDirection == .vertical else { return layoutAttributes }
- 
+
         // Filter attributes to compute only cell attributes
         let cellAttributes = layoutAttributes.filter({ $0.representedElementCategory == .cell })
- 
+
         // Group cell attributes by row (cells with same vertical center) and loop on those groups
         for (_, attributes) in Dictionary(grouping: cellAttributes, by: { ($0.center.y / 10).rounded(.up) * 10 }) {
             // Set the initial left inset
             var leftInset = sectionInset.left
- 
+
             // Loop on cells to adjust each cell's origin and prepare leftInset for the next cell
             for attribute in attributes {
                 attribute.frame.origin.x = leftInset
                 leftInset = attribute.frame.maxX + minimumInteritemSpacing
             }
         }
- 
+
         return layoutAttributes
     }
 }
+
+class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    
+    override var itemSize: CGSize {
+        get { return CGSize(width: 150, height: 150) }
+        set {}
+    }
+        
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let superAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
+        // Copy each item to prevent "UICollectionViewFlowLayout has cached frame mismatch" warning
+        guard let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes] else { return nil }
+
+        // Constants
+        let leftPadding: CGFloat = 8
+        let interItemSpacing = minimumInteritemSpacing
+
+        // Tracking values
+        var leftMargin: CGFloat = leftPadding // Modified to determine origin.x for each item
+        var maxY: CGFloat = -1.0 // Modified to determine origin.y for each item
+        var rowSizes: [[CGFloat]] = [] // Tracks the starting and ending x-values for the first and last item in the row
+        var currentRow: Int = 0 // Tracks the current row
+        attributes.forEach { layoutAttribute in
+
+            // Each layoutAttribute represents its own item
+            if layoutAttribute.frame.origin.y >= maxY {
+
+                // This layoutAttribute represents the left-most item in the row
+                leftMargin = leftPadding
+
+                // Register its origin.x in rowSizes for use later
+                if rowSizes.count == 0 {
+                    // Add to first row
+                    rowSizes = [[leftMargin, 0]]
+                } else {
+                    // Append a new row
+                    rowSizes.append([leftMargin, 0])
+                    currentRow += 1
+                }
+            }
+
+            layoutAttribute.frame.origin.x = leftMargin
+
+            leftMargin += layoutAttribute.frame.width + interItemSpacing
+            maxY = max(layoutAttribute.frame.maxY, maxY)
+
+            // Add right-most x value for last item in the row
+            rowSizes[currentRow][1] = leftMargin - interItemSpacing
+        }
+
+        // At this point, all cells are left aligned
+        // Reset tracking values and add extra left padding to center align entire row
+        leftMargin = leftPadding
+        maxY = -1.0
+        currentRow = 0
+        attributes.forEach { layoutAttribute in
+
+            // Each layoutAttribute is its own item
+            if layoutAttribute.frame.origin.y >= maxY {
+
+                // This layoutAttribute represents the left-most item in the row
+                leftMargin = leftPadding
+
+                // Need to bump it up by an appended margin
+                let rowWidth = rowSizes[currentRow][1] - rowSizes[currentRow][0] // last.x - first.x
+                let appendedMargin = (collectionView!.frame.width - leftPadding  - rowWidth - leftPadding) / 2
+                leftMargin += appendedMargin
+
+                currentRow += 1
+            }
+
+            layoutAttribute.frame.origin.x = leftMargin
+
+            leftMargin += layoutAttribute.frame.width + interItemSpacing
+            maxY = max(layoutAttribute.frame.maxY, maxY)
+        }
+
+        return attributes
+    }
+}
+
