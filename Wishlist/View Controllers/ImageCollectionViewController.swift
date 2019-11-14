@@ -20,14 +20,17 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
 
     
     let images: [UIImage] = [
+        UIImage(named: "avocadoImage")!,
         UIImage(named: "beerImage")!,
+        UIImage(named: "bikeImage")!,
         UIImage(named: "christmasImage")!,
-        UIImage(named: "goalImage")!,
-        UIImage(named: "travelImage")!,
-        UIImage(named: "rollerImage")!,
-        UIImage(named: "giftImage")!,
-        UIImage(named: "shirtImage")!,
         UIImage(named: "dressImage")!,
+        UIImage(named: "giftImage")!,
+        UIImage(named: "goalImage")!,
+        UIImage(named: "rollerImage")!,
+        UIImage(named: "shirtImage")!,
+        UIImage(named: "shoeImage")!,
+        UIImage(named: "travelImage")!,
         
     ]
     

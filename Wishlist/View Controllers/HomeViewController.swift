@@ -19,7 +19,11 @@ class MainWishlistCell: UICollectionViewCell {
     let wishlistImage: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = UIImage(named: "logoGroß")
+        v.image = UIImage(named: "iconRoundedImage")
+        v.layer.shadowOpacity = 1
+        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+        v.layer.shadowRadius = 3
+        v.layer.shadowColor = UIColor.darkGray.cgColor
         return v
     }()
    
@@ -33,17 +37,6 @@ class MainWishlistCell: UICollectionViewCell {
         return v
     }()
    
-    func addShadow() {
-        let cornerRadius: CGFloat = 5
-        self.wishlistImage.layer.shadowPath = UIBezierPath(roundedRect: self.wishlistImage.bounds, cornerRadius: cornerRadius).cgPath
-        self.wishlistImage.layer.shadowRadius = cornerRadius
-        self.wishlistImage.layer.shadowOffset = .zero
-        self.wishlistImage.layer.shadowOpacity = 0.3
-        self.wishlistImage.layer.shadowRadius = 10
-        self.wishlistImage.layer.cornerRadius = cornerRadius
-        self.wishlistImage.layer.shadowColor = UIColor.black.cgColor
-    }
-   
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -54,14 +47,8 @@ class MainWishlistCell: UICollectionViewCell {
         commonInit()
     }
    
-    var once = true
- 
     override func layoutSubviews() {
        super.layoutSubviews()
-       if once {
-          addShadow()
-          once = false
-       }
     }
    
     func commonInit() -> Void {
@@ -92,8 +79,10 @@ class ContentCell: UICollectionViewCell {
     let testImage: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-//        v.image = UIImage(named: "logoGroß")
-        v.backgroundColor = .cyan
+        v.layer.shadowOpacity = 1
+        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+        v.layer.shadowRadius = 3
+        v.layer.shadowColor = UIColor.darkGray.cgColor
         return v
     }()
      
@@ -101,7 +90,6 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.textAlignment = .center
-//        v.backgroundColor = .cyan
         return v
     }()
    
@@ -109,7 +97,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Test Label"
-        v.font = UIFont(name: "AvenirNext-Medium", size: 18)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
         v.textColor = .darkGray
         v.textAlignment = .center
         return v
@@ -158,9 +146,29 @@ class AddItemCell: UICollectionViewCell {
     let btn: UIButton = {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("+", for: .normal)
-        v.setTitleColor(.systemBlue, for: .normal)
+        v.setTitleColor(.darkGray, for: .normal)
         v.titleLabel?.font = UIFont.systemFont(ofSize: 40.0)
+        return v
+    }()
+    
+    let label: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "neue Wishlist erstellen"
+        v.numberOfLines = 0
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 20)
+        v.textColor = .darkGray
+        v.textAlignment = .center
+        return v
+    }()
+    
+    let plusLabel: UILabel = {
+       let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "+"
+        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
+        v.textColor = .white
+        v.textAlignment = .center
         return v
     }()
  
@@ -179,14 +187,29 @@ class AddItemCell: UICollectionViewCell {
  
     func commonInit() -> Void {
         contentView.layer.cornerRadius = 3.0;
-        contentView.backgroundColor = .green
         contentView.addSubview(btn)
+        contentView.addSubview(label)
+        contentView.addSubview(plusLabel)
+        
+
         // constrain button to all 4 sides
         NSLayoutConstraint.activate([
             btn.topAnchor.constraint(equalTo: contentView.topAnchor),
             btn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            plusLabel.topAnchor.constraint(equalTo: label.bottomAnchor,constant: 1),
+            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            
         ])
         btn.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
     }
@@ -225,7 +248,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
  
     let columnLayout = FlowLayout(
         itemSize: CGSize(width: 150, height: 150),
-        minimumInteritemSpacing: 10,
+        minimumInteritemSpacing: 20,
         minimumLineSpacing: 10,
         sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
     )
@@ -249,6 +272,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         
         imagePreview.image = UIImage(named: "logoGroß")
         imagePreview.layer.cornerRadius = 5
+        image = UIImage(named: "logoGroß")
         
         //set up popUpView
         self.createListButton.layer.cornerRadius = 2
