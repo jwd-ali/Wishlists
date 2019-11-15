@@ -235,6 +235,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var createListButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imagePreview: UIImageView!
+    @IBOutlet weak var containerView: UIView!
     
    
     let theCollectionView: UICollectionView = {
@@ -321,9 +322,11 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
  
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
-       
+        
+        self.view.sendSubviewToBack(containerView)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
+        
        
  
     }

@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -545,25 +545,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="htY-1j-lHN">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="px1-kh-iTY" kind="embed" id="vta-XD-LRS"/>
+                                </connections>
+                            </containerView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="campfire_scaled" translatesAutoresizingMaskIntoConstraints="NO" id="6s9-Gz-9pF">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AGS-rK-bW2">
-                                <rect key="frame" x="0.0" y="805" width="414" height="91"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bottomBar" translatesAutoresizingMaskIntoConstraints="NO" id="YO5-vX-ib7">
-                                        <rect key="frame" x="0.0" y="3" width="414" height="94"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YrU-Rk-cvO">
-                                        <rect key="frame" x="166" y="-32" width="82" height="82"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="wishButton"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi Chris!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qm-6J-9tm">
                                 <rect key="frame" x="-200" y="156" width="220" height="72.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="53"/>
@@ -648,6 +639,7 @@
                     <connections>
                         <outlet property="backGroundImage" destination="6s9-Gz-9pF" id="qOv-4e-JnU"/>
                         <outlet property="blurrImage" destination="XGu-Ol-NXY" id="BKM-eM-QBL"/>
+                        <outlet property="containerView" destination="htY-1j-lHN" id="4eQ-gf-aqU"/>
                         <outlet property="createListButton" destination="LgZ-qu-qe9" id="van-UH-u1n"/>
                         <outlet property="editButton" destination="mN0-dG-cwm" id="sbD-hS-bZe"/>
                         <outlet property="imagePreview" destination="dDN-K3-wZk" id="8QN-b1-TVw"/>
@@ -746,17 +738,69 @@
             </objects>
             <point key="canvasLocation" x="1340.5797101449277" y="-315.40178571428572"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="tlG-dn-gOa">
+            <objects>
+                <viewController id="px1-kh-iTY" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fdg-JC-TY2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottomBar" translatesAutoresizingMaskIntoConstraints="NO" id="EMO-Xx-VvU">
+                                <rect key="frame" x="0.0" y="813" width="414" height="83"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ck-0t-pXW">
+                                <rect key="frame" x="166" y="767" width="82" height="82"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="wishButton"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-ei-nmN">
+                                <rect key="frame" x="322" y="830" width="49" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="profile"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Qe-cE-NEM">
+                                <rect key="frame" x="42" y="817" width="74" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="achievements"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Mq-u6-Jx1">
+                                <rect key="frame" x="350" y="44" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="settings"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EMO-Xx-VvU" firstAttribute="top" secondItem="Fdg-JC-TY2" secondAttribute="top" constant="813" id="1k0-zL-TQO"/>
+                            <constraint firstAttribute="trailing" secondItem="EMO-Xx-VvU" secondAttribute="trailing" id="BIQ-ZG-UsC"/>
+                            <constraint firstAttribute="bottom" secondItem="EMO-Xx-VvU" secondAttribute="bottom" id="XBc-Vf-KUI"/>
+                            <constraint firstItem="EMO-Xx-VvU" firstAttribute="leading" secondItem="Fdg-JC-TY2" secondAttribute="leading" id="yJq-Ua-cgv"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pkh-x5-Ckf"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DzB-AQ-KJ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5285.507246376812" y="-1002.4553571428571"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Email " width="315" height="48"/>
         <image name="Logo_7_gedreht" width="1448" height="1448"/>
         <image name="Weiter" width="289" height="48"/>
+        <image name="achievements" width="1250" height="1250"/>
         <image name="backBold" width="33" height="33"/>
         <image name="bottomBar" width="375" height="75"/>
         <image name="campfire_scaled" width="1125" height="2436"/>
         <image name="closeButton " width="70" height="70"/>
         <image name="editButton" width="190" height="192"/>
         <image name="imagePreview " width="150" height="150"/>
+        <image name="profile" width="225" height="225"/>
+        <image name="settings" width="225" height="225"/>
         <image name="wishButton" width="82" height="82"/>
     </resources>
 </document>
