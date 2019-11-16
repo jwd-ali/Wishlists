@@ -15,6 +15,12 @@ struct CustomData {
  
 // main Wishlist cell
 class MainWishlistCell: UICollectionViewCell {
+    
+    let btn: UIButton = {
+        let v = UIButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
    
     let wishlistImage: UIImageView = {
         let v = UIImageView()
@@ -54,6 +60,8 @@ class MainWishlistCell: UICollectionViewCell {
     func commonInit() -> Void {
         contentView.addSubview(wishlistImage)
         contentView.addSubview(wishlistLabel)
+        contentView.addSubview(btn)
+
         // constrain view to all 4 sides
         NSLayoutConstraint.activate([
             wishlistImage.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -65,9 +73,22 @@ class MainWishlistCell: UICollectionViewCell {
             wishlistLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             wishlistLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             wishlistLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            btn.topAnchor.constraint(equalTo: contentView.topAnchor),
+            btn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
-       
-       
+        
+       btn.addTarget(self, action: #selector(listTapped(_:)), for: .touchUpInside)
+    }
+    
+    var wishlistTapCallback: (() -> ())?
+    
+    @objc func listTapped(_ sender: Any) {
+        // tell the collection view controller we got a button tap
+        wishlistTapCallback?()
+        print("hi")
     }
 }
  
@@ -156,7 +177,7 @@ class AddItemCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "neue Wishlist erstellen"
         v.numberOfLines = 0
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 20)
+        v.font = UIFont(name: "AvenirNext", size: 20)
         v.textColor = .darkGray
         v.textAlignment = .center
         return v
@@ -199,13 +220,13 @@ class AddItemCell: UICollectionViewCell {
             btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -50),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            plusLabel.topAnchor.constraint(equalTo: label.bottomAnchor,constant: 1),
-            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            plusLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
             plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
@@ -323,10 +344,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
-        self.view.sendSubviewToBack(containerView)
+        
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
-        
+        self.view.sendSubviewToBack(containerView)
        
  
     }
@@ -380,6 +401,14 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
        // if item is Zero (the first cell to be displayed), show the "Wish List" cell
        if indexPath.item == 0 {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainWishlistCell", for: indexPath) as! MainWishlistCell
+        
+        cell.wishlistTapCallback = {
+            let wishlistViewController = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
+            if (self.navigationController == nil){
+                print("fuck")
+            }
+            self.navigationController?.present(wishlistViewController, animated: false)
+        }
            return cell
        }
      
@@ -458,7 +487,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             print("fuck")
         }
         self.navigationController?.present(imageCollectionView, animated: true)
-        print("editButtonTapped")
     }
     
 }
