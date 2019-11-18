@@ -546,7 +546,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="htY-1j-lHN">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="786" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="px1-kh-iTY" kind="embed" id="vta-XD-LRS"/>
@@ -556,7 +556,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi Chris!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qm-6J-9tm">
-                                <rect key="frame" x="-200" y="156" width="220" height="72.5"/>
+                                <rect key="frame" x="-250" y="156" width="220" height="72.5"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="53"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -565,8 +565,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-kU-9rr">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-kU-9rr">
+                                <rect key="frame" x="0.0" y="17" width="414" height="896"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Wie soll deine Wishlist heißen?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yRA-7t-lJM">
                                         <rect key="frame" x="57" y="410" width="301" height="34"/>
@@ -625,7 +625,7 @@
                             <constraint firstItem="XGu-Ol-NXY" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="KdE-7n-m67"/>
                             <constraint firstAttribute="bottom" secondItem="aWW-kU-9rr" secondAttribute="bottom" id="O6y-I5-UZl"/>
                             <constraint firstAttribute="trailing" secondItem="XGu-Ol-NXY" secondAttribute="trailing" id="QFH-FN-Olw"/>
-                            <constraint firstItem="4Qm-6J-9tm" firstAttribute="leading" secondItem="tgd-f8-7kW" secondAttribute="leading" constant="-200" id="TLv-RE-k01"/>
+                            <constraint firstItem="4Qm-6J-9tm" firstAttribute="leading" secondItem="tgd-f8-7kW" secondAttribute="leading" constant="-250" id="TLv-RE-k01"/>
                             <constraint firstAttribute="trailing" secondItem="6s9-Gz-9pF" secondAttribute="trailing" id="bOT-zM-cx7"/>
                             <constraint firstItem="4Qm-6J-9tm" firstAttribute="top" secondItem="tgd-f8-7kW" secondAttribute="top" constant="112" id="i5o-Lw-J5n"/>
                             <constraint firstItem="aWW-kU-9rr" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="lYr-d9-vcW"/>
@@ -652,7 +652,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEQ-Pj-2E7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4662" y="-315"/>
+            <point key="canvasLocation" x="4649" y="-237"/>
         </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">
@@ -743,49 +743,52 @@
             <objects>
                 <viewController id="px1-kh-iTY" customClass="ContainerViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fdg-JC-TY2">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="886"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottomBar" translatesAutoresizingMaskIntoConstraints="NO" id="EMO-Xx-VvU">
-                                <rect key="frame" x="0.0" y="813" width="414" height="73"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bottomBar" translatesAutoresizingMaskIntoConstraints="NO" id="EMO-Xx-VvU">
+                                <rect key="frame" x="0.0" y="35" width="414" height="75"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ck-0t-pXW" userLabel="addButton">
-                                <rect key="frame" x="166" y="767" width="82" height="82"/>
+                                <rect key="frame" x="166" y="-11" width="82" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="wishButton"/>
+                                <connections>
+                                    <action selector="addButtonTapped:" destination="px1-kh-iTY" eventType="touchUpInside" id="MEi-YN-pAJ"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Qe-cE-NEM" userLabel="achievementsButton">
-                                <rect key="frame" x="57" y="828" width="53" height="53"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1A-L6-Nhf" userLabel="achievementsButton">
+                                <rect key="frame" x="55" y="85" width="55" height="55"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="55" id="7yy-2t-1Ed"/>
+                                    <constraint firstAttribute="width" constant="55" id="dOD-KK-oXk"/>
+                                </constraints>
                                 <state key="normal" image="achievements"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Mq-u6-Jx1" userLabel="settingsButton">
-                                <rect key="frame" x="355" y="62" width="39" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="settings"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRK-ei-nmN" userLabel="profileButton">
-                                <rect key="frame" x="313" y="834" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-fY-E4D" userLabel="profileButton">
+                                <rect key="frame" x="314" y="90" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="O10-vj-tfQ"/>
+                                    <constraint firstAttribute="width" constant="45" id="dDt-Sa-TZE"/>
+                                </constraints>
                                 <state key="normal" image="profile"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="EMO-Xx-VvU" firstAttribute="top" secondItem="Fdg-JC-TY2" secondAttribute="top" constant="813" id="1k0-zL-TQO"/>
-                            <constraint firstAttribute="trailing" secondItem="EMO-Xx-VvU" secondAttribute="trailing" id="BIQ-ZG-UsC"/>
-                            <constraint firstAttribute="bottom" secondItem="EMO-Xx-VvU" secondAttribute="bottom" id="XBc-Vf-KUI"/>
-                            <constraint firstItem="EMO-Xx-VvU" firstAttribute="leading" secondItem="Fdg-JC-TY2" secondAttribute="leading" id="yJq-Ua-cgv"/>
+                            <constraint firstItem="8PE-fY-E4D" firstAttribute="top" secondItem="pkh-x5-Ckf" secondAttribute="top" constant="46" id="YK4-Xy-tgr"/>
+                            <constraint firstItem="pkh-x5-Ckf" firstAttribute="trailing" secondItem="8PE-fY-E4D" secondAttribute="trailing" constant="55" id="c9b-3X-cx8"/>
+                            <constraint firstItem="h1A-L6-Nhf" firstAttribute="top" secondItem="pkh-x5-Ckf" secondAttribute="top" constant="41" id="gLI-o8-d7m"/>
+                            <constraint firstItem="h1A-L6-Nhf" firstAttribute="leading" secondItem="pkh-x5-Ckf" secondAttribute="leading" constant="55" id="mBG-Ox-EmL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pkh-x5-Ckf"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DzB-AQ-KJ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4564" y="-1138"/>
+            <point key="canvasLocation" x="4440.579710144928" y="-1276.3392857142856"/>
         </scene>
         <!--Wishlist View Controller-->
         <scene sceneID="jke-Km-AzU">
@@ -799,7 +802,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XYg-R5-jDw">
-                                <rect key="frame" x="0.0" y="10" width="414" height="886"/>
+                                <rect key="frame" x="0.0" y="786" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="px1-kh-iTY" kind="embed" id="C42-Qu-5lH"/>
@@ -815,6 +818,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Nqm-Uq-qtc"/>
                     </view>
+                    <connections>
+                        <outlet property="backgroundImage" destination="b2a-16-hzg" id="fT4-1d-45g"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z18-cN-fcg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -833,10 +839,9 @@
         <image name="editButton" width="190" height="192"/>
         <image name="imagePreview " width="150" height="150"/>
         <image name="profile" width="225" height="225"/>
-        <image name="settings" width="225" height="225"/>
         <image name="wishButton" width="82" height="82"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="C42-Qu-5lH"/>
+        <segue reference="vta-XD-LRS"/>
     </inferredMetricsTieBreakers>
 </document>

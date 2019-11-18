@@ -56,6 +56,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.returnKeyType = .next
         passwortWiederholenTextField.returnKeyType = .done
         
+        passwordTextField.textContentType = .newPassword
+        passwortWiederholenTextField.textContentType = .newPassword
+
+        
         
         UIView.animate(withDuration: 0.20) {
             self.view.layoutIfNeeded()

@@ -258,6 +258,14 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
     
+    let wishlistView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .darkGray
+        v.layer.cornerRadius = 30
+        return v
+    }()
+    
    
     let theCollectionView: UICollectionView = {
         let v = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -314,12 +322,20 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         //animate welcomeLabel
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
            
-            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 228, y: 0)
- 
-           
+            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
         })
         
+        // hide wishlistView
+        self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+        
+        // addd slideDown-gesture to WishlistView
+        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
+        slideDown.direction = .down
+        view.addGestureRecognizer(slideDown)
+        
+        
         view.addSubview(theCollectionView)
+        view.addSubview(wishlistView)
  
         // constrain collection view
         //      100-pts from top
@@ -328,9 +344,15 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         //      40-pts from trailing
         NSLayoutConstraint.activate([
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 180.0),
-            theCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            
+            
+            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 140.0),
+            wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            wishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
+            wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
         ])
  
         // register the two cell classes for reuse
@@ -344,10 +366,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
-        
+        self.view.sendSubviewToBack(wishlistView)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
-        self.view.sendSubviewToBack(containerView)
+        
        
  
     }
@@ -403,11 +425,14 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainWishlistCell", for: indexPath) as! MainWishlistCell
         
         cell.wishlistTapCallback = {
-            let wishlistViewController = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
-            if (self.navigationController == nil){
-                print("fuck")
-            }
-            self.navigationController?.present(wishlistViewController, animated: false)
+
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+        
         }
            return cell
        }
@@ -487,6 +512,27 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             print("fuck")
         }
         self.navigationController?.present(imageCollectionView, animated: true)
+    }
+    
+    // MARK: WishlistView
+    
+    @objc func dismissView(gesture: UISwipeGestureRecognizer) {
+        //animate welcomeLabel
+        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
+            
+            // show welcomeText
+            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
+            // hide wishlistView
+            self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+        })
+        
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            
+            // hide wishlistView
+            self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+        })
+        
+        
     }
     
 }
