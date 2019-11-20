@@ -88,7 +88,6 @@ class MainWishlistCell: UICollectionViewCell {
     @objc func listTapped(_ sender: Any) {
         // tell the collection view controller we got a button tap
         wishlistTapCallback?()
-        print("hi")
     }
 }
  
@@ -258,6 +257,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
     
+    // -- WishlistView --
+    
     let wishlistView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -265,6 +266,57 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         v.layer.cornerRadius = 30
         return v
     }()
+    
+    let theTableView: UITableView = {
+       let v = UITableView()
+        v.layer.masksToBounds = true
+        v.layer.borderColor = UIColor.white.cgColor
+        v.layer.borderWidth = 2.0
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let dropdownButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "dropdown"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let menueButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "menueButton"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let wishlistLabel: UILabel = {
+        let v = UILabel()
+        v.text = "Main Wishlist"
+        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
+        v.textColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let wishCounterLabel: UILabel = {
+        let v = UILabel()
+        v.text = "5 unerfüllte Wünsche"
+        v.font = UIFont(name: "AvenirNext", size: 10)
+        v.textColor = .white
+        v.font = v.font.withSize(12)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let wishlistImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "iconRoundedImage")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    // -- WishlistView --
     
    
     let theCollectionView: UICollectionView = {
@@ -300,26 +352,25 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imagePreview.image = UIImage(named: "logoGroß")
-        imagePreview.layer.cornerRadius = 5
-        image = UIImage(named: "logoGroß")
+        imagePreview.image = UIImage(named: "iconRoundedImage")
+        image = UIImage(named: "iconRoundedImage")
         
-        //set up popUpView
+        // set up popUpView
         self.createListButton.layer.cornerRadius = 2
         self.listNameTextfield.tintColor = .lightGray
         self.listNameTextfield.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
         self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
         self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
        
-        //set CollectionView to bottom
+        // set CollectionView to bottom
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 500)
        
-        //animate collectionView
+        // animate collectionView
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
        
-        //animate welcomeLabel
+        // animate welcomeLabel
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
            
             self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
@@ -328,7 +379,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         // hide wishlistView
         self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
         
-        // addd slideDown-gesture to WishlistView
+        // add slideDown-gesture to WishlistView
         let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
         slideDown.direction = .down
         view.addGestureRecognizer(slideDown)
@@ -336,24 +387,66 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         
         view.addSubview(theCollectionView)
         view.addSubview(wishlistView)
+        
+        wishlistView.addSubview(dropdownButton)
+        wishlistView.addSubview(menueButton)
+        wishlistView.addSubview(wishlistLabel)
+        wishlistView.addSubview(wishlistImage)
+        wishlistView.addSubview(wishCounterLabel)
+        wishlistView.addSubview(theTableView)
  
-        // constrain collection view
-        //      100-pts from top
-        //      60-pts from bottom
-        //      40-pts from leading
-        //      40-pts from trailing
         NSLayoutConstraint.activate([
+            
+            // constrain collectionView
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 180.0),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
             
-            
-            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 140.0),
+            // constrain wishlistView
+            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0),
             wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             wishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            
+            // constrain tableView
+            theTableView.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 180.0),
+            theTableView.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
+            theTableView.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
+            theTableView.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+           
+            // constrain dropDownButton
+            dropdownButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
+            dropdownButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
+            dropdownButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor),
+            dropdownButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor, constant: -260),
+            
+            
+            // constrain menueButton
+            menueButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
+            menueButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
+            menueButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 260),
+            menueButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor),
+            
+            // constrain wishlistImage
+            wishlistImage.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -570),
+            wishlistImage.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 30),
+            wishlistImage.widthAnchor.constraint(equalToConstant: 80),
+            wishlistImage.heightAnchor.constraint(equalToConstant: 80),
+            
+            //constrain wishlistlabel
+            wishlistLabel.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -600),
+            wishlistLabel.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 115),
+            
+            // constrain wishCounterLabel
+            wishCounterLabel.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -585),
+            wishCounterLabel.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 115),
+            
+            
         ])
+        
+        dropdownButton.addTarget(self, action: #selector(hideView), for: .touchUpInside)
+        menueButton.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
  
         // register the two cell classes for reuse
         theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
@@ -425,10 +518,11 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainWishlistCell", for: indexPath) as! MainWishlistCell
         
         cell.wishlistTapCallback = {
-
+            // let wishlistView appear
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
                 self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
             })
+            // let welcomeText disappear
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                 self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
             })
@@ -517,8 +611,12 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     // MARK: WishlistView
     
     @objc func dismissView(gesture: UISwipeGestureRecognizer) {
+        hideView()
+    }
+    
+    @objc func hideView(){
         //animate welcomeLabel
-        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             
             // show welcomeText
             self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
@@ -526,16 +624,35 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
         })
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
             
             // hide wishlistView
             self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
         })
-        
-        
     }
     
+    @objc func menueButtonTapped(){
+        print("menueButton tapped")
+    }
+    
+    
 }
+
+//extension ExampleViewController: UITableViewDelegate, UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 1
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        return
+//    }
+//
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        cell.backgroundColor = UIColor.clear
+//    }
+//
+//
+//}
 
 extension ExampleViewController: ClassBDelegate {
         func childVCDidComplete( with image: UIImage?) {

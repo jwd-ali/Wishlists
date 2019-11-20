@@ -27,11 +27,6 @@ class WishlistViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
-//        slideDown.direction = .down
-//        view.addGestureRecognizer(slideDown)
-        
-
         
         view.addSubview(theView)
         
@@ -46,15 +41,6 @@ class WishlistViewController: UIViewController {
         self.view.sendSubviewToBack(theView)
         self.view.sendSubviewToBack(backgroundImage)
     }
-    
-//    @objc func dismissView(gesture: UISwipeGestureRecognizer) {
-//        self.dismiss(animated: false, completion: nil)
-//        UIView.animate(withDuration: 0.4) {
-//            if let theWindow = UIApplication.shared.keyWindow {
-//                gesture.view?.frame = CGRect(x:theWindow.frame.width - 15 , y: theWindow.frame.height - 15, width: 10 , height: 10)
-//            }
-//        }
-//    }
     
 
     /*
