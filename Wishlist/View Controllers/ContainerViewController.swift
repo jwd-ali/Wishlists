@@ -9,22 +9,20 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-
-    
-    
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        // Do any additional setup after loading the view.
     }
     
-    @IBAction func addButtonTapped(_ sender: Any) {
-        
-    }
-    
+    @IBAction func addWishButtonTapped(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name("addWishButtonTapped"), object: nil)
 
+    }
+    
+    
+    
+    
+    
     
     /*
     // MARK: - Navigation
@@ -35,5 +33,4 @@ class ContainerViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

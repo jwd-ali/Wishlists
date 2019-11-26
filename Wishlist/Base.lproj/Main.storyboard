@@ -566,7 +566,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-kU-9rr">
-                                <rect key="frame" x="0.0" y="17" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="17" width="414" height="879"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Wie soll deine Wishlist heißen?" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yRA-7t-lJM">
                                         <rect key="frame" x="57" y="410" width="301" height="34"/>
@@ -652,7 +652,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEQ-Pj-2E7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4649" y="-237"/>
+            <point key="canvasLocation" x="4647.826086956522" y="-237.05357142857142"/>
         </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">
@@ -754,9 +754,10 @@
                             <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ck-0t-pXW" userLabel="addButton">
                                 <rect key="frame" x="166" y="-11" width="82" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="wishButton"/>
+                                <state key="normal" image="addButton"/>
                                 <connections>
-                                    <action selector="addButtonTapped:" destination="px1-kh-iTY" eventType="touchUpInside" id="MEi-YN-pAJ"/>
+                                    <action selector="addWishButtonTapped:" destination="px1-kh-iTY" eventType="touchUpInside" id="Gul-pB-3do"/>
+                                    <action selector="plusButtonTapped:" destination="789-6J-O4W" eventType="touchUpInside" id="rk2-J4-xTc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1A-L6-Nhf" userLabel="achievementsButton">
@@ -787,8 +788,9 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DzB-AQ-KJ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="789-6J-O4W" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4440.579710144928" y="-1276.3392857142856"/>
+            <point key="canvasLocation" x="4420" y="-747"/>
         </scene>
         <!--Wishlist View Controller-->
         <scene sceneID="jke-Km-AzU">
@@ -832,6 +834,7 @@
         <image name="Logo_7_gedreht" width="1448" height="1448"/>
         <image name="Weiter" width="289" height="48"/>
         <image name="achievements" width="225" height="225"/>
+        <image name="addButton" width="82" height="82"/>
         <image name="backBold" width="33" height="33"/>
         <image name="bottomBar" width="375" height="75"/>
         <image name="campfire_scaled" width="1125" height="2436"/>
@@ -839,7 +842,6 @@
         <image name="editButton" width="190" height="192"/>
         <image name="imagePreview " width="150" height="150"/>
         <image name="profile" width="225" height="225"/>
-        <image name="wishButton" width="82" height="82"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vta-XD-LRS"/>

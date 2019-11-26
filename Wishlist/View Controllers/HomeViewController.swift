@@ -240,11 +240,10 @@ class AddItemCell: UICollectionViewCell {
     }
  
 }
- 
-
-
 
 class ExampleViewController: UIViewController, UICollectionViewDataSource {
+    
+    
     @IBOutlet weak var backGroundImage: UIImageView!
     @IBOutlet weak var welcomeTextLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var welcomeTextLabel: UILabel!
@@ -257,7 +256,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
     
-    // -- WishlistView --
+    // MARK: WishListView
     
     let wishlistView: UIView = {
         let v = UIView()
@@ -267,12 +266,13 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         return v
     }()
     
-    let theTableView: UITableView = {
-       let v = UITableView()
-        v.layer.masksToBounds = true
-        v.layer.borderColor = UIColor.white.cgColor
-        v.layer.borderWidth = 2.0
-        v.translatesAutoresizingMaskIntoConstraints = false
+    lazy var theTableView: WhishlistTableViewController = {
+       let v = WhishlistTableViewController()
+        v.view.layer.masksToBounds = true
+        v.view.layer.borderColor = UIColor.white.cgColor
+        v.view.backgroundColor = .clear
+        v.view.layer.borderWidth = 7.0
+        v.view.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -280,6 +280,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         let v = UIButton()
         v.setImage(UIImage(named: "dropdown"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(hideView), for: .touchUpInside)
         return v
     }()
     
@@ -287,6 +288,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         let v = UIButton()
         v.setImage(UIImage(named: "menueButton"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -302,7 +304,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     let wishCounterLabel: UILabel = {
         let v = UILabel()
         v.text = "5 unerfüllte Wünsche"
-        v.font = UIFont(name: "AvenirNext", size: 10)
+        v.font = UIFont(name: "AvenirNext", size: 12)
         v.textColor = .white
         v.font = v.font.withSize(12)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -316,8 +318,36 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         return v
     }()
     
-    // -- WishlistView --
     
+    // MARK: PopUpView
+    
+    let popUpView: PopUpView = {
+        let v = PopUpView()
+        v.layer.cornerRadius = 10
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let wishButton: UIButton = {
+        let v = UIButton()
+        v.setBackgroundImage(UIImage(named: "wishButton"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(wishButtonTapped), for: .touchUpInside)
+        v.clipsToBounds = true
+//        v.contentVerticalAlignment = .fill
+//        v.contentHorizontalAlignment = .fill
+        return v
+    }()
+    
+    let visualEffectView: UIVisualEffectView = {
+        let blurrEffect = UIBlurEffect(style: .light)
+        let v = UIVisualEffectView(effect: blurrEffect)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+   
+    
+    // MARK: CollectionView
    
     let theCollectionView: UICollectionView = {
         let v = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -338,16 +368,16 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     // track collection view frame change
     var colViewWidth: CGFloat = 0.0
  
-    // example data --- this will be filled with simple number strings
+    // collectionView data, Image + Label
     var theData: [String] = [String]()
     var imageData: [UIImage] = [UIImage]()
     
     var image: UIImage?
-
    
     func styleTextField(_ textfield:UITextField) {
     }
     
+    // MARK: viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -384,6 +414,9 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         slideDown.direction = .down
         view.addGestureRecognizer(slideDown)
         
+        // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
+        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
+
         
         view.addSubview(theCollectionView)
         view.addSubview(wishlistView)
@@ -393,7 +426,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         wishlistView.addSubview(wishlistLabel)
         wishlistView.addSubview(wishlistImage)
         wishlistView.addSubview(wishCounterLabel)
-        wishlistView.addSubview(theTableView)
+        wishlistView.addSubview(theTableView.tableView)
+        addChild(theTableView)
+        
+        
  
         NSLayoutConstraint.activate([
             
@@ -410,10 +446,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
             
             // constrain tableView
-            theTableView.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 180.0),
-            theTableView.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
-            theTableView.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            theTableView.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 180.0),
+            theTableView.view.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
+            theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
+            theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
            
             // constrain dropDownButton
             dropdownButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
@@ -442,12 +478,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             wishCounterLabel.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -585),
             wishCounterLabel.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 115),
             
-            
         ])
         
-        dropdownButton.addTarget(self, action: #selector(hideView), for: .touchUpInside)
-        menueButton.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
- 
         // register the two cell classes for reuse
         theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
         theCollectionView.register(AddItemCell.self, forCellWithReuseIdentifier: "AddItemCell")
@@ -462,8 +494,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         self.view.sendSubviewToBack(wishlistView)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
-        
-       
  
     }
     
@@ -609,7 +639,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     }
     
     // MARK: WishlistView
-    
+
+    // swipe down to dismiss
     @objc func dismissView(gesture: UISwipeGestureRecognizer) {
         hideView()
     }
@@ -635,24 +666,72 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         print("menueButton tapped")
     }
     
+    // MARK: wishPopUpView
+    
+    @objc func addWishButtonTapped(notification : Notification){
+        
+        view.addSubview(visualEffectView)
+        view.addSubview(popUpView)
+        view.addSubview(wishButton)
+        
+        
+        // constrain blurrEffectView
+        visualEffectView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        visualEffectView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        visualEffectView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        // constrain popUpView
+        popUpView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        popUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
+        popUpView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 85).isActive = true
+        
+        wishButton.centerXAnchor.constraint(equalTo: popUpView.centerXAnchor).isActive = true
+        wishButton.centerYAnchor.constraint(equalTo: popUpView.centerYAnchor, constant: 65).isActive = true
+        wishButton.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        wishButton.widthAnchor.constraint(equalToConstant: 72).isActive = true
+        
+    
+        popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+        popUpView.alpha = 0
+        wishButton.alpha = 0
+        visualEffectView.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.visualEffectView.alpha = 1
+            self.wishButton.alpha = 1
+            self.popUpView.alpha = 1
+            self.popUpView.transform = CGAffineTransform.identity
+        }
+    }
+    
+
+    @objc func wishButtonTapped(){
+        dismissPopUpView()
+        insertWish()
+    }
+    
+    
+    func dismissPopUpView(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.wishButton.alpha = 0
+            self.popUpView.alpha = 0
+            self.visualEffectView.alpha = 0
+        }) { (_) in
+            self.popUpView.removeFromSuperview()
+            self.wishButton.removeFromSuperview()
+            self.visualEffectView.removeFromSuperview()
+        }
+    }
+    
+    func insertWish(){
+        theTableView.wishList.append(Wish(withWishName: popUpView.whishName!))
+        theTableView.tableView.reloadData()
+    }
     
 }
-
-//extension ExampleViewController: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 1
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        return
-//    }
-//
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.backgroundColor = UIColor.clear
-//    }
-//
-//
-//}
 
 extension ExampleViewController: ClassBDelegate {
         func childVCDidComplete( with image: UIImage?) {
@@ -662,7 +741,8 @@ extension ExampleViewController: ClassBDelegate {
         }
 }
 
- 
+// MARK: Custom Flowlayout
+
 // custom FlowLayout class to left-align collection view cells
 // found here: https://stackoverflow.com/a/49717759/6257435
 class FlowLayout: UICollectionViewFlowLayout {
@@ -703,6 +783,8 @@ class FlowLayout: UICollectionViewFlowLayout {
         return layoutAttributes
     }
 }
+
+// MARK: CenterFlowLayout
 
 class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
