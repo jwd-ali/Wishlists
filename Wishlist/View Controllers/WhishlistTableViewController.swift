@@ -25,7 +25,7 @@ class WhishlistTableViewController: UITableViewController {
         self.tableView.allowsSelection = false
         
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
-        self.wishList.append(Wish(withWishName: "Test"))
+        self.wishList.append(Wish(withWishName: "Test", checked: false))
         
         // add top inset for tavleview
         self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -44,12 +44,12 @@ class WhishlistTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
+        
+        
         let currentWish = self.wishList[indexPath.row]
         cell.label.text = currentWish.wishName
         cell.backgroundColor = .clear
-        
-        
-        
+        cell.checkButton.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
         
         return cell
     }
@@ -58,8 +58,10 @@ class WhishlistTableViewController: UITableViewController {
 
 class Wish: NSObject {
     public var wishName : String?
-    init(withWishName name: String) {
+    public var checkedStatus : Bool?
+    init(withWishName name: String, checked: Bool) {
         super.init()
         wishName = name
+        checkedStatus = checked
     }
 }

@@ -13,7 +13,7 @@ struct CustomData {
     var image: UIImage
 }
  
-// main Wishlist cell
+// MARK: Main Wishlist cell
 class MainWishlistCell: UICollectionViewCell {
     
     let btn: UIButton = {
@@ -92,7 +92,7 @@ class MainWishlistCell: UICollectionViewCell {
 }
  
  
-// simple cell with label
+// MARK: Simple Whishlist Cell
 class ContentCell: UICollectionViewCell {
     
     
@@ -160,7 +160,7 @@ class ContentCell: UICollectionViewCell {
  
 }
  
-// simple cell with button
+// MARK: Add WishList Cell
 class AddItemCell: UICollectionViewCell {
  
     let btn: UIButton = {
@@ -241,6 +241,7 @@ class AddItemCell: UICollectionViewCell {
  
 }
 
+// MARK: ViewController
 class ExampleViewController: UIViewController, UICollectionViewDataSource {
     
     
@@ -276,7 +277,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         return v
     }()
     
-    let dropdownButton: UIButton = {
+    let dismissWishlistViewButton: UIButton = {
         let v = UIButton()
         v.setImage(UIImage(named: "dropdown"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -421,7 +422,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         view.addSubview(theCollectionView)
         view.addSubview(wishlistView)
         
-        wishlistView.addSubview(dropdownButton)
+        wishlistView.addSubview(dismissWishlistViewButton)
         wishlistView.addSubview(menueButton)
         wishlistView.addSubview(wishlistLabel)
         wishlistView.addSubview(wishlistImage)
@@ -452,10 +453,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
            
             // constrain dropDownButton
-            dropdownButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
-            dropdownButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
-            dropdownButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor),
-            dropdownButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor, constant: -260),
+            dismissWishlistViewButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
+            dismissWishlistViewButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
+            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor),
+            dismissWishlistViewButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor, constant: -260),
             
             
             // constrain menueButton
@@ -670,6 +671,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     
     @objc func addWishButtonTapped(notification : Notification){
         
+        popUpView.popUpTextField.text = ""
+        
         view.addSubview(visualEffectView)
         view.addSubview(popUpView)
         view.addSubview(wishButton)
@@ -687,6 +690,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         popUpView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 85).isActive = true
         
+        // constrain wishButton
         wishButton.centerXAnchor.constraint(equalTo: popUpView.centerXAnchor).isActive = true
         wishButton.centerYAnchor.constraint(equalTo: popUpView.centerYAnchor, constant: 65).isActive = true
         wishButton.heightAnchor.constraint(equalToConstant: 72).isActive = true
@@ -727,7 +731,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     }
     
     func insertWish(){
-        theTableView.wishList.append(Wish(withWishName: popUpView.whishName!))
+        theTableView.wishList.append(Wish(withWishName: popUpView.whishName!, checked: false))
         theTableView.tableView.reloadData()
     }
     

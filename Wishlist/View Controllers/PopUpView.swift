@@ -42,6 +42,7 @@ class PopUpView: UIView {
         super.init(frame: frame)
         backgroundColor = .darkGray
         
+        
         addSubview(grayView)
         addSubview(popUpTextField)
         
@@ -56,7 +57,6 @@ class PopUpView: UIView {
         popUpTextField.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -50).isActive = true
         popUpTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         popUpTextField.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        
         
     }
     

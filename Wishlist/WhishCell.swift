@@ -10,6 +10,9 @@ import UIKit
 
 class WhishCell: UITableViewCell {
     
+    var callback : ((UITableViewCell) -> Void)?
+
+    
     let label: UILabel = {
        let v = UILabel()
         v.font = UIFont(name: "AvenirNext", size: 23)
@@ -48,12 +51,11 @@ class WhishCell: UITableViewCell {
         self.checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         self.checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+
         // add label
         self.contentView.addSubview(label)
         self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
-        
         
     }
     
@@ -62,9 +64,41 @@ class WhishCell: UITableViewCell {
         self.checkButton.alpha = 0
         self.checkButton.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
         
-        UIView.animate(withDuration: 0.3) {
+
+
+        UIView.animate(withDuration: 0.3, animations: {
             self.checkButton.alpha = 1
             self.checkButton.transform = CGAffineTransform.identity
+        }) { (_) in
+            // remove item from data array and tableView after "check animation"
+            let vc = self.parentViewController as! WhishlistTableViewController
+            vc.wishList.remove(at: self.indexPath!.row)
+            self.tableView!.deleteRows(at: [self.indexPath!], with: .fade)
         }
+    }
+}
+
+
+// extension for "check" function
+extension UITableViewCell {
+    var tableView: UITableView? {
+        return (next as? UITableView) ?? (parentViewController as? UITableViewController)?.tableView
+    }
+
+    var indexPath: IndexPath? {
+        return tableView?.indexPath(for: self)
+    }
+}
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }
