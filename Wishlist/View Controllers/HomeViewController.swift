@@ -80,12 +80,12 @@ class MainWishlistCell: UICollectionViewCell {
             btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
         
-       btn.addTarget(self, action: #selector(listTapped(_:)), for: .touchUpInside)
+       btn.addTarget(self, action: #selector(mainWishlistTapped(_:)), for: .touchUpInside)
     }
     
     var wishlistTapCallback: (() -> ())?
     
-    @objc func listTapped(_ sender: Any) {
+    @objc func mainWishlistTapped(_ sender: Any) {
         // tell the collection view controller we got a button tap
         wishlistTapCallback?()
     }
@@ -95,9 +95,8 @@ class MainWishlistCell: UICollectionViewCell {
 // MARK: Simple Whishlist Cell
 class ContentCell: UICollectionViewCell {
     
-    
-    let testImage: UIImageView = {
-        let v = UIImageView()
+    let buttonView: UIButton = {
+        let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.layer.shadowOpacity = 1
         v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
@@ -105,6 +104,16 @@ class ContentCell: UICollectionViewCell {
         v.layer.shadowColor = UIColor.darkGray.cgColor
         return v
     }()
+    
+//    let testImage: UIImageView = {
+//        let v = UIImageView()
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.layer.shadowOpacity = 1
+//        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+//        v.layer.shadowRadius = 3
+//        v.layer.shadowColor = UIColor.darkGray.cgColor
+//        return v
+//    }()
      
     let theLabel: UILabel = {
         let v = UILabel()
@@ -138,7 +147,7 @@ class ContentCell: UICollectionViewCell {
 //        contentView.addSubview(theLabel)
         contentView.layer.cornerRadius = 3.0;
         contentView.addSubview(testLabel)
-        contentView.addSubview(testImage)
+        contentView.addSubview(buttonView)
         // constrain label to all 4 sides
         NSLayoutConstraint.activate([
 //            theLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -146,18 +155,25 @@ class ContentCell: UICollectionViewCell {
 //            theLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 //            theLabel.heightAnchor.constraint(equalToConstant:150),
            
-            testImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            testImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            testImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            testImage.heightAnchor.constraint(equalToConstant:150),
+            buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            buttonView.heightAnchor.constraint(equalToConstant:150),
  
-            testLabel.topAnchor.constraint(equalTo: testImage.bottomAnchor,constant: 1),
+            testLabel.topAnchor.constraint(equalTo: buttonView.bottomAnchor,constant: 1),
             testLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             testLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             testLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
+        buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
     }
- 
+    
+    var customWishlistTapCallback: (() -> ())?
+       
+       @objc func customWishlistTapped(_ sender: Any) {
+           // tell the collection view controller we got a button tap
+            customWishlistTapCallback?()
+       }
 }
  
 // MARK: Add WishList Cell
@@ -256,6 +272,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
+    
+    // MARK: CustomWishlistView
+    
+    
     
     // MARK: WishListView
     
@@ -378,6 +398,22 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     func styleTextField(_ textfield:UITextField) {
     }
     
+    private let imageView = UIImageView()
+    private var imageTimer: Timer?
+    private let images: [UIImage] = [
+        UIImage(named: "avocadoImage")!,
+        UIImage(named: "beerImage")!,
+        UIImage(named: "bikeImage")!,
+        UIImage(named: "christmasImage")!,
+        UIImage(named: "dressImage")!,
+        UIImage(named: "giftImage")!,
+        UIImage(named: "goalImage")!,
+        UIImage(named: "rollerImage")!,
+        UIImage(named: "shirtImage")!,
+        UIImage(named: "shoeImage")!,
+        UIImage(named: "travelImage")!,
+    ]
+    
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
@@ -418,7 +454,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
         NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
 
-        
+        // MARK: Views + Constraints
         view.addSubview(theCollectionView)
         view.addSubview(wishlistView)
         
@@ -492,21 +528,59 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
+        // add observer to starte/stop timer for imagePreview-rotation
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
         self.view.sendSubviewToBack(wishlistView)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
+        
+    }
  
+    // MARK: ImageRotation-Functions
+    @objc private func appDidEnterBackgroundHandler() {
+
+        if imageTimer != nil {
+            imageTimer!.invalidate()
+            imageTimer = nil
+        }
+    }
+
+    @objc private func appWillEnterForegroundHandler() {
+        startImageTimer()
     }
     
+    private func startImageTimer() {
+        // instantiate timer
+        imageTimer = Timer(fire: Date(), interval: 2.5, repeats: true) { (timer) in
+            UIView.transition(with: self.imagePreview,
+            duration: 0.5,
+            options: .transitionCrossDissolve,
+            animations: {
+                let imageStore = self.images.randomElement()
+                self.imagePreview.image = imageStore
+                self.image = imageStore
+            },
+            completion: nil)
+        }
 
+        // add to run loop
+        RunLoop.main.add(imageTimer!, forMode: .common)
+
+    }
+    
+    // MARK: CollectionView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
    
-    // DonMag3 - change "sender: Any" to "sender: Any?" so we can call this
-    // DonMag3 - from "Liste erstellen" button tap
+    // change "sender: Any" to "sender: Any?" so we can call this
+    // from "Liste erstellen" button tap
     @IBAction func closeButtonTappedNewList(_ sender: Any?) {
+        
+        self.appDidEnterBackgroundHandler()
         
         self.newListTextfield.resignFirstResponder()
         self.listNameTextfield.text = ""
@@ -566,11 +640,21 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
        // arrays are zero-based, so get the data element from item -1
        else if indexPath.item <= theData.count {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
-        // DonMag3 -- change cell.theLabel to cell.testLabel
-           cell.testLabel.text = theData[indexPath.item - 1]
-            cell.testImage.image = self.image
-            cell.testImage.image = imageData[indexPath.item - 1]
+        
+            cell.testLabel.text = theData[indexPath.item - 1]
+
+            cell.buttonView.setImage(imageData[indexPath.item - 1], for: .normal)
             
+        cell.customWishlistTapCallback = {
+            // let wishlistView appear
+//            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+//                theCustomWishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
+//            })
+            // let welcomeText disappear
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+        }
            return cell
        }
      
@@ -579,6 +663,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
  
        // set the closure
        cell.tapCallback = {
+        
+        
         
         self.listNameTextfield.becomeFirstResponder()
        
@@ -589,7 +675,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
             self.view.layoutIfNeeded()
         })
-
+        
+        self.appWillEnterForegroundHandler()
  
        }
  
@@ -597,14 +684,34 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
  
     }
     
+    // MARK: CreateNewListView
+    
     //hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
+//    lazy var theCustomWishlistView: CustomWishlistView = {
+//        let v = CustomWishlistView()
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.backgroundColor = .darkGray
+//        v.layer.cornerRadius = 30
+//        return v
+//    }()
+    
+    func createCustomWishlistView() -> CustomWishlistView {
+        let v = CustomWishlistView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .darkGray
+        v.layer.cornerRadius = 30
+        return v
+    }
  
     @IBAction func createListButtonTapped(_ sender: Any) {
+        
        
-        // DonMag3 - "Liste erstellen" button was tapped
+        // "Liste erstellen" button was tapped
+        self.appDidEnterBackgroundHandler()
        
         if let txt = listNameTextfield.text {
             
@@ -613,6 +720,22 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             // append user-entered text to the data array
             self.theData.append(txt)
             self.imageData.append(self.image!)
+            
+            let theCustomWishlistView = createCustomWishlistView()
+            
+            self.view.addSubview(theCustomWishlistView)
+            // constrain CustomWishlistView
+            theCustomWishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0).isActive = true
+            theCustomWishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+            theCustomWishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0).isActive = true
+            theCustomWishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0).isActive = true
+            theCustomWishlistView.wishlistImage.image = self.image
+            theCustomWishlistView.wishlistLabel.text = txt
+            theCustomWishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+            
+            self.view.bringSubviewToFront(containerView)
+            
+            
             // reload the collection view
             theCollectionView.reloadData()
             theCollectionView.performBatchUpdates(nil, completion: {
@@ -625,10 +748,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
                 // close (hide) the "New List" view
                 self.closeButtonTappedNewList(nil)
             })
-           
- 
         }
-       
     }
     @IBAction func editButtonTapped(_ sender: Any) {
         let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
@@ -696,6 +816,9 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         wishButton.heightAnchor.constraint(equalToConstant: 72).isActive = true
         wishButton.widthAnchor.constraint(equalToConstant: 72).isActive = true
         
+        self.view.bringSubviewToFront(visualEffectView)
+        self.view.bringSubviewToFront(popUpView)
+        self.view.bringSubviewToFront(wishButton)
     
         popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
         popUpView.alpha = 0
@@ -741,7 +864,7 @@ extension ExampleViewController: ClassBDelegate {
         func childVCDidComplete( with image: UIImage?) {
             self.image = image!
             self.imagePreview.image = image!
-            
+            self.appDidEnterBackgroundHandler()
         }
 }
 
