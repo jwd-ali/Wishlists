@@ -7,6 +7,8 @@
 //
  
 import UIKit
+import FirebaseAuth
+import Firebase
  
 struct CustomData {
     var title: String
@@ -104,16 +106,6 @@ class ContentCell: UICollectionViewCell {
         v.layer.shadowColor = UIColor.darkGray.cgColor
         return v
     }()
-    
-//    let testImage: UIImageView = {
-//        let v = UIImageView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.layer.shadowOpacity = 1
-//        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-//        v.layer.shadowRadius = 3
-//        v.layer.shadowColor = UIColor.darkGray.cgColor
-//        return v
-//    }()
      
     let theLabel: UILabel = {
         let v = UILabel()
@@ -144,17 +136,13 @@ class ContentCell: UICollectionViewCell {
    
  
     func commonInit() -> Void {
-//        contentView.addSubview(theLabel)
+
         contentView.layer.cornerRadius = 3.0;
         contentView.addSubview(testLabel)
         contentView.addSubview(buttonView)
         // constrain label to all 4 sides
         NSLayoutConstraint.activate([
-//            theLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            theLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-//            theLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            theLabel.heightAnchor.constraint(equalToConstant:150),
-           
+
             buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -257,8 +245,15 @@ class AddItemCell: UICollectionViewCell {
  
 }
 
+// DonMag3 - protocol / delegate pattern
+// allows wish table view (and cell) to update wish list data
+protocol DeleteWishDelegate {
+    func deleteWish(_ idx: Int)
+}
+
 // MARK: ViewController
-class ExampleViewController: UIViewController, UICollectionViewDataSource {
+// DonMag3 - conform to DeleteWishDelegate protocol
+class ExampleViewController: UIViewController, UICollectionViewDataSource, DeleteWishDelegate {
     
     
     @IBOutlet weak var backGroundImage: UIImageView!
@@ -390,8 +385,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     var colViewWidth: CGFloat = 0.0
  
     // collectionView data, Image + Label
-    var theData: [String] = [String]()
-    var imageData: [UIImage] = [UIImage]()
+    var wishListTitlesArray: [String] = [String]()
+    var wishListImagesArray: [UIImage] = [UIImage]()
     
     var image: UIImage?
    
@@ -414,6 +409,13 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         UIImage(named: "travelImage")!,
     ]
     
+    // DonMag3 - array of wish lists
+    // this will eventually be managed by some type of data handler class
+    var userWishListData: [[Wish]] = [[Wish]]()
+    
+    // DonMag3 - track the current selected wish list
+    var currentWishListIDX: Int = 0
+    
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
@@ -421,6 +423,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         
         imagePreview.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
+        
+        
+        
+        
         
         // set up popUpView
         self.createListButton.layer.cornerRadius = 2
@@ -436,12 +442,9 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
-       
-        // animate welcomeLabel
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
-           
-            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
-        })
+        
+        // retrieve firstname from DB and animate welcomeTextLabel
+        setupWelcomeLabel()
         
         // hide wishlistView
         self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
@@ -465,8 +468,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         wishlistView.addSubview(wishCounterLabel)
         wishlistView.addSubview(theTableView.tableView)
         addChild(theTableView)
-        
-        
  
         NSLayoutConstraint.activate([
             
@@ -536,8 +537,118 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
         
+        // DonMag3 - set DeleteWishDelegate protocol for the table
+        theTableView.deleteWishDelegate = self
+        
+        // DonMag 3 - hide collection view while data is retirieved from server
+        theCollectionView.isHidden = true
+
+        // DonMag 3 - get the data from the server
+        retrieveUserDataFromDB()
+
     }
- 
+
+    // DonMag3 - simulate retrieving user wishlists from database
+    // when you're further along in development, you may be retrieving
+    // this data when you log-in the user
+    func retrieveUserDataFromDB() -> Void {
+        
+        // show a spinner Activity Indicator
+        let spinnerView = UIActivityIndicatorView(style: .whiteLarge)
+        spinnerView.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
+        spinnerView.layer.cornerRadius = 20.0
+        view.addSubview(spinnerView)
+        NSLayoutConstraint.activate([
+            spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            spinnerView.widthAnchor.constraint(equalToConstant: 120),
+            spinnerView.heightAnchor.constraint(equalToConstant: 120),
+        ])
+        spinnerView.startAnimating()
+
+        // simulate 1.0 seconds to retrieve data
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+
+            // local mutable "WishList" var
+            var wList: [Wish] = [Wish]()
+            
+            // simlate user data from server
+            var retrievedData: [[String : Any]] = [
+                [
+                    "listName" : "Main Wishlist",
+                    "listImageIndex" : -1,
+                    "wishes" : ["Ein Auto", "Ein Fahrrad"]
+                ],
+                [
+                    "listName" : "My List",
+                    "listImageIndex" : 1,
+                    "wishes" : ["Ein Bier", "Kuemmerling", "Viele Freunde"]
+                ]
+            ]
+            
+            // un-comment next line to simulate First-Time user (no saved data yet)
+            //retrievedData = [["" : ""]]
+            
+            var hasUserData = false
+            if let _ = retrievedData.first?["listName"] {
+                hasUserData = true
+            }
+
+            if hasUserData {
+                
+                retrievedData.forEach { userData in
+
+                    // make sure the data is valid
+                    guard let listName = userData["listName"] as? String,
+                        let listImageIDX = userData["listImageIndex"] as? Int,
+                        let wishes = userData["wishes"] as? [String]
+                        else { fatalError("Bad Data - implement better error handling") }
+                    
+                    self.wishListTitlesArray.append(listName)
+                    if listImageIDX == -1 {
+                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
+                    } else {
+                        self.wishListImagesArray.append(self.images[1])
+                    }
+
+                    wList = [Wish]()
+                    
+                    wishes.forEach {
+                        wList.append(Wish(withWishName: $0, checked: false))
+                    }
+
+                    self.userWishListData.append(wList)
+                    
+                }
+
+            } else {
+                
+                // no data from server, so this is a first time user
+                
+                // data will ALWAYS start with "Main Wishlist"
+                self.wishListTitlesArray.append("Main Wishlist")
+                self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
+                
+                // create an empty wishlist, in case this is a new user
+                wList = [Wish]()
+                self.userWishListData.append(wList)
+
+            }
+            
+            // un-hide the collection view
+            self.theCollectionView.isHidden = false
+            
+            // remove the activity view
+            spinnerView.removeFromSuperview()
+            
+            // reload the collection view
+            self.theCollectionView.reloadData()
+            
+        }
+
+    }
+    
     // MARK: ImageRotation-Functions
     @objc private func appDidEnterBackgroundHandler() {
 
@@ -608,80 +719,70 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // return 1 more than our data array (the extra one will be the "add item" cell
-        return theData.count + 2
+        // return 1 more than our data array (the extra one will be the "add item" cell)
+        return wishListTitlesArray.count + 1
     }
  
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
                
-        // if item is less that data count, return a "Content" cell
-       // DonMag2 - changed the item -> data count checking, so "Wish List" cell will always
-       // DOnMag2 - be displayed first, "Add Item" cell displayed last
-     
-       // if item is Zero (the first cell to be displayed), show the "Wish List" cell
-       if indexPath.item == 0 {
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainWishlistCell", for: indexPath) as! MainWishlistCell
+        // DonMag3 - "Main Wishlist" is now at item Zero in the
+        // wish lists array, so no need to treat it differently than
+        // any other list
         
-        cell.wishlistTapCallback = {
-            // let wishlistView appear
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-                self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
-            })
-            // let welcomeText disappear
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-            })
-        
-        }
-           return cell
-       }
-     
-       // if item is less than or equal to data count, return a "Content" cell
-       // arrays are zero-based, so get the data element from item -1
-       else if indexPath.item <= theData.count {
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
-        
-            cell.testLabel.text = theData[indexPath.item - 1]
-
-            cell.buttonView.setImage(imageData[indexPath.item - 1], for: .normal)
+        // if indexPath.item is less than data count, return a "Content" cell
+        if indexPath.item < wishListTitlesArray.count {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
             
-        cell.customWishlistTapCallback = {
-            // let wishlistView appear
-//            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-//                theCustomWishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
-//            })
-            // let welcomeText disappear
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-            })
+            cell.testLabel.text = wishListTitlesArray[indexPath.item]
+            
+            cell.buttonView.setImage(wishListImagesArray[indexPath.item], for: .normal)
+            
+            cell.customWishlistTapCallback = {
+                // let wishlistView appear
+                
+                // DonMag3 - track selected index
+                self.currentWishListIDX = indexPath.item
+                // update label in wishList view
+                self.wishlistLabel.text = self.wishListTitlesArray[indexPath.item]
+                // update image in wishList view
+                self.wishlistImage.image = self.wishListImagesArray[indexPath.item]
+                // update the data for in wishList table view
+                self.theTableView.wishList = self.userWishListData[indexPath.item]
+                // reload wishList table
+                self.theTableView.tableView.reloadData()
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                    self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
+                })
+                // let welcomeText disappear
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                    self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+                })
+            }
+            return cell
         }
-           return cell
-       }
-     
-       // past the end of the data count, so return an "Add Item" cell
-       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddItemCell", for: indexPath) as! AddItemCell
- 
-       // set the closure
-       cell.tapCallback = {
         
+        // past the end of the data count, so return an "Add Item" cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddItemCell", for: indexPath) as! AddItemCell
         
+        // set the closure
+        cell.tapCallback = {
+            
+            self.listNameTextfield.becomeFirstResponder()
+            
+            // let newListView appear
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+                self.blurrImage.alpha = 0.96
+                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
+                self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
+                self.view.layoutIfNeeded()
+            })
+            
+            self.appWillEnterForegroundHandler()
+            
+        }
         
-        self.listNameTextfield.becomeFirstResponder()
-       
-        // let newListView appear
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            self.blurrImage.alpha = 0.96
-            self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
-            self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
-            self.view.layoutIfNeeded()
-        })
+        return cell
         
-        self.appWillEnterForegroundHandler()
- 
-       }
- 
-       return cell
- 
     }
     
     // MARK: CreateNewListView
@@ -690,14 +791,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-//    lazy var theCustomWishlistView: CustomWishlistView = {
-//        let v = CustomWishlistView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.backgroundColor = .darkGray
-//        v.layer.cornerRadius = 30
-//        return v
-//    }()
     
     func createCustomWishlistView() -> CustomWishlistView {
         let v = CustomWishlistView()
@@ -718,8 +811,11 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
             self.newListTextfield.resignFirstResponder()
            
             // append user-entered text to the data array
-            self.theData.append(txt)
-            self.imageData.append(self.image!)
+            self.wishListTitlesArray.append(txt)
+            self.wishListImagesArray.append(self.image!)
+            
+            // DonMag3 - append new empty wish array
+            self.userWishListData.append([Wish]())
             
             let theCustomWishlistView = createCustomWishlistView()
             
@@ -854,7 +950,20 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource {
     }
     
     func insertWish(){
-        theTableView.wishList.append(Wish(withWishName: popUpView.whishName!, checked: false))
+        // DonMag3 - append the new wish to the user's currently selected wishlist
+        userWishListData[currentWishListIDX].append(Wish(withWishName: popUpView.whishName!, checked: false))
+        // set the updated data as the data for the table view
+        theTableView.wishList = userWishListData[currentWishListIDX]
+        theTableView.tableView.reloadData()
+    }
+    
+    func deleteWish(_ idx: Int){
+        // DonMag3 - remove the wish from the user's currently selected wishlist
+        var wishes: [Wish] = userWishListData[currentWishListIDX]
+        wishes.remove(at: idx)
+        userWishListData[currentWishListIDX] = wishes
+        // set the updated data as the data for the table view
+        theTableView.wishList = userWishListData[currentWishListIDX]
         theTableView.tableView.reloadData()
     }
     
@@ -992,4 +1101,3 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         return attributes
     }
 }
-

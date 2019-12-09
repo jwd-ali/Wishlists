@@ -12,6 +12,8 @@ class WhishlistTableViewController: UITableViewController {
 
     public var wishList = [Wish]()
     
+    // DonMag3 - protocol / delegate pattern
+    public var deleteWishDelegate: DeleteWishDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +27,8 @@ class WhishlistTableViewController: UITableViewController {
         self.tableView.allowsSelection = false
         
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
-        self.wishList.append(Wish(withWishName: "Test", checked: false))
+        // DonMag3 - wishList will come from user data, so don't append a "test" wish
+        //self.wishList.append(Wish(withWishName: "Test", checked: false))
         
         // add top inset for tavleview
         self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -50,6 +53,12 @@ class WhishlistTableViewController: UITableViewController {
         cell.label.text = currentWish.wishName
         cell.backgroundColor = .clear
         cell.checkButton.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
+        
+        // DonMag3 - tapping the checkbox in the wish cell will call back here
+        // and we tell the delegate to delete the wish
+        cell.deleteWishCallback = {
+            self.deleteWishDelegate?.deleteWish(indexPath.row)
+        }
         
         return cell
     }

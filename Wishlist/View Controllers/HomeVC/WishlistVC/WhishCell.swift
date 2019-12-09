@@ -10,8 +10,8 @@ import UIKit
 
 class WhishCell: UITableViewCell {
     
-    var callback : ((UITableViewCell) -> Void)?
-
+    // DonMag3 - change "callback" to "deleteWishCallback" so we know what its purpose
+    var deleteWishCallback : (() -> ())?
     
     let label: UILabel = {
        let v = UILabel()
@@ -63,17 +63,13 @@ class WhishCell: UITableViewCell {
         self.checkButton.setBackgroundImage(UIImage(named: "boxChecked"), for: .normal)
         self.checkButton.alpha = 0
         self.checkButton.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-        
-
 
         UIView.animate(withDuration: 0.3, animations: {
             self.checkButton.alpha = 1
             self.checkButton.transform = CGAffineTransform.identity
         }) { (_) in
-            // remove item from data array and tableView after "check animation"
-            let vc = self.parentViewController as! WhishlistTableViewController
-            vc.wishList.remove(at: self.indexPath!.row)
-            self.tableView!.deleteRows(at: [self.indexPath!], with: .fade)
+            // DonMag3 - tell the callback to delete this wish
+            self.deleteWishCallback?()
         }
     }
 }
