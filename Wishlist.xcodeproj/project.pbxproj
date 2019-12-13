@@ -120,9 +120,9 @@
 				83A1939D230D6062002D22C0 /* AppDelegate.swift */,
 				83A193BA230F0580002D22C0 /* Helpers */,
 				83A193B7230EF6AC002D22C0 /* View Controllers */,
+				83A68D04239EBB6800DBDB45 /* DataHandler.swift */,
 				83A193A1230D6062002D22C0 /* Main.storyboard */,
 				83A193A4230D6064002D22C0 /* Assets.xcassets */,
-				83A68D04239EBB6800DBDB45 /* DataHandler.swift */,
 				83A193A6230D6064002D22C0 /* LaunchScreen.storyboard */,
 				83A193A9230D6064002D22C0 /* Info.plist */,
 			);
