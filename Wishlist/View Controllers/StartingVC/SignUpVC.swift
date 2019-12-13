@@ -160,6 +160,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                         }
                     }
                     
+                    db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist"]) { (error) in
+                        if error != nil {
+                            self.showError("Error creating Main Wishlist")
+                        }
+                    }
+                    
+                    
                     //transition to home
                     self.transitionToHome()
                 }

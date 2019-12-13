@@ -588,7 +588,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             ]
             
             // un-comment next line to simulate First-Time user (no saved data yet)
-            //retrievedData = [["" : ""]]
+            retrievedData = [["" : ""]]
             
             var hasUserData = false
             if let _ = retrievedData.first?["listName"] {
@@ -805,6 +805,9 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
        
         // "Liste erstellen" button was tapped
         self.appDidEnterBackgroundHandler()
+            
+        // save list to databse -> DataHandler
+        self.saveWishlist()
        
         if let txt = listNameTextfield.text {
             
@@ -843,6 +846,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
                
                 // close (hide) the "New List" view
                 self.closeButtonTappedNewList(nil)
+                
             })
         }
     }
@@ -888,6 +892,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     @objc func addWishButtonTapped(notification : Notification){
         
         popUpView.popUpTextField.text = ""
+        self.popUpView.popUpTextField.becomeFirstResponder()
         
         view.addSubview(visualEffectView)
         view.addSubview(popUpView)
@@ -955,6 +960,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         // set the updated data as the data for the table view
         theTableView.wishList = userWishListData[currentWishListIDX]
         theTableView.tableView.reloadData()
+        
+        // save Wish to database -> DataHandler
+        saveWish()
+   
     }
     
     func deleteWish(_ idx: Int){
