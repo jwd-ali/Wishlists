@@ -9,242 +9,7 @@
 import UIKit
 import FirebaseAuth
 import Firebase
- 
-struct CustomData {
-    var title: String
-    var image: UIImage
-}
- 
-// MARK: Main Wishlist cell
-class MainWishlistCell: UICollectionViewCell {
     
-    let btn: UIButton = {
-        let v = UIButton()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-   
-    let wishlistImage: UIImageView = {
-        let v = UIImageView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = UIImage(named: "iconRoundedImage")
-        v.layer.shadowOpacity = 1
-        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        v.layer.shadowRadius = 3
-        v.layer.shadowColor = UIColor.darkGray.cgColor
-        return v
-    }()
-   
-    let wishlistLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Main Wishlist"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-        v.textColor = .darkGray
-        v.textAlignment = .center
-        return v
-    }()
-   
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
- 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-   
-    override func layoutSubviews() {
-       super.layoutSubviews()
-    }
-   
-    func commonInit() -> Void {
-        contentView.addSubview(wishlistImage)
-        contentView.addSubview(wishlistLabel)
-        contentView.addSubview(btn)
-
-        // constrain view to all 4 sides
-        NSLayoutConstraint.activate([
-            wishlistImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            wishlistImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            wishlistImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            wishlistImage.heightAnchor.constraint(equalToConstant:150),
-           
-            wishlistLabel.topAnchor.constraint(equalTo: wishlistImage.bottomAnchor,constant: 1),
-            wishlistLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            wishlistLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            wishlistLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            btn.topAnchor.constraint(equalTo: contentView.topAnchor),
-            btn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
-        
-       btn.addTarget(self, action: #selector(mainWishlistTapped(_:)), for: .touchUpInside)
-    }
-    
-    var wishlistTapCallback: (() -> ())?
-    
-    @objc func mainWishlistTapped(_ sender: Any) {
-        // tell the collection view controller we got a button tap
-        wishlistTapCallback?()
-    }
-}
- 
- 
-// MARK: Simple Whishlist Cell
-class ContentCell: UICollectionViewCell {
-    
-    let buttonView: UIButton = {
-        let v = UIButton()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.layer.shadowOpacity = 1
-        v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        v.layer.shadowRadius = 3
-        v.layer.shadowColor = UIColor.darkGray.cgColor
-        return v
-    }()
-     
-    let theLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.textAlignment = .center
-        return v
-    }()
-   
-    let testLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Test Label"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-        v.textColor = .darkGray
-        v.textAlignment = .center
-        return v
-    }()
- 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
- 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-   
- 
-    func commonInit() -> Void {
-
-        contentView.layer.cornerRadius = 3.0;
-        contentView.addSubview(testLabel)
-        contentView.addSubview(buttonView)
-        // constrain label to all 4 sides
-        NSLayoutConstraint.activate([
-
-            buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            buttonView.heightAnchor.constraint(equalToConstant:150),
- 
-            testLabel.topAnchor.constraint(equalTo: buttonView.bottomAnchor,constant: 1),
-            testLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            testLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            testLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
-        buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
-    }
-    
-    var customWishlistTapCallback: (() -> ())?
-       
-       @objc func customWishlistTapped(_ sender: Any) {
-           // tell the collection view controller we got a button tap
-            customWishlistTapCallback?()
-       }
-}
- 
-// MARK: Add WishList Cell
-class AddItemCell: UICollectionViewCell {
- 
-    let btn: UIButton = {
-        let v = UIButton()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitleColor(.darkGray, for: .normal)
-        v.titleLabel?.font = UIFont.systemFont(ofSize: 40.0)
-        return v
-    }()
-    
-    let label: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "neue Wishlist erstellen"
-        v.numberOfLines = 0
-        v.font = UIFont(name: "AvenirNext", size: 20)
-        v.textColor = .darkGray
-        v.textAlignment = .center
-        return v
-    }()
-    
-    let plusLabel: UILabel = {
-       let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "+"
-        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
-        v.textColor = .white
-        v.textAlignment = .center
-        return v
-    }()
- 
-    // this will be used as a "callback closure" in collection view controller
-    var tapCallback: (() -> ())?
- 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
- 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
- 
-    func commonInit() -> Void {
-        contentView.layer.cornerRadius = 3.0;
-        contentView.addSubview(btn)
-        contentView.addSubview(label)
-        contentView.addSubview(plusLabel)
-        
-
-        // constrain button to all 4 sides
-        NSLayoutConstraint.activate([
-            btn.topAnchor.constraint(equalTo: contentView.topAnchor),
-            btn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -50),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            plusLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
-            plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            
-        ])
-        btn.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
-    }
- 
-    @objc func didTap(_ sender: Any) {
-        // tell the collection view controller we got a button tap
-        tapCallback?()
-    }
- 
-}
-
 // DonMag3 - protocol / delegate pattern
 // allows wish table view (and cell) to update wish list data
 protocol DeleteWishDelegate {
@@ -267,10 +32,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
-    
-    // MARK: CustomWishlistView
-    
-    
     
     // MARK: WishListView
     
@@ -349,11 +110,20 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         v.setBackgroundImage(UIImage(named: "wishButton"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(wishButtonTapped), for: .touchUpInside)
-        v.clipsToBounds = true
-//        v.contentVerticalAlignment = .fill
-//        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.contentHorizontalAlignment = .fill
         return v
     }()
+    
+    let closeButton: UIButton = {
+        let v = UIButton()
+        v.setBackgroundImage(UIImage(named: "closeButtonWhite"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(closePopUp), for: .touchUpInside)
+        return v
+    }()
+    
+    var dropDownButton = DropDownBtn()
     
     let visualEffectView: UIVisualEffectView = {
         let blurrEffect = UIBlurEffect(style: .light)
@@ -395,7 +165,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     private let imageView = UIImageView()
     private var imageTimer: Timer?
-    private let images: [UIImage] = [
+    let images: [UIImage] = [
         UIImage(named: "avocadoImage")!,
         UIImage(named: "beerImage")!,
         UIImage(named: "bikeImage")!,
@@ -416,17 +186,29 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     // DonMag3 - track the current selected wish list
     var currentWishListIDX: Int = 0
     
+    // track current listImageIdx
+    var currentImageArrayIDX: Int?
+    
+    // track Wishlist IDX -> start at one so Firestore sorting works properly 
+    var wishlistIDX: Int = 1
+    
+    var selectedWishlistIDX: Int?
+    
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        //Configure the dropDownButton
+        dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        dropDownButton.setTitle("List wählen", for: .normal)
+        dropDownButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         imagePreview.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
-        
-        
-        
-        
         
         // set up popUpView
         self.createListButton.layer.cornerRadius = 2
@@ -489,7 +271,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
            
-            // constrain dropDownButton
+            // constrain dismissButton
             dismissWishlistViewButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
             dismissWishlistViewButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
             dismissWishlistViewButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor),
@@ -548,106 +330,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
 
     }
 
-    // DonMag3 - simulate retrieving user wishlists from database
-    // when you're further along in development, you may be retrieving
-    // this data when you log-in the user
-    func retrieveUserDataFromDB() -> Void {
-        
-        // show a spinner Activity Indicator
-        let spinnerView = UIActivityIndicatorView(style: .whiteLarge)
-        spinnerView.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
-        spinnerView.translatesAutoresizingMaskIntoConstraints = false
-        spinnerView.layer.cornerRadius = 20.0
-        view.addSubview(spinnerView)
-        NSLayoutConstraint.activate([
-            spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            spinnerView.widthAnchor.constraint(equalToConstant: 120),
-            spinnerView.heightAnchor.constraint(equalToConstant: 120),
-        ])
-        spinnerView.startAnimating()
-
-        // simulate 1.0 seconds to retrieve data
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-
-            // local mutable "WishList" var
-            var wList: [Wish] = [Wish]()
-            
-            // simlate user data from server
-            var retrievedData: [[String : Any]] = [
-                [
-                    "listName" : "Main Wishlist",
-                    "listImageIndex" : -1,
-                    "wishes" : ["Ein Auto", "Ein Fahrrad"]
-                ],
-                [
-                    "listName" : "My List",
-                    "listImageIndex" : 1,
-                    "wishes" : ["Ein Bier", "Kuemmerling", "Viele Freunde"]
-                ]
-            ]
-            
-            // un-comment next line to simulate First-Time user (no saved data yet)
-            retrievedData = [["" : ""]]
-            
-            var hasUserData = false
-            if let _ = retrievedData.first?["listName"] {
-                hasUserData = true
-            }
-
-            if hasUserData {
-                
-                retrievedData.forEach { userData in
-
-                    // make sure the data is valid
-                    guard let listName = userData["listName"] as? String,
-                        let listImageIDX = userData["listImageIndex"] as? Int,
-                        let wishes = userData["wishes"] as? [String]
-                        else { fatalError("Bad Data - implement better error handling") }
-                    
-                    self.wishListTitlesArray.append(listName)
-                    if listImageIDX == -1 {
-                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
-                    } else {
-                        self.wishListImagesArray.append(self.images[1])
-                    }
-
-                    wList = [Wish]()
-                    
-                    wishes.forEach {
-                        wList.append(Wish(withWishName: $0, checked: false))
-                    }
-
-                    self.userWishListData.append(wList)
-                    
-                }
-
-            } else {
-                
-                // no data from server, so this is a first time user
-                
-                // data will ALWAYS start with "Main Wishlist"
-                self.wishListTitlesArray.append("Main Wishlist")
-                self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
-                
-                // create an empty wishlist, in case this is a new user
-                wList = [Wish]()
-                self.userWishListData.append(wList)
-
-            }
-            
-            // un-hide the collection view
-            self.theCollectionView.isHidden = false
-            
-            // remove the activity view
-            spinnerView.removeFromSuperview()
-            
-            // reload the collection view
-            self.theCollectionView.reloadData()
-            
-        }
-
-    }
+    
     
     // MARK: ImageRotation-Functions
     @objc private func appDidEnterBackgroundHandler() {
@@ -664,18 +347,23 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     private func startImageTimer() {
         // instantiate timer
-        imageTimer = Timer(fire: Date(), interval: 2.5, repeats: true) { (timer) in
+        imageTimer = Timer(fire: Date(), interval: 1.8, repeats: true) { (timer) in
             UIView.transition(with: self.imagePreview,
             duration: 0.5,
             options: .transitionCrossDissolve,
             animations: {
-                let imageStore = self.images.randomElement()
+                var imageStore = self.images.randomElement()
+                if (imageStore == self.imagePreview){
+                    imageStore = self.images.randomElement()
+                }
                 self.imagePreview.image = imageStore
                 self.image = imageStore
+                
+                // keep track of currentImageArraIDX
+                self.currentImageArrayIDX = self.images.firstIndex(where: {$0 == imageStore})
             },
             completion: nil)
         }
-
         // add to run loop
         RunLoop.main.add(imageTimer!, forMode: .common)
 
@@ -724,10 +412,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     }
  
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-               
-        // DonMag3 - "Main Wishlist" is now at item Zero in the
-        // wish lists array, so no need to treat it differently than
-        // any other list
         
         // if indexPath.item is less than data count, return a "Content" cell
         if indexPath.item < wishListTitlesArray.count {
@@ -738,9 +422,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             cell.buttonView.setImage(wishListImagesArray[indexPath.item], for: .normal)
             
             cell.customWishlistTapCallback = {
+                
                 // let wishlistView appear
                 
-                // DonMag3 - track selected index
+                // track selected index
                 self.currentWishListIDX = indexPath.item
                 // update label in wishList view
                 self.wishlistLabel.text = self.wishListTitlesArray[indexPath.item]
@@ -805,6 +490,9 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
        
         // "Liste erstellen" button was tapped
         self.appDidEnterBackgroundHandler()
+        
+        // track Wishlist IDX
+        self.wishlistIDX += 1
             
         // save list to databse -> DataHandler
         self.saveWishlist()
@@ -816,6 +504,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             // append user-entered text to the data array
             self.wishListTitlesArray.append(txt)
             self.wishListImagesArray.append(self.image!)
+            self.dropDownButton.dropView.dropDownOptions.append(txt)
+            self.dropDownButton.dropView.tableView.reloadData()
             
             // DonMag3 - append new empty wish array
             self.userWishListData.append([Wish]())
@@ -833,7 +523,6 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             theCustomWishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
             
             self.view.bringSubviewToFront(containerView)
-            
             
             // reload the collection view
             theCollectionView.reloadData()
@@ -889,6 +578,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     // MARK: wishPopUpView
     
+    @objc func closePopUp(){
+        dismissPopUpView()
+    }
+    
     @objc func addWishButtonTapped(notification : Notification){
         
         popUpView.popUpTextField.text = ""
@@ -897,6 +590,8 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         view.addSubview(visualEffectView)
         view.addSubview(popUpView)
         view.addSubview(wishButton)
+        view.addSubview(closeButton)
+        self.view.addSubview(dropDownButton)
         
         
         // constrain blurrEffectView
@@ -908,28 +603,46 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         // constrain popUpView
         popUpView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         popUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
-        popUpView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        popUpView.heightAnchor.constraint(equalToConstant: 230).isActive = true
         popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 85).isActive = true
         
         // constrain wishButton
         wishButton.centerXAnchor.constraint(equalTo: popUpView.centerXAnchor).isActive = true
-        wishButton.centerYAnchor.constraint(equalTo: popUpView.centerYAnchor, constant: 65).isActive = true
+        wishButton.centerYAnchor.constraint(equalTo: popUpView.centerYAnchor, constant: 70).isActive = true
         wishButton.heightAnchor.constraint(equalToConstant: 72).isActive = true
         wishButton.widthAnchor.constraint(equalToConstant: 72).isActive = true
+        
+        // constrain dropDownbutton
+        dropDownButton.centerXAnchor.constraint(equalTo: self.popUpView.centerXAnchor).isActive = true
+        dropDownButton.centerYAnchor.constraint(equalTo: self.popUpView.centerYAnchor).isActive = true
+        dropDownButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        dropDownButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        // constrain closeButton
+        closeButton.leftAnchor.constraint(equalTo: popUpView.leftAnchor, constant: 5).isActive = true
+        closeButton.topAnchor.constraint(equalTo: popUpView.topAnchor, constant: 5).isActive = true
+        
         
         self.view.bringSubviewToFront(visualEffectView)
         self.view.bringSubviewToFront(popUpView)
         self.view.bringSubviewToFront(wishButton)
+        self.view.bringSubviewToFront(dropDownButton)
+        self.view.bringSubviewToFront(dropDownButton.dropView)
+        self.view.bringSubviewToFront(closeButton)
     
         popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+        dropDownButton.alpha = 0
         popUpView.alpha = 0
         wishButton.alpha = 0
         visualEffectView.alpha = 0
+        closeButton.alpha = 0
         
         UIView.animate(withDuration: 0.3) {
             self.visualEffectView.alpha = 1
             self.wishButton.alpha = 1
             self.popUpView.alpha = 1
+            self.dropDownButton.alpha = 1
+            self.closeButton.alpha = 1
             self.popUpView.transform = CGAffineTransform.identity
         }
     }
@@ -947,14 +660,19 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             self.wishButton.alpha = 0
             self.popUpView.alpha = 0
             self.visualEffectView.alpha = 0
+            self.dropDownButton.alpha = 0
+            self.closeButton.alpha = 0
         }) { (_) in
-            self.popUpView.removeFromSuperview()
             self.wishButton.removeFromSuperview()
             self.visualEffectView.removeFromSuperview()
+            self.closeButton.removeFromSuperview()
+            self.popUpView.removeFromSuperview()
         }
     }
     
     func insertWish(){
+        
+        
         // DonMag3 - append the new wish to the user's currently selected wishlist
         userWishListData[currentWishListIDX].append(Wish(withWishName: popUpView.whishName!, checked: false))
         // set the updated data as the data for the table view
@@ -979,134 +697,22 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
 }
 
 extension ExampleViewController: ClassBDelegate {
-        func childVCDidComplete( with image: UIImage?) {
+    func childVCDidComplete( with image: UIImage?, index: Int?) {
+            self.currentImageArrayIDX = index!
             self.image = image!
             self.imagePreview.image = image!
             self.appDidEnterBackgroundHandler()
         }
 }
 
-// MARK: Custom Flowlayout
-
-// custom FlowLayout class to left-align collection view cells
-// found here: https://stackoverflow.com/a/49717759/6257435
-class FlowLayout: UICollectionViewFlowLayout {
-
-    required init(itemSize: CGSize, minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 0, sectionInset: UIEdgeInsets = .zero) {
-        super.init()
-
-        self.itemSize = itemSize
-        self.minimumInteritemSpacing = minimumInteritemSpacing
-        self.minimumLineSpacing = minimumLineSpacing
-        self.sectionInset = sectionInset
-        sectionInsetReference = .fromSafeArea
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let layoutAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
-        guard scrollDirection == .vertical else { return layoutAttributes }
-
-        // Filter attributes to compute only cell attributes
-        let cellAttributes = layoutAttributes.filter({ $0.representedElementCategory == .cell })
-
-        // Group cell attributes by row (cells with same vertical center) and loop on those groups
-        for (_, attributes) in Dictionary(grouping: cellAttributes, by: { ($0.center.y / 10).rounded(.up) * 10 }) {
-            // Set the initial left inset
-            var leftInset = sectionInset.left
-
-            // Loop on cells to adjust each cell's origin and prepare leftInset for the next cell
-            for attribute in attributes {
-                attribute.frame.origin.x = leftInset
-                leftInset = attribute.frame.maxX + minimumInteritemSpacing
-            }
-        }
-
-        return layoutAttributes
+extension ExampleViewController: SelectedWishlistProtocol{
+    func didSelectWishlist(idx: Int) {
+        self.selectedWishlistIDX = idx
+        print("hallo")
+        print(idx)
     }
 }
 
-// MARK: CenterFlowLayout
 
-class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    
-    override var itemSize: CGSize {
-        get { return CGSize(width: 150, height: 150) }
-        set {}
-    }
-        
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let superAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
-        // Copy each item to prevent "UICollectionViewFlowLayout has cached frame mismatch" warning
-        guard let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes] else { return nil }
 
-        // Constants
-        let leftPadding: CGFloat = 8
-        let interItemSpacing = minimumInteritemSpacing
 
-        // Tracking values
-        var leftMargin: CGFloat = leftPadding // Modified to determine origin.x for each item
-        var maxY: CGFloat = -1.0 // Modified to determine origin.y for each item
-        var rowSizes: [[CGFloat]] = [] // Tracks the starting and ending x-values for the first and last item in the row
-        var currentRow: Int = 0 // Tracks the current row
-        attributes.forEach { layoutAttribute in
-
-            // Each layoutAttribute represents its own item
-            if layoutAttribute.frame.origin.y >= maxY {
-
-                // This layoutAttribute represents the left-most item in the row
-                leftMargin = leftPadding
-
-                // Register its origin.x in rowSizes for use later
-                if rowSizes.count == 0 {
-                    // Add to first row
-                    rowSizes = [[leftMargin, 0]]
-                } else {
-                    // Append a new row
-                    rowSizes.append([leftMargin, 0])
-                    currentRow += 1
-                }
-            }
-
-            layoutAttribute.frame.origin.x = leftMargin
-
-            leftMargin += layoutAttribute.frame.width + interItemSpacing
-            maxY = max(layoutAttribute.frame.maxY, maxY)
-
-            // Add right-most x value for last item in the row
-            rowSizes[currentRow][1] = leftMargin - interItemSpacing
-        }
-
-        // At this point, all cells are left aligned
-        // Reset tracking values and add extra left padding to center align entire row
-        leftMargin = leftPadding
-        maxY = -1.0
-        currentRow = 0
-        attributes.forEach { layoutAttribute in
-
-            // Each layoutAttribute is its own item
-            if layoutAttribute.frame.origin.y >= maxY {
-
-                // This layoutAttribute represents the left-most item in the row
-                leftMargin = leftPadding
-
-                // Need to bump it up by an appended margin
-                let rowWidth = rowSizes[currentRow][1] - rowSizes[currentRow][0] // last.x - first.x
-                let appendedMargin = (collectionView!.frame.width - leftPadding  - rowWidth - leftPadding) / 2
-                leftMargin += appendedMargin
-
-                currentRow += 1
-            }
-
-            layoutAttribute.frame.origin.x = leftMargin
-
-            leftMargin += layoutAttribute.frame.width + interItemSpacing
-            maxY = max(layoutAttribute.frame.maxY, maxY)
-        }
-
-        return attributes
-    }
-}

@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol ClassBDelegate {
-    func childVCDidComplete(with image: UIImage?)
+protocol ClassBDelegate { 
+    func childVCDidComplete(with image: UIImage?, index: Int?)
 }
 
 class ImageCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
@@ -76,7 +76,7 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         tappedImage = images[indexPath.row]
-        delegate?.childVCDidComplete(with: tappedImage)
+        delegate?.childVCDidComplete(with: tappedImage, index: indexPath.row)
         self.dismiss(animated: true)
     }
     

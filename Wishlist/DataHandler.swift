@@ -16,9 +16,9 @@ extension ExampleViewController {
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
         db.collection("users").document(userID).getDocument { (document, error) in
-            //check for error
+            // check for error
             if error == nil{
-                // check that document exists
+                // check if document exists
                 if document != nil && document!.exists {
                     let documentData = document!.data()
                     self.welcomeTextLabel.text = "Hi " + (documentData?["firstname"] as! String) + "!"
@@ -37,7 +37,6 @@ extension ExampleViewController {
     }
     
     func saveWish() {
-        
         // get name from current Whishlist
         let wishListName = self.wishListTitlesArray[currentWishListIDX]
         
@@ -52,17 +51,67 @@ extension ExampleViewController {
     }
     
     func saveWishlist() {
-        
         // get user input
         let wishListName = self.listNameTextfield.text!
+        let imageArrayIDX = self.currentImageArrayIDX!
+        let wishListIDX = self.wishlistIDX
         
-        // auto create custom Wishlist with wishListName
+        
+        // auto create custom Wishlist with name/listIDX/imageIDX
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").document(wishListName).setData(["name": wishListName]) { (error) in
+        db.collection("users").document(userID).collection("wishlists").document(wishListName).setData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX]) { (error) in
             if error != nil {
                 print("Error saving Wishlist")
             }
         }
     }
+    
+    
+    func retrieveUserDataFromDB() -> Void {
+        
+        // local mutable "WishList" var
+        var wList: [Wish] = [Wish]()
+        
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        db.collection("users").document(userID).collection("wishlists").order(by: "listIDX").getDocuments() { ( querySnapshot, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }else {
+                // get all documents from "wishlists"-collection and save attributes
+                for document in querySnapshot!.documents {
+                    
+                    let documentData = document.data()
+                    let listName = documentData["name"]
+                    let listImageIDX = documentData["imageIDX"]
+                    
+                    // if-case for Main Wishlist
+                    if listImageIDX as? Int == nil {
+                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
+                        self.wishListTitlesArray.append(listName as! String)
+                        // set the drop down menu's options
+                        self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
+                    }else {
+                        self.wishListTitlesArray.append(listName as! String)
+                        self.wishListImagesArray.append(self.images[listImageIDX as! Int])
+                        self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
+                    }
+                    
+                    // create an empty wishlist
+                    wList = [Wish]()
+                    self.userWishListData.append(wList)
+                    
+                    // reload collectionView and tableView
+                    self.theCollectionView.reloadData()
+                    self.dropDownButton.dropView.tableView.reloadData() 
+                    
+                }
+            }
+        }
+        
+        // un-hide the collection view
+        self.theCollectionView.isHidden = false
+                
+        }
 }

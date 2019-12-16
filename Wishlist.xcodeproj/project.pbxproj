@@ -28,6 +28,11 @@
 		83A193B9230F0570002D22C0 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193B8230F0570002D22C0 /* Utilities.swift */; };
 		83A193BC230F0E80002D22C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83A193BB230F0E80002D22C0 /* GoogleService-Info.plist */; };
 		83A193BE230F2640002D22C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193BD230F2640002D22C0 /* Constants.swift */; };
+		83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */; };
+		83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */; };
+		83A3BD2023A68C3D003FDCC1 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */; };
+		83A3BD2223A68C83003FDCC1 /* MainWishlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */; };
+		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
@@ -60,6 +65,11 @@
 		83A193B8230F0570002D22C0 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		83A193BB230F0E80002D22C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83A193BD230F2640002D22C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedFlowlayout.swift; sourceTree = "<group>"; };
+		83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
+		83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
+		83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWishlistCell.swift; sourceTree = "<group>"; };
+		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -143,10 +153,30 @@
 			isa = PBXGroup;
 			children = (
 				83A68D06239ED5D800DBDB45 /* TextfieldExtensions */,
+				83A3BD1923A687BF003FDCC1 /* FlowLayoutHelpers */,
 				83A193B8230F0570002D22C0 /* Utilities.swift */,
 				83A193BD230F2640002D22C0 /* Constants.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		83A3BD1923A687BF003FDCC1 /* FlowLayoutHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */,
+				83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */,
+			);
+			path = FlowLayoutHelpers;
+			sourceTree = "<group>";
+		};
+		83A3BD1E23A68C20003FDCC1 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */,
+				83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */,
+				83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */,
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 		83A68D06239ED5D800DBDB45 /* TextfieldExtensions */ = {
@@ -192,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				83A193B5230EF686002D22C0 /* MainVC.swift */,
+				83A3BD1E23A68C20003FDCC1 /* CollectionView */,
 				83A68D0C239ED9F900DBDB45 /* CreateNewListVC */,
 				83A68D0D239EDA5000DBDB45 /* MakeWishVC */,
 				83A68D09239ED83800DBDB45 /* WishlistVC */,
@@ -333,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83A3BD2023A68C3D003FDCC1 /* CustomCell.swift in Sources */,
 				839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */,
 				83A193B9230F0570002D22C0 /* Utilities.swift in Sources */,
 				836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */,
@@ -342,6 +374,8 @@
 				83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */,
 				836A862323875325000E76E4 /* WhishCell.swift in Sources */,
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
+				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
+				83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */,
 				839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */,
 				83A193B4230EF66C002D22C0 /* LoginVC.swift in Sources */,
 				83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */,
@@ -351,6 +385,8 @@
 				83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */,
 				83605075232674760013EBD2 /* TextfieldExtension.swift in Sources */,
 				83A193A0230D6062002D22C0 /* FirstLaunchVC.swift in Sources */,
+				83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */,
+				83A3BD2223A68C83003FDCC1 /* MainWishlistCell.swift in Sources */,
 				83746C2E2396B03B0009696D /* CustomWishlistView.swift in Sources */,
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
 			);
