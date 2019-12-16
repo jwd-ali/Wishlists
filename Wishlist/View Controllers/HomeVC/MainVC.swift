@@ -203,6 +203,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         
         //Configure the dropDownButton
         dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        dropDownButton.dropView.selectedWishlistDelegate = self
         dropDownButton.setTitle("List wählen", for: .normal)
         dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
