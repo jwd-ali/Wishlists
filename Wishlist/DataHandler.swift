@@ -80,7 +80,6 @@ extension MainViewController {
             }else {
                 // get all documents from "wishlists"-collection and save attributes
                 for document in querySnapshot!.documents {
-                    
                     let documentData = document.data()
                     let listName = documentData["name"]
                     let listImageIDX = documentData["imageIDX"]
@@ -108,11 +107,47 @@ extension MainViewController {
                     self.dropDownButton.dropView.tableView.reloadData() 
                     
                 }
+                
             }
+            self.getWishes()
         }
         
         // un-hide the collection view
         self.theCollectionView.isHidden = false
+        
+        
                 
+    }
+    
+    func getWishes (){
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        
+        var counter = 0
+        print("yikes")
+        
+        for list in self.wishListTitlesArray {
+            print("yeet")
+            db.collection("users").document(userID).collection("wishlists").document(list).collection("wünsche").getDocuments() { ( querySnapshot, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                }else{
+                    var wList = self.userWishListData[counter]
+                    for document in querySnapshot!.documents {
+                        let documentData = document.data()
+                        let wishName = documentData["name"]
+                        wList.append(Wish(withWishName: wishName as! String, checked: false))
+                        
+                        print("hi")
+                        print(wishName as! String)
+                        
+                        // set the updated data as the data for the table view
+                        self.theTableView.wishList = self.userWishListData[counter]
+                        self.theTableView.tableView.reloadData()
+                    }
+                    counter += 1
+                }
+            }
         }
+    }
 }

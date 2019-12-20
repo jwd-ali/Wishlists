@@ -339,18 +339,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         self.view.sendSubviewToBack(wishlistView)
+        self.view.sendSubviewToBack(welcomeLabel)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
         
-        // DonMag3 - set DeleteWishDelegate protocol for the table
+        // set DeleteWishDelegate protocol for the table
         theTableView.deleteWishDelegate = self
         
-        // DonMag 3 - hide collection view while data is retirieved from server
+        // hide collection view while data is retirieved from server
         theCollectionView.isHidden = true
 
-        // DonMag 3 - get the data from the server
+        // get the data from the server
         retrieveUserDataFromDB()
-
     }
 
     
@@ -708,7 +708,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
     func insertWish(){
         
         
-        // DonMag3 - append the new wish to the user's currently selected wishlist
+        // append the new wish to the user's currently selected wishlist
         userWishListData[selectedWishlistIDX!].append(Wish(withWishName: popUpView.whishName!, checked: false))
         // set the updated data as the data for the table view
         theTableView.wishList = userWishListData[currentWishListIDX]
