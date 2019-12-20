@@ -128,11 +128,7 @@ class CustomWishlistView: UIView {
     @objc func hideView(){
         //animate welcomeLabel
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            
-            // show welcomeText
-//            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
-            // hide wishlistView
-            self.transform = CGAffineTransform(translationX: 0, y: 1000)
+    
         })
         
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {

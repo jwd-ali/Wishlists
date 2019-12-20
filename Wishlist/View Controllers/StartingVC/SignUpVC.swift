@@ -196,7 +196,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func transitionToHome () {
 
     let homeViewCotnroller =
-    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? ExampleViewController
+    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
     let navigationController = UINavigationController(rootViewController: homeViewCotnroller!)
 
     view.window?.rootViewController = navigationController

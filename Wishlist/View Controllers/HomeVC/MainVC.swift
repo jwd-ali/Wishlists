@@ -18,7 +18,7 @@ protocol DeleteWishDelegate {
 
 // MARK: ViewController
 // DonMag3 - conform to DeleteWishDelegate protocol
-class ExampleViewController: UIViewController, UICollectionViewDataSource, DeleteWishDelegate {
+class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWishDelegate {
     
     
     @IBOutlet weak var backGroundImage: UIImageView!
@@ -32,6 +32,15 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
+    
+    let welcomeLabel: UILabel = {
+        let v = UILabel()
+        v.text = ""
+        v.font = UIFont(name: "AvenirNext-Bold", size: 53)
+        v.textColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     // MARK: WishListView
     
@@ -55,7 +64,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     let dismissWishlistViewButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "dropdown"), for: .normal)
+        v.setImage(UIImage(named: "dismissButton"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(hideView), for: .touchUpInside)
         return v
@@ -97,6 +106,13 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     
     // MARK: PopUpView
+    
+    let helperView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .clear
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     let popUpView: PopUpView = {
         let v = PopUpView()
@@ -165,6 +181,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
     private let imageView = UIImageView()
     private var imageTimer: Timer?
+    
     let images: [UIImage] = [
         UIImage(named: "avocadoImage")!,
         UIImage(named: "beerImage")!,
@@ -179,7 +196,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         UIImage(named: "travelImage")!,
     ]
     
-    // DonMag3 - array of wish lists
+    // array of wish lists
     // this will eventually be managed by some type of data handler class
     var userWishListData: [[Wish]] = [[Wish]]()
     
@@ -199,12 +216,10 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         //Configure the dropDownButton
         dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         dropDownButton.dropView.selectedWishlistDelegate = self
-        dropDownButton.setTitle("List wählen", for: .normal)
+        dropDownButton.setTitle("Liste wählen", for: .normal)
         dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -217,16 +232,21 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         self.listNameTextfield.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
         self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
         self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
+        
+        // hide welcomeLabel
+        self.welcomeLabel.transform = CGAffineTransform(translationX: -270, y: 0)
        
         // set CollectionView to bottom
-            self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 500)
+        self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 500)
+        
+        self.theCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
        
         // animate collectionView
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
         
-        // retrieve firstname from DB and animate welcomeTextLabel
+        // retrieve firstname from DB and animate welcomeLabel
         setupWelcomeLabel()
         
         // hide wishlistView
@@ -243,6 +263,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         // MARK: Views + Constraints
         view.addSubview(theCollectionView)
         view.addSubview(wishlistView)
+        view.addSubview(welcomeLabel)
         
         wishlistView.addSubview(dismissWishlistViewButton)
         wishlistView.addSubview(menueButton)
@@ -254,50 +275,51 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
  
         NSLayoutConstraint.activate([
             
+            
+            
             // constrain collectionView
-            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 180.0),
+            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150.0),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
             
+            //constrain welcomeLabel
+            welcomeLabel.topAnchor.constraint(equalTo: theCollectionView.topAnchor, constant: -65),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
+            
             // constrain wishlistView
-            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0),
+            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100.0),
             wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             wishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
             
-            // constrain tableView
+            // constrain wishTableView
             theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 180.0),
             theTableView.view.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
             theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
            
             // constrain dismissButton
-            dismissWishlistViewButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
-            dismissWishlistViewButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
-            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor),
-            dismissWishlistViewButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor, constant: -260),
-            
+            dismissWishlistViewButton.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 20),
+            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 23.0),
             
             // constrain menueButton
-            menueButton.topAnchor.constraint(equalTo: wishlistView.topAnchor),
-            menueButton.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -650),
-            menueButton.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 260),
-            menueButton.trailingAnchor.constraint(equalTo: wishlistView.trailingAnchor),
+            menueButton.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 20),
+            menueButton.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -25.0),
             
             // constrain wishlistImage
-            wishlistImage.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -570),
+            wishlistImage.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 83),
             wishlistImage.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 30),
             wishlistImage.widthAnchor.constraint(equalToConstant: 80),
             wishlistImage.heightAnchor.constraint(equalToConstant: 80),
             
             //constrain wishlistlabel
-            wishlistLabel.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -600),
-            wishlistLabel.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 115),
+            wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 98),
+            wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 93),
             
             // constrain wishCounterLabel
-            wishCounterLabel.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: -585),
-            wishCounterLabel.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 115),
+            wishCounterLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 135),
+            wishCounterLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 93),
             
         ])
         
@@ -441,7 +463,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
                 })
                 // let welcomeText disappear
                 UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                    self.welcomeTextLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+                    self.welcomeLabel.transform = CGAffineTransform(translationX: -270, y: 0)
                 })
             }
             return cell
@@ -506,6 +528,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             self.wishListTitlesArray.append(txt)
             self.wishListImagesArray.append(self.image!)
             self.dropDownButton.dropView.dropDownOptions.append(txt)
+            self.dropDownButton.dropView.dropDownListImages.append(self.image!)
             self.dropDownButton.dropView.tableView.reloadData()
             
             // DonMag3 - append new empty wish array
@@ -561,7 +584,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             
             // show welcomeText
-            self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
+            self.welcomeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
             // hide wishlistView
             self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
         })
@@ -589,10 +612,11 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         self.popUpView.popUpTextField.becomeFirstResponder()
         
         view.addSubview(visualEffectView)
+        view.addSubview(helperView)
         view.addSubview(popUpView)
         view.addSubview(wishButton)
         view.addSubview(closeButton)
-        self.view.addSubview(dropDownButton)
+        view.addSubview(dropDownButton)
         
         
         // constrain blurrEffectView
@@ -601,11 +625,17 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         visualEffectView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        // constrain invisible helperView
+        helperView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        helperView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        helperView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        helperView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
         // constrain popUpView
         popUpView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         popUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
         popUpView.heightAnchor.constraint(equalToConstant: 230).isActive = true
-        popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 85).isActive = true
+        popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 80).isActive = true
         
         // constrain wishButton
         wishButton.centerXAnchor.constraint(equalTo: popUpView.centerXAnchor).isActive = true
@@ -620,11 +650,12 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         dropDownButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         // constrain closeButton
-        closeButton.leftAnchor.constraint(equalTo: popUpView.leftAnchor, constant: 5).isActive = true
-        closeButton.topAnchor.constraint(equalTo: popUpView.topAnchor, constant: 5).isActive = true
+        closeButton.leftAnchor.constraint(equalTo: popUpView.leftAnchor).isActive = true
+        closeButton.topAnchor.constraint(equalTo: popUpView.topAnchor).isActive = true
         
         
         self.view.bringSubviewToFront(visualEffectView)
+        self.view.bringSubviewToFront(helperView)
         self.view.bringSubviewToFront(popUpView)
         self.view.bringSubviewToFront(wishButton)
         self.view.bringSubviewToFront(dropDownButton)
@@ -664,10 +695,13 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
             self.dropDownButton.alpha = 0
             self.closeButton.alpha = 0
         }) { (_) in
+            self.dropDownButton.dismissDropDown()
+            self.dropDownButton.removeFromSuperview()
             self.wishButton.removeFromSuperview()
             self.visualEffectView.removeFromSuperview()
             self.closeButton.removeFromSuperview()
             self.popUpView.removeFromSuperview()
+            self.helperView.removeFromSuperview()
         }
     }
     
@@ -675,7 +709,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
         
         
         // DonMag3 - append the new wish to the user's currently selected wishlist
-        userWishListData[currentWishListIDX].append(Wish(withWishName: popUpView.whishName!, checked: false))
+        userWishListData[selectedWishlistIDX!].append(Wish(withWishName: popUpView.whishName!, checked: false))
         // set the updated data as the data for the table view
         theTableView.wishList = userWishListData[currentWishListIDX]
         theTableView.tableView.reloadData()
@@ -697,7 +731,7 @@ class ExampleViewController: UIViewController, UICollectionViewDataSource, Delet
     
 }
 
-extension ExampleViewController: ClassBDelegate {
+extension MainViewController: ClassBDelegate {
     func childVCDidComplete( with image: UIImage?, index: Int?) {
             self.currentImageArrayIDX = index!
             self.image = image!
@@ -706,11 +740,9 @@ extension ExampleViewController: ClassBDelegate {
         }
 }
 
-extension ExampleViewController: SelectedWishlistProtocol{
+extension MainViewController: SelectedWishlistProtocol{
     func didSelectWishlist(idx: Int) {
         self.selectedWishlistIDX = idx
-        print("hallo")
-        print(idx)
     }
 }
 

@@ -22,10 +22,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var weiterButton: UIButton!
+    @IBOutlet weak var backgroundImage: UIImageView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
+        
 //        setUpElements()
         
         //Textfield cursor -> white
@@ -37,7 +41,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
    
-
+        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
         
     //listen for keyboard events
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -101,8 +105,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
                 self.navigationController?.pushViewController(LoginView, animated: false)
             }
-        }
-        
+        } 
     }
     
     

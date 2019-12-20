@@ -18,7 +18,6 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     
     var delegate: ClassBDelegate?
 
-    
     let images: [UIImage] = [
         UIImage(named: "avocadoImage")!,
         UIImage(named: "beerImage")!,
@@ -34,12 +33,13 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
         
     ]
     
+    
+    
     let columnLayout = CenterAlignedCollectionViewFlowLayout(
 //        itemSize: CGSize(width: 150, height: 150),
 //        minimumInteritemSpacing: 25,
 //        minimumLineSpacing: 10,
 //        sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
-        
     )
     
     var colViewWidth: CGFloat = 0.0
@@ -70,13 +70,13 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
         cell.layer.cornerRadius = 2
         return cell
     }
-
     
     var tappedImage = UIImage()
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         tappedImage = images[indexPath.row]
         delegate?.childVCDidComplete(with: tappedImage, index: indexPath.row)
+        
         self.dismiss(animated: true)
     }
     

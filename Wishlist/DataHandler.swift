@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 
-extension ExampleViewController {
+extension MainViewController {
     
     func setupWelcomeLabel() {
         let db = Firestore.firestore()
@@ -21,11 +21,10 @@ extension ExampleViewController {
                 // check if document exists
                 if document != nil && document!.exists {
                     let documentData = document!.data()
-                    self.welcomeTextLabel.text = "Hi " + (documentData?["firstname"] as! String) + "!"
+                    self.welcomeLabel.text = "Hi " + (documentData?["firstname"] as! String) + "!"
                     // show + animate welcomeLabel
                     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
-                       
-                        self.welcomeTextLabel.transform = CGAffineTransform(translationX: 278, y: 0)
+                        self.welcomeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
                     })
                 }else {
                     print("document doesn't exist")
@@ -92,10 +91,12 @@ extension ExampleViewController {
                         self.wishListTitlesArray.append(listName as! String)
                         // set the drop down menu's options
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
+                        self.dropDownButton.dropView.dropDownListImages.append(UIImage(named: "iconRoundedImage")!)
                     }else {
                         self.wishListTitlesArray.append(listName as! String)
                         self.wishListImagesArray.append(self.images[listImageIDX as! Int])
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
+                        self.dropDownButton.dropView.dropDownListImages.append(self.images[listImageIDX as! Int])
                     }
                     
                     // create an empty wishlist

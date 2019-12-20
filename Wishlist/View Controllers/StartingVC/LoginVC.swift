@@ -28,10 +28,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         
-        UIView.animate(withDuration: 0.20) {
-            self.view.layoutIfNeeded()
-        }
-        
         self.passwordTextField.rightPadding = 15
         
         //Auge Button Standart auf offen setzen
@@ -43,6 +39,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //change return key
         emailTextField.returnKeyType = .next
         passwordTextField.returnKeyType = .done
+        
+//        UIView.animate(withDuration: 0.20) {
+//            self.view.layoutIfNeeded()
+//        }
         
         //eye button verstecken
         self.eyeOpenButton.isHidden = true
@@ -64,6 +64,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //Textfield cursor -> white
         UITextField.appearance().tintColor = .white
+        
+        
         
         //listen for keyboard events
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -151,7 +153,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func transitionToHome () {
 
     let homeViewCotnroller =
-    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? ExampleViewController
+    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
     let navigationController = UINavigationController(rootViewController: homeViewCotnroller!)
 
     view.window?.rootViewController = navigationController

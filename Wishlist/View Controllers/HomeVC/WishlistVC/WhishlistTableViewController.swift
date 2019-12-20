@@ -12,7 +12,7 @@ class WhishlistTableViewController: UITableViewController {
 
     public var wishList = [Wish]()
     
-    // DonMag3 - protocol / delegate pattern
+    // protocol / delegate pattern
     public var deleteWishDelegate: DeleteWishDelegate?
     
     override func viewDidLoad() {
@@ -27,10 +27,8 @@ class WhishlistTableViewController: UITableViewController {
         self.tableView.allowsSelection = false
         
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
-        // DonMag3 - wishList will come from user data, so don't append a "test" wish
-        //self.wishList.append(Wish(withWishName: "Test", checked: false))
         
-        // add top inset for tavleview
+        // add top inset for tableview
         self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
         

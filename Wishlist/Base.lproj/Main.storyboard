@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="czJ-pg-Hte">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="czJ-pg-Hte">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="campfire_scaled" translatesAutoresizingMaskIntoConstraints="NO" id="i4S-P6-JcX">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="-20" y="-20" width="454" height="936"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bhR-hE-w67" userLabel="Logo + Label">
                                 <rect key="frame" x="143" y="104" width="128" height="210"/>
@@ -94,24 +94,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="i4S-P6-JcX" firstAttribute="top" secondItem="hMe-II-J9J" secondAttribute="top" id="35f-AZ-cBj"/>
-                            <constraint firstItem="i4S-P6-JcX" firstAttribute="leading" secondItem="hMe-II-J9J" secondAttribute="leading" id="5lM-hq-AFX"/>
+                            <constraint firstItem="i4S-P6-JcX" firstAttribute="top" secondItem="hMe-II-J9J" secondAttribute="top" constant="-20" id="GVL-48-Zji"/>
+                            <constraint firstItem="i4S-P6-JcX" firstAttribute="trailing" secondItem="3Wb-vR-Br4" secondAttribute="trailing" constant="20" id="IrU-3v-d2U"/>
                             <constraint firstItem="v5n-HP-wvU" firstAttribute="leading" secondItem="3Wb-vR-Br4" secondAttribute="leading" constant="116" id="JCY-EW-9Nb"/>
                             <constraint firstItem="bhR-hE-w67" firstAttribute="centerX" secondItem="hMe-II-J9J" secondAttribute="centerX" id="PJE-XM-Q9L"/>
                             <constraint firstItem="3Wb-vR-Br4" firstAttribute="bottom" secondItem="v5n-HP-wvU" secondAttribute="bottom" constant="337" id="RMh-vz-XEU"/>
                             <constraint firstItem="bhR-hE-w67" firstAttribute="top" secondItem="3Wb-vR-Br4" secondAttribute="top" constant="60" id="YoD-eP-YiM"/>
-                            <constraint firstAttribute="trailing" secondItem="i4S-P6-JcX" secondAttribute="trailing" id="Z0w-cS-0WP"/>
-                            <constraint firstItem="i4S-P6-JcX" firstAttribute="leading" secondItem="hMe-II-J9J" secondAttribute="leading" id="ZpX-iX-dud"/>
+                            <constraint firstItem="i4S-P6-JcX" firstAttribute="leading" secondItem="hMe-II-J9J" secondAttribute="leading" constant="-20" id="hZq-yI-Bda"/>
                             <constraint firstItem="Gdx-pU-sI0" firstAttribute="centerX" secondItem="hMe-II-J9J" secondAttribute="centerX" id="iMg-Wn-Huo"/>
                             <constraint firstItem="3Wb-vR-Br4" firstAttribute="bottom" secondItem="Gdx-pU-sI0" secondAttribute="bottom" constant="255.5" id="oQL-9Q-iSO"/>
-                            <constraint firstAttribute="bottom" secondItem="i4S-P6-JcX" secondAttribute="bottom" id="wWw-Ao-wwO"/>
-                            <constraint firstAttribute="trailing" secondItem="i4S-P6-JcX" secondAttribute="trailing" id="zPv-iL-qN0"/>
+                            <constraint firstAttribute="bottom" secondItem="i4S-P6-JcX" secondAttribute="bottom" constant="-20" id="t5o-gb-DhM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3Wb-vR-Br4"/>
                     </view>
                     <navigationItem key="navigationItem" id="2WG-FU-ESP"/>
                     <connections>
                         <outlet property="anmeldenLabel" destination="IDt-kn-iUU" id="qRz-2O-vO2"/>
+                        <outlet property="backgroundImage" destination="i4S-P6-JcX" id="wIR-gY-10Z"/>
                         <outlet property="bottomConstraint" destination="oQL-9Q-iSO" id="d7z-vH-GOP"/>
                         <outlet property="bottomConstraintEmail" destination="RMh-vz-XEU" id="0GS-M3-4WV"/>
                         <outlet property="emailTestTextField" destination="v5n-HP-wvU" id="MQC-hI-3PG"/>
@@ -540,7 +539,7 @@
         <!--HomeViewController-->
         <scene sceneID="6yh-s7-MNk">
             <objects>
-                <viewController storyboardIdentifier="HomeVC" modalPresentationStyle="fullScreen" id="DPe-W4-bLW" userLabel="HomeViewController" customClass="ExampleViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeVC" modalPresentationStyle="fullScreen" id="DPe-W4-bLW" userLabel="HomeViewController" customClass="MainViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UgT-bO-Q4c" userLabel="View">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -555,12 +554,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="campfire_scaled" translatesAutoresizingMaskIntoConstraints="NO" id="6s9-Gz-9pF">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qm-6J-9tm">
-                                <rect key="frame" x="-250" y="156" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="53"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XGu-Ol-NXY">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -625,9 +618,7 @@
                             <constraint firstItem="XGu-Ol-NXY" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="KdE-7n-m67"/>
                             <constraint firstAttribute="bottom" secondItem="aWW-kU-9rr" secondAttribute="bottom" id="O6y-I5-UZl"/>
                             <constraint firstAttribute="trailing" secondItem="XGu-Ol-NXY" secondAttribute="trailing" id="QFH-FN-Olw"/>
-                            <constraint firstItem="4Qm-6J-9tm" firstAttribute="leading" secondItem="tgd-f8-7kW" secondAttribute="leading" constant="-250" id="TLv-RE-k01"/>
                             <constraint firstAttribute="trailing" secondItem="6s9-Gz-9pF" secondAttribute="trailing" id="bOT-zM-cx7"/>
-                            <constraint firstItem="4Qm-6J-9tm" firstAttribute="top" secondItem="tgd-f8-7kW" secondAttribute="top" constant="112" id="i5o-Lw-J5n"/>
                             <constraint firstItem="aWW-kU-9rr" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="lYr-d9-vcW"/>
                             <constraint firstAttribute="bottom" secondItem="6s9-Gz-9pF" secondAttribute="bottom" id="njF-YJ-f2D"/>
                             <constraint firstAttribute="trailing" secondItem="aWW-kU-9rr" secondAttribute="trailing" id="nkJ-dK-Zgx"/>
@@ -646,8 +637,6 @@
                         <outlet property="listNameTextfield" destination="yRA-7t-lJM" id="VtE-GN-kUd"/>
                         <outlet property="newListTextfield" destination="yRA-7t-lJM" id="TmV-mk-nUh"/>
                         <outlet property="newListView" destination="aWW-kU-9rr" id="EDg-Mb-D7C"/>
-                        <outlet property="welcomeTextLabel" destination="4Qm-6J-9tm" id="Dq8-CP-4Oo"/>
-                        <outlet property="welcomeTextLeftConstraint" destination="TLv-RE-k01" id="pj8-7t-3vX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEQ-Pj-2E7" userLabel="First Responder" sceneMemberID="firstResponder"/>
