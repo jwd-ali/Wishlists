@@ -19,9 +19,9 @@ class WhishlistTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // disable prefill tableview with cells
-        let v = UIView()
-        v.backgroundColor = .clear
-        tableView.tableFooterView = v
+//        let v = UIView()
+//        v.backgroundColor = .clear
+//        tableView.tableFooterView = v
         
         // disable didSelectAt
         self.tableView.allowsSelection = false
