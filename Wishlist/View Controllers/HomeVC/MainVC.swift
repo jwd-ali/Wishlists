@@ -10,15 +10,10 @@ import UIKit
 import FirebaseAuth
 import Firebase
     
-// DonMag3 - protocol / delegate pattern
-// allows wish table view (and cell) to update wish list data
-protocol DeleteWishDelegate {
-    func deleteWish(_ idx: Int)
-}
 
 // MARK: ViewController
 // DonMag3 - conform to DeleteWishDelegate protocol
-class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWishDelegate {
+class MainViewController: UIViewController, UICollectionViewDataSource {
     
     
     @IBOutlet weak var backGroundImage: UIImageView!
@@ -33,6 +28,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
     
+    let searchButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "searchButton"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+
+    }()
+    
     let welcomeLabel: UILabel = {
         let v = UILabel()
         v.text = ""
@@ -42,67 +45,95 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         return v
     }()
     
-    // MARK: WishListView
+    //MARK: BottomBar
     
-    let wishlistView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .darkGray
-        v.layer.cornerRadius = 30
-        return v
-    }()
-    
-    lazy var theTableView: WhishlistTableViewController = {
-       let v = WhishlistTableViewController()
-        v.view.layer.masksToBounds = true
-        v.view.layer.borderColor = UIColor.white.cgColor
-        v.view.backgroundColor = .clear
-        v.view.layer.borderWidth = 7.0
-        v.view.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let dismissWishlistViewButton: UIButton = {
-        let v = UIButton()
-        v.setImage(UIImage(named: "dismissButton"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addTarget(self, action: #selector(hideView), for: .touchUpInside)
-        return v
-    }()
-    
-    let menueButton: UIButton = {
-        let v = UIButton()
-        v.setImage(UIImage(named: "menueButton"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
-        return v
-    }()
-    
-    let wishlistLabel: UILabel = {
-        let v = UILabel()
-        v.text = "Main Wishlist"
-        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
-        v.textColor = .white
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let wishCounterLabel: UILabel = {
-        let v = UILabel()
-        v.text = "5 unerfüllte Wünsche"
-        v.font = UIFont(name: "AvenirNext", size: 12)
-        v.textColor = .white
-        v.font = v.font.withSize(12)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let wishlistImage: UIImageView = {
+    let bottomBar: UIImageView = {
         let v = UIImageView()
-        v.image = UIImage(named: "iconRoundedImage")
+        v.image = UIImage(named: "bottomBar")
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    let achievementsButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "achievements"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let profileButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "profile"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let addButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(named: "addButton"), for: .normal)
+        v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+//    // MARK: WishListView
+//
+//    let wishlistBackgroundView: UIView = {
+//        let v = UIView()
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.backgroundColor = .darkGray
+//        return v
+//    }()
+//
+//    let wishlistView: UIView = {
+//        let v = UIView()
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.backgroundColor = .gray
+//        v.layer.cornerRadius = 30
+//        return v
+//    }()
+//
+//    lazy var theTableView: WhishlistTableViewController = {
+//       let v = WhishlistTableViewController()
+//        v.view.layer.masksToBounds = true
+//        v.view.layer.borderColor = UIColor.white.cgColor
+//        v.view.backgroundColor = .clear
+//        v.view.layer.borderWidth = 7.0
+//        v.view.translatesAutoresizingMaskIntoConstraints = false
+//        return v
+//    }()
+//
+//    let dismissWishlistViewButton: UIButton = {
+//        let v = UIButton()
+//        v.setImage(UIImage(named: "dismissButton"), for: .normal)
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.addTarget(self, action: #selector(hideView), for: .touchUpInside)
+//        return v
+//    }()
+//
+//    let menueButton: UIButton = {
+//        let v = UIButton()
+//        v.setImage(UIImage(named: "menueButton"), for: .normal)
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
+//        return v
+//    }()
+//
+//    let wishlistLabel: UILabel = {
+//        let v = UILabel()
+//        v.text = "Main Wishlist"
+//        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
+//        v.textColor = .white
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        return v
+//    }()
+//
+//    let wishlistImage: UIImageView = {
+//        let v = UIImageView()
+//        v.image = UIImage(named: "iconRoundedImage")
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        return v
+//    }()
     
     
     // MARK: PopUpView
@@ -216,13 +247,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Configure the dropDownButton
+        // configure the dropDownButton
         dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         dropDownButton.dropView.selectedWishlistDelegate = self
         dropDownButton.setTitle("Liste wählen", for: .normal)
         dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
-        
+        // configure image in createNewListPopUpView
         imagePreview.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
         
@@ -249,34 +280,62 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         // retrieve firstname from DB and animate welcomeLabel
         setupWelcomeLabel()
         
-        // hide wishlistView
-        self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+//        // hide wishlistView
+//        self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
+//        self.wishlistBackgroundView.transform = CGAffineTransform(translationX: 0, y: 1000)
         
-        // add slideDown-gesture to WishlistView
-        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
-        slideDown.direction = .down
-        view.addGestureRecognizer(slideDown)
+//        // add slideDown-gesture to WishlistView
+//        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
+//        slideDown.direction = .down
+//        view.addGestureRecognizer(slideDown)
         
-        // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
-        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
+//        // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
 
         // MARK: Views + Constraints
         view.addSubview(theCollectionView)
-        view.addSubview(wishlistView)
+//        view.addSubview(wishlistView)
         view.addSubview(welcomeLabel)
+        view.addSubview(searchButton)
+        view.addSubview(bottomBar)
+        view.addSubview(achievementsButton)
+        view.addSubview(profileButton)
+        view.addSubview(addButton)
         
-        wishlistView.addSubview(dismissWishlistViewButton)
-        wishlistView.addSubview(menueButton)
-        wishlistView.addSubview(wishlistLabel)
-        wishlistView.addSubview(wishlistImage)
-        wishlistView.addSubview(wishCounterLabel)
-        wishlistView.addSubview(theTableView.tableView)
-        addChild(theTableView)
+//        view.addSubview(wishlistBackgroundView)
+//        wishlistBackgroundView.addSubview(wishlistView)
+//        wishlistView.addSubview(dismissWishlistViewButton)
+//        wishlistView.addSubview(menueButton)
+//        wishlistView.addSubview(wishlistLabel)
+//        wishlistView.addSubview(wishlistImage)
+//        wishlistView.addSubview(theTableView.tableView)
+//
+//        addChild(theTableView)
  
         NSLayoutConstraint.activate([
             
+            //constrain bottomBar
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             
+            //contrain achievementsButton
+            achievementsButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            achievementsButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
+            achievementsButton.widthAnchor.constraint(equalToConstant: 70),
+            achievementsButton.heightAnchor.constraint(equalToConstant: 70),
             
+            // constrain profileButton
+            profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            profileButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: view.frame.width/3.5),
+            profileButton.widthAnchor.constraint(equalToConstant: 70),
+            profileButton.heightAnchor.constraint(equalToConstant: 70),
+            
+            // constrain addWishButton
+            addButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
+            addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -40),
+            
+               
             // constrain collectionView
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150.0),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -287,39 +346,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
             welcomeLabel.topAnchor.constraint(equalTo: theCollectionView.topAnchor, constant: -65),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             
-            // constrain wishlistView
-            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100.0),
-            wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            wishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            // constrain searchButton
+            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            searchButton.widthAnchor.constraint(equalToConstant: 30),
+            searchButton.heightAnchor.constraint(equalToConstant: 30),
             
-            // constrain wishTableView
-            theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 180.0),
-            theTableView.view.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
-            theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
-           
-            // constrain dismissButton
-            dismissWishlistViewButton.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 20),
-            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 23.0),
-            
-            // constrain menueButton
-            menueButton.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 20),
-            menueButton.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -25.0),
-            
-            // constrain wishlistImage
-            wishlistImage.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 83),
-            wishlistImage.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 30),
-            wishlistImage.widthAnchor.constraint(equalToConstant: 80),
-            wishlistImage.heightAnchor.constraint(equalToConstant: 80),
-            
-            //constrain wishlistlabel
-            wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 98),
-            wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 93),
-            
-            // constrain wishCounterLabel
-            wishCounterLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 135),
-            wishCounterLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 93),
             
         ])
         
@@ -338,13 +370,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
         
-        self.view.sendSubviewToBack(wishlistView)
+//        self.view.sendSubviewToBack(wishlistView)
+//        self.view.sendSubviewToBack(wishlistBackgroundView)
         self.view.sendSubviewToBack(welcomeLabel)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
         
-        // set DeleteWishDelegate protocol for the table
-        theTableView.deleteWishDelegate = self
+        
+//        // set DeleteWishDelegate protocol for the table
+//        theTableView.deleteWishDelegate = self
         
         // hide collection view while data is retirieved from server
         theCollectionView.isHidden = true
@@ -440,32 +474,32 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         if indexPath.item < wishListTitlesArray.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
             
-            cell.testLabel.text = wishListTitlesArray[indexPath.item]
+            cell.cellLabel.text = wishListTitlesArray[indexPath.item]
             
             cell.buttonView.setImage(wishListImagesArray[indexPath.item], for: .normal)
             
             cell.customWishlistTapCallback = {
-                
-                // let wishlistView appear
-                
+            
                 // track selected index
                 self.currentWishListIDX = indexPath.item
-                // update label in wishList view
-                self.wishlistLabel.text = self.wishListTitlesArray[indexPath.item]
-                // update image in wishList view
-                self.wishlistImage.image = self.wishListImagesArray[indexPath.item]
-                // update the data for in wishList table view
-                self.theTableView.wishList = self.userWishListData[indexPath.item]
-                // reload wishList table
-                self.theTableView.tableView.reloadData()
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-                    self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 0)
-                })
-                // let welcomeText disappear
-                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                    self.welcomeLabel.transform = CGAffineTransform(translationX: -270, y: 0)
-                })
+                    
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
+                // set image
+                vc.wishlistImage.image = self.wishListImagesArray[indexPath.item]
+                // set label
+                vc.wishlistLabel.text = self.wishListTitlesArray[indexPath.item]
+                // set wishlist
+                vc.theTableView.wishList = self.userWishListData[indexPath.item]
+                
+                vc.currentWishListIDX = self.currentWishListIDX
+                
+                vc.userWishListData = self.userWishListData
+                    
+                vc.theTableView.tableView.reloadData()
+                self.present(vc, animated: true, completion: nil)
+                
             }
+            
             return cell
         }
         
@@ -500,23 +534,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         self.view.endEditing(true)
     }
     
-    func createCustomWishlistView() -> CustomWishlistView {
-        let v = CustomWishlistView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .darkGray
-        v.layer.cornerRadius = 30
-        return v
-    }
  
     @IBAction func createListButtonTapped(_ sender: Any) {
         
        
         // "Liste erstellen" button was tapped
         self.appDidEnterBackgroundHandler()
-        
-        // track Wishlist IDX
-        self.wishlistIDX += 1
-            
+                   
         // save list to databse -> DataHandler
         self.saveWishlist()
        
@@ -533,20 +557,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
             
             // DonMag3 - append new empty wish array
             self.userWishListData.append([Wish]())
-            
-            let theCustomWishlistView = createCustomWishlistView()
-            
-            self.view.addSubview(theCustomWishlistView)
-            // constrain CustomWishlistView
-            theCustomWishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0).isActive = true
-            theCustomWishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-            theCustomWishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0).isActive = true
-            theCustomWishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0).isActive = true
-            theCustomWishlistView.wishlistImage.image = self.image
-            theCustomWishlistView.wishlistLabel.text = txt
-            theCustomWishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
-            
-            self.view.bringSubviewToFront(containerView)
             
             // reload the collection view
             theCollectionView.reloadData()
@@ -572,41 +582,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
         self.navigationController?.present(imageCollectionView, animated: true)
     }
     
-    // MARK: WishlistView
-
-    // swipe down to dismiss
-    @objc func dismissView(gesture: UISwipeGestureRecognizer) {
-        hideView()
-    }
-    
-    @objc func hideView(){
-        //animate welcomeLabel
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            
-            // show welcomeText
-            self.welcomeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-            // hide wishlistView
-            self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
-        })
-        
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
-            
-            // hide wishlistView
-            self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
-        })
-    }
-    
-    @objc func menueButtonTapped(){
-        print("menueButton tapped")
-    }
-    
     // MARK: wishPopUpView
     
     @objc func closePopUp(){
         dismissPopUpView()
     }
     
-    @objc func addWishButtonTapped(notification : Notification){
+    @objc func addWishButtonTapped(){
         
         popUpView.popUpTextField.text = ""
         self.popUpView.popUpTextField.becomeFirstResponder()
@@ -706,28 +688,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource, DeleteWi
     }
     
     func insertWish(){
-        
-        
+    
         // append the new wish to the user's currently selected wishlist
         userWishListData[selectedWishlistIDX!].append(Wish(withWishName: popUpView.whishName!, checked: false))
         // set the updated data as the data for the table view
-        theTableView.wishList = userWishListData[currentWishListIDX]
-        theTableView.tableView.reloadData()
+//        theTableView.wishList = userWishListData[currentWishListIDX]
+//        theTableView.tableView.reloadData()
         
         // save Wish to database -> DataHandler
         saveWish()
    
     }
     
-    func deleteWish(_ idx: Int){
-        // DonMag3 - remove the wish from the user's currently selected wishlist
-        var wishes: [Wish] = userWishListData[currentWishListIDX]
-        wishes.remove(at: idx)
-        userWishListData[currentWishListIDX] = wishes
-        // set the updated data as the data for the table view
-        theTableView.wishList = userWishListData[currentWishListIDX]
-        theTableView.tableView.reloadData()
-    }
     
 }
 

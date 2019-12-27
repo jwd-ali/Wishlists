@@ -547,9 +547,6 @@
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="htY-1j-lHN">
                                 <rect key="frame" x="0.0" y="786" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <connections>
-                                    <segue destination="px1-kh-iTY" kind="embed" id="vta-XD-LRS"/>
-                                </connections>
                             </containerView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="campfire_scaled" translatesAutoresizingMaskIntoConstraints="NO" id="6s9-Gz-9pF">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -643,6 +640,21 @@
             </objects>
             <point key="canvasLocation" x="4647.826086956522" y="-237.05357142857142"/>
         </scene>
+        <!--Wishlist View Controller-->
+        <scene sceneID="FgZ-u9-qch">
+            <objects>
+                <viewController storyboardIdentifier="WishlistVC" id="uae-Dn-0LS" customClass="WishlistViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AEZ-jD-xWy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="QVD-iU-YUD"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-ey-4Yd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5771" y="-676"/>
+        </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">
             <objects>
@@ -727,73 +739,15 @@
             </objects>
             <point key="canvasLocation" x="1340.5797101449277" y="-315.40178571428572"/>
         </scene>
-        <!--Container View Controller-->
-        <scene sceneID="tlG-dn-gOa">
-            <objects>
-                <viewController id="px1-kh-iTY" customClass="ContainerViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Fdg-JC-TY2">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bottomBar" translatesAutoresizingMaskIntoConstraints="NO" id="EMO-Xx-VvU">
-                                <rect key="frame" x="0.0" y="35" width="414" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ck-0t-pXW" userLabel="addButton">
-                                <rect key="frame" x="166" y="-11" width="82" height="82"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="addButton"/>
-                                <connections>
-                                    <action selector="addWishButtonTapped:" destination="px1-kh-iTY" eventType="touchUpInside" id="Gul-pB-3do"/>
-                                    <action selector="plusButtonTapped:" destination="789-6J-O4W" eventType="touchUpInside" id="rk2-J4-xTc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h1A-L6-Nhf" userLabel="achievementsButton">
-                                <rect key="frame" x="55" y="85" width="55" height="55"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="7yy-2t-1Ed"/>
-                                    <constraint firstAttribute="width" constant="55" id="dOD-KK-oXk"/>
-                                </constraints>
-                                <state key="normal" image="achievements"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PE-fY-E4D" userLabel="profileButton">
-                                <rect key="frame" x="314" y="90" width="45" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="O10-vj-tfQ"/>
-                                    <constraint firstAttribute="width" constant="45" id="dDt-Sa-TZE"/>
-                                </constraints>
-                                <state key="normal" image="profile"/>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="8PE-fY-E4D" firstAttribute="top" secondItem="pkh-x5-Ckf" secondAttribute="top" constant="46" id="YK4-Xy-tgr"/>
-                            <constraint firstItem="pkh-x5-Ckf" firstAttribute="trailing" secondItem="8PE-fY-E4D" secondAttribute="trailing" constant="55" id="c9b-3X-cx8"/>
-                            <constraint firstItem="h1A-L6-Nhf" firstAttribute="top" secondItem="pkh-x5-Ckf" secondAttribute="top" constant="41" id="gLI-o8-d7m"/>
-                            <constraint firstItem="h1A-L6-Nhf" firstAttribute="leading" secondItem="pkh-x5-Ckf" secondAttribute="leading" constant="55" id="mBG-Ox-EmL"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="pkh-x5-Ckf"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DzB-AQ-KJ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="789-6J-O4W" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="4420" y="-747"/>
-        </scene>
     </scenes>
     <resources>
         <image name="Email " width="315" height="48"/>
         <image name="Logo_7_gedreht" width="1448" height="1448"/>
         <image name="Weiter" width="289" height="48"/>
-        <image name="achievements" width="225" height="225"/>
-        <image name="addButton" width="82" height="82"/>
         <image name="backBold" width="33" height="33"/>
-        <image name="bottomBar" width="375" height="75"/>
         <image name="campfire_scaled" width="1125" height="2436"/>
         <image name="closeButton " width="70" height="70"/>
         <image name="editButton" width="190" height="192"/>
         <image name="imagePreview " width="150" height="150"/>
-        <image name="profile" width="225" height="225"/>
     </resources>
 </document>

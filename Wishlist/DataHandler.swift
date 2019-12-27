@@ -50,6 +50,10 @@ extension MainViewController {
     }
     
     func saveWishlist() {
+        
+        // track Wishlist IDX
+        self.wishlistIDX += 1
+
         // get user input
         let wishListName = self.listNameTextfield.text!
         let imageArrayIDX = self.currentImageArrayIDX!
@@ -122,29 +126,23 @@ extension MainViewController {
     func getWishes (){
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-        
+       
         var counter = 0
-        print("yikes")
-        
+       
         for list in self.wishListTitlesArray {
-            print("yeet")
             db.collection("users").document(userID).collection("wishlists").document(list).collection("wünsche").getDocuments() { ( querySnapshot, error) in
                 if let error = error {
                     print(error.localizedDescription)
                 }else{
-                    var wList = self.userWishListData[counter]
+                    // DMAG - create a new Wish array
+                    var wList: [Wish] = [Wish]()
                     for document in querySnapshot!.documents {
                         let documentData = document.data()
                         let wishName = documentData["name"]
                         wList.append(Wish(withWishName: wishName as! String, checked: false))
-                        
-                        print("hi")
-                        print(wishName as! String)
-                        
-                        // set the updated data as the data for the table view
-                        self.theTableView.wishList = self.userWishListData[counter]
-                        self.theTableView.tableView.reloadData()
                     }
+                    // DMAG - set the array of wishes to the userWishListData
+                    self.userWishListData[counter] = wList
                     counter += 1
                 }
             }

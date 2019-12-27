@@ -29,7 +29,7 @@ class ContentCell: UICollectionViewCell {
         return v
     }()
    
-    let testLabel: UILabel = {
+    let cellLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Test Label"
@@ -53,7 +53,7 @@ class ContentCell: UICollectionViewCell {
     func commonInit() -> Void {
 
         contentView.layer.cornerRadius = 3.0;
-        contentView.addSubview(testLabel)
+        contentView.addSubview(cellLabel)
         contentView.addSubview(buttonView)
         // constrain label to all 4 sides
         NSLayoutConstraint.activate([
@@ -63,10 +63,10 @@ class ContentCell: UICollectionViewCell {
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             buttonView.heightAnchor.constraint(equalToConstant:150),
  
-            testLabel.topAnchor.constraint(equalTo: buttonView.bottomAnchor,constant: 1),
-            testLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            testLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            testLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cellLabel.topAnchor.constraint(equalTo: buttonView.bottomAnchor,constant: 1),
+            cellLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
         buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
     }

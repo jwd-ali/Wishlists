@@ -14,7 +14,6 @@
 		836A862323875325000E76E4 /* WhishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862223875325000E76E4 /* WhishCell.swift */; };
 		836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862423880B21000E76E4 /* WhishlistTableViewController.swift */; };
 		836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862623916FAC000E76E4 /* DropDownTableView.swift */; };
-		83746C2E2396B03B0009696D /* CustomWishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83746C2D2396B03B0009696D /* CustomWishlistView.swift */; };
 		839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CD237220690034ED79 /* ImageCollectionVC.swift */; };
 		839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */; };
 		839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8EE823A80F9C00C432EA /* DropDownCell.swift */; };
@@ -36,6 +35,7 @@
 		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
+		83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDC23B6731A00007A53 /* WishlistVC.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
 		D820D101CFF420CD72088C68 /* Pods_Wishlist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */; };
 /* End PBXBuildFile section */
@@ -50,7 +50,6 @@
 		836A862223875325000E76E4 /* WhishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishCell.swift; sourceTree = "<group>"; };
 		836A862423880B21000E76E4 /* WhishlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishlistTableViewController.swift; sourceTree = "<group>"; };
 		836A862623916FAC000E76E4 /* DropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableView.swift; sourceTree = "<group>"; };
-		83746C2D2396B03B0009696D /* CustomWishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWishlistView.swift; sourceTree = "<group>"; };
 		839091CD237220690034ED79 /* ImageCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionVC.swift; sourceTree = "<group>"; };
 		839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		839A8EE823A80F9C00C432EA /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
@@ -74,6 +73,7 @@
 		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		83D15FDC23B6731A00007A53 /* WishlistVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistVC.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -213,7 +213,7 @@
 		83A68D09239ED83800DBDB45 /* WishlistVC */ = {
 			isa = PBXGroup;
 			children = (
-				83746C2D2396B03B0009696D /* CustomWishlistView.swift */,
+				83D15FDC23B6731A00007A53 /* WishlistVC.swift */,
 				836A862423880B21000E76E4 /* WhishlistTableViewController.swift */,
 				836A862223875325000E76E4 /* WhishCell.swift */,
 			);
@@ -380,6 +380,7 @@
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
 				83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */,
+				83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */,
 				839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */,
 				83A193B4230EF66C002D22C0 /* LoginVC.swift in Sources */,
 				83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */,
@@ -391,7 +392,6 @@
 				83A193A0230D6062002D22C0 /* FirstLaunchVC.swift in Sources */,
 				83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */,
 				83A3BD2223A68C83003FDCC1 /* MainWishlistCell.swift in Sources */,
-				83746C2E2396B03B0009696D /* CustomWishlistView.swift in Sources */,
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

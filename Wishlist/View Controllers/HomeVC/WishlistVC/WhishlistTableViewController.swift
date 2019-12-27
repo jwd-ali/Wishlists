@@ -26,6 +26,8 @@ class WhishlistTableViewController: UITableViewController {
         // disable didSelectAt
         self.tableView.allowsSelection = false
         
+//        self.tableView.separatorStyle = .none
+        
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
         
         // add top inset for tableview
