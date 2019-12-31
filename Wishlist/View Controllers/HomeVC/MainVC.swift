@@ -76,65 +76,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         return v
     }()
     
-//    // MARK: WishListView
-//
-//    let wishlistBackgroundView: UIView = {
-//        let v = UIView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.backgroundColor = .darkGray
-//        return v
-//    }()
-//
-//    let wishlistView: UIView = {
-//        let v = UIView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.backgroundColor = .gray
-//        v.layer.cornerRadius = 30
-//        return v
-//    }()
-//
-//    lazy var theTableView: WhishlistTableViewController = {
-//       let v = WhishlistTableViewController()
-//        v.view.layer.masksToBounds = true
-//        v.view.layer.borderColor = UIColor.white.cgColor
-//        v.view.backgroundColor = .clear
-//        v.view.layer.borderWidth = 7.0
-//        v.view.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
-//
-//    let dismissWishlistViewButton: UIButton = {
-//        let v = UIButton()
-//        v.setImage(UIImage(named: "dismissButton"), for: .normal)
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.addTarget(self, action: #selector(hideView), for: .touchUpInside)
-//        return v
-//    }()
-//
-//    let menueButton: UIButton = {
-//        let v = UIButton()
-//        v.setImage(UIImage(named: "menueButton"), for: .normal)
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
-//        return v
-//    }()
-//
-//    let wishlistLabel: UILabel = {
-//        let v = UILabel()
-//        v.text = "Main Wishlist"
-//        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
-//        v.textColor = .white
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
-//
-//    let wishlistImage: UIImageView = {
-//        let v = UIImageView()
-//        v.image = UIImage(named: "iconRoundedImage")
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
-    
     
     // MARK: PopUpView
     
@@ -201,9 +142,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     // track collection view frame change
     var colViewWidth: CGFloat = 0.0
  
-    // collectionView data, Image + Label
-    var wishListTitlesArray: [String] = [String]()
-    var wishListImagesArray: [UIImage] = [UIImage]()
+//    // collectionView data, Image + Label
+//    var wishListTitlesArray: [String] = [String]()
+//    var wishListImagesArray: [UIImage] = [UIImage]()
     
     var image: UIImage?
    
@@ -227,9 +168,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         UIImage(named: "travelImage")!,
     ]
     
-    // array of wish lists
-    // this will eventually be managed by some type of data handler class
-    var userWishListData: [[Wish]] = [[Wish]]()
+    var dataSourceArray = [Wishlist]()
+    
+//    // array of wish lists
+//    // this will eventually be managed by some type of data handler class
+//    var userWishListData: [[Wish]] = [[Wish]]()
     
     // DonMag3 - track the current selected wish list
     var currentWishListIDX: Int = 0
@@ -241,6 +184,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     var wishlistIDX: Int = 1
     
     var selectedWishlistIDX: Int?
+    
+//    var insertWishDelegate: InsertWishDelegate?
     
     // MARK: viewDidLoad()
     
@@ -280,15 +225,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         // retrieve firstname from DB and animate welcomeLabel
         setupWelcomeLabel()
         
-//        // hide wishlistView
-//        self.wishlistView.transform = CGAffineTransform(translationX: 0, y: 1000)
-//        self.wishlistBackgroundView.transform = CGAffineTransform(translationX: 0, y: 1000)
-        
-//        // add slideDown-gesture to WishlistView
-//        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(dismissView(gesture:)))
-//        slideDown.direction = .down
-//        view.addGestureRecognizer(slideDown)
-        
 //        // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
 
@@ -302,15 +238,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         view.addSubview(profileButton)
         view.addSubview(addButton)
         
-//        view.addSubview(wishlistBackgroundView)
-//        wishlistBackgroundView.addSubview(wishlistView)
-//        wishlistView.addSubview(dismissWishlistViewButton)
-//        wishlistView.addSubview(menueButton)
-//        wishlistView.addSubview(wishlistLabel)
-//        wishlistView.addSubview(wishlistImage)
-//        wishlistView.addSubview(theTableView.tableView)
-//
-//        addChild(theTableView)
  
         NSLayoutConstraint.activate([
             
@@ -465,18 +392,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // return 1 more than our data array (the extra one will be the "add item" cell)
-        return wishListTitlesArray.count + 1
+        return dataSourceArray.count + 1
     }
  
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // if indexPath.item is less than data count, return a "Content" cell
-        if indexPath.item < wishListTitlesArray.count {
+        if indexPath.item < dataSourceArray.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
             
-            cell.cellLabel.text = wishListTitlesArray[indexPath.item]
+            cell.cellLabel.text = dataSourceArray[indexPath.item].name
             
-            cell.buttonView.setImage(wishListImagesArray[indexPath.item], for: .normal)
+            cell.buttonView.setImage(dataSourceArray[indexPath.item].image, for: .normal)
             
             cell.customWishlistTapCallback = {
             
@@ -484,16 +411,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
                 self.currentWishListIDX = indexPath.item
                     
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
-                // set image
-                vc.wishlistImage.image = self.wishListImagesArray[indexPath.item]
-                // set label
-                vc.wishlistLabel.text = self.wishListTitlesArray[indexPath.item]
-                // set wishlist
-                vc.theTableView.wishList = self.userWishListData[indexPath.item]
                 
-                vc.currentWishListIDX = self.currentWishListIDX
-                
-                vc.userWishListData = self.userWishListData
+                vc.wishList = self.dataSourceArray[self.currentWishListIDX]
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)
@@ -547,16 +466,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         if let txt = listNameTextfield.text {
             
             self.newListTextfield.resignFirstResponder()
+            
+            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish]()))
            
-            // append user-entered text to the data array
-            self.wishListTitlesArray.append(txt)
-            self.wishListImagesArray.append(self.image!)
+//            // append user-entered text to the data array
+//            self.wishListTitlesArray.append(txt)
+//            self.wishListImagesArray.append(self.image!)
             self.dropDownButton.dropView.dropDownOptions.append(txt)
             self.dropDownButton.dropView.dropDownListImages.append(self.image!)
             self.dropDownButton.dropView.tableView.reloadData()
             
-            // DonMag3 - append new empty wish array
-            self.userWishListData.append([Wish]())
+//            // DonMag3 - append new empty wish array
+//            self.userWishListData.append([Wish]())
             
             // reload the collection view
             theCollectionView.reloadData()
@@ -688,16 +609,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     }
     
     func insertWish(){
-    
-        // append the new wish to the user's currently selected wishlist
-        userWishListData[selectedWishlistIDX!].append(Wish(withWishName: popUpView.whishName!, checked: false))
-        // set the updated data as the data for the table view
-//        theTableView.wishList = userWishListData[currentWishListIDX]
-//        theTableView.tableView.reloadData()
         
+        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: popUpView.whishName!, checked: false))
         // save Wish to database -> DataHandler
         saveWish()
-   
     }
     
     

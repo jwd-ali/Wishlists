@@ -14,8 +14,14 @@ protocol DeleteWishDelegate {
     func deleteWish(_ idx: Int)
 }
 
-class WishlistViewController: UIViewController, DeleteWishDelegate {
-    
+
+//// recieve data from MainVC to insert wish
+//protocol InsertWishDelegate {
+//    func insertWish(wishName: String, idx: Int, currentWishlistIDX: Int, data: Wishlist)
+//}
+
+class WishlistViewController: UIViewController, DeleteWishDelegate{
+
     
     let wishlistBackgroundView: UIView = {
            let v = UIView()
@@ -29,6 +35,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate {
        v.translatesAutoresizingMaskIntoConstraints = false
        v.backgroundColor = .darkGray
        v.layer.cornerRadius = 30
+       v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
        return v
    }()
    
@@ -85,9 +92,10 @@ class WishlistViewController: UIViewController, DeleteWishDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    // array of wish lists
-    // this will eventually be managed by some type of data handler class
-    var userWishListData: [[Wish]] = [[Wish]]()
+    
+//    // array of wish lists
+//    // this will eventually be managed by some type of data handler class
+//    var userWishListData: [[Wish]] = [[Wish]]()
     
     // DonMag3 - track the current selected wish list
     var currentWishListIDX: Int = 0
@@ -99,9 +107,17 @@ class WishlistViewController: UIViewController, DeleteWishDelegate {
     var wishlistIDX: Int = 1
     
     var selectedWishlistIDX: Int?
+    
+    var wishList: Wishlist!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.wishlistLabel.text = wishList.name
+        self.wishlistImage.image = wishList.image
+        self.theTableView.wishList = wishList.wishData
+        self.theTableView.tableView.reloadData()
+        
         
         view.addSubview(wishlistBackgroundView)
         view.addSubview(dismissWishlistViewButton)
@@ -158,6 +174,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate {
         
         // set DeleteWishDelegate protocol for the table
         theTableView.deleteWishDelegate = self
+        
     
     }
     
@@ -173,13 +190,24 @@ class WishlistViewController: UIViewController, DeleteWishDelegate {
         print("addWishButton tapped")
     }
     
+//    func insertWish(wishName: String, idx: Int, currentWishlistIDX: Int, data: Wishlist) {
+//        print(wishName)
+//
+//        var wList = data
+//        // append the new wish to the user's currently selected wishlist
+//        wList.wishData.append(Wish(withWishName: wishName, checked: false))
+//        // set the updated data as the data for the table view
+//        theTableView.wishList = wishList.wishData
+//        theTableView.tableView.reloadData()
+//    }
+    
     func deleteWish(_ idx: Int){
         // DonMag3 - remove the wish from the user's currently selected wishlist
-        var wishes: [Wish] = userWishListData[currentWishListIDX]
+        var wishes: [Wish] = wishList.wishData
         wishes.remove(at: idx)
-        userWishListData[currentWishListIDX] = wishes
+        wishList.wishData = wishes
         // set the updated data as the data for the table view
-        theTableView.wishList = userWishListData[currentWishListIDX]
+        theTableView.wishList = wishList.wishData
         theTableView.tableView.reloadData()
     }
 }

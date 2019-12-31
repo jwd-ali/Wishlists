@@ -37,7 +37,7 @@ extension MainViewController {
     
     func saveWish() {
         // get name from current Whishlist
-        let wishListName = self.wishListTitlesArray[currentWishListIDX]
+        let wishListName = self.dataSourceArray[currentWishListIDX].name
         
         // auto create "wünsche" - collection and add Wish with name
         let db = Firestore.firestore()
@@ -73,8 +73,8 @@ extension MainViewController {
     
     func retrieveUserDataFromDB() -> Void {
         
-        // local mutable "WishList" var
-        var wList: [Wish] = [Wish]()
+//        // local mutable "WishList" var
+//        var wList: [Wish] = [Wish]()
         
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
@@ -90,25 +90,29 @@ extension MainViewController {
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
-                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
-                        self.wishListTitlesArray.append(listName as! String)
+//                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
+//                        self.wishListTitlesArray.append(listName as! String)
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish]()))
                         // set the drop down menu's options
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
                         self.dropDownButton.dropView.dropDownListImages.append(UIImage(named: "iconRoundedImage")!)
                     }else {
-                        self.wishListTitlesArray.append(listName as! String)
-                        self.wishListImagesArray.append(self.images[listImageIDX as! Int])
+//                        self.wishListTitlesArray.append(listName as! String)
+//                        self.wishListImagesArray.append(self.images[listImageIDX as! Int])
+                        
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish]()))
+                        
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
                         self.dropDownButton.dropView.dropDownListImages.append(self.images[listImageIDX as! Int])
                     }
                     
-                    // create an empty wishlist
-                    wList = [Wish]()
-                    self.userWishListData.append(wList)
+//                    // create an empty wishlist
+//                    wList = [Wish]()
+//                    self.userWishListData.append(wList)
                     
                     // reload collectionView and tableView
                     self.theCollectionView.reloadData()
-                    self.dropDownButton.dropView.tableView.reloadData() 
+                    self.dropDownButton.dropView.tableView.reloadData()
                     
                 }
                 
@@ -129,8 +133,8 @@ extension MainViewController {
        
         var counter = 0
        
-        for list in self.wishListTitlesArray {
-            db.collection("users").document(userID).collection("wishlists").document(list).collection("wünsche").getDocuments() { ( querySnapshot, error) in
+        for list in self.dataSourceArray {
+            db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").getDocuments() { ( querySnapshot, error) in
                 if let error = error {
                     print(error.localizedDescription)
                 }else{
@@ -142,7 +146,7 @@ extension MainViewController {
                         wList.append(Wish(withWishName: wishName as! String, checked: false))
                     }
                     // DMAG - set the array of wishes to the userWishListData
-                    self.userWishListData[counter] = wList
+                    self.dataSourceArray[counter].wishData = wList
                     counter += 1
                 }
             }

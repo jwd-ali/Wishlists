@@ -36,6 +36,7 @@
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
 		83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDC23B6731A00007A53 /* WishlistVC.swift */; };
+		83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
 		D820D101CFF420CD72088C68 /* Pods_Wishlist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,7 @@
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		83D15FDC23B6731A00007A53 /* WishlistVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistVC.swift; sourceTree = "<group>"; };
+		83D15FDE23BA908900007A53 /* WishlistStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistStruct.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -216,6 +218,7 @@
 				83D15FDC23B6731A00007A53 /* WishlistVC.swift */,
 				836A862423880B21000E76E4 /* WhishlistTableViewController.swift */,
 				836A862223875325000E76E4 /* WhishCell.swift */,
+				83D15FDE23BA908900007A53 /* WishlistStruct.swift */,
 			);
 			path = WishlistVC;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				83A3BD2023A68C3D003FDCC1 /* CustomCell.swift in Sources */,
 				839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */,
 				83A193B9230F0570002D22C0 /* Utilities.swift in Sources */,
+				83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */,
 				836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */,
 				836A861B23870784000E76E4 /* PopUpView.swift in Sources */,
 				83A193B6230EF686002D22C0 /* MainVC.swift in Sources */,
