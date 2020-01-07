@@ -37,12 +37,13 @@ extension MainViewController {
     
     func saveWish() {
         // get name from current Whishlist
-        let wishListName = self.dataSourceArray[currentWishListIDX].name
+        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
+        let wishIDX = self.selectedWishlistIDX
         
         // auto create "wünsche" - collection and add Wish with name
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.popUpView.popUpTextField.text!).setData(["name": self.popUpView.popUpTextField.text!], completion: { (error) in
+        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.popUpView.popUpTextField.text!).setData(["name": self.popUpView.popUpTextField.text!, "wishIDX": wishIDX!], completion: { (error) in
             if error != nil{
                 print("Error saving Wish")
             }
@@ -59,7 +60,6 @@ extension MainViewController {
         let imageArrayIDX = self.currentImageArrayIDX!
         let wishListIDX = self.wishlistIDX
         
-        
         // auto create custom Wishlist with name/listIDX/imageIDX
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
@@ -72,10 +72,13 @@ extension MainViewController {
     
     
     func retrieveUserDataFromDB() -> Void {
+        getWishlists()
         
-//        // local mutable "WishList" var
-//        var wList: [Wish] = [Wish]()
-        
+    }
+    
+
+    
+    func getWishlists() {
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
         db.collection("users").document(userID).collection("wishlists").order(by: "listIDX").getDocuments() { ( querySnapshot, error) in
@@ -90,15 +93,11 @@ extension MainViewController {
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
-//                        self.wishListImagesArray.append(UIImage(named: "iconRoundedImage")!)
-//                        self.wishListTitlesArray.append(listName as! String)
                         self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish]()))
                         // set the drop down menu's options
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
                         self.dropDownButton.dropView.dropDownListImages.append(UIImage(named: "iconRoundedImage")!)
                     }else {
-//                        self.wishListTitlesArray.append(listName as! String)
-//                        self.wishListImagesArray.append(self.images[listImageIDX as! Int])
                         
                         self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish]()))
                         
@@ -106,48 +105,35 @@ extension MainViewController {
                         self.dropDownButton.dropView.dropDownListImages.append(self.images[listImageIDX as! Int])
                     }
                     
-//                    // create an empty wishlist
-//                    wList = [Wish]()
-//                    self.userWishListData.append(wList)
-                    
                     // reload collectionView and tableView
                     self.theCollectionView.reloadData()
                     self.dropDownButton.dropView.tableView.reloadData()
                     
                 }
-                
             }
+            self.theCollectionView.isHidden = false
             self.getWishes()
         }
-        
-        // un-hide the collection view
-        self.theCollectionView.isHidden = false
-        
-        
-                
     }
     
-    func getWishes (){
+    func getWishes() {
+        
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-       
-        var counter = 0
-       
+        
+        
         for list in self.dataSourceArray {
-            db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").getDocuments() { ( querySnapshot, error) in
+             db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").getDocuments() { ( querySnapshot, error) in
                 if let error = error {
                     print(error.localizedDescription)
-                }else{
-                    // DMAG - create a new Wish array
-                    var wList: [Wish] = [Wish]()
+                } else {
+                    // append every Wish to array at wishIDX
                     for document in querySnapshot!.documents {
                         let documentData = document.data()
                         let wishName = documentData["name"]
-                        wList.append(Wish(withWishName: wishName as! String, checked: false))
+                        let wishIDX = documentData["wishIDX"]
+                        self.dataSourceArray[wishIDX as! Int].wishData.append(Wish(withWishName: wishName as! String, checked: false))
                     }
-                    // DMAG - set the array of wishes to the userWishListData
-                    self.dataSourceArray[counter].wishData = wList
-                    counter += 1
                 }
             }
         }

@@ -38,6 +38,81 @@ class ContentCell: UICollectionViewCell {
         v.textAlignment = .center
         return v
     }()
+    
+    let wishCounterView: UIView = {
+            let v = UIView()
+            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
+            v.layer.cornerRadius = 30
+            v.layer.maskedCorners = [ .layerMaxXMaxYCorner]
+            return v
+        }()
+        
+        let wishCounterLabel: UILabel = {
+            let v = UILabel()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.text = "0"
+            v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
+            v.textColor = .white
+            v.textAlignment = .center
+            return v
+        }()
+        
+        let wünscheLabel: UILabel = {
+            let v = UILabel()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.text = "Wünsche"
+            v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+            v.textColor = .lightGray
+            v.textAlignment = .center
+            return v
+        }()
+        
+        let priceView: UIView = {
+            let v = UIView()
+            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
+            v.layer.cornerRadius = 30
+            v.layer.maskedCorners = [ .layerMaxXMinYCorner]
+            return v
+        }()
+        
+        let priceLabel: UILabel = {
+            let v = UILabel()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.text = "0.00"
+            v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
+            v.textColor = .white
+            v.textAlignment = .center
+            return v
+        }()
+        
+        let priceEuroLabel: UILabel = {
+            let v = UILabel()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.text = "€"
+            v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+            v.textColor = .lightGray
+            v.textAlignment = .center
+            return v
+        }()
+        
+        
+        
+        
+        let wishlistImage: UIImageView = {
+            let v = UIImageView()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.image = UIImage(named: "iconRoundedImage")
+            return v
+        }()
+        
+        let imageView: UIView = {
+            let v = UIView()
+            v.translatesAutoresizingMaskIntoConstraints = false
+            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
+            v.layer.cornerRadius = 30
+            v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+            return v
+        }()
  
     override init(frame: CGRect) {
         super.init(frame: frame)
