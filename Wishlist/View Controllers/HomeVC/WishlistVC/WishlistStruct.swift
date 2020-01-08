@@ -12,4 +12,5 @@ struct Wishlist {
     var name: String
     var image: UIImage
     var wishData: [Wish]
+    var color: UIColor
 }

@@ -24,7 +24,7 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         guard let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes] else { return nil }
 
         // Constants
-        let leftPadding: CGFloat = 8
+        let leftPadding: CGFloat = 0
         let interItemSpacing = minimumInteritemSpacing
 
         // Tracking values

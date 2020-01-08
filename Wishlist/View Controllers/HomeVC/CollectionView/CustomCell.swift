@@ -21,98 +21,95 @@ class ContentCell: UICollectionViewCell {
         v.layer.shadowColor = UIColor.darkGray.cgColor
         return v
     }()
-     
-    let theLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.textAlignment = .center
-        return v
-    }()
+
    
     let cellLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Test Label"
         v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-        v.textColor = .darkGray
-        v.textAlignment = .center
+        v.textColor = .white
+        v.textAlignment = .left
         return v
     }()
     
     let wishCounterView: UIView = {
-            let v = UIView()
-            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
-            v.layer.cornerRadius = 30
-            v.layer.maskedCorners = [ .layerMaxXMaxYCorner]
-            return v
-        }()
+        let v = UIView()
+        v.backgroundColor = UIColor(red: 50/255, green: 54/255, blue: 57/255, alpha: 1)
+        v.layer.cornerRadius = 30
+        v.layer.maskedCorners = [ .layerMaxXMinYCorner]
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
         
-        let wishCounterLabel: UILabel = {
-            let v = UILabel()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.text = "0"
-            v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-            v.textColor = .white
-            v.textAlignment = .center
-            return v
-        }()
-        
-        let wünscheLabel: UILabel = {
-            let v = UILabel()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.text = "Wünsche"
-            v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-            v.textColor = .lightGray
-            v.textAlignment = .center
-            return v
-        }()
-        
-        let priceView: UIView = {
-            let v = UIView()
-            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
-            v.layer.cornerRadius = 30
-            v.layer.maskedCorners = [ .layerMaxXMinYCorner]
-            return v
-        }()
-        
-        let priceLabel: UILabel = {
-            let v = UILabel()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.text = "0.00"
-            v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-            v.textColor = .white
-            v.textAlignment = .center
-            return v
-        }()
-        
-        let priceEuroLabel: UILabel = {
-            let v = UILabel()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.text = "€"
-            v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-            v.textColor = .lightGray
-            v.textAlignment = .center
-            return v
-        }()
-        
-        
-        
-        
-        let wishlistImage: UIImageView = {
-            let v = UIImageView()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.image = UIImage(named: "iconRoundedImage")
-            return v
-        }()
-        
-        let imageView: UIView = {
-            let v = UIView()
-            v.translatesAutoresizingMaskIntoConstraints = false
-            v.backgroundColor = UIColor(red: 50, green: 54, blue: 57, alpha: 1)
-            v.layer.cornerRadius = 30
-            v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-            return v
-        }()
+    let wishCounterLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "0"
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 20)
+        v.textColor = .white
+        v.textAlignment = .center
+        return v
+    }()
+    
+    let wünscheLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "Wünsche"
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.textColor = .lightGray
+        v.textAlignment = .center
+        return v
+    }()
+    
+    let priceView: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor(red: 50/255, green: 54/255, blue: 57/255, alpha: 1)
+        v.layer.cornerRadius = 30
+        v.layer.maskedCorners = [ .layerMaxXMaxYCorner]
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let priceLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "0.00"
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
+        v.textColor = .white
+        v.textAlignment = .center
+        return v
+    }()
+    
+    let priceEuroLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "€"
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.textColor = .lightGray
+        v.textAlignment = .center
+        return v
+    }()
+    
+    
+    
+    
+    let wishlistImage: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.image = UIImage(named: "iconRoundedImage")
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    let imageView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = UIColor(red: 50/255, green: 54/255, blue: 57/255, alpha: 1)
+        v.layer.cornerRadius = 30
+        v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        return v
+    }()
  
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -127,21 +124,68 @@ class ContentCell: UICollectionViewCell {
  
     func commonInit() -> Void {
 
-        contentView.layer.cornerRadius = 3.0;
         contentView.addSubview(cellLabel)
+                
+        contentView.addSubview(imageView)
+        contentView.addSubview(wishlistImage)
+        
+        contentView.addSubview(wishCounterView)
+        wishCounterView.addSubview(wishCounterLabel)
+        wishCounterView.addSubview(wünscheLabel)
+
+        contentView.addSubview(priceView)
+        priceView.addSubview(priceLabel)
+        priceView.addSubview(priceEuroLabel)
+        
         contentView.addSubview(buttonView)
+
+        
+//
         // constrain label to all 4 sides
         NSLayoutConstraint.activate([
 
             buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            buttonView.heightAnchor.constraint(equalToConstant:150),
+            buttonView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
  
-            cellLabel.topAnchor.constraint(equalTo: buttonView.bottomAnchor,constant: 1),
-            cellLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cellLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
+            
+            wishlistImage.topAnchor.constraint(equalTo: imageView.topAnchor),
+            wishlistImage.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+            wishlistImage.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            wishlistImage.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            
+            wishCounterView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            wishCounterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -60),
+            wishCounterView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
+            wishCounterView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            wishCounterLabel.topAnchor.constraint(equalTo: wishCounterView.topAnchor),
+            wishCounterLabel.bottomAnchor.constraint(equalTo: wishCounterView.bottomAnchor),
+            wishCounterLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
+            wishCounterLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor),
+            
+            wünscheLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
+            wünscheLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: 20),
+            
+            priceView.topAnchor.constraint(equalTo: wishCounterView.bottomAnchor, constant: 7),
+            priceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            priceView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
+            priceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            priceLabel.centerXAnchor.constraint(equalTo: priceView.centerXAnchor),
+            priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor),
+    
+            priceEuroLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3),
+            priceEuroLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor),
         ])
         buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
     }

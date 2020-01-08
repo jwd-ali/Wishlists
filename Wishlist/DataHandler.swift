@@ -93,13 +93,13 @@ extension MainViewController {
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish]()))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: self.mainColor))
                         // set the drop down menu's options
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
                         self.dropDownButton.dropView.dropDownListImages.append(UIImage(named: "iconRoundedImage")!)
                     }else {
                         
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish]()))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish](), color: self.customColors[listImageIDX as! Int]))
                         
                         self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
                         self.dropDownButton.dropView.dropDownListImages.append(self.images[listImageIDX as! Int])

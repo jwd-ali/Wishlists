@@ -126,9 +126,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     let theCollectionView: UICollectionView = {
         let v = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = UIColor(red: 225/255.0, green: 215/255.0, blue: 200/255.0, alpha: 1)
+//        v.backgroundColor = UIColor(red: 225/255.0, green: 215/255.0, blue: 200/255.0, alpha: 1)
+        v.backgroundColor = .clear
         v.contentInsetAdjustmentBehavior = .always
-        v.layer.cornerRadius = 30
         return v
     }()
  
@@ -168,11 +168,23 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         UIImage(named: "travelImage")!,
     ]
     
-    var dataSourceArray = [Wishlist]()
+    let mainColor = UIColor(red: 49/255, green: 59/255, blue: 65/255, alpha: 1) // main
     
-//    // array of wish lists
-//    // this will eventually be managed by some type of data handler class
-//    var userWishListData: [[Wish]] = [[Wish]]()
+    let customColors: [UIColor] = [
+        UIColor(red: 215/255, green: 155/255, blue: 131/255, alpha: 1), // avocado
+        UIColor(red: 0/255, green: 76/255, blue: 98/255, alpha: 1),     // beer
+        UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1), // bike
+        UIColor(red: 255/255, green: 255/255, blue: 235/255, alpha: 1), // christmas
+        UIColor(red: 238/255, green: 196/255, blue: 199/255, alpha: 1), // dress
+        UIColor(red: 93/255, green: 101/255, blue: 120/255, alpha: 1),  // gift
+        UIColor(red: 123/255, green: 175/255, blue: 127/255, alpha: 1), // goals
+        UIColor(red: 242/255, green: 235/255, blue: 191/255, alpha: 1), // roller
+        UIColor(red: 178/255, green: 215/255, blue: 223/255, alpha: 1), // shirt
+        UIColor(red: 136/255, green: 152/255, blue: 126/255, alpha: 1), // shoe
+        UIColor(red: 108/255, green: 189/255, blue: 190/255, alpha: 1), // travel
+    ]
+    
+    var dataSourceArray = [Wishlist]()
     
     // DonMag3 - track the current selected wish list
     var currentWishListIDX: Int = 0
@@ -266,8 +278,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             // constrain collectionView
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150.0),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
             
             //constrain welcomeLabel
             welcomeLabel.topAnchor.constraint(equalTo: theCollectionView.topAnchor, constant: -65),
@@ -383,8 +395,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         // only want to call this when collection view frame changes
         // to set the item size
         if theCollectionView.frame.width != colViewWidth {
-            let w = theCollectionView.frame.width / 2 - 30
-            columnLayout.itemSize = CGSize(width: w, height: w + 50)
+            let w = theCollectionView.frame.width - 40
+            columnLayout.itemSize = CGSize(width: w, height: 150)
             colViewWidth = theCollectionView.frame.width
         }
     }
@@ -400,10 +412,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         // if indexPath.item is less than data count, return a "Content" cell
         if indexPath.item < dataSourceArray.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
-            
+            // set cell label
             cell.cellLabel.text = dataSourceArray[indexPath.item].name
+            // set cell image
+            cell.wishlistImage.image = dataSourceArray[indexPath.item].image
+            // set background color
+            cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
+            cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
+            cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
             
-            cell.buttonView.setImage(dataSourceArray[indexPath.item].image, for: .normal)
             
             cell.customWishlistTapCallback = {
             
@@ -467,17 +484,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             
             self.newListTextfield.resignFirstResponder()
             
-            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish]()))
+            // append created list to data source array
+            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish](), color: self.customColors[self.currentImageArrayIDX!]))
            
-//            // append user-entered text to the data array
-//            self.wishListTitlesArray.append(txt)
-//            self.wishListImagesArray.append(self.image!)
+            // append created list to drop down options
             self.dropDownButton.dropView.dropDownOptions.append(txt)
             self.dropDownButton.dropView.dropDownListImages.append(self.image!)
             self.dropDownButton.dropView.tableView.reloadData()
             
-//            // DonMag3 - append new empty wish array
-//            self.userWishListData.append([Wish]())
             
             // reload the collection view
             theCollectionView.reloadData()
