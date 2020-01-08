@@ -548,9 +548,6 @@
                                 <rect key="frame" x="0.0" y="786" width="414" height="110"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             </containerView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="campfire_scaled" translatesAutoresizingMaskIntoConstraints="NO" id="6s9-Gz-9pF">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XGu-Ol-NXY">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -611,21 +608,16 @@
                             <constraint firstAttribute="bottom" secondItem="XGu-Ol-NXY" secondAttribute="bottom" id="2NF-1T-ffR"/>
                             <constraint firstItem="aWW-kU-9rr" firstAttribute="top" secondItem="UgT-bO-Q4c" secondAttribute="top" id="3wk-q4-PgL"/>
                             <constraint firstItem="XGu-Ol-NXY" firstAttribute="top" secondItem="UgT-bO-Q4c" secondAttribute="top" id="GcP-rv-bP1"/>
-                            <constraint firstItem="6s9-Gz-9pF" firstAttribute="top" secondItem="UgT-bO-Q4c" secondAttribute="top" id="KQd-4H-Umk"/>
                             <constraint firstItem="XGu-Ol-NXY" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="KdE-7n-m67"/>
                             <constraint firstAttribute="bottom" secondItem="aWW-kU-9rr" secondAttribute="bottom" id="O6y-I5-UZl"/>
                             <constraint firstAttribute="trailing" secondItem="XGu-Ol-NXY" secondAttribute="trailing" id="QFH-FN-Olw"/>
-                            <constraint firstAttribute="trailing" secondItem="6s9-Gz-9pF" secondAttribute="trailing" id="bOT-zM-cx7"/>
                             <constraint firstItem="aWW-kU-9rr" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="lYr-d9-vcW"/>
-                            <constraint firstAttribute="bottom" secondItem="6s9-Gz-9pF" secondAttribute="bottom" id="njF-YJ-f2D"/>
                             <constraint firstAttribute="trailing" secondItem="aWW-kU-9rr" secondAttribute="trailing" id="nkJ-dK-Zgx"/>
-                            <constraint firstItem="6s9-Gz-9pF" firstAttribute="leading" secondItem="UgT-bO-Q4c" secondAttribute="leading" id="uaA-I8-xVg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tgd-f8-7kW"/>
                     </view>
                     <navigationItem key="navigationItem" id="p5i-sf-tZZ"/>
                     <connections>
-                        <outlet property="backGroundImage" destination="6s9-Gz-9pF" id="qOv-4e-JnU"/>
                         <outlet property="blurrImage" destination="XGu-Ol-NXY" id="BKM-eM-QBL"/>
                         <outlet property="containerView" destination="htY-1j-lHN" id="4eQ-gf-aqU"/>
                         <outlet property="createListButton" destination="LgZ-qu-qe9" id="van-UH-u1n"/>

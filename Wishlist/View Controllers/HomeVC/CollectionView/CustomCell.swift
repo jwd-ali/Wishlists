@@ -27,7 +27,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Test Label"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
         v.textColor = .white
         v.textAlignment = .left
         return v
@@ -57,7 +57,7 @@ class ContentCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Wünsche"
         v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-        v.textColor = .lightGray
+        v.textColor = .white
         v.textAlignment = .center
         return v
     }()
@@ -85,8 +85,8 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "€"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-        v.textColor = .lightGray
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 13)
+        v.textColor = .white
         v.textAlignment = .center
         return v
     }()
@@ -153,7 +153,7 @@ class ContentCell: UICollectionViewCell {
             cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 
             
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            imageView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
@@ -163,29 +163,27 @@ class ContentCell: UICollectionViewCell {
             wishlistImage.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             wishlistImage.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
             
-            wishCounterView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            wishCounterView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor),
             wishCounterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -60),
             wishCounterView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
             wishCounterView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            wishCounterLabel.topAnchor.constraint(equalTo: wishCounterView.topAnchor),
-            wishCounterLabel.bottomAnchor.constraint(equalTo: wishCounterView.bottomAnchor),
             wishCounterLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
-            wishCounterLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor),
+            wishCounterLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: -5),
             
             wünscheLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
-            wünscheLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: 20),
+            wünscheLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: 15),
             
             priceView.topAnchor.constraint(equalTo: wishCounterView.bottomAnchor, constant: 7),
             priceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             priceView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
             priceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            priceLabel.centerXAnchor.constraint(equalTo: priceView.centerXAnchor),
+            priceLabel.centerXAnchor.constraint(equalTo: priceView.centerXAnchor, constant: 3),
             priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor),
     
-            priceEuroLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3),
-            priceEuroLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor),
+            priceEuroLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 2),
+            priceEuroLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor, constant: 1),
         ])
         buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
     }

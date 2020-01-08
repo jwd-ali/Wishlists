@@ -15,8 +15,6 @@ import Firebase
 // DonMag3 - conform to DeleteWishDelegate protocol
 class MainViewController: UIViewController, UICollectionViewDataSource {
     
-    
-    @IBOutlet weak var backGroundImage: UIImageView!
     @IBOutlet weak var welcomeTextLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var welcomeTextLabel: UILabel!
     @IBOutlet weak var listNameTextfield: UITextField!
@@ -27,6 +25,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var containerView: UIView!
+    
+    let backGroundImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "campfire_scaled")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     let searchButton: UIButton = {
         let v = UIButton()
@@ -135,8 +140,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     let columnLayout = FlowLayout(
         itemSize: CGSize(width: 150, height: 150),
         minimumInteritemSpacing: 20,
-        minimumLineSpacing: 10,
-        sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
+        minimumLineSpacing: 13,
+        sectionInset: UIEdgeInsets(top: 20, left: 0, bottom: 10, right: 0)
     )
  
     // track collection view frame change
@@ -199,11 +204,20 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     
 //    var insertWishDelegate: InsertWishDelegate?
     
+//    CGRect frame = view.frame;
+//    CGPoint topCenter = CGPointMake(CGRectGetMidX(frame), CGRectGetMinY(frame));
+
+    
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        // scale background image
+//        UIView.animate(withDuration: 0.3) {
+//            self.backGroundImage.applyTransform(withScale: 14, anchorPoint: CGPoint(x: 0.5, y: 0))
+//        }
+                
         // configure the dropDownButton
         dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         dropDownButton.dropView.selectedWishlistDelegate = self
@@ -241,6 +255,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
 //        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
 
         // MARK: Views + Constraints
+        view.addSubview(backGroundImage)
         view.addSubview(theCollectionView)
 //        view.addSubview(wishlistView)
         view.addSubview(welcomeLabel)
@@ -252,6 +267,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         
  
         NSLayoutConstraint.activate([
+            
+            // constrain background image
+            backGroundImage.topAnchor.constraint(equalTo: view.topAnchor),
+            backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             //constrain bottomBar
             bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -276,10 +297,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             
                
             // constrain collectionView
-            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150.0),
+            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             
             //constrain welcomeLabel
             welcomeLabel.topAnchor.constraint(equalTo: theCollectionView.topAnchor, constant: -65),
@@ -315,15 +336,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
         
-        
-//        // set DeleteWishDelegate protocol for the table
-//        theTableView.deleteWishDelegate = self
-        
         // hide collection view while data is retirieved from server
         theCollectionView.isHidden = true
 
         // get the data from the server
         retrieveUserDataFromDB()
+
     }
 
     
@@ -367,6 +385,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     
     // MARK: CollectionView
     override func viewWillAppear(_ animated: Bool) {
+        
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
@@ -395,8 +414,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         // only want to call this when collection view frame changes
         // to set the item size
         if theCollectionView.frame.width != colViewWidth {
-            let w = theCollectionView.frame.width - 40
-            columnLayout.itemSize = CGSize(width: w, height: 150)
+            let w = theCollectionView.frame.width
+            columnLayout.itemSize = CGSize(width: w, height: 170)
             colViewWidth = theCollectionView.frame.width
         }
     }
@@ -416,6 +435,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             cell.cellLabel.text = dataSourceArray[indexPath.item].name
             // set cell image
             cell.wishlistImage.image = dataSourceArray[indexPath.item].image
+            if cell.wishlistImage.image == images[2] || cell.wishlistImage.image == images[3] {
+                cell.priceLabel.textColor = .gray
+                cell.priceEuroLabel.textColor = .gray
+                cell.wishCounterLabel.textColor = .gray
+                cell.wünscheLabel.textColor = .gray
+            }
             // set background color
             cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
             cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
@@ -646,6 +671,8 @@ extension MainViewController: SelectedWishlistProtocol{
         self.selectedWishlistIDX = idx
     }
 }
+
+
 
 
 
