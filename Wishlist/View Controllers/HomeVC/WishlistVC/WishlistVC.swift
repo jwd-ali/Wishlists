@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 // DonMag3 - protocol / delegate pattern
 // allows wish table view (and cell) to update wish list data
@@ -109,9 +110,31 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     var selectedWishlistIDX: Int?
     
     var wishList: Wishlist!
+    
+    // panGestureRecognizer for interactive gesture dismiss
+    var panGR: UIPanGestureRecognizer!
 
+
+    //        // make dismiss button fade away to the top
+    //        self.dismissWishlistViewButton.hero.isEnabled = true
+    //        self.dismissWishlistViewButton.heroID = "dismissButton"
+    //        self.dismissWishlistViewButton.hero.modifiers = [.fade, .translate(CGPoint(x: 0, y: -150), z: 20)]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.wishlistBackgroundView.hero.isEnabled = true
+        self.wishlistBackgroundView.heroID = "wishlistView"
+        
+        self.wishlistBackgroundView.hero.modifiers = [.fade, .translate(CGPoint(x: 0, y: 800), z: 20)]
+        
+        
+
+        
+        // adding panGestureRecognizer
+        panGR = UIPanGestureRecognizer(target: self,
+                  action: #selector(handlePan(gestureRecognizer:)))
+        view.addGestureRecognizer(panGR)
         
         self.wishlistLabel.text = wishList.name
         self.wishlistImage.image = wishList.image
@@ -123,8 +146,8 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         view.addSubview(dismissWishlistViewButton)
         view.addSubview(menueButton)
         wishlistBackgroundView.addSubview(wishlistView)
-        wishlistView.addSubview(wishlistLabel)
-        wishlistView.addSubview(wishlistImage)
+        wishlistBackgroundView.addSubview(wishlistLabel)
+        wishlistBackgroundView.addSubview(wishlistImage)
         wishlistView.addSubview(theTableView.tableView)
         wishlistView.addSubview(addWishButton)
         
@@ -178,6 +201,42 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     
     }
     
+    // define a small helper function to add two CGPoints
+    func addCGPoints (left: CGPoint, right: CGPoint) -> CGPoint {
+      return CGPoint(x: left.x + right.x, y: left.y + right.y)
+    }
+    
+    // handle swqipe down gesture
+    @objc private func handlePan(gestureRecognizer:UIPanGestureRecognizer) {
+        
+        // calculate the progress based on how far the user moved
+        let translation = panGR.translation(in: nil)
+        let progress = translation.y / 2 / view.bounds.height
+        
+      switch panGR.state {
+      case .began:
+        // begin the transition as normal
+        dismiss(animated: true, completion: nil)
+      case .changed:
+        
+        Hero.shared.update(progress)
+        
+        // update views' position based on the translation
+        let viewPosition = CGPoint(x: wishlistBackgroundView.center.x, y: translation.y + wishlistBackgroundView.center.y)
+            
+        Hero.shared.apply(modifiers: [.position(viewPosition)], to: self.wishlistBackgroundView)
+        
+        
+      default:
+        // finish or cancel the transition based on the progress and user's touch velocity
+           if progress + panGR.velocity(in: nil).y / view.bounds.height > 0.3 {
+             Hero.shared.finish()
+           } else {
+             Hero.shared.cancel()
+           }
+      }
+    }
+    
     @objc private func menueButtonTapped(){
         print("menueButtonTapped")
     }
@@ -188,18 +247,10 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     
     @objc private func addWishButtonTapped(){
         print("addWishButton tapped")
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MakeWishVC") as! MakeWishViewController
+        self.present(vc, animated: true, completion: nil)
     }
-    
-//    func insertWish(wishName: String, idx: Int, currentWishlistIDX: Int, data: Wishlist) {
-//        print(wishName)
-//
-//        var wList = data
-//        // append the new wish to the user's currently selected wishlist
-//        wList.wishData.append(Wish(withWishName: wishName, checked: false))
-//        // set the updated data as the data for the table view
-//        theTableView.wishList = wishList.wishData
-//        theTableView.tableView.reloadData()
-//    }
     
     func deleteWish(_ idx: Int){
         // DonMag3 - remove the wish from the user's currently selected wishlist

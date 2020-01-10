@@ -15,7 +15,7 @@ protocol SelectedWishlistProtocol {
 }
 
 protocol DropDownProtocol {
-    func dropDownPressed(string : String)
+    func dropDownPressed(string : String, image: UIImage)
 }
 
 //MARK: DropDownView
@@ -77,7 +77,7 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row])
+        self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row], image: dropDownListImages[indexPath.row])
 
         self.selectedWishlistDelegate?.didSelectWishlist(idx: indexPath.row)
         
@@ -101,13 +101,15 @@ class DropDownBtn: UIButton, DropDownProtocol {
     
     let listImage: UIImageView = {
         let v = UIImageView()
+        v.backgroundColor = .cyan
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    func dropDownPressed(string: String) {
+    func dropDownPressed(string: String, image: UIImage) {
         self.setTitle("", for: .normal)
         self.label.text = string
+        self.listImage.image = image
         self.dismissDropDown()
     }
     
@@ -123,9 +125,18 @@ class DropDownBtn: UIButton, DropDownProtocol {
         self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 2.0
         
+        
+        
+        // add image
+        self.addSubview(listImage)
+        self.listImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
+        self.listImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.listImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.listImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
         // add label
         self.addSubview(label)
-        self.label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 35).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         dropView = DropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))

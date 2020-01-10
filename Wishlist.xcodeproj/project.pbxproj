@@ -10,6 +10,7 @@
 		8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8312BD49231FE29400CBE1E2 /* CustomTextField.swift */; };
 		83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */; };
 		83605075232674760013EBD2 /* TextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83605074232674760013EBD2 /* TextfieldExtension.swift */; };
+		836232B223C9303400FA498D /* MakeWishVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B123C9303400FA498D /* MakeWishVC.swift */; };
 		836A861B23870784000E76E4 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A861A23870784000E76E4 /* PopUpView.swift */; };
 		836A862323875325000E76E4 /* WhishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862223875325000E76E4 /* WhishCell.swift */; };
 		836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862423880B21000E76E4 /* WhishlistTableViewController.swift */; };
@@ -47,6 +48,7 @@
 		8312BD49231FE29400CBE1E2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallTextField.swift; sourceTree = "<group>"; };
 		83605074232674760013EBD2 /* TextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldExtension.swift; sourceTree = "<group>"; };
+		836232B123C9303400FA498D /* MakeWishVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeWishVC.swift; sourceTree = "<group>"; };
 		836A861A23870784000E76E4 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		836A862223875325000E76E4 /* WhishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishCell.swift; sourceTree = "<group>"; };
 		836A862423880B21000E76E4 /* WhishlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishlistTableViewController.swift; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 				83A193B5230EF686002D22C0 /* MainVC.swift */,
 				83A3BD1E23A68C20003FDCC1 /* CollectionView */,
 				83A68D0C239ED9F900DBDB45 /* CreateNewListVC */,
-				83A68D0D239EDA5000DBDB45 /* MakeWishVC */,
+				83A68D0D239EDA5000DBDB45 /* MakeWishView */,
 				83A68D09239ED83800DBDB45 /* WishlistVC */,
 			);
 			path = HomeVC;
@@ -244,14 +246,15 @@
 			path = CreateNewListVC;
 			sourceTree = "<group>";
 		};
-		83A68D0D239EDA5000DBDB45 /* MakeWishVC */ = {
+		83A68D0D239EDA5000DBDB45 /* MakeWishView */ = {
 			isa = PBXGroup;
 			children = (
+				836232B123C9303400FA498D /* MakeWishVC.swift */,
 				836A861A23870784000E76E4 /* PopUpView.swift */,
 				836A862623916FAC000E76E4 /* DropDownTableView.swift */,
 				839A8EE823A80F9C00C432EA /* DropDownCell.swift */,
 			);
-			path = MakeWishVC;
+			path = MakeWishView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,6 +380,7 @@
 				836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */,
 				836A861B23870784000E76E4 /* PopUpView.swift in Sources */,
 				83A193B6230EF686002D22C0 /* MainVC.swift in Sources */,
+				836232B223C9303400FA498D /* MakeWishVC.swift in Sources */,
 				839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */,
 				83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */,
 				83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */,

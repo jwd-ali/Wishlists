@@ -617,6 +617,9 @@
                         <viewLayoutGuide key="safeArea" id="tgd-f8-7kW"/>
                     </view>
                     <navigationItem key="navigationItem" id="p5i-sf-tZZ"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="blurrImage" destination="XGu-Ol-NXY" id="BKM-eM-QBL"/>
                         <outlet property="containerView" destination="htY-1j-lHN" id="4eQ-gf-aqU"/>
@@ -642,10 +645,28 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="QVD-iU-YUD"/>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-ey-4Yd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5771" y="-676"/>
+        </scene>
+        <!--Make Wish View Controller-->
+        <scene sceneID="ZSG-io-NZK">
+            <objects>
+                <viewController storyboardIdentifier="MakeWishVC" id="Ute-18-60P" customClass="MakeWishViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1cF-tL-9Rv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="BVU-31-laS"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wQJ-OG-ROX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4942" y="-966"/>
         </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">

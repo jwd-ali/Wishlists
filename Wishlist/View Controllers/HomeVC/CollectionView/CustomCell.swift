@@ -8,9 +8,17 @@
 
 import Foundation
 import UIKit
+import Hero
 
 // MARK: Simple Whishlist Cell
 class ContentCell: UICollectionViewCell {
+    
+    let theView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .clear
+        return v
+    }()
     
     let buttonView: UIButton = {
         let v = UIButton()
@@ -125,15 +133,16 @@ class ContentCell: UICollectionViewCell {
     func commonInit() -> Void {
 
         contentView.addSubview(cellLabel)
+        contentView.addSubview(theView)
                 
-        contentView.addSubview(imageView)
-        contentView.addSubview(wishlistImage)
+        theView.addSubview(imageView)
+        imageView.addSubview(wishlistImage)
         
-        contentView.addSubview(wishCounterView)
+        theView.addSubview(wishCounterView)
         wishCounterView.addSubview(wishCounterLabel)
         wishCounterView.addSubview(wünscheLabel)
 
-        contentView.addSubview(priceView)
+        theView.addSubview(priceView)
         priceView.addSubview(priceLabel)
         priceView.addSubview(priceEuroLabel)
         
@@ -143,6 +152,11 @@ class ContentCell: UICollectionViewCell {
 //
         // constrain label to all 4 sides
         NSLayoutConstraint.activate([
+            
+            theView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            theView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            theView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            theView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
 
             buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
             buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

@@ -221,7 +221,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         // configure the dropDownButton
         dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         dropDownButton.dropView.selectedWishlistDelegate = self
-        dropDownButton.setTitle("Liste wählen", for: .normal)
+        dropDownButton.label.text = "Liste wählen"
+        dropDownButton.listImage.image = UIImage(named: "iconRoundedImage")
         dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
         // configure image in createNewListPopUpView
@@ -446,8 +447,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
             cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
             
-            
             cell.customWishlistTapCallback = {
+                
+                let heroID = "wishlistImageIDX\(indexPath)"
+                cell.theView.heroID = heroID
+                
+                let addButtonHeroID = "addWishButtonID"
+                self.addButton.heroID = addButtonHeroID
             
                 // track selected index
                 self.currentWishListIDX = indexPath.item
@@ -455,6 +461,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
                 
                 vc.wishList = self.dataSourceArray[self.currentWishListIDX]
+                
+                vc.wishlistImage.heroID = heroID
+                vc.addWishButton.heroID = addButtonHeroID
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)

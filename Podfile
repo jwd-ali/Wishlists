@@ -14,6 +14,7 @@ target 'Wishlist' do
 	pod 'Firebase/Database'
 	pod 'TextFieldEffects'
 	pod 'TransitionButton'
+	pod 'Hero'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 
