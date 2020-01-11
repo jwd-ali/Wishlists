@@ -43,9 +43,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
    lazy var theTableView: WhishlistTableViewController = {
       let v = WhishlistTableViewController()
        v.view.layer.masksToBounds = true
-//       v.view.layer.borderColor = UIColor.white.cgColor
        v.view.backgroundColor = .clear
-//       v.view.layer.borderWidth = 7.0
        v.view.translatesAutoresizingMaskIntoConstraints = false
        return v
    }()
@@ -94,11 +92,13 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         return v
     }()
     
-//    // array of wish lists
-//    // this will eventually be managed by some type of data handler class
-//    var userWishListData: [[Wish]] = [[Wish]]()
+    let makeWishView: MakeWishView = {
+        let v = MakeWishView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
-    // DonMag3 - track the current selected wish list
+    // track the current selected wish list
     var currentWishListIDX: Int = 0
     
     // track current listImageIdx
@@ -107,9 +107,17 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     // track Wishlist IDX -> start at one so Firestore sorting works properly
     var wishlistIDX: Int = 1
     
+    // track selected wishlist in dropDownView
     var selectedWishlistIDX: Int?
     
+    // create wishlist
     var wishList: Wishlist!
+    
+    var theDropDownOptions: [String]!
+    
+    var theDropDownImageOptions: [UIImage]!
+    
+    var dataSourceArray = [Wishlist]()
     
     // panGestureRecognizer for interactive gesture dismiss
     var panGR: UIPanGestureRecognizer!
@@ -246,10 +254,71 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     }
     
     @objc private func addWishButtonTapped(){
-        print("addWishButton tapped")
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MakeWishVC") as! MakeWishViewController
-        self.present(vc, animated: true, completion: nil)
+        view.addSubview(makeWishView)
+        
+        makeWishView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        makeWishView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        makeWishView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        makeWishView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        makeWishView.grayView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+        makeWishView.visualEffectView.alpha = 0
+        makeWishView.grayView.alpha = 0
+        makeWishView.wishButton.alpha = 0
+        makeWishView.closeButton.alpha = 0
+        makeWishView.dropDownButton.alpha = 0
+        makeWishView.wishNameTextField.alpha = 0
+        makeWishView.wishImage.alpha = 0
+        makeWishView.wishImageButton.alpha = 0
+        makeWishView.linkTextField.alpha = 0
+        makeWishView.priceTextField.alpha = 0
+        makeWishView.noteTextField.alpha = 0
+        makeWishView.linkImage.alpha = 0
+        makeWishView.priceImage.alpha = 0
+        makeWishView.noteImage.alpha = 0
+        
+        makeWishView.addWishDelegate = self
+        
+        // set dropDownOptions
+        makeWishView.dropDownButton.dropView.dropDownOptions = self.theDropDownOptions
+        makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
+        
+        // set dropDownButton image and label to current wishlists image and label
+        makeWishView.dropDownButton.listImage.image = self.wishlistImage.image
+        makeWishView.dropDownButton.label.text = self.wishlistLabel.text
+        
+        // pass data array
+        makeWishView.dataSourceArray = self.dataSourceArray
+        
+        // update selectedWishlistIDX
+        makeWishView.selectedWishlistIDX = currentWishListIDX
+        
+        // reset textfield 
+        makeWishView.wishNameTextField.text = ""
+        makeWishView.wishNameTextField.becomeFirstResponder()        
+            
+        UIView.animate(withDuration: 0.3) {
+            
+            self.makeWishView.visualEffectView.alpha = 1
+            self.makeWishView.grayView.alpha = 1
+            self.makeWishView.wishButton.alpha = 1
+            self.makeWishView.closeButton.alpha = 1
+            self.makeWishView.dropDownButton.alpha = 1
+            self.makeWishView.wishNameTextField.alpha = 1
+            self.makeWishView.wishImage.alpha = 1
+            self.makeWishView.wishImageButton.alpha = 1
+            self.makeWishView.linkTextField.alpha = 1
+            self.makeWishView.priceTextField.alpha = 1
+            self.makeWishView.noteTextField.alpha = 1
+            self.makeWishView.linkImage.alpha = 1
+            self.makeWishView.priceImage.alpha = 1
+            self.makeWishView.noteImage.alpha = 1
+            
+            self.makeWishView.grayView.transform = CGAffineTransform.identity
+        }
+        
+        
     }
     
     func deleteWish(_ idx: Int){
@@ -261,4 +330,18 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         theTableView.wishList = wishList.wishData
         theTableView.tableView.reloadData()
     }
+}
+
+extension WishlistViewController: AddWishDelegate {
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?) {
+        
+//        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, checked: false))
+
+        wishList.wishData.append(Wish(withWishName: wishName!, checked: false))
+        theTableView.wishList = wishList.wishData
+        print(wishName!)
+        self.theTableView.tableView.reloadData()
+    }
+    
+    
 }

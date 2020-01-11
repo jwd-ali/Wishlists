@@ -447,6 +447,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
             cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
             cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
             
+            
+            
             cell.customWishlistTapCallback = {
                 
                 let heroID = "wishlistImageIDX\(indexPath)"
@@ -461,7 +463,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
                 
                 vc.wishList = self.dataSourceArray[self.currentWishListIDX]
-                
+                // pass drop down options
+                vc.theDropDownOptions = self.dropDownButton.dropView.dropDownOptions
+                vc.theDropDownImageOptions = self.dropDownButton.dropView.dropDownListImages
+                // pass current wishlist index
+                vc.currentWishListIDX = self.currentWishListIDX
+                // pass the data array
+                vc.dataSourceArray = self.dataSourceArray
+                // set Hero ID for transition
                 vc.wishlistImage.heroID = heroID
                 vc.addWishButton.heroID = addButtonHeroID
                     
