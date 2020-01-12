@@ -15,6 +15,11 @@ protocol DeleteWishDelegate {
     func deleteWish(_ idx: Int)
 }
 
+// allow MainVC to recieve updated datasource array
+protocol DismissWishlistDelegate {
+    func dismissWishlistVC(dataArray: [Wishlist])
+}
+
 
 //// recieve data from MainVC to insert wish
 //protocol InsertWishDelegate {
@@ -118,6 +123,8 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     var theDropDownImageOptions: [UIImage]!
     
     var dataSourceArray = [Wishlist]()
+    
+    var dismissWishDelegate: DismissWishlistDelegate?
     
     // panGestureRecognizer for interactive gesture dismiss
     var panGR: UIPanGestureRecognizer!
@@ -250,6 +257,9 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
     }
     
     @objc private func dismissView(){
+        //  update datasource array in MainVC
+        self.dismissWishDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray)
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -335,13 +345,15 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?) {
         
-//        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, checked: false))
-
-        wishList.wishData.append(Wish(withWishName: wishName!, checked: false))
-        theTableView.wishList = wishList.wishData
-        print(wishName!)
-        self.theTableView.tableView.reloadData()
+        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, checked: false))
+        
+        // only update current list if selectedWishlist is currentWishlist
+        if selectedWishlistIDX == currentWishListIDX {
+            wishList.wishData.append(Wish(withWishName: wishName!, checked: false))
+            theTableView.wishList = wishList.wishData
+            print(wishName!)
+            self.theTableView.tableView.reloadData()
+        }
+        
     }
-    
-    
 }

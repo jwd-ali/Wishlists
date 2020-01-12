@@ -473,6 +473,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
                 // set Hero ID for transition
                 vc.wishlistImage.heroID = heroID
                 vc.addWishButton.heroID = addButtonHeroID
+                // allow MainVC to recieve updated datasource array
+                vc.dismissWishDelegate = self
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)
@@ -688,6 +690,14 @@ extension MainViewController: SelectedWishlistProtocol{
     func didSelectWishlist(idx: Int) {
         self.selectedWishlistIDX = idx
     }
+}
+// allow MainVC to recieve updated datasource array
+extension MainViewController: DismissWishlistDelegate {
+    func dismissWishlistVC(dataArray: [Wishlist]) {
+        self.dataSourceArray = dataArray
+    }
+    
+    
 }
 
 

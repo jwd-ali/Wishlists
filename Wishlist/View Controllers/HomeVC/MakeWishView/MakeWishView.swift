@@ -154,7 +154,6 @@ class MakeWishView: UIView {
     
     let dropDownButton: DropDownBtn = {
         let v = DropDownBtn()
-        //        dropDownButton.dropView.selectedWishlistDelegate = self
         v.label.text = "Liste wählen"
         v.listImage.image = UIImage(named: "iconRoundedImage")
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -176,11 +175,13 @@ class MakeWishView: UIView {
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
-        
+        // reset textfield
         wishNameTextField.text = ""
         self.wishNameTextField.becomeFirstResponder()
-
         
+        // allow dropDownButton to recieve selected wishlist
+        dropDownButton.dropView.selectedWishlistDelegate = self
+
         addSubview(visualEffectView)
         addSubview(grayView)
         
@@ -301,11 +302,9 @@ class MakeWishView: UIView {
     }
     
     func insertWish(){
-        
+
         addWishDelegate?.addWishComplete(wishName: self.wishNameTextField.text!, selectedWishlistIDX: self.selectedWishlistIDX)
         
-//        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: self.wishNameTextField.text!, checked: false))
-//        // save Wish to database -> DataHandler
 //        saveWish()
     }
     
@@ -341,5 +340,12 @@ class MakeWishView: UIView {
             self.keyboardHeight = keyboardRectangle.height
         }
     }
+}
 
+extension MakeWishView: SelectedWishlistProtocol {
+    func didSelectWishlist(idx: Int) {
+        print(selectedWishlistIDX!)
+        print("hmm")
+        self.selectedWishlistIDX = idx
+    }
 }
