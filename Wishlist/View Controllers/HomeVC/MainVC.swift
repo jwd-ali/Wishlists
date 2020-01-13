@@ -13,7 +13,7 @@ import Firebase
 
 // MARK: ViewController
 // DonMag3 - conform to DeleteWishDelegate protocol
-class MainViewController: UIViewController, UICollectionViewDataSource {
+class MainViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var welcomeTextLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var welcomeTextLabel: UILabel!
@@ -200,9 +200,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
     // track Wishlist IDX -> start at one so Firestore sorting works properly 
     var wishlistIDX: Int = 1
     
+    // track seleced Wishlist inside DropDownBtn
     var selectedWishlistIDX: Int?
     
-//    var insertWishDelegate: InsertWishDelegate?
+    // only animate cells at first start
+    var shouldAnimateCells = true
+    
     
 //    CGRect frame = view.frame;
 //    CGPoint topCenter = CGPointMake(CGRectGetMidX(frame), CGRectGetMinY(frame));
@@ -251,9 +254,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         
         // retrieve firstname from DB and animate welcomeLabel
         setupWelcomeLabel()
-        
-//        // adding notification from `ContainerViewController` so `addButtonTapped` is accessable here
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.addWishButtonTapped(notification:)), name: Notification.Name("addWishButtonTapped"), object: nil)
 
         // MARK: Views + Constraints
         view.addSubview(backGroundImage)
@@ -323,6 +323,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
  
         // set collection view dataSource
         theCollectionView.dataSource = self
+        
+        theCollectionView.delegate = self
  
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
@@ -344,8 +346,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         retrieveUserDataFromDB()
 
     }
-
-    
     
     // MARK: ImageRotation-Functions
     @objc private func appDidEnterBackgroundHandler() {
@@ -389,24 +389,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-   
-    // change "sender: Any" to "sender: Any?" so we can call this
-    // from "Liste erstellen" button tap
-    @IBAction func closeButtonTappedNewList(_ sender: Any?) {
-        
-        self.appDidEnterBackgroundHandler()
-        
-        self.newListTextfield.resignFirstResponder()
-        self.listNameTextfield.text = ""
-        
-        // let newListView disappear
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
-            self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
-            self.view.layoutIfNeeded()
-        })
-
     }
    
     override func viewDidLayoutSubviews() {
@@ -506,6 +488,36 @@ class MainViewController: UIViewController, UICollectionViewDataSource {
         
         return cell
         
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.shouldAnimateCells = false
+    }
+    
+    // animate displaying cells
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if(self.shouldAnimateCells){
+            // Add animations here
+            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+            let animator = Animator(animation: animation)
+            animator.animate(cell: cell, at: indexPath, in: collectionView)
+        }   
+    }
+    
+    // change "sender: Any" to "sender: Any?" so we can call this
+    // from "Liste erstellen" button tap
+    @IBAction func closeButtonTappedNewList(_ sender: Any?) {
+        
+        self.appDidEnterBackgroundHandler()
+        
+        self.newListTextfield.resignFirstResponder()
+        self.listNameTextfield.text = ""
+        
+        // let newListView disappear
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
+            self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
+            self.view.layoutIfNeeded()
+        })
     }
     
     // MARK: CreateNewListView

@@ -152,9 +152,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func transitionToHome () {
 
-    let homeViewCotnroller =
+    let homeVC =
     storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
-    let navigationController = UINavigationController(rootViewController: homeViewCotnroller!)
+    let navigationController = UINavigationController(rootViewController: homeVC!)
 
     view.window?.rootViewController = navigationController
     view.window?.makeKeyAndVisible()
@@ -164,9 +164,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         view.endEditing(true)
         
-        let VC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as! ViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as! ViewController
         
-        self.navigationController?.pushViewController(VC, animated: false)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
     
     //hide keyboard, wenn user außerhalb toucht

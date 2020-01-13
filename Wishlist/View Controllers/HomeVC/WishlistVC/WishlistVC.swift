@@ -290,6 +290,8 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         
         makeWishView.addWishDelegate = self
         
+        makeWishView.imageButtonDelegate = self
+        
         // set dropDownOptions
         makeWishView.dropDownButton.dropView.dropDownOptions = self.theDropDownOptions
         makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
@@ -344,7 +346,6 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
 
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?) {
-        
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, checked: false))
         
         // only update current list if selectedWishlist is currentWishlist
@@ -354,6 +355,19 @@ extension WishlistViewController: AddWishDelegate {
             print(wishName!)
             self.theTableView.tableView.reloadData()
         }
-        
+    }
+}
+
+extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imageButtonTappedDelegate() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        dismiss(animated: true, completion: nil)
     }
 }

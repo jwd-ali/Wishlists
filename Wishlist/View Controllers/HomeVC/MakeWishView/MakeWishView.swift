@@ -12,6 +12,10 @@ protocol AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?)
 }
 
+protocol ImagePickerDelegate {
+    func imageButtonTappedDelegate()
+}
+
 class MakeWishView: UIView {
 
     let wishNameTextField: UITextField = {
@@ -166,6 +170,8 @@ class MakeWishView: UIView {
     
     var addWishDelegate: AddWishDelegate?
     
+    var imageButtonDelegate: ImagePickerDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -289,6 +295,7 @@ class MakeWishView: UIView {
     }
     
     @objc private func wishImageButtonTapped(){
+        imageButtonDelegate?.imageButtonTappedDelegate()
         print("wishImageButtonTapped")
     }
     
@@ -344,8 +351,16 @@ class MakeWishView: UIView {
 
 extension MakeWishView: SelectedWishlistProtocol {
     func didSelectWishlist(idx: Int) {
-        print(selectedWishlistIDX!)
-        print("hmm")
         self.selectedWishlistIDX = idx
     }
 }
+
+//// image picker
+//extension MakeWishView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+//    
+//    @objc func showImagePickerController(){
+//        let imagePickerController = UIImagePickerController()
+//        imagePickerController.delegate = self
+//        present(imagePickerController, animated: true, completion: nil)
+//    }
+//}
