@@ -23,6 +23,8 @@ class WhishlistTableViewController: UITableViewController {
 //        v.backgroundColor = .clear
 //        tableView.tableFooterView = v
         
+        self.tableView.rowHeight = 180
+        
         // disable didSelectAt
         self.tableView.allowsSelection = false
         
@@ -51,6 +53,10 @@ class WhishlistTableViewController: UITableViewController {
         
         let currentWish = self.wishList[indexPath.row]
         cell.label.text = currentWish.wishName
+        cell.wishImage.image = currentWish.wishImage
+        cell.linkLabel.text = currentWish.wishLink
+        cell.priceLabel.text = currentWish.wishPrice
+        cell.noteLabel.text = currentWish.wishNote
         cell.backgroundColor = .clear
         cell.checkButton.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
         
@@ -68,9 +74,18 @@ class WhishlistTableViewController: UITableViewController {
 class Wish: NSObject {
     public var wishName : String?
     public var checkedStatus : Bool?
-    init(withWishName name: String, checked: Bool) {
+    public var wishLink : String?
+    public var wishPrice : String?
+    public var wishNote : String?
+    public var wishImage : UIImage?
+    
+    init(withWishName name: String, link: String, price: String, note: String, image: UIImage, checked: Bool) {
         super.init()
         wishName = name
         checkedStatus = checked
+        wishLink = link
+        wishPrice = price
+        wishNote = note
+        wishImage = image
     }
 }

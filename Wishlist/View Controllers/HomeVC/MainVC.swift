@@ -681,9 +681,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     func insertWish(){
         
-        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: popUpView.whishName!, checked: false))
-        // save Wish to database -> DataHandler
-        saveWish()
+//        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+//        // save Wish to database -> DataHandler
+//        saveWish()
     }
     
     

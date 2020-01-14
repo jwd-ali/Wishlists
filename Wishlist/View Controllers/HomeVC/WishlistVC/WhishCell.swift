@@ -10,26 +10,102 @@ import UIKit
 
 class WhishCell: UITableViewCell {
     
-    // DonMag3 - change "callback" to "deleteWishCallback" so we know what its purpose
+    // change "callback" to "deleteWishCallback" so we know what its purpose
     var deleteWishCallback : (() -> ())?
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext", size: 23)
+        v.font = UIFont(name: "AvenirNext-Medium", size: 23)
         v.textColor = .white
         v.font = v.font.withSize(23)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-        let checkButton: UIButton =  {
+    let checkButton: UIButton =  {
         let v = UIButton()
         v.backgroundColor = .darkGray
-//        v.layer.borderColor = UIColor.red.cgColor
-//        v.layer.borderWidth = 2.0
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
-        
+        return v
+    }()
+    
+    let wishImage: UIImageView = {
+        let v = UIImageView()
+        v.backgroundColor = .clear
+        v.layer.borderColor = UIColor.white.cgColor
+        v.layer.borderWidth = 2
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let emptyImage: UIImageView = {
+        let v = UIImageView()
+//        v.image = UIImage(named: "image")?.withRenderingMode(.alwaysTemplate)
+        v.tintColor = .lightGray
+        v.backgroundColor = .clear
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let linkLabel: UILabel = {
+        let v = UILabel()
+        v.backgroundColor = .clear
+//        v.text = "Link"
+        v.textColor = .lightGray
+        v.font = UIFont(name: "AvenirNext", size: 18)
+        v.font = v.font?.withSize(18)
+        v.textAlignment = .right
+//        v.attributedText = NSAttributedString(string: "", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let priceLabel: UILabel = {
+        let v = UILabel()
+        v.backgroundColor = .clear
+//        v.text = "Preis"
+        v.textColor = .lightGray
+        v.font = UIFont(name: "AvenirNext", size: 18)
+        v.font = v.font?.withSize(18)
+        v.textAlignment = .right
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let noteLabel: UILabel = {
+        let v = UILabel()
+        v.backgroundColor = .clear
+//        v.text = "Notiz"
+        v.textColor = .lightGray
+        v.font = UIFont(name: "AvenirNext", size: 18)
+        v.font = v.font?.withSize(18)
+        v.textAlignment = .right
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let linkImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "link")?.withRenderingMode(.alwaysTemplate)
+        v.tintColor = .lightGray
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let priceImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "price")?.withRenderingMode(.alwaysTemplate)
+        v.tintColor = .lightGray
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let noteImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "note")?.withRenderingMode(.alwaysTemplate)
+        v.tintColor = .lightGray
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -44,18 +120,76 @@ class WhishCell: UITableViewCell {
         
         self.backgroundColor = .clear
         
-        // add checkButton
-        self.contentView.addSubview(checkButton)
-        self.checkButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        self.checkButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        self.checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        
+        contentView.addSubview(label)
+        contentView.addSubview(checkButton)
+        contentView.addSubview(wishImage)
+        wishImage.addSubview(emptyImage)
+        
+        contentView.addSubview(linkImage)
+        contentView.addSubview(priceImage)
+        contentView.addSubview(noteImage)
+        
+        contentView.addSubview(linkLabel)
+        contentView.addSubview(priceLabel)
+        contentView.addSubview(noteLabel)
+        
+        //constrain wish label
+        label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 65).isActive = true
+        label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
+        
+        // constrain checkButton
+        checkButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        checkButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15).isActive = true
+        checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+ 
+        // constrain wishImage
+        wishImage.topAnchor.constraint(equalTo: label.topAnchor, constant: 52).isActive = true
+        wishImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30).isActive = true
+        wishImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        wishImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        // constain emptyImage
+        emptyImage.topAnchor.constraint(equalTo: wishImage.topAnchor, constant: 10).isActive = true
+        emptyImage.bottomAnchor.constraint(equalTo: wishImage.bottomAnchor, constant: -10).isActive = true
+        emptyImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 10).isActive = true
+        emptyImage.trailingAnchor.constraint(equalTo: wishImage.trailingAnchor, constant: -10).isActive = true
+        
+        // constrain linkImage
+        linkImage.topAnchor.constraint(equalTo: label.topAnchor, constant: 45).isActive = true
+        linkImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 90).isActive = true
+        linkImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        linkImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
-        // add label
-        self.contentView.addSubview(label)
-        self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70).isActive = true
-        self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        // constrain priceImage
+        priceImage.topAnchor.constraint(equalTo: linkImage.topAnchor, constant: 35).isActive = true
+        priceImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 90).isActive = true
+        priceImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        priceImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
+
+        // constrain noteImage
+        noteImage.topAnchor.constraint(equalTo: priceImage.topAnchor, constant: 35).isActive = true
+        noteImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 90).isActive = true
+        noteImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        noteImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        // constrain linkLabel
+        linkLabel.topAnchor.constraint(equalTo: linkImage.topAnchor).isActive = true
+        linkLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
+        linkLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        
+        // constrain priceLabel
+        priceLabel.topAnchor.constraint(equalTo: linkLabel.topAnchor, constant: 35).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
+        priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        
+        // constrain noteLabel
+        noteLabel.topAnchor.constraint(equalTo: priceLabel.topAnchor, constant: 35).isActive = true
+        noteLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
+        noteLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         
     }
     

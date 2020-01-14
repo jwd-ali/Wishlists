@@ -16,6 +16,7 @@
 		836A862323875325000E76E4 /* WhishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862223875325000E76E4 /* WhishCell.swift */; };
 		836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862423880B21000E76E4 /* WhishlistTableViewController.swift */; };
 		836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862623916FAC000E76E4 /* DropDownTableView.swift */; };
+		8386EB8923CDFDCF00C7720F /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386EB8823CDFDCF00C7720F /* AlertHelper.swift */; };
 		839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CD237220690034ED79 /* ImageCollectionVC.swift */; };
 		839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */; };
 		839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8EE823A80F9C00C432EA /* DropDownCell.swift */; };
@@ -55,6 +56,7 @@
 		836A862223875325000E76E4 /* WhishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishCell.swift; sourceTree = "<group>"; };
 		836A862423880B21000E76E4 /* WhishlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishlistTableViewController.swift; sourceTree = "<group>"; };
 		836A862623916FAC000E76E4 /* DropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableView.swift; sourceTree = "<group>"; };
+		8386EB8823CDFDCF00C7720F /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		839091CD237220690034ED79 /* ImageCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionVC.swift; sourceTree = "<group>"; };
 		839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		839A8EE823A80F9C00C432EA /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			children = (
 				83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */,
 				83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */,
+				8386EB8823CDFDCF00C7720F /* AlertHelper.swift */,
 			);
 			path = FlowLayoutHelpers;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */,
 				83A193B4230EF66C002D22C0 /* LoginVC.swift in Sources */,
 				83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */,
+				8386EB8923CDFDCF00C7720F /* AlertHelper.swift in Sources */,
 				836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */,
 				8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */,
 				83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */,

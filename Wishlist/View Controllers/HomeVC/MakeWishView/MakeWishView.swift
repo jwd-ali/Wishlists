@@ -9,11 +9,11 @@
 import UIKit
 
 protocol AddWishDelegate {
-    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?)
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
 }
 
 protocol ImagePickerDelegate {
-    func imageButtonTappedDelegate()
+    func showImagePickerControllerActionSheet()
 }
 
 class MakeWishView: UIView {
@@ -40,7 +40,7 @@ class MakeWishView: UIView {
         v.placeholderColor(color: UIColor.white)
         v.font = UIFont(name: "AvenirNext", size: 18)
         v.font = v.font?.withSize(18)
-        v.textAlignment = .left
+        v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -53,7 +53,7 @@ class MakeWishView: UIView {
         v.placeholderColor(color: UIColor.white)
         v.font = UIFont(name: "AvenirNext", size: 18)
         v.font = v.font?.withSize(18)
-        v.textAlignment = .left
+        v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -66,7 +66,7 @@ class MakeWishView: UIView {
         v.placeholderColor(color: UIColor.white)
         v.font = UIFont(name: "AvenirNext", size: 18)
         v.font = v.font?.withSize(18)
-        v.textAlignment = .left
+        v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -92,7 +92,7 @@ class MakeWishView: UIView {
         return v
     }()
     
-    let wishImage: UIImageView = {
+    let wishImageView: UIImageView = {
         let v = UIImageView()
         v.backgroundColor = .clear
         v.layer.borderColor = UIColor.white.cgColor
@@ -133,6 +133,13 @@ class MakeWishView: UIView {
         return v
     }()
     
+    let wishButtonDisabled: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "wishButtonDisabled")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     let closeButton: UIButton = {
         let v = UIButton()
         v.setBackgroundImage(UIImage(named: "closeButtonWhite"), for: .normal)
@@ -147,12 +154,7 @@ class MakeWishView: UIView {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
-    var whishName: String? {
-        get {
-            self.wishNameTextField.text
-        }
-    }
+
     
     var dataSourceArray = [Wishlist]()
     
@@ -185,18 +187,22 @@ class MakeWishView: UIView {
         wishNameTextField.text = ""
         self.wishNameTextField.becomeFirstResponder()
         
+        // add target to wishNameTextfield to check if empty or not
+        setupAddTargetIsNotEmptyTextFields()
+        
         // allow dropDownButton to recieve selected wishlist
         dropDownButton.dropView.selectedWishlistDelegate = self
 
         addSubview(visualEffectView)
         addSubview(grayView)
         
+        grayView.addSubview(wishButtonDisabled)
         grayView.addSubview(wishButton)
         grayView.addSubview(closeButton)
         
         grayView.addSubview(wishNameTextField)
         
-        grayView.addSubview(wishImage)
+        grayView.addSubview(wishImageView)
         grayView.addSubview(wishImageButton)
         
         grayView.addSubview(linkTextField)
@@ -220,6 +226,12 @@ class MakeWishView: UIView {
         grayView.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         grayView.heightAnchor.constraint(equalToConstant: 400).isActive = true
         grayView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -140).isActive = true
+        
+        // constrain wishButton
+        wishButtonDisabled.rightAnchor.constraint(equalTo: grayView.rightAnchor, constant: -20).isActive = true
+        wishButtonDisabled.bottomAnchor.constraint(equalTo: grayView.bottomAnchor, constant: -20).isActive = true
+        wishButtonDisabled.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        wishButtonDisabled.widthAnchor.constraint(equalToConstant: 80).isActive = true
 
         // constrain wishButton
         wishButton.rightAnchor.constraint(equalTo: grayView.rightAnchor, constant: -20).isActive = true
@@ -244,10 +256,10 @@ class MakeWishView: UIView {
         wishNameTextField.topAnchor.constraint(equalTo: grayView.topAnchor, constant: 50).isActive = true
         
         // constrain wishImage
-        wishImage.topAnchor.constraint(equalTo: grayView.topAnchor, constant: 135).isActive = true
-        wishImage.leadingAnchor.constraint(equalTo: grayView.leadingAnchor, constant: 45).isActive = true
-        wishImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        wishImage.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        wishImageView.topAnchor.constraint(equalTo: grayView.topAnchor, constant: 135).isActive = true
+        wishImageView.leadingAnchor.constraint(equalTo: grayView.leadingAnchor, constant: 45).isActive = true
+        wishImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        wishImageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         // constrain wishImageButton
         wishImageButton.topAnchor.constraint(equalTo: grayView.topAnchor, constant: 135).isActive = true
@@ -256,7 +268,7 @@ class MakeWishView: UIView {
         wishImageButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         // constrain linkImage
-        linkImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 80 + 30).isActive = true
+        linkImage.leadingAnchor.constraint(equalTo: wishImageView.leadingAnchor, constant: 80 + 30).isActive = true
         linkImage.topAnchor.constraint(equalTo: wishNameTextField.topAnchor, constant: 70).isActive = true
         linkImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         linkImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
@@ -267,7 +279,7 @@ class MakeWishView: UIView {
         linkTextField.trailingAnchor.constraint(equalTo: grayView.trailingAnchor, constant: -30).isActive = true
         
         // constrain priceImage
-        priceImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 80 + 30).isActive = true
+        priceImage.leadingAnchor.constraint(equalTo: wishImageView.leadingAnchor, constant: 80 + 30).isActive = true
         priceImage.topAnchor.constraint(equalTo: linkImage.topAnchor, constant: 50).isActive = true
         priceImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         priceImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
@@ -278,7 +290,7 @@ class MakeWishView: UIView {
         priceTextField.trailingAnchor.constraint(equalTo: grayView.trailingAnchor, constant: -30).isActive = true
         
         // constrain noteImage
-        noteImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 80 + 30).isActive = true
+        noteImage.leadingAnchor.constraint(equalTo: wishImageView.leadingAnchor, constant: 80 + 30).isActive = true
         noteImage.topAnchor.constraint(equalTo: priceImage.topAnchor, constant: 50).isActive = true
         noteImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         noteImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
@@ -295,12 +307,36 @@ class MakeWishView: UIView {
     }
     
     @objc private func wishImageButtonTapped(){
-        imageButtonDelegate?.imageButtonTappedDelegate()
+        imageButtonDelegate?.showImagePickerControllerActionSheet()
         print("wishImageButtonTapped")
     }
     
     @objc func closeButtonTapped(){
         dismissView()
+    }
+    
+    
+    
+    func setupAddTargetIsNotEmptyTextFields() {
+        wishButton.isHidden = true
+        wishButtonDisabled.isHidden = false
+        wishNameTextField.addTarget(self, action: #selector(textFieldIsNotEmpty), for: .editingChanged)
+    }
+    
+    @objc func textFieldIsNotEmpty(sender: UITextField) {
+        sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
+        
+        guard
+            let wishName = wishNameTextField.text, !wishName.isEmpty
+            else {
+                // textfield is empty
+                self.wishButtonDisabled.isHidden = false
+                self.wishButton.isHidden = true
+                return
+        }
+        // enable wishButton if all conditions are met
+        wishButtonDisabled.isHidden = true
+        wishButton.isHidden = false
     }
     
     @objc func wishButtonTapped(){
@@ -309,8 +345,26 @@ class MakeWishView: UIView {
     }
     
     func insertWish(){
-
-        addWishDelegate?.addWishComplete(wishName: self.wishNameTextField.text!, selectedWishlistIDX: self.selectedWishlistIDX)
+        
+        var image = self.wishImageView.image
+        var link = self.linkTextField.text!
+        var price = self.priceTextField.text!
+        var note = self.noteTextField.text!
+        
+        if image == nil {
+            image = UIImage(named: "image")
+        }
+        if link == "" {
+            link = "Link"
+        }
+        if price == "" {
+            price = "Preis"
+        }
+        if note == "" {
+            note = "Notiz"
+        }
+        
+        addWishDelegate?.addWishComplete(wishName: self.wishNameTextField.text, selectedWishlistIDX: self.selectedWishlistIDX, wishImage: image, wishLink: link, wishPrice: price, wishNote: note)
         
 //        saveWish()
     }
@@ -327,7 +381,7 @@ class MakeWishView: UIView {
             self.closeButton.alpha = 0
             self.dropDownButton.alpha = 0
             self.wishNameTextField.alpha = 0
-            self.wishImage.alpha = 0
+            self.wishImageView.alpha = 0
             self.wishImageButton.alpha = 0
             self.linkTextField.alpha = 0
             self.priceTextField.alpha = 0
@@ -354,13 +408,3 @@ extension MakeWishView: SelectedWishlistProtocol {
         self.selectedWishlistIDX = idx
     }
 }
-
-//// image picker
-//extension MakeWishView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    
-//    @objc func showImagePickerController(){
-//        let imagePickerController = UIImagePickerController()
-//        imagePickerController.delegate = self
-//        present(imagePickerController, animated: true, completion: nil)
-//    }
-//}

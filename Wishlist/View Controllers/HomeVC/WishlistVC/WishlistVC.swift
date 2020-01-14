@@ -142,8 +142,6 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         self.wishlistBackgroundView.heroID = "wishlistView"
         
         self.wishlistBackgroundView.hero.modifiers = [.fade, .translate(CGPoint(x: 0, y: 800), z: 20)]
-        
-        
 
         
         // adding panGestureRecognizer
@@ -182,7 +180,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
             wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             
             // constrain wishTableView
-            theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 60.0),
+            theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 40.0),
             theTableView.view.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
             theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
@@ -232,6 +230,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
       case .began:
         // begin the transition as normal
         dismiss(animated: true, completion: nil)
+        break
       case .changed:
         
         Hero.shared.update(progress)
@@ -279,7 +278,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         makeWishView.closeButton.alpha = 0
         makeWishView.dropDownButton.alpha = 0
         makeWishView.wishNameTextField.alpha = 0
-        makeWishView.wishImage.alpha = 0
+        makeWishView.wishImageView.alpha = 0
         makeWishView.wishImageButton.alpha = 0
         makeWishView.linkTextField.alpha = 0
         makeWishView.priceTextField.alpha = 0
@@ -318,7 +317,7 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
             self.makeWishView.closeButton.alpha = 1
             self.makeWishView.dropDownButton.alpha = 1
             self.makeWishView.wishNameTextField.alpha = 1
-            self.makeWishView.wishImage.alpha = 1
+            self.makeWishView.wishImageView.alpha = 1
             self.makeWishView.wishImageButton.alpha = 1
             self.makeWishView.linkTextField.alpha = 1
             self.makeWishView.priceTextField.alpha = 1
@@ -345,21 +344,39 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
 }
 
 extension WishlistViewController: AddWishDelegate {
-    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?) {
-        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, checked: false))
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
-            wishList.wishData.append(Wish(withWishName: wishName!, checked: false))
+            wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
             theTableView.wishList = wishList.wishData
-            print(wishName!)
             self.theTableView.tableView.reloadData()
         }
     }
 }
 
+// MARK: ImagePickerController
 extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imageButtonTappedDelegate() {
+    
+    // delegate function
+    func showImagePickerControllerActionSheet() {
+        // choose Alert Options
+        let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .photoLibrary)
+        }
+        
+        let cameraAction = UIAlertAction(title: "Foto aufnehmen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .camera)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
+        
+        
+        AlertService.showAlert(style: .actionSheet, title: "Wähle ein Bild aus", message: nil, actions: [photoLibraryActionn, cameraAction, cancelAction], completion: nil)
+    }
+    
+    func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
@@ -368,6 +385,14 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            makeWishView.wishImageView.image = editedImage
+            makeWishView.wishImageButton.titleLabel?.text = ""
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            makeWishView.wishImageButton.titleLabel?.text = ""
+            makeWishView.wishImageView.image = originalImage
+        }
         dismiss(animated: true, completion: nil)
     }
 }

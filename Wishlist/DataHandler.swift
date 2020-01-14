@@ -132,7 +132,7 @@ extension MainViewController {
                         let documentData = document.data()
                         let wishName = documentData["name"]
                         let wishIDX = documentData["wishIDX"]
-                        self.dataSourceArray[wishIDX as! Int].wishData.append(Wish(withWishName: wishName as! String, checked: false))
+//                        self.dataSourceArray[wishIDX as! Int].wishData.append(Wish(withWishName: wishName as! String, link: "", price: 0, note: "", checked: false))
                     }
                 }
             }
