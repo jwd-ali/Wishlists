@@ -21,12 +21,7 @@ protocol DismissWishlistDelegate {
 }
 
 
-//// recieve data from MainVC to insert wish
-//protocol InsertWishDelegate {
-//    func insertWish(wishName: String, idx: Int, currentWishlistIDX: Int, data: Wishlist)
-//}
-
-class WishlistViewController: UIViewController, DeleteWishDelegate{
+class WishlistViewController: UIViewController {
 
     
     let wishlistBackgroundView: UIView = {
@@ -103,6 +98,8 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         return v
     }()
     
+    
+    
     // track the current selected wish list
     var currentWishListIDX: Int = 0
     
@@ -141,7 +138,9 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
         
-        self.wishlistBackgroundView.hero.modifiers = [.fade, .translate(CGPoint(x: 0, y: 800), z: 20)]
+        
+        
+//        self.wishlistBackgroundView.hero.modifiers = [.translate(CGPoint(x: 0, y: 800), z: 20)]
 
         
         // adding panGestureRecognizer
@@ -207,6 +206,13 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
             addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40),
             
         ])
+        
+        // disable prefill tableview with cells
+        let v = UIView()
+        v.backgroundColor = .clear
+        self.theTableView.tableView.tableFooterView = v
+        
+        
         
         // set DeleteWishDelegate protocol for the table
         theTableView.deleteWishDelegate = self
@@ -307,6 +313,10 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         
         // reset textfield 
         makeWishView.wishNameTextField.text = ""
+        // hide wishButton
+        makeWishView.wishButton.isHidden = true
+        makeWishView.wishButtonDisabled.isHidden = false
+        
         makeWishView.wishNameTextField.becomeFirstResponder()        
             
         UIView.animate(withDuration: 0.3) {
@@ -332,13 +342,20 @@ class WishlistViewController: UIViewController, DeleteWishDelegate{
         
     }
     
+    
+}
+
+extension WishlistViewController: DeleteWishDelegate {
     func deleteWish(_ idx: Int){
-        // DonMag3 - remove the wish from the user's currently selected wishlist
-        var wishes: [Wish] = wishList.wishData
-        wishes.remove(at: idx)
-        wishList.wishData = wishes
+        // remove the wish from the user's currently selected wishlist
+        wishList.wishData.remove(at: idx)
         // set the updated data as the data for the table view
         theTableView.wishList = wishList.wishData
+        theTableView.tableView.beginUpdates()
+        theTableView.tableView.deleteRows(at: [
+            (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
+        theTableView.tableView.endUpdates()
+        // reload data so index is updated
         theTableView.tableView.reloadData()
     }
 }
@@ -351,7 +368,10 @@ extension WishlistViewController: AddWishDelegate {
         if selectedWishlistIDX == currentWishListIDX {
             wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
             theTableView.wishList = wishList.wishData
-            self.theTableView.tableView.reloadData()
+            theTableView.tableView.beginUpdates()
+            theTableView.tableView.insertRows(at: [
+                (NSIndexPath(row: theTableView.wishList.count-1, section: 0) as IndexPath)], with: .left)
+            theTableView.tableView.endUpdates()
         }
     }
 }
@@ -380,7 +400,7 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
-        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.sourceType = sourceType
         present(imagePickerController, animated: true, completion: nil)
     }
     

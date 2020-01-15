@@ -15,8 +15,7 @@ class PopUpView: UIView {
         v.backgroundColor = .clear
         v.placeholder = "Was wünschst du dir?"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext", size: 20)
-        v.font = v.font?.withSize(20)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.white)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -29,8 +28,7 @@ class PopUpView: UIView {
         v.backgroundColor = .clear
         v.placeholder = "Link hinzufügen"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -41,8 +39,7 @@ class PopUpView: UIView {
         v.backgroundColor = .clear
         v.placeholder = "Preis hinzufügen"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -53,8 +50,7 @@ class PopUpView: UIView {
         v.backgroundColor = .clear
         v.placeholder = "Notiz hinzufügen"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
         return v

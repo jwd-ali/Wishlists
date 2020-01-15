@@ -14,9 +14,8 @@ class DropDownCell: UITableViewCell {
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext", size: 17)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textColor = .white
-        v.font = v.font.withSize(17)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

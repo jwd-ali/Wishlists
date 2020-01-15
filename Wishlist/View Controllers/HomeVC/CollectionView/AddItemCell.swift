@@ -25,7 +25,7 @@ class AddItemCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "neue Wishlist erstellen"
         v.numberOfLines = 0
-        v.font = UIFont(name: "AvenirNext", size: 20)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
         v.textColor = .darkGray
         v.textAlignment = .center
         return v

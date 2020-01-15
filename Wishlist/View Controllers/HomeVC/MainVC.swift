@@ -12,7 +12,7 @@ import Firebase
     
 
 // MARK: ViewController
-// DonMag3 - conform to DeleteWishDelegate protocol
+
 class MainViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var welcomeTextLeftConstraint: NSLayoutConstraint!

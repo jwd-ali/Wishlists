@@ -16,15 +16,14 @@ protocol ImagePickerDelegate {
     func showImagePickerControllerActionSheet()
 }
 
-class MakeWishView: UIView {
+class MakeWishView: UIView, UITextFieldDelegate {
 
     let wishNameTextField: UITextField = {
         let v = UITextField()
         v.backgroundColor = .clear
         v.placeholder = "Was wünschst du dir?"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext", size: 23)
-        v.font = v.font?.withSize(21)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 19)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.white)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -38,8 +37,7 @@ class MakeWishView: UIView {
         v.placeholder = "Link hinzufügen"
         v.textColor = .white
         v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -51,8 +49,7 @@ class MakeWishView: UIView {
         v.placeholder = "Preis hinzufügen"
         v.textColor = .white
         v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -64,8 +61,7 @@ class MakeWishView: UIView {
         v.placeholder = "Notiz hinzufügen"
         v.textColor = .white
         v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -105,8 +101,7 @@ class MakeWishView: UIView {
         let v = UIButton()
         v.backgroundColor = .clear
         v.setTitle("Bild hinzufügen", for: .normal)
-        v.titleLabel?.font = UIFont(name: "AvenirNext", size: 13)
-        v.titleLabel?.font = v.titleLabel?.font.withSize(13)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 13)
         v.titleLabel?.numberOfLines = 0
         v.titleLabel?.textAlignment = .center
         v.addTarget(self, action: #selector(wishImageButtonTapped), for: .touchUpInside)
@@ -174,6 +169,8 @@ class MakeWishView: UIView {
     
     var imageButtonDelegate: ImagePickerDelegate?
     
+    var amount: Int = 0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -183,8 +180,7 @@ class MakeWishView: UIView {
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
-        // reset textfield
-        wishNameTextField.text = ""
+
         self.wishNameTextField.becomeFirstResponder()
         
         // add target to wishNameTextfield to check if empty or not
@@ -192,6 +188,12 @@ class MakeWishView: UIView {
         
         // allow dropDownButton to recieve selected wishlist
         dropDownButton.dropView.selectedWishlistDelegate = self
+        
+        // change priceKeyboard type to numbersPad
+        priceTextField.keyboardType = UIKeyboardType.numberPad
+        
+        priceTextField.delegate = self
+        priceTextField.placeholder = updateAmount()
 
         addSubview(visualEffectView)
         addSubview(grayView)
@@ -315,7 +317,35 @@ class MakeWishView: UIView {
         dismissView()
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // check if added character is Int and add digit
+        if let digit = Int(string){
+            
+            amount = amount * 10 + digit
+            
+            if amount > 100000000000 {
+                priceTextField.text = ""
+                amount = 0
+         
+            }else {
+                priceTextField.text = updateAmount()
+            }
+        }
+        // update textfield if character is deleted
+        if string == "" {
+            amount = amount/10
+            priceTextField.text =  amount == 0 ? "" :updateAmount()
+        }
+        
+        return false
+    }
     
+    func updateAmount() -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = NumberFormatter.Style.currency
+        let amt = Double(amount/100) + Double(amount%100)/100
+        return formatter.string(from: NSNumber(value: amt))
+    }
     
     func setupAddTargetIsNotEmptyTextFields() {
         wishButton.isHidden = true
@@ -324,7 +354,6 @@ class MakeWishView: UIView {
     }
     
     @objc func textFieldIsNotEmpty(sender: UITextField) {
-        sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
         guard
             let wishName = wishNameTextField.text, !wishName.isEmpty

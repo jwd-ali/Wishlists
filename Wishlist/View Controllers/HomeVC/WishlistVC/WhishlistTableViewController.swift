@@ -15,13 +15,27 @@ class WhishlistTableViewController: UITableViewController {
     // protocol / delegate pattern
     public var deleteWishDelegate: DeleteWishDelegate?
     
+    let nightSky: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "nightSky")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    let noWishes: UILabel = {
+        let v = UILabel()
+        v.text = "Du scheinst wunschlos glücklich zu sein!"
+        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
+        v.textColor = .lightGray
+        v.textAlignment = .center
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // disable prefill tableview with cells
-//        let v = UIView()
-//        v.backgroundColor = .clear
-//        tableView.tableFooterView = v
         
         self.tableView.rowHeight = 180
         
@@ -44,6 +58,25 @@ class WhishlistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        // show background image and text if wishlist is empty
+        if wishList.count == 0 {
+            view.addSubview(self.nightSky)
+            view.addSubview(self.noWishes)
+            
+            nightSky.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            nightSky.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
+            nightSky.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+            nightSky.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+            
+            
+            noWishes.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            noWishes.bottomAnchor.constraint(equalTo: nightSky.bottomAnchor, constant: 10).isActive = true
+            
+        } else {
+            nightSky.removeFromSuperview()
+            noWishes.removeFromSuperview()
+        }
         return wishList.count
     }
 
@@ -52,9 +85,15 @@ class WhishlistTableViewController: UITableViewController {
         
         
         let currentWish = self.wishList[indexPath.row]
+        if currentWish.wishImage == UIImage(named: "image"){
+            cell.wishImage.image = .none
+        }else {
+            cell.wishImage.image = currentWish.wishImage
+        }
         cell.label.text = currentWish.wishName
-        cell.wishImage.image = currentWish.wishImage
+        
         cell.linkLabel.text = currentWish.wishLink
+        print(cell.linkLabel.text!)
         cell.priceLabel.text = currentWish.wishPrice
         cell.noteLabel.text = currentWish.wishNote
         cell.backgroundColor = .clear

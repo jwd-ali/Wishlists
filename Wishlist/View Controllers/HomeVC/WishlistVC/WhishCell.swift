@@ -41,21 +41,23 @@ class WhishCell: UITableViewCell {
     
     let emptyImage: UIImageView = {
         let v = UIImageView()
-//        v.image = UIImage(named: "image")?.withRenderingMode(.alwaysTemplate)
+        v.image = UIImage(named: "image")?.withRenderingMode(.alwaysTemplate)
         v.tintColor = .lightGray
         v.backgroundColor = .clear
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    let linkLabel: UILabel = {
-        let v = UILabel()
+    let linkLabel: UITextView = {
+        let v = UITextView()
         v.backgroundColor = .clear
-//        v.text = "Link"
+        v.text = "Link"
         v.textColor = .lightGray
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 23)
         v.textAlignment = .right
+        v.isSelectable = false
+        v.isScrollEnabled = false
+        v.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
 //        v.attributedText = NSAttributedString(string: "", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -66,8 +68,7 @@ class WhishCell: UITableViewCell {
         v.backgroundColor = .clear
 //        v.text = "Preis"
         v.textColor = .lightGray
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -78,8 +79,7 @@ class WhishCell: UITableViewCell {
         v.backgroundColor = .clear
 //        v.text = "Notiz"
         v.textColor = .lightGray
-        v.font = UIFont(name: "AvenirNext", size: 18)
-        v.font = v.font?.withSize(18)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -120,12 +120,15 @@ class WhishCell: UITableViewCell {
         
         self.backgroundColor = .clear
         
+        
+        
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
         contentView.addSubview(label)
         contentView.addSubview(checkButton)
+        contentView.addSubview(emptyImage)
         contentView.addSubview(wishImage)
-        wishImage.addSubview(emptyImage)
+        
         
         contentView.addSubview(linkImage)
         contentView.addSubview(priceImage)
