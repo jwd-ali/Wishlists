@@ -11,6 +11,80 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class ViewController: UIViewController, UITextFieldDelegate {
+    
+    let backgroundImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "backgroundImage")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.clipsToBounds = false
+        return v
+    }()
+    
+    let logoImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "logoGedreht")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let wishlistLabel: UILabel = {
+        let v = UILabel()
+        v.text = "Wishlist"
+        v.font = UIFont(name: "Noteworthy-Light", size: 45)
+        v.textAlignment = .center
+        v.textColor = UIColor(red: 75/255, green: 75/255, blue: 75/255, alpha: 1)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let emailImage: UIImageView = {
+        let v = UIImageView()
+        if #available(iOS 13.0, *) {
+            v.image = UIImage(systemName: "envelope")
+            v.tintColor = .white
+        } else {
+            // Fallback on earlier versions
+        }
+        v.contentMode = .scaleAspectFit
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let emailTextfield: UITextField = {
+        let v = UITextField(frame: CGRect.init(x: 0, y: 0, width: 100, height: 30))
+        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
+        v.textColor = .white
+        v.textAlignment = .left
+        v.placeholder = "Email-Adresse"
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addLine(position: .LINE_POSITION_BOTTOM, color: .blue, width: 2)
+        v.addPadding(.left(60))
+        return v
+    }()
+    
+    let weiterButton: CustomButton = {
+        let v = CustomButton(type: .system)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setTitle("WEITER", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 20)
+        v.titleLabel?.textColor = .white
+        v.setTitleColor(.white, for: .normal)
+//        v.backgroundColor = UIColor(red: 75/255, green: 75/255, blue: 75/255, alpha: 1)
+        v.backgroundColor = UIColor.lightGray
+        v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(weiterButtonTapped), for: .touchUpInside)
+        return v
+    }()
+    
+    let kostenlosLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.font = UIFont(name: "AvenirNext-Medium", size: 14)
+        v.textColor = .white
+        v.textAlignment = .center
+        v.text = "Anmelden oder kostenlos registrieren"
+        return v
+    }()
    
 
     @IBOutlet weak var logoStackView: UIStackView!
@@ -18,19 +92,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var anmeldenLabel: UILabel!
     @IBOutlet weak var bottomConstraintEmail: NSLayoutConstraint!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var emailTestTextField: UITextField!
-    @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var weiterButton: UIButton!
-    @IBOutlet weak var backgroundImage: UIImageView!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
-//        setUpElements()
         
         //Textfield cursor -> white
         UITextField.appearance().tintColor = .white
@@ -43,30 +109,63 @@ class ViewController: UIViewController, UITextFieldDelegate {
    
         Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
         
-    //listen for keyboard events
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+//    //listen for keyboard events
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
-
+        view.addSubview(backgroundImage)
+        view.addSubview(weiterButton)
+        view.addSubview(emailTextfield)
+        view.addSubview(emailImage)
+        view.addSubview(logoImage)
+        view.addSubview(wishlistLabel)
+        
+        backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
+        backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
+        backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
+        backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
+        
+        emailTextfield.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        emailTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        emailTextfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        emailImage.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor, constant: 10).isActive = true
+        emailImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        emailImage.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        emailImage.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        weiterButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
+        weiterButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        weiterButton.topAnchor.constraint(equalTo: emailTextfield.topAnchor, constant: 60).isActive = true
+        weiterButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        
+        logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        logoImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        
+        wishlistLabel.topAnchor.constraint(equalTo: logoImage.topAnchor, constant: 120 + 10).isActive = true
+        wishlistLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         
     }
     
-    //stop listening for keyboard hide/show events
+    // stop listening for keyboard hide/show events
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
-    //funktion für email-syntax prüfen, siehe "sighUpVC: validateFields()
+    // funktion für email-syntax prüfen, siehe "sighUpVC: validateFields()
     
     var email = ""
     
-    @IBAction func weiterButtonTapped(_ sender: Any) {
+    @objc func weiterButtonTapped() {
 
         
-        email = emailTestTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        email = emailTextfield.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         
         //prüfen, ob Email schon registriert ist

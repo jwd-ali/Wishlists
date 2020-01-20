@@ -28,7 +28,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let backGroundImage: UIImageView = {
         let v = UIImageView()
-        v.image = UIImage(named: "campfire_scaled")
+        v.image = UIImage(named: "backgroundImage")
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

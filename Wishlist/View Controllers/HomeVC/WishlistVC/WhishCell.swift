@@ -53,11 +53,12 @@ class WhishCell: UITableViewCell {
         v.backgroundColor = .clear
         v.text = "Link"
         v.textColor = .lightGray
-        v.font = UIFont(name: "AvenirNext-Regular", size: 23)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 18)
         v.textAlignment = .right
         v.isSelectable = false
         v.isScrollEnabled = false
-        v.frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+        let padding = v.textContainer.lineFragmentPadding
+        v.textContainerInset =  UIEdgeInsets(top: 0, left: -padding, bottom: 0, right: -padding)
 //        v.attributedText = NSAttributedString(string: "", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -180,19 +181,22 @@ class WhishCell: UITableViewCell {
         noteImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         // constrain linkLabel
-        linkLabel.topAnchor.constraint(equalTo: linkImage.topAnchor).isActive = true
+        linkLabel.topAnchor.constraint(equalTo: label.topAnchor, constant: 45).isActive = true
         linkLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
         linkLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        linkLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         // constrain priceLabel
         priceLabel.topAnchor.constraint(equalTo: linkLabel.topAnchor, constant: 35).isActive = true
         priceLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
         priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        priceLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         // constrain noteLabel
         noteLabel.topAnchor.constraint(equalTo: priceLabel.topAnchor, constant: 35).isActive = true
         noteLabel.leadingAnchor.constraint(equalTo: linkImage.leadingAnchor, constant: 30).isActive = true
         noteLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        noteLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
     

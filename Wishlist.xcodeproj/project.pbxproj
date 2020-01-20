@@ -19,6 +19,7 @@
 		8386EB8923CDFDCF00C7720F /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386EB8823CDFDCF00C7720F /* AlertHelper.swift */; };
 		839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CD237220690034ED79 /* ImageCollectionVC.swift */; };
 		839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */; };
+		83953A6D23D64F4A00589036 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83953A6C23D64F4900589036 /* CustomButton.swift */; };
 		839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8EE823A80F9C00C432EA /* DropDownCell.swift */; };
 		83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1939D230D6062002D22C0 /* AppDelegate.swift */; };
 		83A193A0230D6062002D22C0 /* FirstLaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1939F230D6062002D22C0 /* FirstLaunchVC.swift */; };
@@ -59,6 +60,7 @@
 		8386EB8823CDFDCF00C7720F /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		839091CD237220690034ED79 /* ImageCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionVC.swift; sourceTree = "<group>"; };
 		839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		83953A6C23D64F4900589036 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		839A8EE823A80F9C00C432EA /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		83A1939A230D6062002D22C0 /* Wishlist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wishlist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A1939D230D6062002D22C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				83A3BD1923A687BF003FDCC1 /* FlowLayoutHelpers */,
 				83A193B8230F0570002D22C0 /* Utilities.swift */,
 				83A193BD230F2640002D22C0 /* Constants.swift */,
+				83953A6C23D64F4900589036 /* CustomButton.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -205,8 +208,8 @@
 		83A68D07239ED70A00DBDB45 /* StartingVC */ = {
 			isa = PBXGroup;
 			children = (
-				83A193B1230EF655002D22C0 /* SignUpVC.swift */,
 				83A1939F230D6062002D22C0 /* FirstLaunchVC.swift */,
+				83A193B1230EF655002D22C0 /* SignUpVC.swift */,
 				83A193B3230EF66C002D22C0 /* LoginVC.swift */,
 			);
 			path = StartingVC;
@@ -396,6 +399,7 @@
 				83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */,
 				839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */,
 				83A193B4230EF66C002D22C0 /* LoginVC.swift in Sources */,
+				83953A6D23D64F4A00589036 /* CustomButton.swift in Sources */,
 				83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */,
 				8386EB8923CDFDCF00C7720F /* AlertHelper.swift in Sources */,
 				836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */,
