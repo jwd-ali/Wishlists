@@ -29,7 +29,7 @@ extension UITextField {
     func addPadding(_ padding: PaddingSide) {
         
         self.leftViewMode = .always
-        self.layer.masksToBounds = true
+        self.layer.masksToBounds = false 
         
         
         switch padding {

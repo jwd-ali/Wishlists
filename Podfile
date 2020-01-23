@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '11.0'
 
 target 'Wishlist' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -15,6 +15,8 @@ target 'Wishlist' do
 	pod 'TextFieldEffects'
 	pod 'TransitionButton'
 	pod 'Hero'
+	pod 'RevealingSplashView'
+	pod 'LBTAComponents'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

@@ -21,7 +21,7 @@ extension UIView {
         lineView.translatesAutoresizingMaskIntoConstraints = false // This is important!
         self.addSubview(lineView)
 
-        let metrics = ["width" : NSNumber(value: width), "bottomMargin": NSNumber(value: -50)]
+        let metrics = ["width" : NSNumber(value: width), "bottomMargin": NSNumber(value: -10)]
         let views = ["lineView" : lineView]
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[lineView]|", options:NSLayoutConstraint.FormatOptions(rawValue: 0), metrics:metrics, views:views))
 

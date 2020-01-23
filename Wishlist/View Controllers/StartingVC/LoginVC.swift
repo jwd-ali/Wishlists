@@ -8,229 +8,270 @@
 
 import UIKit
 import FirebaseAuth
+import TextFieldEffects
+import TransitionButton
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-
-
-    @IBOutlet weak var eyeButtonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var eyeOpenButton: UIButton!
-    @IBOutlet weak var stackViewConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var passwordTextField: CustomTextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var errorLabel: UILabel!
-    var email = ""
-    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
+    let backgroundImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "backgroundImage")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.clipsToBounds = false
+        return v
+    }()
     
+    let emailTextField: CustomTextField = {
+        let v = CustomTextField()
+        v.borderActiveColor = .white
+        v.borderInactiveColor = .white
+        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.placeholder = "Email-Adresse"
+        v.placeholderColor = .gray
+        v.placeholderFontScale = 1
+        v.clearButtonMode = .always
+        v.minimumFontSize = 13
+        v.borderStyle = .line
+        v.autocapitalizationType = .none
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let passwordTextField: CustomTextField = {
+        let v = CustomTextField()
+        v.borderActiveColor = .white
+        v.borderInactiveColor = .white
+        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.placeholder = "Passwort"
+        v.placeholderColor = .gray
+        v.placeholderFontScale = 1
+        v.clearButtonMode = UITextField.ViewMode.always
+        v.minimumFontSize = 13
+        v.borderStyle = .line
+        v.addTarget(self, action: #selector(LoginViewController.textFieldDidChange(_:)),for: .editingChanged)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let vergessenButton: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Vergessen?", for: .normal)
+        v.setTitleColor(.white, for: .normal)
+        v.addTarget(self, action: #selector(vergessenTapped), for: .touchUpInside)
+        v.titleLabel?.font = UIFont(name: "Avenir Next", size: 17.0)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let loginButton: TransitionButton = {
+        let v = TransitionButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setTitle("LOGIN", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.titleLabel?.textColor = .white
+        v.setTitleColor(.white, for: .normal)
+        v.backgroundColor = UIColor.darkGray
+        v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(loginButtonTapped(_:)), for: .touchUpInside)
+        return v
+    }()
+    
+    let errorLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.textColor = .red
+        v.textAlignment = .center
+        v.numberOfLines = 0
+        return v
+    }()
+    
+    let backButton: UIButton = {
+        let v = UIButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setImage(UIImage(named:"backButton"), for: .normal)
+        v.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        return v
+    }()
+    
+    let eyeButton: UIButton = {
+        let v = UIButton()
+        v.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        
+        return v
+    }()
+
+    @IBOutlet weak var stackViewConstraint: NSLayoutConstraint!
+
+    var email = ""
+    
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUpViews()
         
         self.passwordTextField.rightPadding = 15
         
-        //Auge Button Standart auf offen setzen
-        eyeOpenButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
+        // Auge Button Standart auf offen setzen
+        eyeButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
 
-        
+        emailTextField.delegate = self
         passwordTextField.delegate = self
         
         //change return key
         emailTextField.returnKeyType = .next
         passwordTextField.returnKeyType = .done
         
-//        UIView.animate(withDuration: 0.20) {
-//            self.view.layoutIfNeeded()
-//        }
+        // eye button verstecken
+        self.eyeButton.isHidden = true
         
-        //eye button verstecken
-        self.eyeOpenButton.isHidden = true
-        
-        //passwort vergessen button erstellen
-        createForgetButton()
-        
-        //pass email
+        // pass email
         self.emailTextField.text = email
         
-        //hide error
+        // hide error
         errorLabel.alpha = 0
         
-        //clear button
-        emailTextField.clearButtonMode = .always
-        
-        //password hide/show
+        // password hide/show
         passwordTextField.isSecureTextEntry.toggle()
         
-        //Textfield cursor -> white
+        // Textfield cursor -> white
         UITextField.appearance().tintColor = .white
         
-        
-        
-        //listen for keyboard events
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        // add motion effect to background image
+        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
 
     }
     
-
-    
-    //delegate Methode für eye-Button
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        switch textField {
-        case passwordTextField:
-            if passwordTextField.text != "" {
-                eyeOpenButton.isHidden = false
-            } else {
-                eyeOpenButton.isHidden = true
-            }
-            
-            break
-        default:
-            break
-        }
-        return true
+    func setUpViews() {
+        
+        view.addSubview(backgroundImage)
+        view.addSubview(backButton)
+        view.addSubview(emailTextField)
+        view.addSubview(passwordTextField)
+        view.addSubview(vergessenButton)
+        view.addSubview(loginButton)
+        view.addSubview(errorLabel)
+        view.addSubview(eyeButton)
+        
+        backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
+        backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
+        backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
+        backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
+        
+        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130).isActive = true
+        emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        passwordTextField.topAnchor.constraint(equalTo: emailTextField.topAnchor, constant: 80).isActive = true
+        passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        vergessenButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
+        vergessenButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true
+        
+        eyeButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
+        eyeButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true
+        
+        loginButton.topAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: 80).isActive = true
+        loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        errorLabel.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 80).isActive = true
+        errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60).isActive = true
+        errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60).isActive = true
+        
     }
-    //delegate Methode für eye-Button
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        
-        if textField == passwordTextField {
-            if passwordTextField.text != "" {
-                eyeOpenButton.isHidden = true
-            } else {
-                eyeOpenButton.isHidden = true
-            }
-        }
-        return true
-    }
 
-    //"vergessen"-Button hinzufügen
-    func createForgetButton () {
-        let button = UIButton(type: .system)
-        button.setTitle("Vergessen?", for: .normal)
-        button.addTarget(self, action: #selector(self.vergessenTapped(_:)), for: .touchUpInside)
-        button.titleLabel?.font = UIFont(name: "Avenir Next", size: 19.0)
-        passwordTextField.rightView = button
-        passwordTextField.rightViewMode = .unlessEditing
+    @objc func loginButtonTapped(_ sender: Any) {
         
-    }
-    
-    @objc func vergessenTapped(_ sender: Any) {
+        let email = self.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        // start button animation
+        loginButton.startAnimation()
         
-    }
-    
-
-    
-    //stop listening for keyboard hide/show events
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-
-    @IBAction func loginButtonTapped(_ sender: Any) {
-        
-        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        
-
-        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-            
-            if error != nil {
-                self.errorLabel.text = error!.localizedDescription
-                self.errorLabel.alpha = 1
-            }else {
+        let qualityOfServiceClass = DispatchQoS.QoSClass.background
+        let backgorundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
+        backgorundQueue.async {
+            // check if account details correct
+            Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
                 
-                self.transitionToHome()
+                if error != nil {
+                    DispatchQueue.main.async {
+                        // error -> stop animation
+                        self.loginButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0) {
+                            self.errorLabel.text = error!.localizedDescription
+                            self.errorLabel.alpha = 1
+                        }
+                    }
+                }else {
+                    // correct acount details -> login
+                    DispatchQueue.main.async {
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        UserDefaults.standard.synchronize()
+                        
+                        self.transitionToHome()
+                    }
+                }
             }
         }
-        
     }
     
     func transitionToHome () {
 
-    let homeVC =
-    storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
-    let navigationController = UINavigationController(rootViewController: homeVC!)
+        let homeVC =
+        storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
+        let navigationController = UINavigationController(rootViewController: homeVC!)
 
-    view.window?.rootViewController = navigationController
-    view.window?.makeKeyAndVisible()
+        view.window?.rootViewController = navigationController
+        view.window?.makeKeyAndVisible()
     }
     
-    @IBAction func backButtonTapped(_ sender: Any) {
-        
-        view.endEditing(true)
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as! ViewController
-        
-        self.navigationController?.pushViewController(vc, animated: false)
+    @objc func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
+
     
-    //hide keyboard, wenn user außerhalb toucht
+    // hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
 
     
-//    //automatischer Fokus auf nächstes Textfield
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//
-//        if textField == emailTextField {
-//            passwordTextField.becomeFirstResponder()
-//        }else if textField == passwordTextField {
-//            textField.resignFirstResponder()
-//            self.loginButton.sendActions(for: .touchUpInside)
-//        }
-//
-//        return true
-//    }
-    
+    // automatischer Fokus auf nächstes Textfield
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        for textField in self.view.subviews where textField is UITextField {
+
+        if textField == emailTextField {
+            print("hi")
+            passwordTextField.becomeFirstResponder()
+        }else if textField == passwordTextField {
             textField.resignFirstResponder()
+            self.loginButton.sendActions(for: .touchUpInside)
         }
+
         return true
     }
     
-    //move UI if Keyboard shows/hides
-    @objc func keyboardWillChange(notification: Notification) {
-        
-        if notification.name == UIResponder.keyboardWillShowNotification ||
-            notification.name == UIResponder.keyboardWillChangeFrameNotification {
-            
-            // Keyboard shows
-            
-            self.view.layoutIfNeeded()
-            self.eyeButtonConstraint.constant = 224+75
-            self.stackViewConstraint.constant = 175
-            self.backButton.alpha = 1
-            
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
-            }
-            
-        }else {
-            // Keyboard hides
-            self.eyeButtonConstraint.constant = 224
-            self.stackViewConstraint.constant = 100
-            self.backButton.alpha = 1
-            
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
+    // toggle password
     var check = true
-    @IBAction func eyeOpenButtonTapped(_ sender: Any) {
+    @objc func eyeButtonTapped() {
         check = !check
         
         if check == true {
-            eyeOpenButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
+            eyeButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
         } else {
-            eyeOpenButton.setImage(UIImage(named: "eyeClosed"), for: .normal)
+            eyeButton.setImage(UIImage(named: "eyeClosed"), for: .normal)
         }
         passwordTextField.isSecureTextEntry.toggle()
 
@@ -256,11 +297,44 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
     }
     
-    @IBAction func passwordDidChange(_ sender: Any) {
-        if self.passwordTextField.text == "" {
-            self.eyeOpenButton.isHidden = true
-        }else {
-            self.eyeOpenButton.isHidden = false
+    // delegate Methode für eye-Button
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        switch textField {
+        case passwordTextField:
+            if passwordTextField.text != "" {
+                eyeButton.isHidden = false
+                vergessenButton.isHidden = true
+            } else {
+                eyeButton.isHidden = true
+            }
+            
+            break
+        default:
+            break
         }
+        return true
+    }
+    // delegate Methode für eye-Button
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        
+        if textField == passwordTextField {
+            self.eyeButton.isHidden = true
+            self.vergessenButton.isHidden = false
+        }
+        return true
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if textField.text == "" {
+            self.eyeButton.isHidden = true
+            self.vergessenButton.isHidden = false
+        }else {
+            self.vergessenButton.isHidden = true
+            self.eyeButton.isHidden = false
+        }
+    }
+    
+    @objc func vergessenTapped() {
+        print("vergessenButtonTapped")
     }
 }

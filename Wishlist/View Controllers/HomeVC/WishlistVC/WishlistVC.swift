@@ -69,6 +69,7 @@ class WishlistViewController: UIViewController {
        v.text = "Wishlist"
        v.font = UIFont(name: "AvenirNext-Bold", size: 35)
        v.textColor = .white
+       v.minimumScaleFactor = 0.1
        v.translatesAutoresizingMaskIntoConstraints = false
        return v
    }()

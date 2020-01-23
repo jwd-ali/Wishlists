@@ -226,8 +226,9 @@ class MakeWishView: UIView, UITextFieldDelegate {
         // constrain grayView
         grayView.leftAnchor.constraint(equalTo: leftAnchor, constant: 30).isActive = true
         grayView.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
-        grayView.heightAnchor.constraint(equalToConstant: 400).isActive = true
-        grayView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -140).isActive = true
+        grayView.heightAnchor.constraint(equalToConstant: 380).isActive = true
+        grayView.topAnchor.constraint(equalTo: topAnchor, constant: 60).isActive = true
+//        grayView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -140).isActive = true
         
         // constrain wishButton
         wishButtonDisabled.rightAnchor.constraint(equalTo: grayView.rightAnchor, constant: -20).isActive = true

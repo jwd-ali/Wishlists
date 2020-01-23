@@ -9,8 +9,12 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import RevealingSplashView
 
 class ViewController: UIViewController, UITextFieldDelegate {
+    
+    let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "zauberstab")!, iconInitialSize: CGSize(width: 120, height: 120), backgroundColor: .white)
+    
     
     let backgroundImage: UIImageView = {
         let v = UIImageView()
@@ -19,21 +23,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
         v.clipsToBounds = false
         return v
     }()
+
     
-    let logoImage: UIImageView = {
-        let v = UIImageView()
-        v.image = UIImage(named: "logoGedreht")
+    let willkommenLabel: UILabel = {
+        let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "Willkommen bei Wishlist."
+        v.font = UIFont(name: "AvenirNext-Bold", size: 26)
+        v.textAlignment = .left
+        v.textColor = .white
+        v.adjustsFontSizeToFitWidth = true
+        v.minimumScaleFactor = 0.5
         return v
     }()
     
-    let wishlistLabel: UILabel = {
+    let textLabel: UILabel = {
         let v = UILabel()
-        v.text = "Wishlist"
-        v.font = UIFont(name: "Noteworthy-Light", size: 45)
-        v.textAlignment = .center
-        v.textColor = UIColor(red: 75/255, green: 75/255, blue: 75/255, alpha: 1)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "Werde Mitglied unserer Community und erfülle deine größten Wünsche."
+        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
+        v.textColor = .white
+        v.textAlignment = .left
+        v.numberOfLines = 0
         return v
     }()
     
@@ -51,13 +62,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }()
     
     let emailTextfield: UITextField = {
-        let v = UITextField(frame: CGRect.init(x: 0, y: 0, width: 100, height: 30))
-        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
+        let v = UITextField(frame: CGRect.init(x: 100, y: 200, width: 100, height: 30))
+        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
+        v.backgroundColor = .clear
+        v.borderStyle = .none
         v.textColor = .white
         v.textAlignment = .left
         v.placeholder = "Email-Adresse"
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.addLine(position: .LINE_POSITION_BOTTOM, color: .blue, width: 2)
+        v.autocapitalizationType = .none
+        v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2)
         v.addPadding(.left(60))
         return v
     }()
@@ -66,11 +80,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("WEITER", for: .normal)
-        v.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 20)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.titleLabel?.textColor = .white
         v.setTitleColor(.white, for: .normal)
-//        v.backgroundColor = UIColor(red: 75/255, green: 75/255, blue: 75/255, alpha: 1)
-        v.backgroundColor = UIColor.lightGray
+        v.backgroundColor = UIColor.darkGray
         v.layer.cornerRadius = 3
         v.addTarget(self, action: #selector(weiterButtonTapped), for: .touchUpInside)
         return v
@@ -79,83 +92,205 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let kostenlosLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.font = UIFont(name: "AvenirNext-Medium", size: 14)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
         v.textColor = .white
         v.textAlignment = .center
         v.text = "Anmelden oder kostenlos registrieren"
         return v
     }()
-   
-
-    @IBOutlet weak var logoStackView: UIStackView!
-    @IBOutlet weak var logoConstraint: NSLayoutConstraint!
-    @IBOutlet weak var anmeldenLabel: UILabel!
-    @IBOutlet weak var bottomConstraintEmail: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    let oderLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.textColor = .white
+        v.textAlignment = .center
+        v.text = "ODER"
+        return v
+    }()
     
+    let lineLeft: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.image = UIImage(named: "line")
+        return v
+    }()
     
+    let lineRight: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.image = UIImage(named: "line")
+        return v
+    }()
+    
+    let facebookButton: CustomButton = {
+        let v = CustomButton(type: .system)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setTitle("Mit Facebook fortfahren", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.titleLabel?.textColor = .white
+        v.setTitleColor(.white, for: .normal)
+        v.backgroundColor = UIColor(red: 105/255, green: 141/255, blue: 210/255, alpha: 1)
+        v.layer.cornerRadius = 3
+        return v
+    }()
+    
+    let facebookLogo: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "facebook")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    let googleButton: CustomButton = {
+        let v = CustomButton(type: .system)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setTitle("Mit Google forfahren", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.setTitleColor(.darkGray, for: .normal)
+        v.backgroundColor = .white
+        v.layer.cornerRadius = 3
+        return v
+    }()
+    
+    let googleLogo: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "google")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    let appleButton: CustomButton = {
+        let v = CustomButton(type: .system)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setTitle("Mit Apple forfahren", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.setTitleColor(.white, for: .normal)
+        v.backgroundColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1)
+        v.layer.cornerRadius = 3
+        return v
+    }()
+    
+    let appleLogo: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "apple")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Textfield cursor -> white
+        // Textfield cursor -> white
         UITextField.appearance().tintColor = .white
         
+        // add motion effect to background image
+        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
         
-        UIView.animate(withDuration: 0.25) {
-            self.view.layoutIfNeeded()
-        }
+        setUpViews()
         
-   
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
-        
-//    //listen for keyboard events
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        revealingSplashView.startAnimation()
+    }
+    
+    
+    func setUpViews(){
         
         view.addSubview(backgroundImage)
+        view.addSubview(willkommenLabel)
+        view.addSubview(textLabel)
         view.addSubview(weiterButton)
         view.addSubview(emailTextfield)
-        view.addSubview(emailImage)
-        view.addSubview(logoImage)
-        view.addSubview(wishlistLabel)
+        emailTextfield.addSubview(emailImage)
+        view.addSubview(kostenlosLabel)
+        view.addSubview(oderLabel)
+        view.addSubview(lineLeft)
+        view.addSubview(lineRight)
+        view.addSubview(facebookButton)
+        facebookButton.addSubview(facebookLogo)
+        view.addSubview(googleButton)
+        googleButton.addSubview(googleLogo)
+        view.addSubview(appleButton)
+        appleButton.addSubview(appleLogo)
+        
+        view.addSubview(revealingSplashView)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
         backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
         backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
         
-        emailTextfield.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        willkommenLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
+        willkommenLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        willkommenLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        
+        textLabel.topAnchor.constraint(equalTo: willkommenLabel.topAnchor, constant: 50).isActive = true
+        textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        kostenlosLabel.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 120).isActive = true
+        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        emailTextfield.topAnchor.constraint(equalTo: kostenlosLabel.topAnchor, constant: 35).isActive = true
         emailTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         emailTextfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
         emailImage.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor, constant: 10).isActive = true
-        emailImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        emailImage.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        emailImage.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        emailImage.centerYAnchor.constraint(equalTo: emailTextfield.centerYAnchor).isActive = true
+        emailImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        emailImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         weiterButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
         weiterButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
         weiterButton.topAnchor.constraint(equalTo: emailTextfield.topAnchor, constant: 60).isActive = true
-        weiterButton.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        weiterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoImage.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        logoImage.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        logoImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        oderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        oderLabel.bottomAnchor.constraint(equalTo: weiterButton.bottomAnchor, constant: 40).isActive = true
+        oderLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        wishlistLabel.topAnchor.constraint(equalTo: logoImage.topAnchor, constant: 120 + 10).isActive = true
-        wishlistLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        lineLeft.centerYAnchor.constraint(equalTo: oderLabel.centerYAnchor).isActive = true
+        lineLeft.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        lineLeft.trailingAnchor.constraint(equalTo: oderLabel.leadingAnchor).isActive = true
         
+        lineRight.centerYAnchor.constraint(equalTo: oderLabel.centerYAnchor).isActive = true
+        lineRight.leadingAnchor.constraint(equalTo: oderLabel.trailingAnchor).isActive = true
+        lineRight.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
-    }
-    
-    // stop listening for keyboard hide/show events
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        facebookButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
+        facebookButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        facebookButton.bottomAnchor.constraint(equalTo: oderLabel.bottomAnchor, constant: 55 + 10).isActive = true
+        facebookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        facebookLogo.centerYAnchor.constraint(equalTo: facebookButton.centerYAnchor).isActive = true
+        facebookLogo.leadingAnchor.constraint(equalTo: facebookButton.leadingAnchor, constant: 10).isActive = true
+        facebookLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        facebookLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        googleButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
+        googleButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        googleButton.bottomAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 55 + 10).isActive = true
+        googleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        googleLogo.centerYAnchor.constraint(equalTo: googleButton.centerYAnchor).isActive = true
+        googleLogo.leadingAnchor.constraint(equalTo: googleButton.leadingAnchor, constant: 10).isActive = true
+        googleLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        googleLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        appleButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
+        appleButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        appleButton.bottomAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 55 + 10).isActive = true
+        appleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        appleLogo.centerYAnchor.constraint(equalTo: appleButton.centerYAnchor).isActive = true
+        appleLogo.leadingAnchor.constraint(equalTo: appleButton.leadingAnchor, constant: 10).isActive = true
+        appleLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        appleLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+ 
     }
     
     // funktion für email-syntax prüfen, siehe "sighUpVC: validateFields()
@@ -163,23 +298,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var email = ""
     
     @objc func weiterButtonTapped() {
-
-        
+    
         email = emailTextfield.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        
         
         //prüfen, ob Email schon registriert ist
         Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
             
             //Email ist noch nicht registriert -> sign up
             if methods == nil {
-                
-                self.logoStackView.alpha = 0
-                UIView.animate(withDuration: 0.25) {
-                    self.view.layoutIfNeeded()
-                }
-                
-                self.view.endEditing(true)
                 
                 let SignUpView = self.storyboard?.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
                 
@@ -191,72 +317,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
             //Email ist registriert -> login
             else {
                 
-                self.logoStackView.alpha = 0
-                UIView.animate(withDuration: 0.25) {
-                    self.view.layoutIfNeeded()
-                }
-                
                 self.view.endEditing(true)
                 
                 let LoginView = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
                 
                 LoginView.email = self.email
                 
-                self.navigationController?.pushViewController(LoginView, animated: false)
+                self.navigationController?.pushViewController(LoginView, animated: true)
             }
         } 
     }
     
     
-    //hide keyboard, wenn user außerhalb toucht
+    // hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    //user drück auf "return"
+    // user drück auf "return"
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    
-    //move UI if keyboard shows/hides
-    @objc func keyboardWillChange(notification: Notification) {
-        
-        guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        if notification.name == UIResponder.keyboardWillShowNotification ||
-            notification.name == UIResponder.keyboardWillChangeFrameNotification {
-            
-            // Keyboard shows
-
-                self.view.layoutIfNeeded()
-                let heightHelper = self.bottomConstraint.constant
-                self.bottomConstraint.constant = keyboardRect.height + 20
-                
-                self.bottomConstraintEmail.constant += keyboardRect.height + 20 - heightHelper
-                self.anmeldenLabel.alpha = 0
-                self.logoConstraint.constant = 45
-            
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
-            }
-            
-        }else {
-            // Keyboard hides
-
-                self.view.layoutIfNeeded()
-                self.bottomConstraintEmail.constant = 337
-                self.bottomConstraint.constant = 255.5
-                self.logoConstraint.constant = 60
-                self.anmeldenLabel.alpha = 1
-       
-            UIView.animate(withDuration: 0.25) {
-                self.view.layoutIfNeeded()
-            }
-        }
     }
 }
 
