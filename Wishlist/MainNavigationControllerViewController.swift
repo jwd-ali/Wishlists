@@ -14,7 +14,7 @@ class MainNavigationControllerViewController: UINavigationController {
         super.viewDidLoad()
         
         if isLoggedIn() {
-            let homeController = MainViewController()
+            let homeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeVC")
             viewControllers = [homeController]
         }
     }

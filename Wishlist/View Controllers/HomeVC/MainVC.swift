@@ -229,15 +229,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
         // configure image in createNewListPopUpView
-        imagePreview.image = UIImage(named: "iconRoundedImage")
+        imagePreview?.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
         
         // set up popUpView
-        self.createListButton.layer.cornerRadius = 2
-        self.listNameTextfield.tintColor = .lightGray
-        self.listNameTextfield.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
-        self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
-        self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
+        self.createListButton?.layer.cornerRadius = 2
+        self.listNameTextfield?.tintColor = .lightGray
+        self.listNameTextfield?.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
+        self.blurrImage?.transform = CGAffineTransform(translationX: 0, y: 1000)
+        self.newListView?.transform = CGAffineTransform(translationX: 0, y: 1000)
         
         // hide welcomeLabel
         self.welcomeLabel.transform = CGAffineTransform(translationX: -270, y: 0)
