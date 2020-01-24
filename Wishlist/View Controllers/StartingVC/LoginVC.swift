@@ -218,7 +218,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }else {
                     // correct acount details -> login
                     DispatchQueue.main.async {
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        UserDefaults.standard.setIsLoggedIn(value: true)
                         UserDefaults.standard.synchronize()
                         
                         self.transitionToHome()

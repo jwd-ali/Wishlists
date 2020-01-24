@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+extension UserDefaults {
+    
+    func setIsLoggedIn(value: Bool) {
+        set(value, forKey: "isLoggedIn")
+        synchronize()
+    }
+    
+    func isLoggedIn() -> Bool {
+        return bool(forKey: "isLoggedIn")    }
+}

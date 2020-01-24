@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--First Launch View Controller-->
         <scene sceneID="fjZ-3G-iaF">
             <objects>
-                <viewController storyboardIdentifier="StartVC" id="RRm-Ch-CQv" customClass="ViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FirstLaunchVC" modalPresentationStyle="fullScreen" id="RRm-Ch-CQv" customClass="FirstLaunchViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hMe-II-J9J">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -407,6 +407,21 @@
             </objects>
             <point key="canvasLocation" x="4647.826086956522" y="-237.05357142857142"/>
         </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="Rue-Lc-bJd">
+            <objects>
+                <viewController storyboardIdentifier="ProfileVC" id="15I-cv-Itg" customClass="ProfileViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hJm-vb-aaz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="65A-M3-MQM"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jlG-2S-MmJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5096" y="513"/>
+        </scene>
         <!--Wishlist View Controller-->
         <scene sceneID="FgZ-u9-qch">
             <objects>
@@ -423,7 +438,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZS-ey-4Yd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5771" y="-676"/>
+            <point key="canvasLocation" x="6471" y="-237"/>
         </scene>
         <!--Image Collection View Controller-->
         <scene sceneID="SR5-sH-M1C">
@@ -490,7 +505,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t23-0s-99g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5772" y="101"/>
+            <point key="canvasLocation" x="5557" y="-708"/>
         </scene>
         <!--Main Navigation Controller View Controller-->
         <scene sceneID="LRe-qB-ahk">

@@ -8,23 +8,59 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
+    
+    let signOutButton: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Ausloggen", for: .normal)
+        v.addTarget(self, action: #selector(signoutButtonTapped), for: .touchUpInside)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let backButton: UIButton = {
+        let v = UIButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.setImage(UIImage(named: "backButton"), for: .normal)
+        v.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        v.setImageTintColor(.darkGray)
+        return v
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // enable swipe to pop viewcontroller
+        self.navigationController?.interactivePopGestureRecognizer!.delegate = self
 
-        // Do any additional setup after loading the view.
+        setupView()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setupView() {
+        
+        view.addSubview(signOutButton)
+        view.addSubview(backButton)
+        
+        signOutButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        signOutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
     }
-    */
-
+    
+    @objc func signoutButtonTapped() {
+        UserDefaults.standard.setIsLoggedIn(value: false)
+        UserDefaults.standard.synchronize()
+        
+        let firstLaunchVC = self.storyboard?.instantiateViewController(withIdentifier: "FirstLaunchVC") as! FirstLaunchViewController
+        
+        self.navigationController?.present(firstLaunchVC, animated: true)
+    }
+    
+    @objc func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }

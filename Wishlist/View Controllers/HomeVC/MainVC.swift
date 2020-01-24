@@ -70,6 +70,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         let v = UIButton()
         v.setImage(UIImage(named: "profile"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -574,7 +575,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.navigationController?.present(imageCollectionView, animated: true)
     }
     
-    // MARK: wishPopUpView
+    // MARK: AddWishButton
     
     @objc func closePopUp(){
         dismissPopUpView()
@@ -686,8 +687,19 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //        saveWish()
     }
     
+    //MARK: ProfileButton
+    @objc func profileButtonTapped() {
+        
+        let profileView = self.storyboard?.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileViewController
+        
+        self.navigationController?.pushViewController(profileView, animated: true)
+    }
     
 }
+
+
+
+//MARK: DelegateExtensions
 
 extension MainViewController: ClassBDelegate {
     func childVCDidComplete( with image: UIImage?, index: Int?) {

@@ -180,7 +180,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         view.endEditing(true)
         
-        let VC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as! ViewController
+        let VC = self.storyboard?.instantiateViewController(withIdentifier: "FirstLaunchVC") as! FirstLaunchViewController
         
         self.navigationController?.pushViewController(VC, animated: false)
     }

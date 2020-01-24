@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import RevealingSplashView
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     
     let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "zauberstab")!, iconInitialSize: CGSize(width: 120, height: 120), backgroundColor: .white)
     
