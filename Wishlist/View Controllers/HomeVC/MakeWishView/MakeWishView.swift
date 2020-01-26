@@ -16,6 +16,10 @@ protocol ImagePickerDelegate {
     func showImagePickerControllerActionSheet()
 }
 
+protocol DismissViewDelegate {
+    func dissmissViewComplete()
+}
+
 class MakeWishView: UIView, UITextFieldDelegate {
 
     let wishNameTextField: UITextField = {
@@ -169,6 +173,8 @@ class MakeWishView: UIView, UITextFieldDelegate {
     
     var imageButtonDelegate: ImagePickerDelegate?
     
+    var dissmissViewDelegate: DismissViewDelegate?
+    
     var amount: Int = 0
     
     override init(frame: CGRect) {
@@ -182,6 +188,7 @@ class MakeWishView: UIView, UITextFieldDelegate {
         )
 
         self.wishNameTextField.becomeFirstResponder()
+        UITextField.appearance().tintColor = .white
         
         // add target to wishNameTextfield to check if empty or not
         setupAddTargetIsNotEmptyTextFields()
@@ -315,6 +322,7 @@ class MakeWishView: UIView, UITextFieldDelegate {
     }
     
     @objc func closeButtonTapped(){
+        dissmissViewDelegate?.dissmissViewComplete()
         dismissView()
     }
     

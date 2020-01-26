@@ -20,14 +20,14 @@ protocol DismissWishlistDelegate {
     func dismissWishlistVC(dataArray: [Wishlist])
 }
 
-
 class WishlistViewController: UIViewController {
 
     
-    let wishlistBackgroundView: UIView = {
-           let v = UIView()
+    let wishlistBackgroundView: UIImageView = {
+           let v = UIImageView()
            v.translatesAutoresizingMaskIntoConstraints = false
-           v.backgroundColor = .gray
+//           v.backgroundColor = .gray
+        v.image = UIImage(named: "backgroundImage")
            return v
        }()
        
@@ -67,9 +67,11 @@ class WishlistViewController: UIViewController {
    let wishlistLabel: UILabel = {
        let v = UILabel()
        v.text = "Wishlist"
-       v.font = UIFont(name: "AvenirNext-Bold", size: 35)
+       v.font = UIFont(name: "AvenirNext-Medium", size: 26)
+       v.textAlignment = .left
        v.textColor = .white
-       v.minimumScaleFactor = 0.1
+       v.adjustsFontSizeToFitWidth = true
+       v.minimumScaleFactor = 0.5
        v.translatesAutoresizingMaskIntoConstraints = false
        return v
    }()
@@ -78,7 +80,7 @@ class WishlistViewController: UIViewController {
        let v = UIImageView()
        v.image = UIImage(named: "iconRoundedImage")
        v.layer.shadowOpacity = 1
-       v.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+       v.layer.shadowOffset = CGSize(width: 1.5, height: 2.0)
        v.layer.shadowRadius = 3
        v.layer.shadowColor = UIColor.darkGray.cgColor
        v.translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +164,7 @@ class WishlistViewController: UIViewController {
         wishlistBackgroundView.addSubview(wishlistLabel)
         wishlistBackgroundView.addSubview(wishlistImage)
         wishlistView.addSubview(theTableView.tableView)
-        wishlistView.addSubview(addWishButton)
+        view.addSubview(addWishButton)
         
         NSLayoutConstraint.activate([
             
@@ -271,6 +273,7 @@ class WishlistViewController: UIViewController {
     
     @objc private func addWishButtonTapped(){
         
+        view.removeGestureRecognizer(panGR)
         view.addSubview(makeWishView)
         
         makeWishView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -295,6 +298,8 @@ class WishlistViewController: UIViewController {
         makeWishView.noteImage.alpha = 0
         
         makeWishView.addWishDelegate = self
+        
+        makeWishView.dissmissViewDelegate = self
         
         makeWishView.imageButtonDelegate = self
         
@@ -361,8 +366,16 @@ extension WishlistViewController: DeleteWishDelegate {
     }
 }
 
+extension WishlistViewController: DismissViewDelegate{
+    func dissmissViewComplete() {
+        view.addGestureRecognizer(panGR)
+    }
+    
+    
+}
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        view.addGestureRecognizer(panGR)
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
         // only update current list if selectedWishlist is currentWishlist

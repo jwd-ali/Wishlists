@@ -20,13 +20,23 @@ class AddItemCell: UICollectionViewCell {
         return v
     }()
     
+    let borderView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .clear
+        v.layer.borderWidth = 2
+        v.layer.borderColor = UIColor.lightGray.cgColor
+        v.layer.cornerRadius = 30
+        return v
+    }()
+    
     let label: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "neue Wishlist erstellen"
+        v.text = "Tippen, um neue Wishlist zu erstellen"
         v.numberOfLines = 0
         v.font = UIFont(name: "AvenirNext-Regular", size: 20)
-        v.textColor = .darkGray
+        v.textColor = .lightGray
         v.textAlignment = .center
         return v
     }()
@@ -56,9 +66,11 @@ class AddItemCell: UICollectionViewCell {
  
     func commonInit() -> Void {
         contentView.layer.cornerRadius = 3.0;
+        contentView.addSubview(borderView)
         contentView.addSubview(btn)
         contentView.addSubview(label)
-        contentView.addSubview(plusLabel)
+//        contentView.addSubview(plusLabel)
+        
         
 
         // constrain button to all 4 sides
@@ -67,16 +79,22 @@ class AddItemCell: UICollectionViewCell {
             btn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             btn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             btn.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+    
+            borderView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 20),
+            borderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -50),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//e
+            label.centerXAnchor.constraint(equalTo: borderView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: borderView.centerYAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),    
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             
-            plusLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
-            plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            plusLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+//            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
+//            plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             
         ])

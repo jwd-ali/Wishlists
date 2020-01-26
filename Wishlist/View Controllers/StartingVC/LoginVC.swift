@@ -99,8 +99,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let eyeButton: UIButton = {
         let v = UIButton()
         v.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
+        v.setImage(UIImage(named: "eyeOpen"), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
-        
         return v
     }()
 
@@ -115,9 +115,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         setUpViews()
         
         self.passwordTextField.rightPadding = 15
-        
-        // Auge Button Standart auf offen setzen
-        eyeButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
 
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -142,7 +139,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         UITextField.appearance().tintColor = .white
         
         // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
+        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
 
     }
     
@@ -239,7 +236,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: false)
     }
 
     
@@ -253,7 +250,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
         if textField == emailTextField {
-            print("hi")
             passwordTextField.becomeFirstResponder()
         }else if textField == passwordTextField {
             textField.resignFirstResponder()

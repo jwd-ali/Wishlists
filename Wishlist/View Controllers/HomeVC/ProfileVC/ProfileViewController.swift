@@ -55,9 +55,17 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         UserDefaults.standard.setIsLoggedIn(value: false)
         UserDefaults.standard.synchronize()
         
-        let firstLaunchVC = self.storyboard?.instantiateViewController(withIdentifier: "FirstLaunchVC") as! FirstLaunchViewController
+        let firstLaunchVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstLaunchVC")
         
-        self.navigationController?.present(firstLaunchVC, animated: true)
+        let transition:CATransition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromTop
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(firstLaunchVC, animated: false)
+        
+//        self.navigationController?.pushViewController(firstLaunchVC, animated: true)
     }
     
     @objc func backButtonTapped() {

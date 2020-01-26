@@ -37,17 +37,17 @@ extension MainViewController {
     
     func saveWish() {
         // get name from current Whishlist
-        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
-        let wishIDX = self.selectedWishlistIDX
-        
-        // auto create "wünsche" - collection and add Wish with name
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.popUpView.popUpTextField.text!).setData(["name": self.popUpView.popUpTextField.text!, "wishIDX": wishIDX!], completion: { (error) in
-            if error != nil{
-                print("Error saving Wish")
-            }
-        })
+//        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
+//        let wishIDX = self.selectedWishlistIDX
+//
+//        // auto create "wünsche" - collection and add Wish with name
+//        let db = Firestore.firestore()
+//        let userID = Auth.auth().currentUser!.uid
+//        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.popUpView.popUpTextField.text!).setData(["name": self.popUpView.popUpTextField.text!, "wishIDX": wishIDX!], completion: { (error) in
+//            if error != nil{
+//                print("Error saving Wish")
+//            }
+//        })
     }
     
     func saveWishlist() {
@@ -95,19 +95,19 @@ extension MainViewController {
                     if listImageIDX as? Int == nil {
                         self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: self.mainColor))
                         // set the drop down menu's options
-                        self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
-                        self.dropDownButton.dropView.dropDownListImages.append(UIImage(named: "iconRoundedImage")!)
+                        self.theDropDownOptions.append(listName as! String)
+                        self.theDropDownImageOptions.append(UIImage(named: "iconRoundedImage")!)
                     }else {
                         
                         self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish](), color: self.customColors[listImageIDX as! Int]))
                         
-                        self.dropDownButton.dropView.dropDownOptions.append(listName as! String)
-                        self.dropDownButton.dropView.dropDownListImages.append(self.images[listImageIDX as! Int])
+                        self.theDropDownOptions.append(listName as! String)
+                        self.theDropDownImageOptions.append(self.images[listImageIDX as! Int])
                     }
                     
                     // reload collectionView and tableView
                     self.theCollectionView.reloadData()
-                    self.dropDownButton.dropView.tableView.reloadData()
+//                    self.dropDownButton.dropView.tableView.reloadData()
                     
                 }
             }

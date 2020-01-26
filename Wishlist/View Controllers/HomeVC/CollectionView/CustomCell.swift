@@ -35,7 +35,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Test Label"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
+        v.font = UIFont(name: "AvenirNext-Medium", size: 26)
         v.textColor = .white
         v.textAlignment = .left
         return v

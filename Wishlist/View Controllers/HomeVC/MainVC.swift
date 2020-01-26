@@ -44,8 +44,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     let welcomeLabel: UILabel = {
         let v = UILabel()
         v.text = ""
-        v.font = UIFont(name: "AvenirNext-Bold", size: 53)
+        v.font = UIFont(name: "AvenirNext-Bold", size: 40)
+        v.textAlignment = .left
         v.textColor = .white
+        v.adjustsFontSizeToFitWidth = true
+        v.minimumScaleFactor = 0.5
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -61,7 +64,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let achievementsButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "achievements"), for: .normal)
+        if #available(iOS 13.0, *) {
+            v.setImage(UIImage(named: "achievements"), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -85,46 +92,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // MARK: PopUpView
     
-    let helperView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .clear
+    let makeWishView: MakeWishView = {
+        let v = MakeWishView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    let popUpView: PopUpView = {
-        let v = PopUpView()
-        v.layer.cornerRadius = 10
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+    var theDropDownOptions = [String]()
     
-    let wishButton: UIButton = {
-        let v = UIButton()
-        v.setBackgroundImage(UIImage(named: "wishButton"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addTarget(self, action: #selector(wishButtonTapped), for: .touchUpInside)
-        v.contentVerticalAlignment = .fill
-        v.contentHorizontalAlignment = .fill
-        return v
-    }()
-    
-    let closeButton: UIButton = {
-        let v = UIButton()
-        v.setBackgroundImage(UIImage(named: "closeButtonWhite"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addTarget(self, action: #selector(closePopUp), for: .touchUpInside)
-        return v
-    }()
-    
-    var dropDownButton = DropDownBtn()
-    
-    let visualEffectView: UIVisualEffectView = {
-        let blurrEffect = UIBlurEffect(style: .light)
-        let v = UIVisualEffectView(effect: blurrEffect)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+    var theDropDownImageOptions = [UIImage]()
    
     
     // MARK: CollectionView
@@ -222,12 +198,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //            self.backGroundImage.applyTransform(withScale: 14, anchorPoint: CGPoint(x: 0.5, y: 0))
 //        }
                 
-        // configure the dropDownButton
-        dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        dropDownButton.dropView.selectedWishlistDelegate = self
-        dropDownButton.label.text = "Liste wählen"
-        dropDownButton.listImage.image = UIImage(named: "iconRoundedImage")
-        dropDownButton.translatesAutoresizingMaskIntoConstraints = false
+//        // configure the dropDownButton
+//        dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+//        dropDownButton.dropView.selectedWishlistDelegate = self
+//        dropDownButton.label.text = "Liste wählen"
+//        dropDownButton.listImage.image = UIImage(named: "iconRoundedImage")
+//        dropDownButton.translatesAutoresizingMaskIntoConstraints = false
         
         // configure image in createNewListPopUpView
         imagePreview?.image = UIImage(named: "iconRoundedImage")
@@ -255,67 +231,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         // retrieve firstname from DB and animate welcomeLabel
         setupWelcomeLabel()
-
-        // MARK: Views + Constraints
-        view.addSubview(backGroundImage)
-        view.addSubview(theCollectionView)
-//        view.addSubview(wishlistView)
-        view.addSubview(welcomeLabel)
-        view.addSubview(searchButton)
-        view.addSubview(bottomBar)
-        view.addSubview(achievementsButton)
-        view.addSubview(profileButton)
-        view.addSubview(addButton)
         
- 
-        NSLayoutConstraint.activate([
-            
-            // constrain background image
-            backGroundImage.topAnchor.constraint(equalTo: view.topAnchor),
-            backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            //constrain bottomBar
-            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            
-            //contrain achievementsButton
-            achievementsButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
-            achievementsButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
-            achievementsButton.widthAnchor.constraint(equalToConstant: 70),
-            achievementsButton.heightAnchor.constraint(equalToConstant: 70),
-            
-            // constrain profileButton
-            profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
-            profileButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: view.frame.width/3.5),
-            profileButton.widthAnchor.constraint(equalToConstant: 70),
-            profileButton.heightAnchor.constraint(equalToConstant: 70),
-            
-            // constrain addWishButton
-            addButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
-            addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -40),
-            
-               
-            // constrain collectionView
-            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120.0),
-            theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
-            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            
-            //constrain welcomeLabel
-            welcomeLabel.topAnchor.constraint(equalTo: theCollectionView.topAnchor, constant: -65),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            
-            // constrain searchButton
-            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            searchButton.widthAnchor.constraint(equalToConstant: 30),
-            searchButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            
-        ])
+        // add motion effect to background image
+        Utilities.applyMotionEffect(toView: self.backGroundImage, magnitude: 20)
+        
+        setupViews()
         
         // register the two cell classes for reuse
         theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
@@ -346,6 +266,67 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // get the data from the server
         retrieveUserDataFromDB()
 
+    }
+    //MARK: SetupViews
+    func setupViews() {
+        
+        view.addSubview(backGroundImage)
+        view.addSubview(theCollectionView)
+        view.addSubview(welcomeLabel)
+        view.addSubview(searchButton)
+        view.addSubview(bottomBar)
+        view.addSubview(achievementsButton)
+        view.addSubview(profileButton)
+        view.addSubview(addButton)
+        
+ 
+        NSLayoutConstraint.activate([
+            
+            // constrain background image
+            backGroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20),
+            backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
+            backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20),
+            backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
+            
+            //constrain bottomBar
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            
+            //contrain achievementsButton
+            achievementsButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            achievementsButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
+            achievementsButton.widthAnchor.constraint(equalToConstant: 50),
+            achievementsButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            // constrain profileButton
+            profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            profileButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: view.frame.width/3.5),
+            profileButton.widthAnchor.constraint(equalToConstant: 50),
+            profileButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            // constrain addWishButton
+            addButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
+            addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -40),
+            
+               
+            // constrain collectionView
+            theCollectionView.topAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: 40),
+            theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
+            theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            
+            //constrain welcomeLabel
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
+            
+            // constrain searchButton
+            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+            searchButton.widthAnchor.constraint(equalToConstant: 30),
+            searchButton.heightAnchor.constraint(equalToConstant: 30),
+
+        ])
     }
     
     // MARK: ImageRotation-Functions
@@ -399,7 +380,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // to set the item size
         if theCollectionView.frame.width != colViewWidth {
             let w = theCollectionView.frame.width
-            columnLayout.itemSize = CGSize(width: w, height: 170)
+            columnLayout.itemSize = CGSize(width: w, height: 160)
             colViewWidth = theCollectionView.frame.width
         }
     }
@@ -435,7 +416,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             cell.customWishlistTapCallback = {
                 
                 let heroID = "wishlistImageIDX\(indexPath)"
-                cell.theView.heroID = heroID
+                cell.wishlistImage.heroID = heroID
                 
                 let addButtonHeroID = "addWishButtonID"
                 self.addButton.heroID = addButtonHeroID
@@ -447,8 +428,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 
                 vc.wishList = self.dataSourceArray[self.currentWishListIDX]
                 // pass drop down options
-                vc.theDropDownOptions = self.dropDownButton.dropView.dropDownOptions
-                vc.theDropDownImageOptions = self.dropDownButton.dropView.dropDownListImages
+                vc.theDropDownOptions = self.theDropDownOptions
+                vc.theDropDownImageOptions = self.theDropDownImageOptions
                 // pass current wishlist index
                 vc.currentWishListIDX = self.currentWishListIDX
                 // pass the data array
@@ -546,9 +527,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish](), color: self.customColors[self.currentImageArrayIDX!]))
            
             // append created list to drop down options
-            self.dropDownButton.dropView.dropDownOptions.append(txt)
-            self.dropDownButton.dropView.dropDownListImages.append(self.image!)
-            self.dropDownButton.dropView.tableView.reloadData()
+            self.theDropDownOptions.append(txt)
+            self.theDropDownImageOptions.append(self.image!)
+//            self.dropDownButton.dropView.tableView.reloadData()
             
             
             // reload the collection view
@@ -577,115 +558,88 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // MARK: AddWishButton
     
-    @objc func closePopUp(){
-        dismissPopUpView()
-    }
-    
     @objc func addWishButtonTapped(){
         
-        popUpView.popUpTextField.text = ""
-        self.popUpView.popUpTextField.becomeFirstResponder()
-        
-        view.addSubview(visualEffectView)
-        view.addSubview(helperView)
-        view.addSubview(popUpView)
-        view.addSubview(wishButton)
-        view.addSubview(closeButton)
-        view.addSubview(dropDownButton)
-        
-        
-        // constrain blurrEffectView
-        visualEffectView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        visualEffectView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        visualEffectView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        // constrain invisible helperView
-        helperView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        helperView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        helperView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        helperView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        // constrain popUpView
-        popUpView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        popUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
-        popUpView.heightAnchor.constraint(equalToConstant: 230).isActive = true
-        popUpView.widthAnchor.constraint(equalToConstant: view.frame.width - 80).isActive = true
-        
-        // constrain wishButton
-        wishButton.centerXAnchor.constraint(equalTo: popUpView.centerXAnchor).isActive = true
-        wishButton.centerYAnchor.constraint(equalTo: popUpView.centerYAnchor, constant: 70).isActive = true
-        wishButton.heightAnchor.constraint(equalToConstant: 72).isActive = true
-        wishButton.widthAnchor.constraint(equalToConstant: 72).isActive = true
-        
-        // constrain dropDownbutton
-        dropDownButton.centerXAnchor.constraint(equalTo: self.popUpView.centerXAnchor).isActive = true
-        dropDownButton.centerYAnchor.constraint(equalTo: self.popUpView.centerYAnchor).isActive = true
-        dropDownButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
-        dropDownButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        // constrain closeButton
-        closeButton.leftAnchor.constraint(equalTo: popUpView.leftAnchor).isActive = true
-        closeButton.topAnchor.constraint(equalTo: popUpView.topAnchor).isActive = true
-        
-        
-        self.view.bringSubviewToFront(visualEffectView)
-        self.view.bringSubviewToFront(helperView)
-        self.view.bringSubviewToFront(popUpView)
-        self.view.bringSubviewToFront(wishButton)
-        self.view.bringSubviewToFront(dropDownButton)
-        self.view.bringSubviewToFront(dropDownButton.dropView)
-        self.view.bringSubviewToFront(closeButton)
+        view.addSubview(makeWishView)
+            
+            makeWishView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            makeWishView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            makeWishView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            makeWishView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            
+            makeWishView.grayView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+            makeWishView.visualEffectView.alpha = 0
+            makeWishView.grayView.alpha = 0
+            makeWishView.wishButton.alpha = 0
+            makeWishView.closeButton.alpha = 0
+            makeWishView.dropDownButton.alpha = 0
+            makeWishView.wishNameTextField.alpha = 0
+            makeWishView.wishImageView.alpha = 0
+            makeWishView.wishImageButton.alpha = 0
+            makeWishView.linkTextField.alpha = 0
+            makeWishView.priceTextField.alpha = 0
+            makeWishView.noteTextField.alpha = 0
+            makeWishView.linkImage.alpha = 0
+            makeWishView.priceImage.alpha = 0
+            makeWishView.noteImage.alpha = 0
+            
+            makeWishView.addWishDelegate = self
+            
+            makeWishView.imageButtonDelegate = self
+            
+            // set dropDownOptions
+            makeWishView.dropDownButton.dropView.dropDownOptions = self.theDropDownOptions
+            makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
+            
+            // set dropDownButton image and label to current wishlists image and label
+        makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
+        makeWishView.dropDownButton.label.text = self.dataSourceArray[0].name
+            
+            // pass data array
+            makeWishView.dataSourceArray = self.dataSourceArray
+            
+            // update selectedWishlistIDX
+            makeWishView.selectedWishlistIDX = currentWishListIDX
+            
+            // reset textfield
+            makeWishView.wishNameTextField.text = ""
+            // hide wishButton
+            makeWishView.wishButton.isHidden = true
+            makeWishView.wishButtonDisabled.isHidden = false
+            
+            makeWishView.wishNameTextField.becomeFirstResponder()
+                
+            UIView.animate(withDuration: 0.3) {
+                
+                self.makeWishView.visualEffectView.alpha = 1
+                self.makeWishView.grayView.alpha = 1
+                self.makeWishView.wishButton.alpha = 1
+                self.makeWishView.closeButton.alpha = 1
+                self.makeWishView.dropDownButton.alpha = 1
+                self.makeWishView.wishNameTextField.alpha = 1
+                self.makeWishView.wishImageView.alpha = 1
+                self.makeWishView.wishImageButton.alpha = 1
+                self.makeWishView.linkTextField.alpha = 1
+                self.makeWishView.priceTextField.alpha = 1
+                self.makeWishView.noteTextField.alpha = 1
+                self.makeWishView.linkImage.alpha = 1
+                self.makeWishView.priceImage.alpha = 1
+                self.makeWishView.noteImage.alpha = 1
+                
+                self.makeWishView.grayView.transform = CGAffineTransform.identity
+            }
+            
     
-        popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-        dropDownButton.alpha = 0
-        popUpView.alpha = 0
-        wishButton.alpha = 0
-        visualEffectView.alpha = 0
-        closeButton.alpha = 0
-        
-        UIView.animate(withDuration: 0.3) {
-            self.visualEffectView.alpha = 1
-            self.wishButton.alpha = 1
-            self.popUpView.alpha = 1
-            self.dropDownButton.alpha = 1
-            self.closeButton.alpha = 1
-            self.popUpView.transform = CGAffineTransform.identity
         }
-    }
-    
-
-    @objc func wishButtonTapped(){
-        dismissPopUpView()
-        insertWish()
-    }
     
     
-    func dismissPopUpView(){
-        UIView.animate(withDuration: 0.3, animations: {
-            self.popUpView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.wishButton.alpha = 0
-            self.popUpView.alpha = 0
-            self.visualEffectView.alpha = 0
-            self.dropDownButton.alpha = 0
-            self.closeButton.alpha = 0
-        }) { (_) in
-            self.dropDownButton.dismissDropDown()
-            self.dropDownButton.removeFromSuperview()
-            self.wishButton.removeFromSuperview()
-            self.visualEffectView.removeFromSuperview()
-            self.closeButton.removeFromSuperview()
-            self.popUpView.removeFromSuperview()
-            self.helperView.removeFromSuperview()
-        }
-    }
-    
-    func insertWish(){
-        
-//        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
-//        // save Wish to database -> DataHandler
-//        saveWish()
-    }
+//
+//    func insertWish(){
+//
+////        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+////        // save Wish to database -> DataHandler
+////        saveWish()
+//    }
     
     //MARK: ProfileButton
     @objc func profileButtonTapped() {
@@ -720,8 +674,78 @@ extension MainViewController: DismissWishlistDelegate {
     func dismissWishlistVC(dataArray: [Wishlist]) {
         self.dataSourceArray = dataArray
     }
+}
+
+//extension MainViewController: DeleteWishDelegate {
+//    func deleteWish(_ idx: Int){
+//        // remove the wish from the user's currently selected wishlist
+//        wishList.wishData.remove(at: idx)
+//        // set the updated data as the data for the table view
+//        theTableView.wishList = wishList.wishData
+//        theTableView.tableView.beginUpdates()
+//        theTableView.tableView.deleteRows(at: [
+//            (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
+//        theTableView.tableView.endUpdates()
+//        // reload data so index is updated
+//        theTableView.tableView.reloadData()
+//    }
+//}
+
+extension MainViewController: AddWishDelegate {
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+        
+//        // only update current list if selectedWishlist is currentWishlist
+//        if selectedWishlistIDX == currentWishListIDX {
+//            wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+//            theTableView.wishList = wishList.wishData
+//            theTableView.tableView.beginUpdates()
+//            theTableView.tableView.insertRows(at: [
+//                (NSIndexPath(row: theTableView.wishList.count-1, section: 0) as IndexPath)], with: .left)
+//            theTableView.tableView.endUpdates()
+//        }
+    }
+}
+
+// MARK: ImagePickerController
+extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    // delegate function
+    func showImagePickerControllerActionSheet() {
+        // choose Alert Options
+        let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .photoLibrary)
+        }
+        
+        let cameraAction = UIAlertAction(title: "Foto aufnehmen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .camera)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
+        
+        
+        AlertService.showAlert(style: .actionSheet, title: "Wähle ein Bild aus", message: nil, actions: [photoLibraryActionn, cameraAction, cancelAction], completion: nil)
+    }
     
+    func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        imagePickerController.sourceType = sourceType
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            makeWishView.wishImageView.image = editedImage
+            makeWishView.wishImageButton.titleLabel?.text = ""
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            makeWishView.wishImageButton.titleLabel?.text = ""
+            makeWishView.wishImageView.image = originalImage
+        }
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 

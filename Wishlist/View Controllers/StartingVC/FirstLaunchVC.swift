@@ -13,9 +13,6 @@ import RevealingSplashView
 
 class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     
-    let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "zauberstab")!, iconInitialSize: CGSize(width: 120, height: 120), backgroundColor: .white)
-    
-    
     let backgroundImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "backgroundImage")
@@ -61,41 +58,16 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let emailTextfield: UITextField = {
-        let v = UITextField(frame: CGRect.init(x: 100, y: 200, width: 100, height: 30))
-        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
-        v.backgroundColor = .clear
-        v.borderStyle = .none
-        v.textColor = .white
-        v.textAlignment = .left
-        v.placeholder = "Email-Adresse"
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.autocapitalizationType = .none
-        v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2)
-        v.addPadding(.left(60))
-        return v
-    }()
-    
-    let weiterButton: CustomButton = {
+    let emailButton: CustomButton = {
         let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("WEITER", for: .normal)
+        v.setTitle("Mit Email fortfahren", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.titleLabel?.textColor = .white
         v.setTitleColor(.white, for: .normal)
         v.backgroundColor = UIColor.darkGray
         v.layer.cornerRadius = 3
         v.addTarget(self, action: #selector(weiterButtonTapped), for: .touchUpInside)
-        return v
-    }()
-    
-    let kostenlosLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
-        v.textColor = .white
-        v.textAlignment = .center
-        v.text = "Anmelden oder kostenlos registrieren"
         return v
     }()
     
@@ -189,11 +161,10 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         UITextField.appearance().tintColor = .white
         
         // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
+        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
         
         setUpViews()
         
-        revealingSplashView.startAnimation()
     }
     
     
@@ -202,10 +173,9 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(backgroundImage)
         view.addSubview(willkommenLabel)
         view.addSubview(textLabel)
-        view.addSubview(weiterButton)
-        view.addSubview(emailTextfield)
-        emailTextfield.addSubview(emailImage)
-        view.addSubview(kostenlosLabel)
+        view.addSubview(emailButton)
+        emailButton.addSubview(emailImage)
+//        view.addSubview(kostenlosLabel)
         view.addSubview(oderLabel)
         view.addSubview(lineLeft)
         view.addSubview(lineRight)
@@ -215,8 +185,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         googleButton.addSubview(googleLogo)
         view.addSubview(appleButton)
         appleButton.addSubview(appleLogo)
-        
-        view.addSubview(revealingSplashView)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -232,25 +200,27 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
-        kostenlosLabel.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 120).isActive = true
-        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        kostenlosLabel.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 120).isActive = true
+//        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        emailTextfield.topAnchor.constraint(equalTo: kostenlosLabel.topAnchor, constant: 35).isActive = true
-        emailTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-        emailTextfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+//        emailTextfield.topAnchor.constraint(equalTo: kostenlosLabel.topAnchor, constant: 35).isActive = true
+//        emailTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+//        emailTextfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
-        emailImage.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor, constant: 10).isActive = true
-        emailImage.centerYAnchor.constraint(equalTo: emailTextfield.centerYAnchor).isActive = true
+        
+        
+        emailButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        emailButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        emailButton.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 100).isActive = true
+        emailButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        emailImage.centerYAnchor.constraint(equalTo: emailButton.centerYAnchor).isActive = true
+        emailImage.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor, constant: 10).isActive = true
         emailImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
         emailImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        weiterButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
-        weiterButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
-        weiterButton.topAnchor.constraint(equalTo: emailTextfield.topAnchor, constant: 60).isActive = true
-        weiterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
         oderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        oderLabel.bottomAnchor.constraint(equalTo: weiterButton.bottomAnchor, constant: 40).isActive = true
+        oderLabel.bottomAnchor.constraint(equalTo: emailButton.bottomAnchor, constant: 40).isActive = true
         oderLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         lineLeft.centerYAnchor.constraint(equalTo: oderLabel.centerYAnchor).isActive = true
@@ -261,8 +231,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         lineRight.leadingAnchor.constraint(equalTo: oderLabel.trailingAnchor).isActive = true
         lineRight.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
-        facebookButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
-        facebookButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        facebookButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
+        facebookButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
         facebookButton.bottomAnchor.constraint(equalTo: oderLabel.bottomAnchor, constant: 55 + 10).isActive = true
         facebookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -271,8 +241,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         facebookLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
         facebookLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        googleButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
-        googleButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        googleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
+        googleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
         googleButton.bottomAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 55 + 10).isActive = true
         googleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -281,8 +251,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         googleLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
         googleLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        appleButton.leadingAnchor.constraint(equalTo: emailTextfield.leadingAnchor).isActive = true
-        appleButton.trailingAnchor.constraint(equalTo: emailTextfield.trailingAnchor).isActive = true
+        appleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
+        appleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
         appleButton.bottomAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 55 + 10).isActive = true
         appleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -293,39 +263,13 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
  
     }
     
-    // funktion für email-syntax prüfen, siehe "sighUpVC: validateFields()
-    
-    var email = ""
     
     @objc func weiterButtonTapped() {
-    
-        email = emailTextfield.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        //prüfen, ob Email schon registriert ist
-        Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
-            
-            //Email ist noch nicht registriert -> sign up
-            if methods == nil {
-                
-                let SignUpView = self.storyboard?.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
-                
-                SignUpView.email = self.email
-                
-                self.navigationController?.pushViewController(SignUpView, animated: false)
-                
-            }
-            //Email ist registriert -> login
-            else {
-                
-                self.view.endEditing(true)
-                
-                let LoginView = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
-                
-                LoginView.email = self.email
-                
-                self.navigationController?.pushViewController(LoginView, animated: true)
-            }
-        } 
+        let emailVC = self.storyboard?.instantiateViewController(withIdentifier: "EmailVC") as! EmailViewController
+        
+        self.navigationController?.pushViewController(emailVC, animated: true)
+
     }
     
     
