@@ -114,7 +114,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         setUpViews()
         
-        self.passwordTextField.rightPadding = 15
+        self.passwordTextField.addPadding(.right(15))
 
         emailTextField.delegate = self
         passwordTextField.delegate = self

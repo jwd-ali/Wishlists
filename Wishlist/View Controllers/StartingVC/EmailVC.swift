@@ -79,7 +79,7 @@ class EmailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.emailTextField.becomeFirstResponder()
+//        self.emailTextField.becomeFirstResponder()
     }
     
     func setUpViews() {

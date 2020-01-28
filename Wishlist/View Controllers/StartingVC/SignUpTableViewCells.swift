@@ -140,7 +140,7 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
 
     public static let reuseID = "SignUpPasswordCell"
     
-    let eyeButton: UIButton = {
+    lazy var eyeButton: UIButton = {
         let v = UIButton()
         v.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         v.setImage(UIImage(named: "eyeOpen"), for: .normal)
@@ -148,7 +148,7 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         return v
     }()
     
-    let passwordTextField: CustomTextField = {
+    lazy var passwordTextField: CustomTextField = {
         let v = CustomTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
@@ -159,7 +159,7 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
-        v.addTarget(self, action: #selector(SignUpViewController.passwordTextFieldDidChange(_:)),for: .editingChanged)
+        v.addTarget(self, action: #selector(SignUpPasswordCell.passwordTextFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -171,7 +171,9 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         
         self.backgroundColor = .clear
         
-//        eyeButton.isHidden = true
+        passwordTextField.delegate = self
+        
+        eyeButton.isHidden = true
         passwordTextField.textContentType = .newPassword
         passwordTextField.isSecureTextEntry.toggle()
         
@@ -190,24 +192,10 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         eyeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
         eyeButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 10).isActive = true
     }
-    
-    //delegate Methode für eye-Button
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == passwordTextField {
-            eyeButton.isHidden = false
-        }
-        return true
-    }
-    //delegate Methode für eye-Button
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField == passwordTextField {
-            eyeButton.isHidden = false
-        }
-        return true
-    }
-    
+
     var check = true
-    @IBAction func eyeButtonTapped(_ sender: Any) {
+    @objc func eyeButtonTapped(_ sender: Any) {
+        
         check = !check
         
         if check == true {
@@ -235,16 +223,25 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
                 passwordTextField.selectedTextRange = existingSelectedTextRange
             }
     }
+    
+    @objc func passwordTextFieldDidChange(_ textField: UITextField) {
+            if textField.text == "" {
+                self.eyeButton.isHidden = true
+            }else {
+                self.eyeButton.isHidden = false
+            }
+        
+    }
 }
 
 
 
 //MARK: PasswordRepeatCell
-class SignUpPasswordRepeatCell: UITableViewCell {
+class SignUpPasswordRepeatCell: UITableViewCell, UITextFieldDelegate {
 
     public static let reuseID = "SignUpPasswordRepeatCell"
     
-    let passwordWiederholenTextField: CustomTextField = {
+    lazy var passwordWiederholenTextField: CustomTextField = {
         let v = CustomTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
@@ -255,12 +252,12 @@ class SignUpPasswordRepeatCell: UITableViewCell {
         v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
-        v.addTarget(self, action: #selector(SignUpViewController.passwordTextFieldDidChange(_:)),for: .editingChanged)
+        v.addTarget(self, action: #selector(SignUpPasswordRepeatCell.passwordTextFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    let eyeButton: UIButton = {
+    lazy var eyeButton: UIButton = {
         let v = UIButton()
         v.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         v.setImage(UIImage(named: "eyeOpen"), for: .normal)
@@ -274,6 +271,12 @@ class SignUpPasswordRepeatCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = .clear
+        
+        passwordWiederholenTextField.delegate = self
+        
+        eyeButton.isHidden = true
+        passwordWiederholenTextField.textContentType = .newPassword
+        passwordWiederholenTextField.isSecureTextEntry.toggle()
         
         setupViews()
     }
@@ -292,8 +295,44 @@ class SignUpPasswordRepeatCell: UITableViewCell {
         
     }
     
-    @objc func eyeButtonTapped() {
-        print("eyeButtonTapped")
+    var check = true
+    @objc func eyeButtonTapped(_ sender: Any) {
+        
+        check = !check
+        
+        if check == true {
+            eyeButton.setImage(UIImage(named: "eyeOpen"), for: .normal)
+        } else {
+            eyeButton.setImage(UIImage(named: "eyeClosed"), for: .normal)
+        }
+        passwordWiederholenTextField.isSecureTextEntry.toggle()
+
+            if let existingText = passwordWiederholenTextField.text, passwordWiederholenTextField.isSecureTextEntry {
+                /* When toggling to secure text, all text will be purged if the user
+                 continues typing unless we intervene. This is prevented by first
+                 deleting the existing text and then recovering the original text. */
+                passwordWiederholenTextField.deleteBackward()
+
+                if let textRange = passwordWiederholenTextField.textRange(from: passwordWiederholenTextField.beginningOfDocument, to: passwordWiederholenTextField.endOfDocument) {
+                    passwordWiederholenTextField.replace(textRange, withText: existingText)
+                }
+            }
+        
+            /* Reset the selected text range since the cursor can end up in the wrong
+             position after a toggle because the text might vary in width */
+            if let existingSelectedTextRange = passwordWiederholenTextField.selectedTextRange {
+                passwordWiederholenTextField.selectedTextRange = nil
+                passwordWiederholenTextField.selectedTextRange = existingSelectedTextRange
+            }
+    }
+    
+    @objc func passwordTextFieldDidChange(_ textField: UITextField) {
+            if textField.text == "" {
+                self.eyeButton.isHidden = true
+            }else {
+                self.eyeButton.isHidden = false
+            }
+        
     }
 }
 
