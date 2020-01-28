@@ -14,13 +14,6 @@ import TransitionButton
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
-    let scrollView: UIScrollView = {
-        let v = UIScrollView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .cyan
-        return v
-    }()
-    
     let backgroundImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "backgroundImage")
@@ -48,13 +41,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     
     let wishlistHandleTextField: CustomTextField = {
-//        let handleLeftView: UILabel = {
-//            let v = UILabel()
-//            v.text = "@"
-//            v.font = UIFont(name: "AvenirNext-Regular", size: 17)
-//            v.translatesAutoresizingMaskIntoConstraints = false
-//            return v
-//        }()
         let v = CustomTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
@@ -171,6 +157,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    lazy var theTableView: SignUpTableView = {
+        let v = SignUpTableView()
+        v.backgroundColor = .clear
+        v.tableView.backgroundColor = .clear
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
 
     
     var email = ""
@@ -178,7 +172,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         //Auge Button Standart auf offen setzen
         eyeButtonOne.setImage(UIImage(named: "eyeOpen"), for: .normal)
@@ -236,17 +229,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         view.addSubview(backgroundImage)
         view.addSubview(backButton)
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(emailTextField)
-        scrollView.addSubview(anzeigeNameTextField)
-        scrollView.addSubview(wishlistHandleTextField)
-        scrollView.addSubview(passwordTextField)
-        passwordTextField.addSubview(eyeButtonOne)
-        scrollView.addSubview(passwordWiederholenTextField)
-        passwordWiederholenTextField.addSubview(eyeButtonTwo)
-        scrollView.addSubview(signUpButton)
-        scrollView.addSubview(documentsLabel)
+        view.addSubview(theTableView)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -258,55 +241,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 130).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        emailTextField.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        emailTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        emailTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        anzeigeNameTextField.topAnchor.constraint(equalTo: emailTextField.topAnchor, constant: 80).isActive = true
-        anzeigeNameTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        anzeigeNameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        anzeigeNameTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        wishlistHandleTextField.topAnchor.constraint(equalTo: anzeigeNameTextField.topAnchor, constant: 80).isActive = true
-        wishlistHandleTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        wishlistHandleTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        wishlistHandleTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        passwordTextField.topAnchor.constraint(equalTo: wishlistHandleTextField.topAnchor, constant: 80).isActive = true
-        passwordTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        passwordTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        eyeButtonOne.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
-        eyeButtonOne.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true
-        
-        passwordWiederholenTextField.topAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: 80).isActive = true
-        passwordWiederholenTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        passwordWiederholenTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        passwordWiederholenTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        eyeButtonTwo.centerYAnchor.constraint(equalTo: passwordWiederholenTextField.centerYAnchor, constant: 10).isActive = true
-        eyeButtonTwo.trailingAnchor.constraint(equalTo: passwordWiederholenTextField.trailingAnchor).isActive = true
-        
-        documentsLabel.topAnchor.constraint(equalTo: passwordWiederholenTextField.topAnchor, constant: 80).isActive = true
-        documentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        documentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        documentsLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        signUpButton.topAnchor.constraint(equalTo: documentsLabel.topAnchor, constant: 80).isActive = true
-        signUpButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        signUpButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        
-        
-        
+        theTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 130).isActive = true
+        theTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        theTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        theTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 50).isActive = true
+   
     }
     func validateFields() ->String? {
         

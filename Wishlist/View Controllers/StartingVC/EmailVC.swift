@@ -27,8 +27,8 @@ class EmailViewController: UIViewController {
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
-        v.placeholderColor = .gray
-        v.placeholderFontScale = 1
+        v.placeholderColor = .white
+        v.placeholderFontScale = 0.8
         v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
@@ -77,6 +77,11 @@ class EmailViewController: UIViewController {
         Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.emailTextField.becomeFirstResponder()
+    }
+    
     func setUpViews() {
         
         view.addSubview(backgroundImage)
@@ -96,9 +101,9 @@ class EmailViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130).isActive = true
-        emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        emailTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         weiterButton.topAnchor.constraint(equalTo: emailTextField.topAnchor, constant: 80).isActive = true
         weiterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true

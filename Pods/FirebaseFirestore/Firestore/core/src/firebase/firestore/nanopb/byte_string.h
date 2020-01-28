@@ -80,10 +80,8 @@ class ByteString : public util::Comparable<ByteString> {
 
   ~ByteString();
 
-  ByteString& operator=(ByteString other) {
-    swap(*this, other);
-    return *this;
-  }
+  ByteString& operator=(const ByteString& other);
+  ByteString& operator=(ByteString&& other) noexcept;
 
   friend void swap(ByteString& lhs, ByteString& rhs) noexcept;
 
@@ -147,8 +145,13 @@ class ByteString : public util::Comparable<ByteString> {
 
   size_t Hash() const;
 
+  // Interprets the value as an ASCII string; the way control characters are
+  // represented is implementation-defined.
   std::string ToString() const;
   friend std::ostream& operator<<(std::ostream& out, const ByteString& str);
+
+  // Represents the value as hexademical values.
+  std::string ToHexString() const;
 
  private:
   /**

@@ -16,9 +16,12 @@
 
 #include "Firestore/core/src/firebase/firestore/nanopb/byte_string.h"
 
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
+#include <iomanip>
 #include <ostream>
+#include <sstream>
 
 #include "Firestore/core/src/firebase/firestore/nanopb/nanopb_util.h"
 #include "Firestore/core/src/firebase/firestore/util/hashing.h"
@@ -52,11 +55,29 @@ ByteString::ByteString(const ByteString& other)
 }
 
 ByteString::ByteString(ByteString&& other) noexcept {
-  swap(*this, other);
+  bytes_ = other.bytes_;
+  other.bytes_ = nullptr;
 }
 
 ByteString::~ByteString() {
   std::free(bytes_);
+}
+
+ByteString& ByteString::operator=(const ByteString& other) {
+  if (bytes_ != other.bytes_) {
+    std::free(bytes_);
+    bytes_ = MakeBytesArray(other.data(), other.size());
+  }
+  return *this;
+}
+
+ByteString& ByteString::operator=(ByteString&& other) noexcept {
+  if (bytes_ != other.bytes_) {
+    std::free(bytes_);
+    bytes_ = other.bytes_;
+    other.bytes_ = nullptr;
+  }
+  return *this;
 }
 
 /* static */ ByteString ByteString::Take(pb_bytes_array_t* bytes) {
@@ -87,12 +108,16 @@ size_t ByteString::Hash() const {
 }
 
 std::string ByteString::ToString() const {
-  std::string hex = absl::BytesToHexString(MakeStringView(*this));
-  return absl::StrCat("<", hex, ">");
+  return absl::CEscape(MakeStringView(*this));
 }
 
 std::ostream& operator<<(std::ostream& out, const ByteString& str) {
   return out << str.ToString();
+}
+
+std::string ByteString::ToHexString() const {
+  std::string hex = absl::BytesToHexString(MakeStringView(*this));
+  return absl::StrCat("<", hex, ">");
 }
 
 }  // namespace nanopb

@@ -28,8 +28,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
-        v.placeholderColor = .gray
-        v.placeholderFontScale = 1
+        v.placeholderColor = .white
+        v.placeholderFontScale = 0.8
         v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
@@ -45,8 +45,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
-        v.placeholderColor = .gray
-        v.placeholderFontScale = 1
+        v.placeholderColor = .white
+        v.placeholderFontScale = 0.8
         v.clearButtonMode = UITextField.ViewMode.always
         v.minimumFontSize = 13
         v.borderStyle = .line
@@ -167,12 +167,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.topAnchor, constant: 80).isActive = true
         passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         vergessenButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
         vergessenButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true

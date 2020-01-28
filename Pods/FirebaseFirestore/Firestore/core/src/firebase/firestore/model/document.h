@@ -21,10 +21,6 @@
 #include <memory>
 #include <string>
 
-#if __OBJC__
-#import "Firestore/Source/Model/FSTDocument.h"
-#endif
-
 #include "Firestore/core/src/firebase/firestore/model/field_path.h"
 #include "Firestore/core/src/firebase/firestore/model/field_value.h"
 #include "Firestore/core/src/firebase/firestore/model/maybe_document.h"
@@ -33,6 +29,10 @@
 
 namespace firebase {
 namespace firestore {
+namespace remote {
+class Serializer;
+}  // namespace remote
+
 namespace model {
 
 /** Describes the `has_pending_writes` state of a document. */
@@ -61,12 +61,15 @@ std::ostream& operator<<(std::ostream& os, DocumentState state);
  */
 class Document : public MaybeDocument {
  public:
-  Document() = default;
-
   Document(ObjectValue data,
            DocumentKey key,
            SnapshotVersion version,
            DocumentState document_state);
+
+ private:
+  // TODO(b/146372592): Make this public once we can use Abseil across
+  // iOS/public C++ library boundaries.
+  friend class remote::Serializer;
 
   Document(ObjectValue data,
            DocumentKey key,
@@ -74,24 +77,15 @@ class Document : public MaybeDocument {
            DocumentState document_state,
            absl::any proto);
 
+ public:
   /**
    * Casts a MaybeDocument to a Document. This is a checked operation that will
    * assert if the type of the MaybeDocument isn't actually Type::Document.
    */
   explicit Document(const MaybeDocument& document);
 
-#if __OBJC__
-  explicit Document(FSTDocument* doc)
-      : Document(doc.data, doc.key, doc.version, doc.documentState) {
-  }
-
-  FSTDocument* ToDocument() const {
-    return [FSTDocument documentWithData:data()
-                                     key:key()
-                                 version:version()
-                                   state:document_state()];
-  }
-#endif  // __OBJC__
+  /** Creates an invalid Document instance. */
+  Document() = default;
 
   const ObjectValue& data() const;
 
@@ -107,6 +101,8 @@ class Document : public MaybeDocument {
 
   /** Compares against another Document. */
   friend bool operator==(const Document& lhs, const Document& rhs);
+
+  friend std::ostream& operator<<(std::ostream& os, const Document& doc);
 
  private:
   class Rep;

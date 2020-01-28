@@ -55,6 +55,12 @@ import UIKit
             updatePlaceholder()
         }
     }
+    
+    @IBInspectable dynamic open var placeHolderFont: UIFont = UIFont(name: "AvenirNext-DemiBold", size: 15)! {
+        didSet {
+            updatePlaceholder()
+        }
+    }
 
     override open var placeholder: String? {
         didSet {
@@ -137,6 +143,7 @@ import UIKit
     
     private func updatePlaceholder() {
         placeholderLabel.text = placeholder
+        placeholderLabel.font = placeHolderFont
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.sizeToFit()
         layoutPlaceholderInTextRect()
