@@ -160,10 +160,10 @@ class WishlistViewController: UIViewController {
         view.addSubview(wishlistBackgroundView)
         view.addSubview(dismissWishlistViewButton)
         view.addSubview(menueButton)
-        wishlistBackgroundView.addSubview(wishlistView)
-        wishlistBackgroundView.addSubview(wishlistLabel)
-        wishlistBackgroundView.addSubview(wishlistImage)
-        wishlistView.addSubview(theTableView.tableView)
+        view.addSubview(wishlistView)
+        view.addSubview(wishlistLabel)
+        view.addSubview(wishlistImage)
+        view.addSubview(theTableView.tableView)
         view.addSubview(addWishButton)
         
         NSLayoutConstraint.activate([

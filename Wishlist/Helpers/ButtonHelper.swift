@@ -24,5 +24,4 @@ extension UIButton{
         self.setImage(tintedImage, for: .normal)
         self.tintColor = color
     }
-
 }

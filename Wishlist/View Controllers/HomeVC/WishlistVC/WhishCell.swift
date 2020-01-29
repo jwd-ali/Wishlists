@@ -22,11 +22,12 @@ class WhishCell: UITableViewCell {
         return v
     }()
     
-    let checkButton: UIButton =  {
+    lazy var checkButton: UIButton =  {
         let v = UIButton()
         v.backgroundColor = .darkGray
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
+        v.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -123,7 +124,7 @@ class WhishCell: UITableViewCell {
         
         
         
-        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        
         
         contentView.addSubview(label)
         contentView.addSubview(checkButton)
@@ -201,6 +202,7 @@ class WhishCell: UITableViewCell {
     }
     
     @objc func checkButtonTapped(){
+        print("hi")
         self.checkButton.setBackgroundImage(UIImage(named: "boxChecked"), for: .normal)
         self.checkButton.alpha = 0
         self.checkButton.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
@@ -213,6 +215,7 @@ class WhishCell: UITableViewCell {
             self.deleteWishCallback?()
         }
     }
+    
 }
 
 
