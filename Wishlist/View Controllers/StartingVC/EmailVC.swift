@@ -40,7 +40,7 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     let kostenlosLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 13)
         v.textColor = .white
         v.textAlignment = .center
         v.text = "Anmelden oder kostenlos registrieren"

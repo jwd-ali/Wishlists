@@ -13,6 +13,11 @@ class SignUpTableView: UIView, UITableViewDelegate, UITableViewDataSource {
 
     var tableView = UITableView()
     
+    // only animate cells at first start
+    var shouldAnimateCells = true
+    
+    // keep track of cell index
+    var selectedCellIndexPath: NSIndexPath?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,5 +100,25 @@ class SignUpTableView: UIView, UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SignUpButtonCell", for: indexPath) as! SignUpButtonCell
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 3 {
+            return 140
+        }
+        return 90
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.shouldAnimateCells = false
+    }
 
+//    // animating cells
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if(self.shouldAnimateCells){
+//            // Add animations here
+//            let animation = TableViewAnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+//            let animator = TableViewAnimator(animation: animation)
+//            animator.animate(cell: cell, at: indexPath, in: tableView)
+//        }
+//    }
 }

@@ -26,7 +26,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Willkommen bei Wishlist."
-        v.font = UIFont(name: "AvenirNext-Bold", size: 26)
+        v.font = UIFont(name: "AvenirNext-Bold", size: 23)
         v.textAlignment = .left
         v.textColor = .white
         v.adjustsFontSizeToFitWidth = true
@@ -38,7 +38,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Werde Mitglied unserer Community und erfülle deine größten Wünsche."
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textColor = .white
         v.textAlignment = .left
         v.numberOfLines = 0

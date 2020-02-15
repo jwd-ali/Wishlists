@@ -43,7 +43,7 @@ class SignUpEmailCell: UITableViewCell {
     func setupViews(){
         contentView.addSubview(emailTextField)
         
-        emailTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -86,7 +86,7 @@ class SignUpHandleCell: UITableViewCell {
     func setupViews(){
         contentView.addSubview(wishlistHandleTextField)
         
-        wishlistHandleTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        wishlistHandleTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         wishlistHandleTextField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         wishlistHandleTextField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         wishlistHandleTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -128,7 +128,7 @@ class SignUpAnzeigeName: UITableViewCell {
     func setupViews(){
         contentView.addSubview(anzeigeNameTextField)
         
-        anzeigeNameTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        anzeigeNameTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         anzeigeNameTextField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         anzeigeNameTextField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         anzeigeNameTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -163,6 +163,54 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    lazy var checkLetterImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "false")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var checkNumberImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "false")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var checkLengthImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "false")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var checkLetterLabel: UILabel = {
+        let v = UILabel()
+        v.text = "mindestens ein Groß- und Kleinbuchstaben"
+        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var checkNumberLabel: UILabel = {
+        let v = UILabel()
+        v.text = "mindestens eine Zahl"
+        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var checkLengthLabel: UILabel = {
+        let v = UILabel()
+        v.text = "mindestens acht Zeichen lang"
+        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
 
     required init?(coder: NSCoder) {fatalError("init(coder:) has not been implemented")}
 
@@ -184,13 +232,47 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
         contentView.addSubview(passwordTextField)
         contentView.addSubview(eyeButton)
         
-        passwordTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        contentView.addSubview(checkLetterLabel)
+        checkLetterLabel.addSubview(checkLetterImage)
+        
+        contentView.addSubview(checkNumberLabel)
+        checkNumberLabel.addSubview(checkNumberImage)
+        
+        contentView.addSubview(checkLengthLabel)
+        checkLengthLabel.addSubview(checkLengthImage)
+        
+        passwordTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         passwordTextField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         passwordTextField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         passwordTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         eyeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
         eyeButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 10).isActive = true
+        
+        checkLetterLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 5).isActive = true
+        checkLetterLabel.leadingAnchor.constraint(equalTo: checkLetterImage.leadingAnchor, constant: 13).isActive = true
+        
+        checkLetterImage.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor).isActive = true
+        checkLetterImage.centerYAnchor.constraint(equalTo: checkLetterLabel.centerYAnchor).isActive = true
+        checkLetterImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        checkLetterImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        
+        checkNumberLabel.topAnchor.constraint(equalTo: checkLetterLabel.bottomAnchor, constant: 1).isActive = true
+        checkNumberLabel.leadingAnchor.constraint(equalTo: checkNumberImage.leadingAnchor, constant: 13).isActive = true
+        
+        checkNumberImage.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor).isActive = true
+        checkNumberImage.centerYAnchor.constraint(equalTo: checkNumberLabel.centerYAnchor).isActive = true
+        checkNumberImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        checkNumberImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        
+        checkLengthLabel.topAnchor.constraint(equalTo: checkNumberLabel.bottomAnchor, constant: 1).isActive = true
+        checkLengthLabel.leadingAnchor.constraint(equalTo: checkLengthImage.leadingAnchor, constant: 13).isActive = true
+        
+        checkLengthImage.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor).isActive = true
+        checkLengthImage.centerYAnchor.constraint(equalTo: checkLengthLabel.centerYAnchor).isActive = true
+        checkLengthImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        checkLengthImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        
     }
 
     var check = true
@@ -322,7 +404,7 @@ class SignUpPasswordRepeatCell: UITableViewCell, UITextFieldDelegate {
         contentView.addSubview(passwordWiederholenTextField)
         contentView.addSubview(eyeButton)
         
-        passwordWiederholenTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        passwordWiederholenTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         passwordWiederholenTextField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         passwordWiederholenTextField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         passwordWiederholenTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
