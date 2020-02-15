@@ -31,9 +31,21 @@ class Utilities {
 
     }
     
+    
+    
     static func isPasswordValid(_ password : String) -> Bool {
         
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}")
+        /*
+        ^                         Start anchor
+        (?=.*[A-Z].*[A-Z])        Ensure string has two uppercase letters.
+        (?=.*[!@#$&*])            Ensure string has one special case letter.
+        (?=.*[0-9].*[0-9])        Ensure string has two digits.
+        (?=.*[a-z].*[a-z].*[a-z]) Ensure string has three lowercase letters.
+        .{8}                      Ensure string is of length 8.
+        $                         End anchor.
+        */
+        
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z]).(?=.*[0-9]).(?=.*[a-z]).{8,}$")
         return passwordTest.evaluate(with: password)
     }
     

@@ -224,6 +224,43 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
             }
     }
     
+// delegate Methode für eye-Button
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+       switch textField {
+       case passwordTextField:
+           if passwordTextField.text != "" {
+               
+           } else {
+               eyeButton.isHidden = true
+           }
+           
+           self.passwordTextField.borderActiveColor = .white
+           
+           break
+       default:
+           break
+       }
+        
+       return true
+   }
+
+   func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+       
+       if textField == passwordTextField {
+        // only check if textfield is not empty
+        if textField.text != "" {
+            if Utilities.isPasswordValid(textField.text!){
+                // password is valid
+                self.passwordTextField.borderActiveColor = .white
+            }else {
+                // password is not valid
+                self.passwordTextField.borderActiveColor = .red
+            }
+        }
+       }
+       return true
+   }
+    
     @objc func passwordTextFieldDidChange(_ textField: UITextField) {
             if textField.text == "" {
                 self.eyeButton.isHidden = true
@@ -332,7 +369,6 @@ class SignUpPasswordRepeatCell: UITableViewCell, UITextFieldDelegate {
             }else {
                 self.eyeButton.isHidden = false
             }
-        
     }
 }
 

@@ -38,7 +38,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Werde Mitglied unserer Community und erfülle deine größten Wünsche."
-        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textColor = .white
         v.textAlignment = .left
         v.numberOfLines = 0

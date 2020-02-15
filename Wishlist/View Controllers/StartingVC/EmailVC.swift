@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class EmailViewController: UIViewController {
+class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let backgroundImage: UIImageView = {
         let v = UIImageView()
@@ -70,6 +70,9 @@ class EmailViewController: UIViewController {
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // activate swipe to pop VC
+        self.navigationController?.interactivePopGestureRecognizer!.delegate = self
 
         setUpViews()
         

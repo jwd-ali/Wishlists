@@ -65,7 +65,6 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController!.view.layer.add(transition, forKey: kCATransition)
         self.navigationController?.pushViewController(firstLaunchVC, animated: false)
         
-//        self.navigationController?.pushViewController(firstLaunchVC, animated: true)
     }
     
     @objc func backButtonTapped() {

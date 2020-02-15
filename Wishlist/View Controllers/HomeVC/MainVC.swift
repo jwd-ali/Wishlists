@@ -311,8 +311,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
                
             // constrain collectionView
-            theCollectionView.topAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: 40),
-            theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            theCollectionView.topAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: 45),
+            theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             
