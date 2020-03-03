@@ -216,8 +216,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         
         emailImage.centerYAnchor.constraint(equalTo: emailButton.centerYAnchor).isActive = true
         emailImage.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor, constant: 10).isActive = true
-        emailImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        emailImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        emailImage.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        emailImage.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
         oderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         oderLabel.bottomAnchor.constraint(equalTo: emailButton.bottomAnchor, constant: 40).isActive = true
@@ -238,8 +238,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         
         facebookLogo.centerYAnchor.constraint(equalTo: facebookButton.centerYAnchor).isActive = true
         facebookLogo.leadingAnchor.constraint(equalTo: facebookButton.leadingAnchor, constant: 10).isActive = true
-        facebookLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        facebookLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        facebookLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        facebookLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
         googleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
         googleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
@@ -248,8 +248,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         
         googleLogo.centerYAnchor.constraint(equalTo: googleButton.centerYAnchor).isActive = true
         googleLogo.leadingAnchor.constraint(equalTo: googleButton.leadingAnchor, constant: 10).isActive = true
-        googleLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        googleLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        googleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        googleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
         appleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
         appleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
@@ -258,8 +258,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         
         appleLogo.centerYAnchor.constraint(equalTo: appleButton.centerYAnchor).isActive = true
         appleLogo.leadingAnchor.constraint(equalTo: appleButton.leadingAnchor, constant: 10).isActive = true
-        appleLogo.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        appleLogo.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        appleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        appleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
  
     }
     
@@ -267,6 +267,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     @objc func weiterButtonTapped() {
         
         let emailVC = self.storyboard?.instantiateViewController(withIdentifier: "EmailVC") as! EmailViewController
+        
+        let weiterButtonID = "weiterButtonID"
+        self.emailButton.heroID = weiterButtonID
+        
+        emailVC.weiterButton.heroID = weiterButtonID
         
         self.navigationController?.pushViewController(emailVC, animated: true)
 

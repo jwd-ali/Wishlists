@@ -282,6 +282,7 @@ PODS:
   - Hero (1.5.0)
   - LBTAComponents (1.1)
   - leveldb-library (1.22)
+  - lottie-ios (3.1.6)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -300,6 +301,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Hero
   - LBTAComponents
+  - lottie-ios
   - RevealingSplashView
   - TextFieldEffects
   - TransitionButton
@@ -329,6 +331,7 @@ SPEC REPOS:
     - Hero
     - LBTAComponents
     - leveldb-library
+    - lottie-ios
     - nanopb
     - PromisesObjC
     - RevealingSplashView
@@ -359,12 +362,13 @@ SPEC CHECKSUMS:
   Hero: b7385b75e7259da62f4f85462f59a5082d66b058
   LBTAComponents: 2e7719683ddcf1cdf7280700438c0c6a5f7da550
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   RevealingSplashView: 40c5a770894459736acdc95655eeba0dd30ce91c
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
   TransitionButton: fb271583d9c9e4bb116b97103047e5157653f233
 
-PODFILE CHECKSUM: 1007c45319335f7f8f6badfb339955ebc63cd4e9
+PODFILE CHECKSUM: c467b10a04f029564d43cdc1fabd2834d95a3ab5
 
 COCOAPODS: 1.8.4

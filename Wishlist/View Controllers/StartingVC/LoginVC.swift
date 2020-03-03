@@ -21,6 +21,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
+    let theLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "Login"
+        v.font = UIFont(name: "AvenirNext-Bold", size: 23)
+        v.textAlignment = .left
+        v.textColor = .white
+        v.adjustsFontSizeToFitWidth = true
+        v.minimumScaleFactor = 0.5
+        v.numberOfLines = 0
+        return v
+    }()
+    
     let emailTextField: CustomTextField = {
         let v = CustomTextField()
         v.borderActiveColor = .white
@@ -153,6 +166,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(loginButton)
         view.addSubview(errorLabel)
         view.addSubview(eyeButton)
+        view.addSubview(theLabel)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -164,7 +178,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130).isActive = true
+        theLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 20).isActive = true
+        theLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        theLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        emailTextField.topAnchor.constraint(equalTo: theLabel.bottomAnchor, constant: 20).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true

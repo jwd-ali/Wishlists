@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="czJ-pg-Hte">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -28,7 +27,7 @@
         <!--Login View Controller-->
         <scene sceneID="Ujc-8a-0Mo">
             <objects>
-                <viewController storyboardIdentifier="LoginVC" id="MvJ-vc-ZVh" customClass="LoginViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" modalPresentationStyle="fullScreen" id="MvJ-vc-ZVh" customClass="LoginViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9jl-SD-zs5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -154,6 +153,21 @@
             </objects>
             <point key="canvasLocation" x="4647.826086956522" y="-237.05357142857142"/>
         </scene>
+        <!--Community View Controller-->
+        <scene sceneID="2f0-xp-uw3">
+            <objects>
+                <viewController storyboardIdentifier="CommunityVC" id="LU3-hz-Rd5" customClass="CommunityViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ArE-ya-q4r">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="h1P-DY-hh8"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mh9-MS-sK8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4228" y="508"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="Rue-Lc-bJd">
             <objects>
@@ -257,7 +271,7 @@
         <!--Email View Controller-->
         <scene sceneID="R6j-Th-6aU">
             <objects>
-                <viewController storyboardIdentifier="EmailVC" id="IW9-25-hkF" customClass="EmailViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmailVC" modalPresentationStyle="fullScreen" id="IW9-25-hkF" customClass="EmailViewController" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="L4S-O8-4BO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

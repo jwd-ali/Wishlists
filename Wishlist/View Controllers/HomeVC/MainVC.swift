@@ -33,13 +33,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    let searchButton: UIButton = {
-        let v = UIButton()
-        v.setImage(UIImage(named: "searchButton"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-
-    }()
+//    let searchButton: UIButton = {
+//        let v = UIButton()
+//        v.setImage(UIImage(named: "searchButton"), for: .normal)
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        return v
+//
+//    }()
     
     let welcomeLabel: UILabel = {
         let v = UILabel()
@@ -62,7 +62,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    let achievementsButton: UIButton = {
+    let communityButton: UIButton = {
         let v = UIButton()
         if #available(iOS 13.0, *) {
             v.setImage(UIImage(named: "achievements"), for: .normal)
@@ -70,6 +70,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             // Fallback on earlier versions
         }
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(communityButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -273,9 +274,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         view.addSubview(backGroundImage)
         view.addSubview(theCollectionView)
         view.addSubview(welcomeLabel)
-        view.addSubview(searchButton)
+//        view.addSubview(searchButton)
         view.addSubview(bottomBar)
-        view.addSubview(achievementsButton)
+        view.addSubview(communityButton)
         view.addSubview(profileButton)
         view.addSubview(addButton)
         
@@ -293,11 +294,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             
-            //contrain achievementsButton
-            achievementsButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
-            achievementsButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
-            achievementsButton.widthAnchor.constraint(equalToConstant: 50),
-            achievementsButton.heightAnchor.constraint(equalToConstant: 50),
+            //contrain communityButton
+            communityButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            communityButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
+            communityButton.widthAnchor.constraint(equalToConstant: 50),
+            communityButton.heightAnchor.constraint(equalToConstant: 50),
             
             // constrain profileButton
             profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
@@ -317,14 +318,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             
             //constrain welcomeLabel
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
             
-            // constrain searchButton
-            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            searchButton.widthAnchor.constraint(equalToConstant: 30),
-            searchButton.heightAnchor.constraint(equalToConstant: 30),
+//            // constrain searchButton
+//            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+//            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+//            searchButton.widthAnchor.constraint(equalToConstant: 30),
+//            searchButton.heightAnchor.constraint(equalToConstant: 30),
 
         ])
     }
@@ -648,6 +649,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.navigationController?.pushViewController(profileView, animated: true)
     }
+    
+    //MARK: AchievementsButton
+    @objc func communityButtonTapped() {
+        
+        let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
+        
+        self.navigationController?.pushViewController(communityView, animated: true)
+    }
+    
+    
     
 }
 

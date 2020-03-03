@@ -20,6 +20,19 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         return v
     }()
     
+    let theLabel: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.text = "Anmelden oder kostenlos registrieren"
+        v.font = UIFont(name: "AvenirNext-Bold", size: 23)
+        v.textAlignment = .left
+        v.textColor = .white
+        v.adjustsFontSizeToFitWidth = true
+        v.minimumScaleFactor = 0.5
+        v.numberOfLines = 0
+        return v
+    }()
+    
     let emailTextField: CustomTextField = {
         let v = CustomTextField()
         v.borderActiveColor = .white
@@ -89,21 +102,28 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         
         view.addSubview(backgroundImage)
         view.addSubview(backButton)
+        view.addSubview(theLabel)
         view.addSubview(emailTextField)
         view.addSubview(weiterButton)
-        view.addSubview(kostenlosLabel)
+//        view.addSubview(kostenlosLabel)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
         backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
         backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
         
+        
+        
         backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
-        emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130).isActive = true
+        theLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 20).isActive = true
+        theLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        theLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        emailTextField.topAnchor.constraint(equalTo: theLabel.bottomAnchor, constant: 20).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -113,9 +133,9 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         weiterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         weiterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        kostenlosLabel.topAnchor.constraint(equalTo: weiterButton.topAnchor, constant: 70).isActive = true
-        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
+//        kostenlosLabel.topAnchor.constraint(equalTo: weiterButton.topAnchor, constant: 70).isActive = true
+//        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        
     }
     var email = ""
         
@@ -133,7 +153,12 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 SignUpView.email = self.email
                 
-                self.navigationController?.pushViewController(SignUpView, animated: false)
+                let weiterButtonID = "weiterButtonID"
+                self.weiterButton.heroID = weiterButtonID
+                
+                SignUpView.signUpButton.heroID = weiterButtonID
+                
+                self.navigationController?.pushViewController(SignUpView, animated: true)
                 
             }
             //Email ist registriert -> login

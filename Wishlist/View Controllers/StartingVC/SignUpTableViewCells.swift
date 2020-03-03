@@ -314,9 +314,11 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
                
            } else {
                eyeButton.isHidden = true
+                print("hi")
            }
            
            self.passwordTextField.borderActiveColor = .white
+           self.passwordTextField.borderInactiveColor = .white
            
            break
        default:
@@ -334,6 +336,7 @@ class SignUpPasswordCell: UITableViewCell, UITextFieldDelegate {
             if Utilities.isPasswordValid(textField.text!){
                 // password is valid
                 self.passwordTextField.borderActiveColor = .white
+                self.passwordTextField.borderInactiveColor = .white
             }else {
                 // password is not valid
                 self.passwordTextField.borderActiveColor = .red
