@@ -18,6 +18,7 @@ target 'Wishlist' do
 	pod 'RevealingSplashView'
 	pod 'LBTAComponents'
 	pod 'lottie-ios'
+	pod 'SwiftEntryKit', '1.2.3'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

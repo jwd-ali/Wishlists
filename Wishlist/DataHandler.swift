@@ -21,7 +21,7 @@ extension MainViewController {
                 // check if document exists
                 if document != nil && document!.exists {
                     let documentData = document!.data()
-                    self.welcomeLabel.text = "Hi " + (documentData?["firstname"] as! String) + "!"
+                    self.welcomeLabel.text = "Hi " + (documentData?["anzeigename"] as! String) + "."
                     // show + animate welcomeLabel
                     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
                         self.welcomeLabel.transform = CGAffineTransform(translationX: 0, y: 0)

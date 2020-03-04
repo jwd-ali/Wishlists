@@ -36,7 +36,7 @@ class AddItemCell: UICollectionViewCell {
         v.text = "Tippen, um neue Wishlist zu erstellen"
         v.numberOfLines = 0
         v.font = UIFont(name: "AvenirNext-Regular", size: 20)
-        v.textColor = .lightGray
+        v.textColor = .white
         v.textAlignment = .center
         return v
     }()

@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import TransitionButton
-
+import SwiftEntryKit
 
 class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
@@ -414,7 +414,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordTextField.textContentType = .newPassword
         passwordWiederholenTextField.textContentType = .newPassword
 
-        
+        // set bottom inset for ScrollView
+        theScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
         
         
         // make text in DocumentsView clickable
@@ -548,6 +549,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
     }
     
+    
+    //MARK: Validate Fields
     func areFieldsValid() ->Bool? {
         
         var isValid = true
@@ -574,72 +577,112 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             setupPasswortWiederholenTextfield()
             isValid = false
         }
-        
-        //check if both passwords are the same
-        if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) !=
-            passwordWiederholenTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+         
+        // check if email format is correct
+        if !Utilities.isValidEmail(emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)) {
+            setupEmailTextField()
             isValid = false
         }
+        
+        // check if username is valid
+        checkUsername(field: usernameTextField.text!) { (success) in
+            if success == true {
+                // username is taken
+                print("Username is taken")
+                self.setupUsernameTextField()
+                self.checkUsernameImage.image = UIImage(named: "false")
+                self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
+                isValid = false
+            }
+        }
+        
+        // check if password is valid
+        if !Utilities.isPasswordValid(passwordTextField.text!) {
+            setupPasswortTextfield()
+            isValid = false
+        }
+         
+       //check if both passwords are the same
+       if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) !=
+           passwordWiederholenTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+           setupPasswortWiederholenTextfield()
+           isValid = false
+       }
         
         return isValid
     }
     
+    func showErrorPopUp(description: String){
+        var attributes = EKAttributes.topToast
+        attributes.entryBackground = .color(color: EKColor(.white))
+        attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+        attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
+        attributes.statusBar = .dark
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.displayDuration = 5
+
+        let title = EKProperty.LabelContent(text: "Fehler bei Kontoerstellung", style: .init(font: UIFont(name: "AvenirNext-Bold", size: 15)!, color: EKColor(UIColor.darkGray)))
+        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont(name: "AvenirNext-Regular", size: 13)!, color: EKColor(UIColor.darkGray)))
+        let image = EKProperty.ImageContent(image: UIImage(named: "false")!, size: CGSize(width: 20, height: 20))
+        let simpleMessage = EKSimpleMessage(image: image, title: title, description: description)
+        let notificationMessage = EKNotificationMessage(simpleMessage: simpleMessage)
+        
+
+        let contentView = EKNotificationMessageView(with: notificationMessage)
+        SwiftEntryKit.display(entry: contentView, using: attributes)
+    }
+    
+    //MARK: SignUp-Tappped
     @objc func signUpButtonTapped(_ sender: Any) {
-        // Validate the fields
-        if areFieldsValid()! {
-            print("valid")
+
+        
+        if !areFieldsValid()! {
+            // some error in textfield
+            theScrollView.scrollToTop()
         }else {
-            print("invalid")
+            // correct textfield input
+            // create cleaned versione of the data
+            let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let anzeigeName = anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let username = usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            //create the user
+            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
+
+                //check for errors
+                if let err = err {
+                    self.showErrorPopUp(description: err.localizedDescription)
+                }else {
+
+                    //user was created successfully; store name, username and UID
+                    let db = Firestore.firestore()
+
+                    let userID = result!.user.uid
+
+                    db.collection("users").document(userID).setData(["anzeigename":anzeigeName, "username": username, "uid": result!.user.uid]) { (error) in
+                        if error != nil {
+                            self.showErrorPopUp(description: error!.localizedDescription)
+                        }
+                    }
+                    // generate empty "Main Wishlist"
+                    db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
+                        if error != nil {
+                            self.showErrorPopUp(description: error!.localizedDescription)
+                        }
+                    }
+
+                    //transition to home
+                    self.transitionToHome()
+                }
+
+            }
         }
         
-//        if error != nil {
-//
-//            //dismiss keyboard
-//            view.endEditing(true)
-//
-//            //there is sth wrong with the fields, show error message
-////            showError(error!)
-//        }else {
-//
-//            //create cleaned versione of the data
-//            let firstName = anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-//            let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-//            let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-//
-//            //create the user
-//            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-//
-//                //check for errors
-//                if let err = err {
-//                    self.view.endEditing(true)
-////                    self.showError(err.localizedDescription)
-//
-//                }else {
-//
-//                    //user was created successfully; store first and last name
-//                    let db = Firestore.firestore()
-//
-//                    let userID = result!.user.uid
-//
-//                    db.collection("users").document(userID).setData(["firstname":firstName, "uid": result!.user.uid]) { (error) in
-//                        if error != nil {
-////                            self.showError("Error saving user data")
-//                        }
-//                    }
-//
-//                    db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
-//                        if error != nil {
-////                            self.showError("Error creating Main Wishlist")
-//                        }
-//                    }
-//
-////                    self.signUpButton.startAnimation()
-//                    //transition to home
-//                    self.transitionToHome()
-//                }
-//
-//            }
-//        }
+    
+
+            
+        
         
     }
     
@@ -832,6 +875,28 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
              }
          }
         }
+        
+        if textField == usernameTextField {
+            if textField.text?.isEmpty == false {
+                checkUsername(field: textField.text!) { (success) in
+                    if success == true {
+                        // username is taken
+                        print("Username is taken")
+                        self.setupUsernameTextField()
+                        self.checkUsernameImage.image = UIImage(named: "false")
+                        self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
+                    } else {
+                        // username is not taken
+                        print("Username is not taken")
+                        self.checkUsernameImage.image = UIImage(named: "correct")
+                        self.checkUserNameLabel.text = "gültiger Benutzername"
+                    }
+                }
+            }else {
+                self.checkUsernameImage.image = UIImage(named: "false")
+                self.checkUserNameLabel.text = "kein gültiger Benutzername"
+            }
+        }
         return true
     }
     
@@ -975,6 +1040,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         case usernameTextField:
             if textField.text?.isEmpty == false {
                 checkUsername(field: textField.text!) { (success) in
+                    print(textField.text!)
                     if success == true {
                         // username is taken
                         print("Username is taken")

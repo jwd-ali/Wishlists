@@ -289,7 +289,10 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - PromisesObjC (1.2.8)
+  - QuickLayout (3.0.0)
   - RevealingSplashView (0.6.0)
+  - SwiftEntryKit (1.2.3):
+    - QuickLayout (= 3.0.0)
   - TextFieldEffects (1.6.0)
   - TransitionButton (0.5.2)
 
@@ -303,6 +306,7 @@ DEPENDENCIES:
   - LBTAComponents
   - lottie-ios
   - RevealingSplashView
+  - SwiftEntryKit (= 1.2.3)
   - TextFieldEffects
   - TransitionButton
 
@@ -334,7 +338,9 @@ SPEC REPOS:
     - lottie-ios
     - nanopb
     - PromisesObjC
+    - QuickLayout
     - RevealingSplashView
+    - SwiftEntryKit
     - TextFieldEffects
     - TransitionButton
 
@@ -365,10 +371,12 @@ SPEC CHECKSUMS:
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
   RevealingSplashView: 40c5a770894459736acdc95655eeba0dd30ce91c
+  SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
   TransitionButton: fb271583d9c9e4bb116b97103047e5157653f233
 
-PODFILE CHECKSUM: c467b10a04f029564d43cdc1fabd2834d95a3ab5
+PODFILE CHECKSUM: b53b455e960c81fdee9be2c0a4e234a814d08ba2
 
 COCOAPODS: 1.8.4
