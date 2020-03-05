@@ -27,7 +27,7 @@ class MakeWishView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.placeholder = "Was wünschst du dir?"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext-Regular", size: 19)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.white)
         v.translatesAutoresizingMaskIntoConstraints = false

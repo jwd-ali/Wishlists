@@ -133,7 +133,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     lazy var checkAnzeigeNameLabel: UILabel = {
         let v = UILabel()
-        v.text = "ungültiger Benutzername"
+        v.text = "ungültiger Anzeigename"
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 13)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -375,6 +375,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     var email = ""
     
+    var counter = 0
+    var timer = Timer()
+    
     //MARK: ViewDidLoad
     
     override func viewDidLoad() {
@@ -450,26 +453,26 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         theScrollView.addSubview(theStackView)
         
         theStackView.addArrangedSubview(emailView)
-        view.addSubview(emailTextField)
+        emailView.addSubview(emailTextField)
         
         theStackView.addArrangedSubview(anzeigeNameView)
-        view.addSubview(anzeigeNameTextField)
+        anzeigeNameView.addSubview(anzeigeNameTextField)
         
         theStackView.addArrangedSubview(usernameView)
         view.addSubview(usernameTextField)
         
         theStackView.addArrangedSubview(passwordView)
-        view.addSubview(passwordTextField)
-        view.addSubview(eyeButtonOne)
+        passwordView.addSubview(passwordTextField)
+        passwordView.addSubview(eyeButtonOne)
         
         theStackView.addArrangedSubview(passwordWiederholenView)
-        view.addSubview(passwordWiederholenTextField)
-        view.addSubview(eyeButtonTwo)
+        passwordWiederholenView.addSubview(passwordWiederholenTextField)
+        passwordWiederholenView.addSubview(eyeButtonTwo)
         
         theStackView.addArrangedSubview(documentsTextView)
         
         theStackView.addArrangedSubview(signUpButtonView)
-        view.addSubview(signUpButton)
+        signUpButtonView.addSubview(signUpButton)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -722,7 +725,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         return true
     }
-    
+    //MARK: setup Password
     func setupPasswortTextfield(){
         eyeButtonOne.isHidden = false
         passwordTextField.borderInactiveColor = .white
@@ -765,7 +768,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         theStackView.layoutIfNeeded()
     }
-    
+    //MARK: setup Password WH
     func setupPasswortWiederholenTextfield(){
         eyeButtonTwo.isHidden = false
             
@@ -784,7 +787,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             
             theStackView.layoutIfNeeded()
     }
-    
+    //MARK: setup Email
     func setupEmailTextField(){
         emailTextField.addSubview(checkEmailLabel)
         checkEmailLabel.addSubview(checkEmailImage)
@@ -801,7 +804,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 
         theStackView.layoutIfNeeded()
     }
-    
+    //MARK: setup Anzeige
     func setupAnzeigeNameTextField(){
         anzeigeNameTextField.addSubview(checkAnzeigeNameLabel)
         checkAnzeigeNameLabel.addSubview(checkAnzeigeNameImage)
@@ -818,7 +821,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         theStackView.layoutIfNeeded()
     }
-    
+    //MARK: setup Username
     func setupUsernameTextField(){
         usernameTextField.addSubview(checkUserNameLabel)
         checkUserNameLabel.addSubview(checkUsernameImage)
@@ -834,6 +837,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         usernameConstraint.constant = 80
         
         theStackView.layoutIfNeeded()
+    }
+    
+    //MARK: setup checkUsernameImage
+    func setupCheckUsernameImage(){
+        checkUsernameImage.image = UIImage(named: "correct")
+        usernameTextField.addSubview(checkUsernameImage)
+        
+        checkUsernameImage.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor).isActive = true
+        checkUsernameImage.centerYAnchor.constraint(equalTo: usernameTextField.centerYAnchor, constant: 5).isActive = true
+        checkUsernameImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        checkUsernameImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
     }
     
     //delegate Methode für Password Textfield
@@ -966,7 +980,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 passwordWiederholenTextField.selectedTextRange = existingSelectedTextRange
             }
     }
-    
+    //MARK: textFieldDidChange
     @objc private func textFieldDidChange(_ textField: UITextField) {
         
         switch textField {
@@ -1038,30 +1052,59 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             break
             
         case usernameTextField:
-            if textField.text?.isEmpty == false {
-                checkUsername(field: textField.text!) { (success) in
-                    print(textField.text!)
-                    if success == true {
-                        // username is taken
-                        print("Username is taken")
-                        self.setupUsernameTextField()
-                        self.checkUsernameImage.image = UIImage(named: "false")
-                        self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
-                    } else {
-                        // username is not taken
-                        print("Username is not taken")
-                        self.checkUsernameImage.image = UIImage(named: "correct")
-                        self.checkUserNameLabel.text = "gültiger Benutzername"
-                    }
-                }
-            }else {
+            
+            self.checkUsernameImage.removeFromSuperview()
+
+            self.checkUserNameLabel.removeFromSuperview()
+            self.usernameConstraint.constant = 60
+            self.theStackView.layoutIfNeeded()
+            
+            if textField.text?.isEmpty == true {
+                self.checkUsernameImage.removeFromSuperview()
+                self.setupUsernameTextField()
                 self.checkUsernameImage.image = UIImage(named: "false")
                 self.checkUserNameLabel.text = "kein gültiger Benutzername"
             }
+            
+            timer.invalidate() // reset timer
+
+            // start the timer
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+            
+            break
+            
         default:
             break
         }
 
+    }
+    
+    // called every time interval from the timer
+    @objc func timerAction() {
+        if usernameTextField.text! != "" {
+            checkUsername(field: usernameTextField.text!) { (success) in
+                print(self.usernameTextField.text!)
+                if success == true {
+                    // username is taken
+                    print("Username is taken")
+                    self.setupUsernameTextField()
+                    self.checkUsernameImage.image = UIImage(named: "false")
+                    self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
+                    // stop timer
+                    self.timer.invalidate()
+                } else {
+                    // username is not taken
+                    print("Username is not taken")
+                    self.checkUsernameImage.removeFromSuperview()
+                    // add "correct"-image to view
+                    self.setupCheckUsernameImage()
+                    // stop timer
+                    self.timer.invalidate()
+                }
+            }
+        }else {
+            self.timer.invalidate()
+        }
     }
     
 
@@ -1092,7 +1135,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         }
         return true
     }
-    
+    //MARK: Documents TextView
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         
         if URL.absoluteString == "Nutzungsbedingungen" {
