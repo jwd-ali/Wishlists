@@ -151,6 +151,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         return v
     }()
     
+    let activityIndicator: UIActivityIndicatorView = {
+        let v = UIActivityIndicatorView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.style = UIActivityIndicatorView.Style.medium
+        v.hidesWhenStopped = true
+        return v
+    }()
+    
     let usernameTextField: CustomTextField = {
         let v = CustomTextField()
         v.borderActiveColor = .white
@@ -174,6 +182,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    lazy var usernameCorrectImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "correct")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+
     
     lazy var checkUserNameLabel: UILabel = {
         let v = UILabel()
@@ -459,7 +475,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         anzeigeNameView.addSubview(anzeigeNameTextField)
         
         theStackView.addArrangedSubview(usernameView)
-        view.addSubview(usernameTextField)
+        usernameView.addSubview(usernameTextField)
+        usernameTextField.addSubview(activityIndicator)
         
         theStackView.addArrangedSubview(passwordView)
         passwordView.addSubview(passwordTextField)
@@ -519,6 +536,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         usernameTextField.topAnchor.constraint(equalTo: usernameView.topAnchor).isActive = true
         usernameTextField.leadingAnchor.constraint(equalTo: usernameView.leadingAnchor).isActive = true
         usernameTextField.trailingAnchor.constraint(equalTo: usernameView.trailingAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: usernameTextField.centerYAnchor, constant: 10).isActive = true
+        activityIndicator.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor, constant: -5).isActive = true
+        activityIndicator.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        activityIndicator.widthAnchor.constraint(equalToConstant: 15).isActive = true
         
         passwordConstraint = passwordView.heightAnchor.constraint(equalToConstant: 60)
         passwordConstraint.isActive = true
@@ -551,12 +572,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         
     }
-    
-    
-    //MARK: Validate Fields
-    func areFieldsValid() ->Bool? {
+    //MARK: validate fields
+    var isValid = true
+    func validateFields(completion: @escaping (Bool) -> Void) {
         
-        var isValid = true
         
         //check if all fields are filled
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
@@ -587,34 +606,35 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             isValid = false
         }
         
+        
+         // check if password is valid
+         if !Utilities.isPasswordValid(passwordTextField.text!) {
+             setupPasswortTextfield()
+             isValid = false
+         }
+          
+        //check if both passwords are the same
+        if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) !=
+            passwordWiederholenTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            setupPasswortWiederholenTextfield()
+            isValid = false
+        }
         // check if username is valid
-        checkUsername(field: usernameTextField.text!) { (success) in
-            if success == true {
+        checkUsername(field: usernameTextField.text!) { success in
+            if success {
                 // username is taken
                 print("Username is taken")
                 self.setupUsernameTextField()
                 self.checkUsernameImage.image = UIImage(named: "false")
                 self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
-                isValid = false
+                self.isValid = false
             }
+
+            completion(true) // call the completion closure with the success status
         }
-        
-        // check if password is valid
-        if !Utilities.isPasswordValid(passwordTextField.text!) {
-            setupPasswortTextfield()
-            isValid = false
-        }
-         
-       //check if both passwords are the same
-       if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) !=
-           passwordWiederholenTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-           setupPasswortWiederholenTextfield()
-           isValid = false
-       }
-        
-        return isValid
     }
-    
+
+    //MARK: Error Pop-up
     func showErrorPopUp(description: String){
         var attributes = EKAttributes.topToast
         attributes.entryBackground = .color(color: EKColor(.white))
@@ -637,57 +657,57 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     //MARK: SignUp-Tappped
     @objc func signUpButtonTapped(_ sender: Any) {
-
+        // reset isValid variable
+        isValid = true
         
-        if !areFieldsValid()! {
-            // some error in textfield
-            theScrollView.scrollToTop()
-        }else {
-            // correct textfield input
-            // create cleaned versione of the data
-            let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let anzeigeName = anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let username = usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-
-            //create the user
-            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-
-                //check for errors
-                if let err = err {
-                    self.showErrorPopUp(description: err.localizedDescription)
+        validateFields { completion in
+            // check if validateFields method is completed 
+            if completion {
+                if !self.isValid {
+                    // textFields are not valid
+                    self.theScrollView.scrollToTop()
                 }else {
+                    // correct textfield input
+                    // create cleaned versione of the data
+                    let email = self.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let anzeigeName = self.anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
-                    //user was created successfully; store name, username and UID
-                    let db = Firestore.firestore()
+                    //create the user
+                    Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
 
-                    let userID = result!.user.uid
+                        //check for errors
+                        if let err = err {
+                            self.showErrorPopUp(description: err.localizedDescription)
+                        }else {
 
-                    db.collection("users").document(userID).setData(["anzeigename":anzeigeName, "username": username, "uid": result!.user.uid]) { (error) in
-                        if error != nil {
-                            self.showErrorPopUp(description: error!.localizedDescription)
+                            //user was created successfully; store name, username and UID
+                            let db = Firestore.firestore()
+
+                            let userID = result!.user.uid
+
+                            db.collection("users").document(userID).setData(["anzeigename":anzeigeName, "username": username, "uid": result!.user.uid]) { (error) in
+                                if error != nil {
+                                    self.showErrorPopUp(description: error!.localizedDescription)
+                                }
+                            }
+                            // generate empty "Main Wishlist"
+                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
+                                if error != nil {
+                                    self.showErrorPopUp(description: error!.localizedDescription)
+                                }
+                            }
+
+                            //transition to home
+                            self.transitionToHome()
                         }
                     }
-                    // generate empty "Main Wishlist"
-                    db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
-                        if error != nil {
-                            self.showErrorPopUp(description: error!.localizedDescription)
-                        }
-                    }
-
-                    //transition to home
-                    self.transitionToHome()
                 }
-
             }
         }
-        
-    
-
-            
-        
-        
     }
+    
     
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
@@ -841,13 +861,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     //MARK: setup checkUsernameImage
     func setupCheckUsernameImage(){
-        checkUsernameImage.image = UIImage(named: "correct")
-        usernameTextField.addSubview(checkUsernameImage)
+        usernameCorrectImage.image = UIImage(named: "correct")
+        usernameTextField.addSubview(usernameCorrectImage)
         
-        checkUsernameImage.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor).isActive = true
-        checkUsernameImage.centerYAnchor.constraint(equalTo: usernameTextField.centerYAnchor, constant: 5).isActive = true
-        checkUsernameImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        checkUsernameImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        usernameCorrectImage.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor,constant: -5).isActive = true
+        usernameCorrectImage.centerYAnchor.constraint(equalTo: usernameTextField.centerYAnchor, constant: 10).isActive = true
+        usernameCorrectImage.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        usernameCorrectImage.widthAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
     //delegate Methode für Password Textfield
@@ -862,10 +882,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         case passwordWiederholenTextField:
             setupPasswortWiederholenTextfield()
             break
-        
-//        case usernameTextField:
-//            setupUsernameTextField()
-//            break
             
         default:
             break
@@ -1054,7 +1070,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         case usernameTextField:
             
             self.checkUsernameImage.removeFromSuperview()
-
+            self.usernameCorrectImage.removeFromSuperview()
             self.checkUserNameLabel.removeFromSuperview()
             self.usernameConstraint.constant = 60
             self.theStackView.layoutIfNeeded()
@@ -1081,7 +1097,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     // called every time interval from the timer
     @objc func timerAction() {
+        // start action if textfield is not empty
         if usernameTextField.text! != "" {
+            // start loading indicator
+            activityIndicator.startAnimating()
             checkUsername(field: usernameTextField.text!) { (success) in
                 print(self.usernameTextField.text!)
                 if success == true {
@@ -1092,6 +1111,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                     self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
                     // stop timer
                     self.timer.invalidate()
+                    // stop loading indicator
+                    self.activityIndicator.stopAnimating()
                 } else {
                     // username is not taken
                     print("Username is not taken")
@@ -1100,6 +1121,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                     self.setupCheckUsernameImage()
                     // stop timer
                     self.timer.invalidate()
+                    // stop loading indicator
+                    self.activityIndicator.stopAnimating()
                 }
             }
         }else {
