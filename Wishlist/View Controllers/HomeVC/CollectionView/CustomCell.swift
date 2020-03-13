@@ -34,8 +34,8 @@ class ContentCell: UICollectionViewCell {
     let cellLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Test Label"
-        v.font = UIFont(name: "AvenirNext-Medium", size: 26)
+        v.text = "Label"
+        v.font = UIFont(name: "AvenirNext-Bold", size: 26)
         v.textColor = .white
         v.textAlignment = .left
         return v
@@ -54,7 +54,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "0"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 20)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         v.textColor = .white
         v.textAlignment = .center
         return v
@@ -83,7 +83,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "0.00"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         v.textColor = .white
         v.textAlignment = .center
         return v
@@ -93,7 +93,7 @@ class ContentCell: UICollectionViewCell {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "€"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 13)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.textColor = .white
         v.textAlignment = .center
         return v

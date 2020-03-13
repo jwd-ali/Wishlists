@@ -44,7 +44,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     let welcomeLabel: UILabel = {
         let v = UILabel()
         v.text = ""
-        v.font = UIFont(name: "AvenirNext-Bold", size: 40)
+        v.font = UIFont(name: "AvenirNext-Bold", size: 34)
         v.textAlignment = .left
         v.textColor = .white
         v.adjustsFontSizeToFitWidth = true
@@ -84,7 +84,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let addButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButton"), for: .normal)
+        v.setImage(UIImage(named: "addButtonDark"), for: .normal)
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -230,8 +230,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
         
-        // retrieve firstname from DB and animate welcomeLabel
-        setupWelcomeLabel()
+//        // retrieve firstname from DB and animate welcomeLabel
+//        setupWelcomeLabel()
         
         // add motion effect to background image
         Utilities.applyMotionEffect(toView: self.backGroundImage, magnitude: 20)
@@ -290,7 +290,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
             
             //constrain bottomBar
-            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             
@@ -312,7 +312,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
                
             // constrain collectionView
-            theCollectionView.topAnchor.constraint(equalTo: welcomeLabel.topAnchor, constant: 45),
+            theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),

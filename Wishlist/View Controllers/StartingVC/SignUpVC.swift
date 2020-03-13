@@ -115,10 +115,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.placeholder = "Anzeigename: z.B. dein Vorname"
         v.placeholderColor = .white
         v.placeholderFontScale = 1
-        v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
-        v.autocapitalizationType = .none
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         return v
@@ -155,6 +153,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         let v = UIActivityIndicatorView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.style = UIActivityIndicatorView.Style.medium
+        v.color = .white
         v.hidesWhenStopped = true
         return v
     }()
@@ -345,22 +344,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     //MARK: Documents
     let documentsLabel: UILabel = {
         let v = UILabel()
-        v.text = "Durch Klicken auf 'Registrieren' akzeptiere ich die Nutzungsbedingungnen und die Datenschutzrichtlinien."
-        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
-        v.textColor = .lightGray
         v.textAlignment = .center
         v.numberOfLines = 0
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let documentsTextView: UITextView = {
-        let v = UITextView()
-        v.isEditable = false
-        v.backgroundColor = .clear
-        v.textAlignment = .center
-        v.font = UIFont(name: "AvenirNext-Regular", size: 13)
-        v.textColor = .lightGray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -388,10 +373,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         return v
     }()
     
-    
+    // pass email from EmailVC
     var email = ""
     
     var counter = 0
+    // timer for username activity indicator
     var timer = Timer()
     
     //MARK: ViewDidLoad
@@ -415,7 +401,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordWiederholenTextField.isSecureTextEntry.toggle()
         
         //change return key
-        anzeigeNameTextField.returnKeyType = .next
+        usernameTextField.returnKeyType = .next
         emailTextField.returnKeyType = .next
         passwordTextField.returnKeyType = .next
         passwordWiederholenTextField.returnKeyType = .done
@@ -426,25 +412,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         usernameTextField.delegate = self
         passwordTextField.delegate = self
         passwordWiederholenTextField.delegate = self
-        documentsTextView.delegate = self
         
         
-        // set passwordTextfield content type
+        // set textfield content type
+        emailTextField.textContentType = .emailAddress
         passwordTextField.textContentType = .newPassword
         passwordWiederholenTextField.textContentType = .newPassword
 
         // set bottom inset for ScrollView
         theScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
-        
-        
-        // make text in DocumentsView clickable
-        
-        let attributedString = NSMutableAttributedString(string: "Durch Klicken auf 'Registrieren' akzeptiere ich die Nutzungsbedingungen und die Datenschutzrichtlinien.")
-        attributedString.addAttribute(.link, value: "Nutzungsbedingungen", range: NSRange(location: 52, length: 19))
-        attributedString.addAttribute(.link, value: "Datenschutzrichtlinien", range: NSRange(location: 80, length: 22))
-        
-        documentsTextView.attributedText = attributedString
-        
         
         //Textfield cursor -> white
         UITextField.appearance().tintColor = .white
@@ -456,8 +432,105 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         //setupEmailTextfield()
         
+        setUpDocumentsLabel()
+        
+    }
+    //MARK: DocumentsLabel
+    
+    //MARK: - Fonts Constants
+    struct Fonts {
+        
+        static func boldFontWithSize(size: CGFloat) -> UIFont {
+            return UIFont(name:"AvenirNext-Bold", size: size)!
+        }
+        
+        static func regularFontWithSize(size: CGFloat) -> UIFont {
+            return UIFont(name:"AvenirNext-Regular", size: size)!
+        }
+    }
+
+    struct Colors {
+        
+        static let white = UIColor.white
+        
+        static let greyColor = UIColor.init(red: 108.0/255.0, green: 108.0/255.0, blue: 108.0/255.0, alpha: 1.0)
     }
     
+    func setUpDocumentsLabel(){
+        var textArray = [String]()
+        var fontArray = [UIFont]()
+        var colorArray = [UIColor]()
+        textArray.append("Durch Klicken auf 'Registrieren' akzeptiere ich die")
+        textArray.append("Nutzungsbedingungen")
+        textArray.append("und die")
+        textArray.append("Datenschutzrichtlinien.")
+        
+        fontArray.append(Fonts.regularFontWithSize(size: 13.0))
+        fontArray.append(Fonts.boldFontWithSize(size: 13.0))
+        fontArray.append(Fonts.regularFontWithSize(size: 13.0))
+        fontArray.append(Fonts.boldFontWithSize(size: 13.0))
+        
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        
+        self.documentsLabel.attributedText = getAttributedString(arrayText: textArray, arrayColors: colorArray, arrayFonts: fontArray)
+        
+        self.documentsLabel.isUserInteractionEnabled = true
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(tappedOnLabel(_ :)))
+        tapgesture.numberOfTapsRequired = 1
+        self.documentsLabel.addGestureRecognizer(tapgesture)
+    }
+    
+    //MARK:- tappedOnLabel
+    @objc func tappedOnLabel(_ gesture: UITapGestureRecognizer) {
+        guard let text = self.documentsLabel.text else { return }
+        let conditionsRange = (text as NSString).range(of: "Nutzungsbedingungen")
+        let cancellationRange = (text as NSString).range(of: "Datenschutzrichtlinien")
+        
+        if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: conditionsRange) {
+            print("user tapped on Nutzungsbedingungen")
+            
+            let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Nutzungsbedingungen", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+                
+            }
+            alertcontroller.addAction(alertAction)
+            self.present(alertcontroller, animated: true)
+            
+        } else if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: cancellationRange){
+            print("user tapped on Datenschutzrichtlinien")
+            let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Datenschutzrichtlinien", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+                
+            }
+            alertcontroller.addAction(alertAction)
+            self.present(alertcontroller, animated: true)
+
+        }
+    }
+    
+    //MARK:- getAttributedString
+    func getAttributedString(arrayText:[String]?, arrayColors:[UIColor]?, arrayFonts:[UIFont]?) -> NSMutableAttributedString {
+        
+        let finalAttributedString = NSMutableAttributedString()
+        
+        for i in 0 ..< (arrayText?.count)! {
+            
+            let attributes = [NSAttributedString.Key.foregroundColor: arrayColors?[i], NSAttributedString.Key.font: arrayFonts?[i]]
+            let attributedStr = (NSAttributedString.init(string: arrayText?[i] ?? "", attributes: attributes as [NSAttributedString.Key : Any]))
+            
+            if i != 0 {
+                
+                finalAttributedString.append(NSAttributedString.init(string: " "))
+            }
+            
+            finalAttributedString.append(attributedStr)
+        }
+        
+        return finalAttributedString
+    }
         
     //MARK: setupViews
     func setUpViews() {
@@ -471,9 +544,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         theStackView.addArrangedSubview(emailView)
         emailView.addSubview(emailTextField)
         
-        theStackView.addArrangedSubview(anzeigeNameView)
-        anzeigeNameView.addSubview(anzeigeNameTextField)
-        
         theStackView.addArrangedSubview(usernameView)
         usernameView.addSubview(usernameTextField)
         usernameTextField.addSubview(activityIndicator)
@@ -486,7 +556,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordWiederholenView.addSubview(passwordWiederholenTextField)
         passwordWiederholenView.addSubview(eyeButtonTwo)
         
-        theStackView.addArrangedSubview(documentsTextView)
+        theStackView.addArrangedSubview(documentsLabel)
         
         theStackView.addArrangedSubview(signUpButtonView)
         signUpButtonView.addSubview(signUpButton)
@@ -523,13 +593,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         emailTextField.leadingAnchor.constraint(equalTo: emailView.leadingAnchor).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: emailView.trailingAnchor).isActive = true
         
-        anzeigeNameConstraint = anzeigeNameView.heightAnchor.constraint(equalToConstant: 60)
-        anzeigeNameConstraint.isActive = true
-        anzeigeNameTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        anzeigeNameTextField.topAnchor.constraint(equalTo: anzeigeNameView.topAnchor).isActive = true
-        anzeigeNameTextField.leadingAnchor.constraint(equalTo: anzeigeNameView.leadingAnchor).isActive = true
-        anzeigeNameTextField.trailingAnchor.constraint(equalTo: anzeigeNameView.trailingAnchor).isActive = true
-        
         usernameConstraint = usernameView.heightAnchor.constraint(equalToConstant: 60)
         usernameConstraint.isActive = true
         usernameTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -560,7 +623,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         eyeButtonTwo.centerYAnchor.constraint(equalTo: passwordWiederholenTextField.centerYAnchor, constant: 10).isActive = true
         
         
-        documentsTextView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        documentsLabel.heightAnchor.constraint(equalToConstant: 65).isActive = true
         
         signUpButtonConstraint = signUpButtonView.heightAnchor.constraint(equalToConstant: 60)
         signUpButtonConstraint.isActive = true
@@ -580,10 +643,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         //check if all fields are filled
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             setupEmailTextField()
-            isValid = false
-        }
-        if anzeigeNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            setupAnzeigeNameTextField()
             isValid = false
         }
 
@@ -661,7 +720,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         isValid = true
         
         validateFields { completion in
-            // check if validateFields method is completed 
+            // check if validateFields method is completed
             if completion {
                 if !self.isValid {
                     // textFields are not valid
@@ -670,7 +729,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                     // correct textfield input
                     // create cleaned versione of the data
                     let email = self.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-                    let anzeigeName = self.anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+//                    let anzeigeName = self.anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -687,7 +746,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 
                             let userID = result!.user.uid
 
-                            db.collection("users").document(userID).setData(["anzeigename":anzeigeName, "username": username, "uid": result!.user.uid]) { (error) in
+                            db.collection("users").document(userID).setData(["username": username, "uid": result!.user.uid]) { (error) in
                                 if error != nil {
                                     self.showErrorPopUp(description: error!.localizedDescription)
                                 }
@@ -732,15 +791,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 
     //automatisch Fokus auf nächstes Textfield setzen, wenn User auf "return" klickt
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == anzeigeNameTextField {
-            emailTextField.becomeFirstResponder()
-        }else if textField == emailTextField{
+        if textField == usernameTextField {
             passwordTextField.becomeFirstResponder()
+        }else if textField == emailTextField{
+            usernameTextField.becomeFirstResponder()
         }else if textField == passwordTextField {
             passwordWiederholenTextField.becomeFirstResponder()
         }else if textField == passwordWiederholenTextField {
             passwordWiederholenTextField.resignFirstResponder()
-            self.signUpButton.sendActions(for: .touchUpInside)
+            
         }
         
         return true
@@ -822,23 +881,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         emailConstraint.constant = 80
 
-        theStackView.layoutIfNeeded()
-    }
-    //MARK: setup Anzeige
-    func setupAnzeigeNameTextField(){
-        anzeigeNameTextField.addSubview(checkAnzeigeNameLabel)
-        checkAnzeigeNameLabel.addSubview(checkAnzeigeNameImage)
-        
-        checkAnzeigeNameLabel.topAnchor.constraint(equalTo: anzeigeNameTextField.bottomAnchor, constant: 10).isActive = true
-        checkAnzeigeNameLabel.leadingAnchor.constraint(equalTo: checkAnzeigeNameImage.leadingAnchor, constant: 13).isActive = true
-
-        checkAnzeigeNameImage.leadingAnchor.constraint(equalTo: anzeigeNameTextField.leadingAnchor).isActive = true
-        checkAnzeigeNameImage.centerYAnchor.constraint(equalTo: checkAnzeigeNameLabel.centerYAnchor).isActive = true
-        checkAnzeigeNameImage.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        checkAnzeigeNameImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        
-        anzeigeNameConstraint.constant = 80
-        
         theStackView.layoutIfNeeded()
     }
     //MARK: setup Username
@@ -1156,17 +1198,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         if (string == " ") {
             return false
         }
-        return true
-    }
-    //MARK: Documents TextView
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        
-        if URL.absoluteString == "Nutzungsbedingungen" {
-            print("nutzung")
-        }else if URL.absoluteString == "Datenschutzrichtlinien" {
-            print("daten")
-        }
-        
         return true
     }
 }

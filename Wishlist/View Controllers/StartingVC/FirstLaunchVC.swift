@@ -25,8 +25,9 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     let willkommenLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Willkommen bei Wishlist."
+        v.text = "Willkommen bei Wishlists."
         v.font = UIFont(name: "AvenirNext-Bold", size: 23)
+        v.numberOfLines = 0
         v.textAlignment = .left
         v.textColor = .white
         v.adjustsFontSizeToFitWidth = true
@@ -38,7 +39,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Werde Mitglied unserer Community und erfülle deine größten Wünsche."
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textColor = .white
         v.textAlignment = .left
         v.numberOfLines = 0
@@ -74,7 +75,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     let oderLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 13)
         v.textColor = .white
         v.textAlignment = .center
         v.text = "ODER"
@@ -196,7 +197,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         willkommenLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
         
-        textLabel.topAnchor.constraint(equalTo: willkommenLabel.topAnchor, constant: 50).isActive = true
+        textLabel.topAnchor.constraint(equalTo: willkommenLabel.bottomAnchor, constant: 30).isActive = true
         textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         

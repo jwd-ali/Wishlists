@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import TextFieldEffects
 
 class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     
@@ -33,8 +34,8 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         return v
     }()
     
-    let emailTextField: CustomTextField = {
-        let v = CustomTextField()
+    let emailTextField: HoshiTextField = {
+        let v = HoshiTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
@@ -42,7 +43,6 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
         v.placeholderFontScale = 0.8
-        v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.autocapitalizationType = .none
@@ -88,6 +88,8 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.interactivePopGestureRecognizer!.delegate = self
 
         setUpViews()
+        
+        emailTextField.textContentType = .emailAddress
         
         // add motion effect to background image
         Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)

@@ -25,7 +25,7 @@ class AddItemCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .clear
         v.layer.borderWidth = 2
-        v.layer.borderColor = UIColor.lightGray.cgColor
+        v.layer.borderColor = UIColor.white.cgColor
         v.layer.cornerRadius = 30
         return v
     }()
@@ -35,7 +35,7 @@ class AddItemCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Tippen, um neue Wishlist zu erstellen"
         v.numberOfLines = 0
-        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.textColor = .white
         v.textAlignment = .center
         return v
