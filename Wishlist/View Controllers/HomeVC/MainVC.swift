@@ -290,7 +290,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
             
             //constrain bottomBar
-            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             

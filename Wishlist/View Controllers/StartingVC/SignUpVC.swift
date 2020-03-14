@@ -9,8 +9,9 @@
 import UIKit
 import FirebaseAuth
 import Firebase
-import TransitionButton
 import SwiftEntryKit
+import Lottie
+import IQKeyboardManagerSwift
 
 class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
@@ -225,6 +226,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         return v
     }()
     
+    let eyeButtonOne: UIButton = {
+        let v = UIButton()
+        v.addTarget(self, action: #selector(eyeButtonOneTapped), for: .touchUpInside)
+        v.setImage(UIImage(named: "eyeOpen"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.imageView?.contentMode = .scaleAspectFit
+        return v
+    }()
+    
     lazy var checkLetterImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "false")
@@ -300,6 +312,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         return v
     }()
     
+    let eyeButtonTwo: UIButton = {
+        let v = UIButton()
+        v.addTarget(self, action: #selector(eyeButtonTwoTapped), for: .touchUpInside)
+        v.setImage(UIImage(named: "eyeOpen"), for: .normal)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.imageView?.contentMode = .scaleAspectFit
+        return v
+    }()
+    
     lazy var checkMatchImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "false")
@@ -322,22 +345,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setImage(UIImage(named:"backButton"), for: .normal)
         v.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        return v
-    }()
-    
-    lazy var eyeButtonOne: UIButton = {
-        let v = UIButton()
-        v.addTarget(self, action: #selector(eyeButtonOneTapped), for: .touchUpInside)
-        v.setImage(UIImage(named: "eyeOpen"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let eyeButtonTwo: UIButton = {
-        let v = UIButton()
-        v.addTarget(self, action: #selector(eyeButtonTwoTapped), for: .touchUpInside)
-        v.setImage(UIImage(named: "eyeOpen"), for: .normal)
-        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -366,6 +373,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     var signUpButtonConstraint:NSLayoutConstraint!
     
+    let logoAnimation = AnimationView(name: "LoadingAnimation")
+    
     let signUpButtonView: UIView = {
         let v = UIView()
         v.backgroundColor = .clear
@@ -385,9 +394,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Auge Button Standart auf offen setzen
-        eyeButtonOne.setImage(UIImage(named: "eyeOpen"), for: .normal)
-        eyeButtonTwo.setImage(UIImage(named: "eyeOpen"), for: .normal)
         self.eyeButtonOne.isHidden = true
         self.eyeButtonTwo.isHidden = true
         
@@ -424,8 +430,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         //Textfield cursor -> white
         UITextField.appearance().tintColor = .white
-
-
+        
+        // enable that view moves when keyboard is activ 
+        IQKeyboardManager.shared.enable = true
+        
         setUpViews()
         
         self.emailTextField.text = email
@@ -612,6 +620,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordTextField.trailingAnchor.constraint(equalTo: passwordView.trailingAnchor).isActive = true
         eyeButtonOne.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: -5).isActive = true
         eyeButtonOne.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
+        eyeButtonOne.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        eyeButtonOne.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         passwordWiederholenConstraint = passwordWiederholenView.heightAnchor.constraint(equalToConstant: 60)
         passwordWiederholenConstraint.isActive = true
@@ -621,7 +631,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordWiederholenTextField.trailingAnchor.constraint(equalTo: passwordWiederholenView.trailingAnchor).isActive = true
         eyeButtonTwo.trailingAnchor.constraint(equalTo: passwordWiederholenTextField.trailingAnchor, constant: -5).isActive = true
         eyeButtonTwo.centerYAnchor.constraint(equalTo: passwordWiederholenTextField.centerYAnchor, constant: 10).isActive = true
-        
+        eyeButtonTwo.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        eyeButtonTwo.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         documentsLabel.heightAnchor.constraint(equalToConstant: 65).isActive = true
         
@@ -713,17 +724,48 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         let contentView = EKNotificationMessageView(with: notificationMessage)
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
+    //MARK: setup Loading-Animation
+    func setupLoadingAnimation(){
+       
+        logoAnimation.contentMode = .scaleAspectFit
+        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(logoAnimation)
+        
+        logoAnimation.centerXAnchor.constraint(equalTo: signUpButton.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: signUpButton.centerYAnchor).isActive = true
+        logoAnimation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.loopMode = .loop
+    }
     
     //MARK: SignUp-Tappped
     @objc func signUpButtonTapped(_ sender: Any) {
+        self.view.endEditing(true)
+        // disable button tap
+        self.signUpButton.isEnabled = false
         // reset isValid variable
         isValid = true
+        // hide the buttons title
+        self.signUpButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation()
+        logoAnimation.play()
         
         validateFields { completion in
             // check if validateFields method is completed
             if completion {
                 if !self.isValid {
                     // textFields are not valid
+                    // stop loading animation
+                    self.logoAnimation.stop()
+                    // remove animation from view
+                    self.logoAnimation.removeFromSuperview()
+                    // reset button title to "Registrieren"
+                    self.signUpButton.setTitle("Registrieren", for: .normal)
+                    // play shake animation
+                    self.signUpButton.shake()
+                    // enable button tap
+                    self.signUpButton.isEnabled = true
                     self.theScrollView.scrollToTop()
                 }else {
                     // correct textfield input
@@ -738,7 +780,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 
                         //check for errors
                         if let err = err {
+                            // stop loading animation
+                            self.logoAnimation.stop()
+                            // remove animation from view
+                            self.logoAnimation.removeFromSuperview()
+                            // reset button title to "Registrieren"
+                            self.signUpButton.setTitle("Registrieren", for: .normal)
+                            // play shake animation
+                            self.signUpButton.shake()
+                            // show error popUp
                             self.showErrorPopUp(description: err.localizedDescription)
+                            // enable button tap
+                            self.signUpButton.isEnabled = true
                         }else {
 
                             //user was created successfully; store name, username and UID
@@ -757,6 +810,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                                     self.showErrorPopUp(description: error!.localizedDescription)
                                 }
                             }
+                            
+                            // stop animation
+                            self.logoAnimation.stop()
 
                             //transition to home
                             self.transitionToHome()
@@ -914,18 +970,26 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     
     //delegate Methode für Password Textfield
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        
+        
+        
         switch textField {
             
+        case usernameTextField:
+            IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(usernameView.frame.height) + CGFloat(passwordTextField.frame.height)
             
         case passwordTextField:
             setupPasswortTextfield()
+            IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(passwordView.frame.height) + CGFloat(passwordWiederholenTextField.frame.height)
             break
             
         case passwordWiederholenTextField:
             setupPasswortWiederholenTextfield()
+            IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(passwordWiederholenView.frame.height)
             break
             
         default:
+            IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
             break
         }
         

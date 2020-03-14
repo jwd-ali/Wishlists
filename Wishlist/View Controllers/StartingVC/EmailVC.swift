@@ -10,6 +10,9 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import TextFieldEffects
+import SwiftEntryKit
+import Lottie
+
 
 class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     
@@ -73,6 +76,8 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         return v
     }()
     
+    let logoAnimation = AnimationView(name: "LoadingAnimation")
+    
     let backButton: UIButton = {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +112,6 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         view.addSubview(theLabel)
         view.addSubview(emailTextField)
         view.addSubview(weiterButton)
-//        view.addSubview(kostenlosLabel)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -134,46 +138,127 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         weiterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         weiterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         weiterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-//        kostenlosLabel.topAnchor.constraint(equalTo: weiterButton.topAnchor, constant: 70).isActive = true
-//        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        
+            
     }
     var email = ""
         
+    
+    //MARK: Error Pop-up
+    func showErrorPopUp(description: String){
+        var attributes = EKAttributes.topToast
+        attributes.entryBackground = .color(color: EKColor(.white))
+        attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+        attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
+        attributes.statusBar = .dark
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.displayDuration = 5
+        
+
+        let title = EKProperty.LabelContent(text: "Fehler", style: .init(font: UIFont(name: "AvenirNext-Bold", size: 15)!, color: EKColor(UIColor.darkGray)))
+        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont(name: "AvenirNext-Regular", size: 13)!, color: EKColor(UIColor.darkGray)))
+        let image = EKProperty.ImageContent(image: UIImage(named: "false")!, size: CGSize(width: 20, height: 20))
+        let simpleMessage = EKSimpleMessage(image: image, title: title, description: description)
+        let notificationMessage = EKNotificationMessage(simpleMessage: simpleMessage)
+        
+
+        let contentView = EKNotificationMessageView(with: notificationMessage)
+        SwiftEntryKit.display(entry: contentView, using: attributes)
+    }
+    //MARK: setup Loading-Animation
+    func setupLoadingAnimation(){
+       
+        logoAnimation.contentMode = .scaleAspectFit
+        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(logoAnimation)
+        
+        logoAnimation.centerXAnchor.constraint(equalTo: weiterButton.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: weiterButton.centerYAnchor).isActive = true
+        logoAnimation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.loopMode = .loop
+    }
+
     @objc func weiterButtonTapped() {
+        
+        // disable button tap
+        self.weiterButton.isEnabled = false
+        // hide the buttons title
+        self.weiterButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation()
+        logoAnimation.play()
     
         email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         //prüfen, ob Email schon registriert ist
         Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
             
-            //Email ist noch nicht registriert -> sign up
-            if methods == nil {
+            if error != nil  && Utilities.isValidEmail(self.emailTextField.text!) {
+                // some internal error while requesting emails
                 
-                let SignUpView = self.storyboard?.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
+                // show error popUp
+                // stop loading animation
+                self.logoAnimation.stop()
+                // remove animation from view
+                self.logoAnimation.removeFromSuperview()
+                // reset button title to "Registrieren"
+                self.weiterButton.setTitle("Weiter", for: .normal)
+                // play shake animation
+                self.weiterButton.shake()
+                // enable button tap
+                self.weiterButton.isEnabled = true
+                // show error popUp
+                self.showErrorPopUp(description: error!.localizedDescription)
+            } else {
+                // no error -> check email adress
                 
-                SignUpView.email = self.email
-                
-                let weiterButtonID = "weiterButtonID"
-                self.weiterButton.heroID = weiterButtonID
-                
-                SignUpView.signUpButton.heroID = weiterButtonID
-                
-                self.navigationController?.pushViewController(SignUpView, animated: true)
-                
+                //Email ist noch nicht registriert -> sign up
+                if methods == nil {
+                    
+                    let SignUpView = self.storyboard?.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
+                    // pass email to SignUpVC
+                    SignUpView.email = self.email
+                    
+                    let weiterButtonID = "weiterButtonID"
+                    self.weiterButton.heroID = weiterButtonID
+                    
+                    SignUpView.signUpButton.heroID = weiterButtonID
+                    
+                    // stop loading animation
+                    self.logoAnimation.stop()
+                    // remove animation from view
+                    self.logoAnimation.removeFromSuperview()
+                    // reset button title to "Weiter"
+                    self.weiterButton.setTitle("Weiter", for: .normal)
+                    // enable button tap
+                    self.weiterButton.isEnabled = true
+                    
+                    self.navigationController?.pushViewController(SignUpView, animated: true)
+                    
+                }
+                //Email ist registriert -> login
+                else {
+                    
+                    // stop loading animation
+                    self.logoAnimation.stop()
+                    // remove animation from view
+                    self.logoAnimation.removeFromSuperview()
+                    // reset button title to "Weiter"
+                    self.weiterButton.setTitle("Weiter", for: .normal)
+                    // enable button tap
+                    self.weiterButton.isEnabled = true
+                    
+                    self.view.endEditing(true)
+                    
+                    let LoginView = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
+                    // pass email to LoginVC
+                    LoginView.email = self.email
+                    
+                    self.navigationController?.pushViewController(LoginView, animated: false)
+                }
             }
-            //Email ist registriert -> login
-            else {
-                
-                self.view.endEditing(true)
-                
-                let LoginView = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
-                
-                LoginView.email = self.email
-                
-                self.navigationController?.pushViewController(LoginView, animated: false)
-            }
+            
+            
         }
     }
     

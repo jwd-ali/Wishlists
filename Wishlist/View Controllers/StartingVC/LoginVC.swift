@@ -9,7 +9,8 @@
 import UIKit
 import FirebaseAuth
 import TextFieldEffects
-import TransitionButton
+import SwiftEntryKit
+import Lottie
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -78,8 +79,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let loginButton: TransitionButton = {
-        let v = TransitionButton()
+    let loginButton: CustomButton = {
+        let v = CustomButton()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("LOGIN", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
@@ -91,15 +92,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let errorLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        v.textColor = .red
-        v.textAlignment = .center
-        v.numberOfLines = 0
-        return v
-    }()
+    let logoAnimation = AnimationView(name: "LoadingAnimation")
     
     let backButton: UIButton = {
         let v = UIButton()
@@ -113,6 +106,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let v = UIButton()
         v.addTarget(self, action: #selector(eyeButtonTapped), for: .touchUpInside)
         v.setImage(UIImage(named: "eyeOpen"), for: .normal)
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.imageView?.contentMode = .scaleAspectFit
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -142,9 +138,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // pass email
         self.emailTextField.text = email
         
-        // hide error
-        errorLabel.alpha = 0
-        
         // password hide/show
         passwordTextField.isSecureTextEntry.toggle()
         
@@ -164,7 +157,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(passwordTextField)
         view.addSubview(vergessenButton)
         view.addSubview(loginButton)
-        view.addSubview(errorLabel)
         view.addSubview(eyeButton)
         view.addSubview(theLabel)
         
@@ -197,48 +189,89 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         eyeButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor, constant: 10).isActive = true
         eyeButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor).isActive = true
+        eyeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        eyeButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         loginButton.topAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: 80).isActive = true
         loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        errorLabel.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 80).isActive = true
-        errorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60).isActive = true
-        errorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60).isActive = true
+    }
+    
+    //MARK: Error Pop-up
+    func showErrorPopUp(description: String){
+        var attributes = EKAttributes.topToast
+        attributes.entryBackground = .color(color: EKColor(.white))
+        attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+        attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
+        attributes.statusBar = .dark
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.displayDuration = 5
         
+
+        let title = EKProperty.LabelContent(text: "Login fehlgeschlagen", style: .init(font: UIFont(name: "AvenirNext-Bold", size: 15)!, color: EKColor(UIColor.darkGray)))
+        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont(name: "AvenirNext-Regular", size: 13)!, color: EKColor(UIColor.darkGray)))
+        let image = EKProperty.ImageContent(image: UIImage(named: "false")!, size: CGSize(width: 20, height: 20))
+        let simpleMessage = EKSimpleMessage(image: image, title: title, description: description)
+        let notificationMessage = EKNotificationMessage(simpleMessage: simpleMessage)
+        
+
+        let contentView = EKNotificationMessageView(with: notificationMessage)
+        SwiftEntryKit.display(entry: contentView, using: attributes)
+    }
+    //MARK: setup Loading-Animation
+    func setupLoadingAnimation(){
+       
+        logoAnimation.contentMode = .scaleAspectFit
+        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(logoAnimation)
+        
+        logoAnimation.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor).isActive = true
+        logoAnimation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.loopMode = .loop
     }
 
     @objc func loginButtonTapped(_ sender: Any) {
         
+        // disable button tap
+        self.loginButton.isEnabled = false
+        // hide the buttons title
+        self.loginButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation()
+        logoAnimation.play()
+        
         let email = self.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        // start button animation
-        loginButton.startAnimation()
         
-        let qualityOfServiceClass = DispatchQoS.QoSClass.background
-        let backgorundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
-        backgorundQueue.async {
-            // check if account details correct
-            Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-                
-                if error != nil {
-                    DispatchQueue.main.async {
-                        // error -> stop animation
-                        self.loginButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0) {
-                            self.errorLabel.text = error!.localizedDescription
-                            self.errorLabel.alpha = 1
-                        }
-                    }
-                }else {
-                    // correct acount details -> login
-                    DispatchQueue.main.async {
-                        UserDefaults.standard.setIsLoggedIn(value: true)
-                        UserDefaults.standard.synchronize()
-                        
-                        self.transitionToHome()
-                    }
-                }
+        
+        // check if account details correct
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            
+            if error != nil {
+                // stop loading animation
+                self.logoAnimation.stop()
+                // remove animation from view
+                self.logoAnimation.removeFromSuperview()
+                // reset button title to "Registrieren"
+                self.loginButton.setTitle("Login", for: .normal)
+                // play shake animation
+                self.loginButton.shake()
+                // enable button tap
+                self.loginButton.isEnabled = true
+                // show error popUp
+                self.showErrorPopUp(description: error!.localizedDescription)
+            }else {
+                // correct acount details -> login
+                UserDefaults.standard.setIsLoggedIn(value: true)
+                UserDefaults.standard.synchronize()
+                // stop animation
+                self.logoAnimation.stop()
+                // transition to Home-ViewController
+                self.transitionToHome()
             }
         }
     }

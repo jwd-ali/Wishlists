@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import RevealingSplashView
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -13,12 +13,12 @@ target 'Wishlist' do
 	pod 'Firebase/Firestore'
 	pod 'Firebase/Database'
 	pod 'TextFieldEffects'
-	pod 'TransitionButton'
 	pod 'Hero'
 	pod 'RevealingSplashView'
 	pod 'LBTAComponents'
 	pod 'lottie-ios'
 	pod 'SwiftEntryKit', '1.2.3'
+	pod 'IQKeyboardManagerSwift'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

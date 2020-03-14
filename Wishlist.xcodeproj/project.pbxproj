@@ -41,15 +41,13 @@
 		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
-		83B7288B23DF896700C0BD52 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7288A23DF896700C0BD52 /* SignUpTableViewController.swift */; };
-		83B7288D23DF89D300C0BD52 /* SignUpTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7288C23DF89D300C0BD52 /* SignUpTableViewCells.swift */; };
 		83BF292F23DE28DB003A3AF1 /* EmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF292E23DE28DB003A3AF1 /* EmailVC.swift */; };
 		83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C041EB23DA435100AF527F /* MainNavigationControllerViewController.swift */; };
 		83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDC23B6731A00007A53 /* WishlistVC.swift */; };
 		83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
 		83DA1B38241BBD13008A58EB /* UITapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B37241BBD13008A58EB /* UITapGesture.swift */; };
+		83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83DA1B3B241D0889008A58EB /* LoadingAnimation.json */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
-		83F51D61240C7A9E00FC6036 /* 16732-super-hero-charging.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D60240C7A9E00FC6036 /* 16732-super-hero-charging.json */; };
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
 		83FE84B523DB3BC9008D9F7B /* UserDefault+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */; };
@@ -95,15 +93,13 @@
 		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
-		83B7288A23DF896700C0BD52 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
-		83B7288C23DF89D300C0BD52 /* SignUpTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTableViewCells.swift; sourceTree = "<group>"; };
 		83BF292E23DE28DB003A3AF1 /* EmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVC.swift; sourceTree = "<group>"; };
 		83C041EB23DA435100AF527F /* MainNavigationControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationControllerViewController.swift; sourceTree = "<group>"; };
 		83D15FDC23B6731A00007A53 /* WishlistVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistVC.swift; sourceTree = "<group>"; };
 		83D15FDE23BA908900007A53 /* WishlistStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistStruct.swift; sourceTree = "<group>"; };
 		83DA1B37241BBD13008A58EB /* UITapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITapGesture.swift; sourceTree = "<group>"; };
+		83DA1B3B241D0889008A58EB /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
-		83F51D60240C7A9E00FC6036 /* 16732-super-hero-charging.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "16732-super-hero-charging.json"; sourceTree = "<group>"; };
 		83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StrokeAnimation.json; sourceTree = "<group>"; };
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+Helpers.swift"; sourceTree = "<group>"; };
@@ -150,7 +146,7 @@
 		832E9CB2240C714300135A50 /* LottieFiles */ = {
 			isa = PBXGroup;
 			children = (
-				83F51D60240C7A9E00FC6036 /* 16732-super-hero-charging.json */,
+				83DA1B3B241D0889008A58EB /* LoadingAnimation.json */,
 				83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */,
 			);
 			path = LottieFiles;
@@ -254,8 +250,6 @@
 			children = (
 				83A1939F230D6062002D22C0 /* FirstLaunchVC.swift */,
 				83A193B1230EF655002D22C0 /* SignUpVC.swift */,
-				83B7288A23DF896700C0BD52 /* SignUpTableViewController.swift */,
-				83B7288C23DF89D300C0BD52 /* SignUpTableViewCells.swift */,
 				83A193B3230EF66C002D22C0 /* LoginVC.swift */,
 				83BF292E23DE28DB003A3AF1 /* EmailVC.swift */,
 			);
@@ -388,7 +382,7 @@
 				83A193BC230F0E80002D22C0 /* GoogleService-Info.plist in Resources */,
 				83A193A5230D6064002D22C0 /* Assets.xcassets in Resources */,
 				83A193A3230D6062002D22C0 /* Main.storyboard in Resources */,
-				83F51D61240C7A9E00FC6036 /* 16732-super-hero-charging.json in Resources */,
+				83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,7 +456,6 @@
 				83953A6D23D64F4A00589036 /* ButtonHelper.swift in Sources */,
 				83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */,
 				8386EB8923CDFDCF00C7720F /* AlertHelper.swift in Sources */,
-				83B7288D23DF89D300C0BD52 /* SignUpTableViewCells.swift in Sources */,
 				836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */,
 				83FE84B523DB3BC9008D9F7B /* UserDefault+Helpers.swift in Sources */,
 				8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */,
@@ -480,7 +473,6 @@
 				832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */,
 				836232B423C9E40800FA498D /* MakeWishView.swift in Sources */,
 				83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */,
-				83B7288B23DF896700C0BD52 /* SignUpTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
