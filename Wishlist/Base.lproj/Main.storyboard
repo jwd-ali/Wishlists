@@ -24,6 +24,21 @@
             </objects>
             <point key="canvasLocation" x="1957" y="-315"/>
         </scene>
+        <!--User NameVC-->
+        <scene sceneID="Tes-rQ-P9V">
+            <objects>
+                <viewController storyboardIdentifier="UsernameVC" id="fNV-eR-VCC" customClass="UserNameVC" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xK3-Rz-Dw7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="BnW-yM-EeA"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nSK-Js-wx4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2310" y="380"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="Ujc-8a-0Mo">
             <objects>

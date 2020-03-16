@@ -80,7 +80,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }()
     
     let loginButton: CustomButton = {
-        let v = CustomButton()
+        let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("LOGIN", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)

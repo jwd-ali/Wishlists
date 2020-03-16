@@ -100,9 +100,9 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        self.emailTextField.becomeFirstResponder()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        emailTextField.becomeFirstResponder() 
     }
     
     func setUpViews() {
@@ -179,7 +179,8 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
     @objc func weiterButtonTapped() {
-        
+        // resign keyboard
+        self.emailTextField.resignFirstResponder()
         // disable button tap
         self.weiterButton.isEnabled = false
         // hide the buttons title

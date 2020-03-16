@@ -9,7 +9,14 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import Firebase
 import RevealingSplashView
+import FBSDKCoreKit
+import FBSDKShareKit
+import FBSDKLoginKit
+import Lottie
+
+
 
 class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     
@@ -105,6 +112,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         v.setTitleColor(.white, for: .normal)
         v.backgroundColor = UIColor(red: 105/255, green: 141/255, blue: 210/255, alpha: 1)
         v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(facebookButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -153,6 +161,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         v.contentMode = .scaleAspectFit
         return v
     }()
+    
+    let logoAnimation = AnimationView(name: "LoadingAnimation")
     
     //MARK: ViewDidLoad
     override func viewDidLoad() {
@@ -288,6 +298,156 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    //MARK: setup Loading-Animation
+    func setupLoadingAnimation(){
+       
+        logoAnimation.contentMode = .scaleAspectFit
+        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(logoAnimation)
+        
+        logoAnimation.centerXAnchor.constraint(equalTo: facebookButton.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: facebookButton.centerYAnchor).isActive = true
+        logoAnimation.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        logoAnimation.loopMode = .loop
+    }
+    
+    //MARK: Facebook Login
+    @objc func facebookButtonTapped(){
+        
+        // disable button tap
+        self.facebookButton.isEnabled = false
+        // hide the buttons title
+        self.facebookButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation()
+        logoAnimation.play()
+        
+        let accessToken = AccessToken.current
+        
+        LoginManager().logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
+            if error != nil {
+                // stop loading animation
+                self.logoAnimation.stop()
+                // remove animation from view
+                self.logoAnimation.removeFromSuperview()
+                // reset button title to "Registrieren"
+                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                // play shake animation
+                self.facebookButton.shake()
+                // enable button tap
+                self.facebookButton.isEnabled = true
+                // some FB error
+                Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
+                return
+            }else if result?.isCancelled == true {
+                // stop loading animation
+                self.logoAnimation.stop()
+                // remove animation from view
+                self.logoAnimation.removeFromSuperview()
+                // reset button title to "Registrieren"
+                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                // play shake animation
+                self.facebookButton.shake()
+                // enable button tap
+                self.facebookButton.isEnabled = true
+            }else {
+                // successfull FB-Login
+                GraphRequest(graphPath: "/me", parameters: ["fields": "id, email, name"]).start { (connection, result, error) in
+                    if error != nil {
+                        // stop loading animation
+                        self.logoAnimation.stop()
+                        // remove animation from view
+                        self.logoAnimation.removeFromSuperview()
+                        // reset button title to "Registrieren"
+                        self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                        // play shake animation
+                        self.facebookButton.shake()
+                        // enable button tap
+                        self.facebookButton.isEnabled = true
+                        // some FB error
+                        Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
+                    }else {
+                        print(result!)
+                        // check if user has account
+                        guard let Info = result as? [String: Any] else { return }
+
+                        let email = Info["email"] as? String
+                           
+                        Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
+                            
+                            if error != nil {
+                                 // stop loading animation
+                               self.logoAnimation.stop()
+                               // remove animation from view
+                               self.logoAnimation.removeFromSuperview()
+                               // reset button title to "Registrieren"
+                               self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                               // play shake animation
+                               self.facebookButton.shake()
+                               // enable button tap
+                               self.facebookButton.isEnabled = true
+                                // show error popUp
+                                Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                            } else {
+                                // no error -> check email adress
+                                                    
+                                // stop loading animation
+                                self.logoAnimation.stop()
+                                // remove animation from view
+                                self.logoAnimation.removeFromSuperview()
+                                // reset button title to "Registrieren"
+                                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                                // enable button tap
+                                self.facebookButton.isEnabled = true
+                                
+                                // Email ist noch nicht registriert -> sign up
+                                if methods == nil {
+                                    
+                                    let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+                                    usernameVC.accessToken = accessToken
+                                    usernameVC.signInOption = "facebook"
+                                    self.navigationController?.pushViewController(usernameVC, animated: true)
+                                    
+                                }
+                                // Email ist registriert -> login
+                                else {
+               
+                                    // set user status to logged-in
+                                    UserDefaults.standard.setIsLoggedIn(value: true)
+                                    UserDefaults.standard.synchronize()
+                                    
+                                    // stop loading animation
+                                    self.logoAnimation.stop()
+                                    // remove animation from view
+                                    self.logoAnimation.removeFromSuperview()
+                                    // reset button title to "Registrieren"
+                                    self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                                    // enable button tap
+                                    self.facebookButton.isEnabled = true
+                                    
+                                    // transition to Home-ViewController
+                                    self.transitionToHome()
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func transitionToHome () {
+
+        let homeVC =
+        storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? MainViewController
+        let navigationController = UINavigationController(rootViewController: homeVC!)
+
+        view.window?.rootViewController = navigationController
+        view.window?.makeKeyAndVisible()
     }
 }
 

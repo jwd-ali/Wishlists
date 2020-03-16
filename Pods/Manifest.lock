@@ -164,6 +164,20 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - FBSDKCoreKit (6.2.0):
+    - FBSDKCoreKit/Basics (= 6.2.0)
+    - FBSDKCoreKit/Core (= 6.2.0)
+  - FBSDKCoreKit/Basics (6.2.0)
+  - FBSDKCoreKit/Core (6.2.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (6.2.0):
+    - FBSDKLoginKit/Login (= 6.2.0)
+  - FBSDKLoginKit/Login (6.2.0):
+    - FBSDKCoreKit (~> 6.2.0)
+  - FBSDKShareKit (6.2.0):
+    - FBSDKShareKit/Share (= 6.2.0)
+  - FBSDKShareKit/Share (6.2.0):
+    - FBSDKCoreKit (~> 6.2.0)
   - Firebase/Analytics (6.15.0):
     - Firebase/Core
   - Firebase/Auth (6.15.0):
@@ -297,6 +311,9 @@ PODS:
   - TextFieldEffects (1.6.0)
 
 DEPENDENCIES:
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
@@ -314,6 +331,9 @@ SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -347,6 +367,9 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  FBSDKCoreKit: a7bb9f5ac56c1e11d5f8ae0b90a3610f8744b43a
+  FBSDKLoginKit: 5877adb09cc249870c352d92ecc3246cb925c771
+  FBSDKShareKit: 09ad91955d3a6de171970f2954dc1e955b064899
   Firebase: 5d77105d9740a07ca6b16927ca971db7e860faaf
   FirebaseAnalytics: e83e64b1231dedcd9ddd4bdecd9bcfd6ba341679
   FirebaseAuth: ce45d7c5d46bed90159f3a73b6efbe8976ed3573
@@ -377,6 +400,6 @@ SPEC CHECKSUMS:
   SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
 
-PODFILE CHECKSUM: a79779e37d297a110910ee17c9305700848683a3
+PODFILE CHECKSUM: 6d12b335582b38a58ccd95d396f503f9c3b7a62a
 
 COCOAPODS: 1.8.4

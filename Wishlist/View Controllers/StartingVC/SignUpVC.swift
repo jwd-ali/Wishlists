@@ -811,6 +811,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                                 }
                             }
                             
+                            // set user status to logged-in
+                            UserDefaults.standard.setIsLoggedIn(value: true)
+                            UserDefaults.standard.synchronize()
+                            
                             // stop animation
                             self.logoAnimation.stop()
 
@@ -968,7 +972,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         usernameCorrectImage.widthAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
-    //delegate Methode für Password Textfield
+    // MARK: textFieldshouldBegin
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         
@@ -1017,13 +1021,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 checkUsername(field: textField.text!) { (success) in
                     if success == true {
                         // username is taken
-                        print("Username is taken")
                         self.setupUsernameTextField()
                         self.checkUsernameImage.image = UIImage(named: "false")
                         self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
                     } else {
                         // username is not taken
-                        print("Username is not taken")
                         self.checkUsernameImage.image = UIImage(named: "correct")
                         self.checkUserNameLabel.text = "gültiger Benutzername"
                     }
@@ -1211,7 +1213,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 print(self.usernameTextField.text!)
                 if success == true {
                     // username is taken
-                    print("Username is taken")
                     self.setupUsernameTextField()
                     self.checkUsernameImage.image = UIImage(named: "false")
                     self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
@@ -1221,7 +1222,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                     self.activityIndicator.stopAnimating()
                 } else {
                     // username is not taken
-                    print("Username is not taken")
                     self.checkUsernameImage.removeFromSuperview()
                     // add "correct"-image to view
                     self.setupCheckUsernameImage()

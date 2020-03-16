@@ -19,6 +19,9 @@ target 'Wishlist' do
 	pod 'lottie-ios'
 	pod 'SwiftEntryKit', '1.2.3'
 	pod 'IQKeyboardManagerSwift'
+	pod 'FBSDKCoreKit'
+	pod 'FBSDKShareKit'
+	pod 'FBSDKLoginKit'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

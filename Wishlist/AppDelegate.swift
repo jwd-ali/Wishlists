@@ -10,6 +10,9 @@ import UIKit
 import Firebase
 import RevealingSplashView
 import IQKeyboardManagerSwift
+import FBSDKCoreKit
+import FBSDKShareKit
+import FBSDKLoginKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController?.view.addSubview(revealingSplashView)
         FirebaseApp.configure()
         
+        // FacebookSDK setup
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
+    }
+    // Facebook setup
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
+        return ApplicationDelegate.shared.application(
+            app,
+            open: url,
+            options: options
+        )
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

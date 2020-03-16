@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftEntryKit
 
 class Utilities {
     
@@ -74,6 +75,27 @@ class Utilities {
         group.motionEffects = [xMotion, yMotion]
         
         view.addMotionEffect(group)
+    }
+    
+    //MARK: Error Pop-up
+    static func showErrorPopUp(labelContent: String, description: String){
+        var attributes = EKAttributes.topToast
+        attributes.entryBackground = .color(color: EKColor(.white))
+        attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.3), scale: .init(from: 1, to: 0.7, duration: 0.7)))
+        attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
+        attributes.statusBar = .dark
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.displayDuration = 5
+
+        let title = EKProperty.LabelContent(text: labelContent, style: .init(font: UIFont(name: "AvenirNext-Bold", size: 15)!, color: EKColor(UIColor.darkGray)))
+        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont(name: "AvenirNext-Regular", size: 13)!, color: EKColor(UIColor.darkGray)))
+        let image = EKProperty.ImageContent(image: UIImage(named: "false")!, size: CGSize(width: 20, height: 20))
+        let simpleMessage = EKSimpleMessage(image: image, title: title, description: description)
+        let notificationMessage = EKNotificationMessage(simpleMessage: simpleMessage)
+        
+
+        let contentView = EKNotificationMessageView(with: notificationMessage)
+        SwiftEntryKit.display(entry: contentView, using: attributes)
     }
 }
 

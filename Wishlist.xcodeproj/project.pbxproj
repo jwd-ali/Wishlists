@@ -47,6 +47,7 @@
 		83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
 		83DA1B38241BBD13008A58EB /* UITapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B37241BBD13008A58EB /* UITapGesture.swift */; };
 		83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83DA1B3B241D0889008A58EB /* LoadingAnimation.json */; };
+		83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B3E241FD915008A58EB /* UserNameVC.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
@@ -99,6 +100,8 @@
 		83D15FDE23BA908900007A53 /* WishlistStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistStruct.swift; sourceTree = "<group>"; };
 		83DA1B37241BBD13008A58EB /* UITapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITapGesture.swift; sourceTree = "<group>"; };
 		83DA1B3B241D0889008A58EB /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
+		83DA1B3D241FAA17008A58EB /* Wishlist.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wishlist.entitlements; sourceTree = "<group>"; };
+		83DA1B3E241FD915008A58EB /* UserNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameVC.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StrokeAnimation.json; sourceTree = "<group>"; };
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +176,7 @@
 		83A1939C230D6062002D22C0 /* Wishlist */ = {
 			isa = PBXGroup;
 			children = (
+				83DA1B3D241FAA17008A58EB /* Wishlist.entitlements */,
 				83A193BB230F0E80002D22C0 /* GoogleService-Info.plist */,
 				83A1939D230D6062002D22C0 /* AppDelegate.swift */,
 				83A193BA230F0580002D22C0 /* Helpers */,
@@ -249,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				83A1939F230D6062002D22C0 /* FirstLaunchVC.swift */,
+				83DA1B3E241FD915008A58EB /* UserNameVC.swift */,
 				83A193B1230EF655002D22C0 /* SignUpVC.swift */,
 				83A193B3230EF66C002D22C0 /* LoginVC.swift */,
 				83BF292E23DE28DB003A3AF1 /* EmailVC.swift */,
@@ -447,6 +452,7 @@
 				83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */,
 				83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */,
 				836A862323875325000E76E4 /* WhishCell.swift in Sources */,
+				83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */,
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
 				83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */,
@@ -619,6 +625,7 @@
 			baseConfigurationReference = 49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Wishlist/Wishlist.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SN26HDFT24;
 				INFOPLIST_FILE = Wishlist/Info.plist;
@@ -639,6 +646,7 @@
 			baseConfigurationReference = 264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Wishlist/Wishlist.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SN26HDFT24;
 				INFOPLIST_FILE = Wishlist/Info.plist;
