@@ -15,6 +15,7 @@ import Lottie
 import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
+import GoogleSignIn
 
 class UserNameVC: UIViewController, UITextFieldDelegate {
 
@@ -127,8 +128,10 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     var timer = Timer()
     
     var signInOption: String?
-    
+    // accessToken for FB-Signin
     var accessToken: AccessToken?
+    // authentication for Google-Signin
+    var authentication: GIDAuthentication?
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -345,6 +348,8 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         setupLoadingAnimation()
         logoAnimation.play()
         
+        let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         validateFields { completion in
             // check if validateFields method is completed
             if completion {
@@ -362,16 +367,15 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     self.confirmButton.isEnabled = true
                     
                 }else if self.signInOption == "facebook" {
+                    //MARK: Facebook-Login
                     guard let accessTokenString = self.accessToken?.tokenString else {
                         return
                     }
                     let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                     
-                    let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-                    
                     Auth.auth().signIn(with: credentials, completion: { (user, error) in
                         if error != nil {
-                            print("error creating profile: " + error!.localizedDescription)
+                            Utilities.showErrorPopUp(labelContent: "Fehler bei Kontoerstellung", description: error!.localizedDescription)
                         } else {
                             //user was created successfully; store name, username and UID
                             let db = Firestore.firestore()
@@ -402,6 +406,43 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                         }
                     })
                     
+                } else if self.signInOption == "google" {
+                    //MARK: Google-Login
+                    let credentials = GoogleAuthProvider.credential(withIDToken: self.authentication!.idToken,
+                                                                   accessToken: self.authentication!.accessToken)
+                    
+                    Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                        if error != nil {
+                            Utilities.showErrorPopUp(labelContent: "Fehler bei Kontoerstellung", description: error!.localizedDescription)
+                        } else {
+                            //user was created successfully; store name, username and UID
+                            let db = Firestore.firestore()
+
+                            let userID = user!.user.uid
+
+                            db.collection("users").document(userID).setData(["username": username, "uid": user!.user.uid]) { (error) in
+                                if error != nil {
+                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                                }
+                            }
+                            // generate empty "Main Wishlist"
+                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
+                                if error != nil {
+                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                                }
+                            }
+                            
+                            // set user status to logged-in
+                            UserDefaults.standard.setIsLoggedIn(value: true)
+                            UserDefaults.standard.synchronize()
+                            
+                            // stop animation
+                            self.logoAnimation.stop()
+
+                            //transition to home
+                            self.transitionToHome()
+                        }
+                    })
                 }
             }
         }

@@ -13,6 +13,7 @@ import IQKeyboardManagerSwift
 import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,22 +28,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController?.view.addSubview(revealingSplashView)
         FirebaseApp.configure()
         
+        // Google Sign in
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        
         // FacebookSDK setup
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         return true
     }
     // Facebook setup
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-    ) -> Bool {
-        return ApplicationDelegate.shared.application(
-            app,
-            open: url,
-            options: options
-        )
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        GIDSignIn.sharedInstance().handle(url)
+        
+        return ApplicationDelegate.shared.application(app, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

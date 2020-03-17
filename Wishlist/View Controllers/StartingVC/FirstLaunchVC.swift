@@ -15,10 +15,11 @@ import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
 import Lottie
+import GoogleSignIn
 
 
 
-class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
+class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignInDelegate {
     
     let backgroundImage: UIImageView = {
         let v = UIImageView()
@@ -132,6 +133,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         v.setTitleColor(.darkGray, for: .normal)
         v.backgroundColor = .white
         v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(googleButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -173,6 +175,10 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         
         // add motion effect to background image
         Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
+        
+        // google sign in delegate
+        GIDSignIn.sharedInstance()?.delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         
         setUpViews()
         
@@ -301,14 +307,14 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
     }
     
     //MARK: setup Loading-Animation
-    func setupLoadingAnimation(){
+    func setupLoadingAnimation(button: UIButton){
        
         logoAnimation.contentMode = .scaleAspectFit
         logoAnimation.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(logoAnimation)
         
-        logoAnimation.centerXAnchor.constraint(equalTo: facebookButton.centerXAnchor).isActive = true
-        logoAnimation.centerYAnchor.constraint(equalTo: facebookButton.centerYAnchor).isActive = true
+        logoAnimation.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
         logoAnimation.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logoAnimation.widthAnchor.constraint(equalToConstant: 50).isActive = true
         logoAnimation.loopMode = .loop
@@ -322,7 +328,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
         // hide the buttons title
         self.facebookButton.setTitle("", for: .normal)
         // start loading animation
-        setupLoadingAnimation()
+        setupLoadingAnimation(button: self.facebookButton)
         logoAnimation.play()
         
         let accessToken = AccessToken.current
@@ -436,6 +442,99 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    //MARK: Google-Login
+    @objc func googleButtonTapped(){
+        // disable button tap
+        self.googleButton.isEnabled = false
+        // hide the buttons title
+        self.googleButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation(button: self.googleButton)
+        logoAnimation.play()
+        // call sign-method
+        GIDSignIn.sharedInstance()?.signIn()
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let err = error {
+            print("Error signInFor: " + err.localizedDescription)
+            // stop loading animation
+           self.logoAnimation.stop()
+           // remove animation from view
+           self.logoAnimation.removeFromSuperview()
+           // reset button title to "Registrieren"
+           self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
+           // play shake animation
+           self.googleButton.shake()
+           // enable button tap
+           self.googleButton.isEnabled = true
+            
+        }else {
+            guard let authentication = user.authentication else { return }
+
+            guard let email = user.profile.email else { return }
+            
+            Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
+                         
+                 if error != nil {
+                      // stop loading animation
+                    self.logoAnimation.stop()
+                    // remove animation from view
+                    self.logoAnimation.removeFromSuperview()
+                    // reset button title to "Registrieren"
+                    self.googleButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                    // play shake animation
+                    self.googleButton.shake()
+                    // enable button tap
+                    self.googleButton.isEnabled = true
+                     // show error popUp
+                     Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                 } else {
+                     // no error -> check email adress
+                                         
+                     // stop loading animation
+                     self.logoAnimation.stop()
+                     // remove animation from view
+                     self.logoAnimation.removeFromSuperview()
+                     // reset button title to "Registrieren"
+                     self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
+                     // enable button tap
+                     self.googleButton.isEnabled = true
+                     
+                     // Email ist noch nicht registriert -> sign up
+                     if methods == nil {
+                         
+                         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+                         usernameVC.authentication = authentication
+                         usernameVC.signInOption = "google"
+                         self.navigationController?.pushViewController(usernameVC, animated: true)
+                         
+                     }
+                     // Email ist registriert -> login
+                     else {
+    
+                         // set user status to logged-in
+                         UserDefaults.standard.setIsLoggedIn(value: true)
+                         UserDefaults.standard.synchronize()
+                         
+                         // stop loading animation
+                         self.logoAnimation.stop()
+                         // remove animation from view
+                         self.logoAnimation.removeFromSuperview()
+                         // reset button title to "Registrieren"
+                         self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
+                         // enable button tap
+                         self.googleButton.isEnabled = true
+                         
+                         // transition to Home-ViewController
+                         self.transitionToHome()
+                         
+                     }
+                 }
             }
         }
     }
