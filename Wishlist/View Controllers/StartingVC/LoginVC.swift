@@ -383,5 +383,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @objc func vergessenTapped() {
         print("vergessenButtonTapped")
+        let forgotPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "ForgotPasswordVC") as! ForgotPasswordVC
+        forgotPasswordVC.email = self.emailTextField.text!
+        self.present(forgotPasswordVC, animated: true, completion: nil)
     }
 }

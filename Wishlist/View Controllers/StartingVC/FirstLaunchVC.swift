@@ -184,7 +184,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         
     }
     
-    
+    //MARK: setupViews
     func setUpViews(){
         
         view.addSubview(backgroundImage)
@@ -192,7 +192,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         view.addSubview(textLabel)
         view.addSubview(emailButton)
         emailButton.addSubview(emailImage)
-//        view.addSubview(kostenlosLabel)
         view.addSubview(oderLabel)
         view.addSubview(lineLeft)
         view.addSubview(lineRight)
@@ -216,15 +215,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         textLabel.topAnchor.constraint(equalTo: willkommenLabel.bottomAnchor, constant: 30).isActive = true
         textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-//        kostenlosLabel.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 120).isActive = true
-//        kostenlosLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-//        emailTextfield.topAnchor.constraint(equalTo: kostenlosLabel.topAnchor, constant: 35).isActive = true
-//        emailTextfield.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-//        emailTextfield.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-        
         
         emailButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         emailButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
@@ -539,6 +529,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         }
     }
     
+//MARK: TransitionToHome
     func transitionToHome () {
 
         let homeVC =

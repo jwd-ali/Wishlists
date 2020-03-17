@@ -48,6 +48,7 @@
 		83DA1B38241BBD13008A58EB /* UITapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B37241BBD13008A58EB /* UITapGesture.swift */; };
 		83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83DA1B3B241D0889008A58EB /* LoadingAnimation.json */; };
 		83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B3E241FD915008A58EB /* UserNameVC.swift */; };
+		83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B4024210C46008A58EB /* ForgotPasswordVC.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
@@ -102,6 +103,7 @@
 		83DA1B3B241D0889008A58EB /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		83DA1B3D241FAA17008A58EB /* Wishlist.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wishlist.entitlements; sourceTree = "<group>"; };
 		83DA1B3E241FD915008A58EB /* UserNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameVC.swift; sourceTree = "<group>"; };
+		83DA1B4024210C46008A58EB /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StrokeAnimation.json; sourceTree = "<group>"; };
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				83A193B1230EF655002D22C0 /* SignUpVC.swift */,
 				83A193B3230EF66C002D22C0 /* LoginVC.swift */,
 				83BF292E23DE28DB003A3AF1 /* EmailVC.swift */,
+				83DA1B4024210C46008A58EB /* ForgotPasswordVC.swift */,
 			);
 			path = StartingVC;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				836A862323875325000E76E4 /* WhishCell.swift in Sources */,
 				83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */,
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
+				83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
 				83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */,
 				83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */,

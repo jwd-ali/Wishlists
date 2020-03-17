@@ -168,6 +168,21 @@
             </objects>
             <point key="canvasLocation" x="4647.826086956522" y="-237.05357142857142"/>
         </scene>
+        <!--Forgot PasswordVC-->
+        <scene sceneID="KiP-Tx-feh">
+            <objects>
+                <viewController storyboardIdentifier="ForgotPasswordVC" id="45e-Er-VyR" customClass="ForgotPasswordVC" customModule="Wishlist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SAQ-wR-WUI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Yqm-k5-yUb"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VBu-7B-EID" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3368" y="804"/>
+        </scene>
         <!--Community View Controller-->
         <scene sceneID="2f0-xp-uw3">
             <objects>
