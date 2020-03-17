@@ -33,14 +33,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-//    let searchButton: UIButton = {
-//        let v = UIButton()
-//        v.setImage(UIImage(named: "searchButton"), for: .normal)
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//
-//    }()
-    
     let welcomeLabel: UILabel = {
         let v = UILabel()
         v.text = ""
@@ -91,7 +83,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }()
     
     
-    // MARK: PopUpView
+    // MARK: MakeWishView
     
     let makeWishView: MakeWishView = {
         let v = MakeWishView()
@@ -103,6 +95,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     var theDropDownImageOptions = [UIImage]()
    
+    //MARK: CreateListView
+    
+    let createListView: CreateNewListView = {
+        let v = CreateNewListView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     // MARK: CollectionView
    
@@ -130,9 +129,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //    var wishListImagesArray: [UIImage] = [UIImage]()
     
     var image: UIImage?
-   
-    func styleTextField(_ textfield:UITextField) {
-    }
     
     private let imageView = UIImageView()
     private var imageTimer: Timer?
@@ -194,17 +190,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        // scale background image
-//        UIView.animate(withDuration: 0.3) {
-//            self.backGroundImage.applyTransform(withScale: 14, anchorPoint: CGPoint(x: 0.5, y: 0))
-//        }
-                
-//        // configure the dropDownButton
-//        dropDownButton = DropDownBtn.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-//        dropDownButton.dropView.selectedWishlistDelegate = self
-//        dropDownButton.label.text = "Liste wählen"
-//        dropDownButton.listImage.image = UIImage(named: "iconRoundedImage")
-//        dropDownButton.translatesAutoresizingMaskIntoConstraints = false
+        let userID = Auth.auth().currentUser!.uid
+        
+        print("id: " + userID)
         
         // configure image in createNewListPopUpView
         imagePreview?.image = UIImage(named: "iconRoundedImage")
@@ -455,17 +443,23 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // set the closure
         cell.tapCallback = {
             
-            self.listNameTextfield.becomeFirstResponder()
+//            self.listNameTextfield.becomeFirstResponder()
             
-            // let newListView appear
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.blurrImage.alpha = 0.96
-                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
-                self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
-                self.view.layoutIfNeeded()
-            })
+//            // let newListView appear
+//            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+//                self.blurrImage.alpha = 0.96
+//                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
+//                self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
+//                self.view.layoutIfNeeded()
+//            })
+            self.view.addSubview(self.createListView)
             
-            self.appWillEnterForegroundHandler()
+            self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            
+            //self.appWillEnterForegroundHandler()
             
         }
         

@@ -67,7 +67,7 @@ class WishlistViewController: UIViewController {
    let wishlistLabel: UILabel = {
        let v = UILabel()
        v.text = "Wishlist"
-       v.font = UIFont(name: "AvenirNext-Medium", size: 26)
+       v.font = UIFont(name: "AvenirNext-Bold", size: 23)
        v.textAlignment = .left
        v.textColor = .white
        v.adjustsFontSizeToFitWidth = true
@@ -188,8 +188,8 @@ class WishlistViewController: UIViewController {
             theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
            
             // constrain dismissButton
-            dismissWishlistViewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 23.0),
+            dismissWishlistViewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             
             // constrain menueButton
             menueButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -197,12 +197,12 @@ class WishlistViewController: UIViewController {
             
             // constrain wishlistImage
             wishlistImage.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -70),
-            wishlistImage.leadingAnchor.constraint(equalTo: wishlistView.leadingAnchor, constant: 30),
+            wishlistImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             wishlistImage.widthAnchor.constraint(equalToConstant: 90),
             wishlistImage.heightAnchor.constraint(equalToConstant: 90),
             
             //constrain wishlistlabel
-            wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -47),
+            wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -40),
             wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 100),
             
             addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),

@@ -14,7 +14,6 @@
 		83605075232674760013EBD2 /* TextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83605074232674760013EBD2 /* TextfieldExtension.swift */; };
 		836232B423C9E40800FA498D /* MakeWishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B323C9E40700FA498D /* MakeWishView.swift */; };
 		836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */; };
-		836A861B23870784000E76E4 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A861A23870784000E76E4 /* PopUpView.swift */; };
 		836A862323875325000E76E4 /* WhishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862223875325000E76E4 /* WhishCell.swift */; };
 		836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862423880B21000E76E4 /* WhishlistTableViewController.swift */; };
 		836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862623916FAC000E76E4 /* DropDownTableView.swift */; };
@@ -26,7 +25,6 @@
 		83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1939D230D6062002D22C0 /* AppDelegate.swift */; };
 		83A193A0230D6062002D22C0 /* FirstLaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A1939F230D6062002D22C0 /* FirstLaunchVC.swift */; };
 		83A193A3230D6062002D22C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A1230D6062002D22C0 /* Main.storyboard */; };
-		83A193A5230D6064002D22C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A4230D6064002D22C0 /* Assets.xcassets */; };
 		83A193A8230D6064002D22C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A6230D6064002D22C0 /* LaunchScreen.storyboard */; };
 		83A193B2230EF655002D22C0 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193B1230EF655002D22C0 /* SignUpVC.swift */; };
 		83A193B4230EF66C002D22C0 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193B3230EF66C002D22C0 /* LoginVC.swift */; };
@@ -45,10 +43,12 @@
 		83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C041EB23DA435100AF527F /* MainNavigationControllerViewController.swift */; };
 		83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDC23B6731A00007A53 /* WishlistVC.swift */; };
 		83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
+		83D39BB92421774900AE88F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A4230D6064002D22C0 /* Assets.xcassets */; };
 		83DA1B38241BBD13008A58EB /* UITapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B37241BBD13008A58EB /* UITapGesture.swift */; };
 		83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83DA1B3B241D0889008A58EB /* LoadingAnimation.json */; };
 		83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B3E241FD915008A58EB /* UserNameVC.swift */; };
 		83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B4024210C46008A58EB /* ForgotPasswordVC.swift */; };
+		83DA1B4324216370008A58EB /* CreateNewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DA1B4224216370008A58EB /* CreateNewListView.swift */; };
 		83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F0A97D238025B000EA701D /* ContainerViewController.swift */; };
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
@@ -66,7 +66,6 @@
 		83605074232674760013EBD2 /* TextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldExtension.swift; sourceTree = "<group>"; };
 		836232B323C9E40700FA498D /* MakeWishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeWishView.swift; sourceTree = "<group>"; };
 		836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewAnimations.swift; sourceTree = "<group>"; };
-		836A861A23870784000E76E4 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		836A862223875325000E76E4 /* WhishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishCell.swift; sourceTree = "<group>"; };
 		836A862423880B21000E76E4 /* WhishlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishlistTableViewController.swift; sourceTree = "<group>"; };
 		836A862623916FAC000E76E4 /* DropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableView.swift; sourceTree = "<group>"; };
@@ -104,6 +103,7 @@
 		83DA1B3D241FAA17008A58EB /* Wishlist.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wishlist.entitlements; sourceTree = "<group>"; };
 		83DA1B3E241FD915008A58EB /* UserNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameVC.swift; sourceTree = "<group>"; };
 		83DA1B4024210C46008A58EB /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
+		83DA1B4224216370008A58EB /* CreateNewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewListView.swift; sourceTree = "<group>"; };
 		83F0A97D238025B000EA701D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StrokeAnimation.json; sourceTree = "<group>"; };
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -302,6 +302,7 @@
 			children = (
 				839091CD237220690034ED79 /* ImageCollectionVC.swift */,
 				839091CF2372F74A0034ED79 /* ImageCollectionViewCell.swift */,
+				83DA1B4224216370008A58EB /* CreateNewListView.swift */,
 			);
 			path = CreateNewListVC;
 			sourceTree = "<group>";
@@ -309,7 +310,6 @@
 		83A68D0D239EDA5000DBDB45 /* MakeWishView */ = {
 			isa = PBXGroup;
 			children = (
-				836A861A23870784000E76E4 /* PopUpView.swift */,
 				836A862623916FAC000E76E4 /* DropDownTableView.swift */,
 				839A8EE823A80F9C00C432EA /* DropDownCell.swift */,
 				836232B323C9E40700FA498D /* MakeWishView.swift */,
@@ -389,8 +389,8 @@
 				83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */,
 				83A193A8230D6064002D22C0 /* LaunchScreen.storyboard in Resources */,
 				83A193BC230F0E80002D22C0 /* GoogleService-Info.plist in Resources */,
-				83A193A5230D6064002D22C0 /* Assets.xcassets in Resources */,
 				83A193A3230D6062002D22C0 /* Main.storyboard in Resources */,
+				83D39BB92421774900AE88F7 /* Assets.xcassets in Resources */,
 				83DA1B3C241D0889008A58EB /* LoadingAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,7 +466,6 @@
 				83A193B9230F0570002D22C0 /* Utilities.swift in Sources */,
 				83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */,
 				836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */,
-				836A861B23870784000E76E4 /* PopUpView.swift in Sources */,
 				83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */,
 				83A193B6230EF686002D22C0 /* MainVC.swift in Sources */,
 				839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */,
@@ -477,6 +476,7 @@
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
 				83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
+				83DA1B4324216370008A58EB /* CreateNewListView.swift in Sources */,
 				83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */,
 				83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */,
 				839091D02372F74A0034ED79 /* ImageCollectionViewCell.swift in Sources */,

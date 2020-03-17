@@ -371,6 +371,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                         guard let Info = result as? [String: Any] else { return }
 
                         let email = Info["email"] as? String
+                        
+                        print(email!)
                            
                         Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
                             
@@ -408,7 +410,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                     self.navigationController?.pushViewController(usernameVC, animated: true)
                                     
                                 }
-                                // Email ist registriert -> login
+                                // Email is registered -> login
                                 else {
                
                                     // set user status to logged-in
@@ -467,6 +469,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
             guard let authentication = user.authentication else { return }
 
             guard let email = user.profile.email else { return }
+            
+            print(email)
             
             Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
                          
