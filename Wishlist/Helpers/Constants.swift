@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
     
@@ -14,4 +15,21 @@ struct Constants {
         
         static let homeViewController = "HomeVC"
     }
+    
+    struct ImageList {
+        static let images: [UIImage] = [
+            UIImage(named: "avocadoImage")!,
+            UIImage(named: "beerImage")!,
+            UIImage(named: "bikeImage")!,
+            UIImage(named: "christmasImage")!,
+            UIImage(named: "dressImage")!,
+            UIImage(named: "giftImage")!,
+//            UIImage(named: "goalImage")!,
+            UIImage(named: "rollerImage")!,
+            UIImage(named: "shirtImage")!,
+            UIImage(named: "shoeImage")!,
+            UIImage(named: "travelImage")!,
+        ]
+    }
+    
 }

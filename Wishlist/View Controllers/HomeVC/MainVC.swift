@@ -198,6 +198,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         imagePreview?.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
         
+        // stop timer for imagePreview inside createNewListView
+        self.createListView.timer?.invalidate()
+        
         // set up popUpView
         self.createListButton?.layer.cornerRadius = 2
         self.listNameTextfield?.tintColor = .lightGray
@@ -439,27 +442,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         // past the end of the data count, so return an "Add Item" cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddItemCell", for: indexPath) as! AddItemCell
-        
+        //MARK: addList-Cell-Tapped
         // set the closure
         cell.tapCallback = {
             
-//            self.listNameTextfield.becomeFirstResponder()
-            
-//            // let newListView appear
-//            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-//                self.blurrImage.alpha = 0.96
-//                self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 0)
-//                self.newListView.transform = CGAffineTransform(translationX: 0, y: 0)
-//                self.view.layoutIfNeeded()
-//            })
-            self.view.addSubview(self.createListView)
-            
-            self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-            self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-            self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-            
-            //self.appWillEnterForegroundHandler()
+            self.createNewListView()
+            // reset textfield
+            self.createListView.wishlistNameTextField.text = ""
+            self.createListView.wishlistNameTextField.becomeFirstResponder()
+            // disable button
+            self.createListView.disableButton()
+            // start timer for imagePreview
+            self.createListView.startImagePreviewAnimation()
             
         }
         
@@ -498,6 +492,43 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     // MARK: CreateNewListView
+    func createNewListView(){
+        self.view.addSubview(self.createListView)
+        
+        self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+
+        self.createListView.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.createListView.wishlistNameTextField.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.createListView.createButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.createListView.closeButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.createListView.editButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.createListView.visualEffectView.alpha = 0
+        self.createListView.imagePreview.alpha = 0
+        self.createListView.editButton.alpha = 0
+        self.createListView.closeButton.alpha = 0
+        self.createListView.wishlistNameTextField.alpha = 0
+        self.createListView.createButton.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+                       
+            self.createListView.visualEffectView.alpha = 1
+            self.createListView.imagePreview.alpha = 1
+            self.createListView.editButton.alpha = 1
+            self.createListView.closeButton.alpha = 1
+            self.createListView.wishlistNameTextField.alpha = 1
+            self.createListView.createButton.alpha = 1
+           
+            self.createListView.imagePreview.transform = CGAffineTransform.identity
+            self.createListView.wishlistNameTextField.transform = CGAffineTransform.identity
+            self.createListView.createButton.transform = CGAffineTransform.identity
+            self.createListView.editButton.transform = CGAffineTransform.identity
+            self.createListView.closeButton.transform = CGAffineTransform.identity
+       }
+
+    }
     
     //hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -542,19 +573,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             })
         }
     }
-    @IBAction func editButtonTapped(_ sender: Any) {
-        let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
-        imageCollectionView.delegate = self
-        if (self.navigationController == nil){
-            print("fuck")
-        }
-        self.navigationController?.present(imageCollectionView, animated: true)
-    }
+//    @IBAction func editButtonTapped(_ sender: Any) {
+//        let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
+//        imageCollectionView.delegate = self
+//        if (self.navigationController == nil){
+//            print("fuck")
+//        }
+//        self.navigationController?.present(imageCollectionView, animated: true)
+//    }
     
-    //MARK: createNewList
-    func createNewListView(){
-        
-    }
     
     // MARK: AddWishButton
     

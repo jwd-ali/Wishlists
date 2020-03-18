@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
-class CreateNewListView: UIView {
+protocol CreateListDelegate {
+    func createListTappedDelegate(with image: UIImage?, index: Int?)
+}
+
+class CreateNewListView: UIView, UITextFieldDelegate {
     
     let visualEffectView: UIVisualEffectView = {
         let blurrEffect = UIBlurEffect(style: .light)
@@ -50,6 +55,7 @@ class CreateNewListView: UIView {
         v.placeholderColor(color: UIColor.white)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2.5)
+        v.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return v
     }()
     
@@ -66,10 +72,26 @@ class CreateNewListView: UIView {
         return v
     }()
     
+    var createListDelegate: CreateListDelegate?
+    
+    var currentImage: UIImage?
+    var currentImageIndex = 0
+    
+    // timer for imagePreview
+    var timer: Timer?
+    
     //MARK: Init
     override init(frame: CGRect) {
     super.init(frame: frame)
+        
+        disableButton()
+        
         setupViews()
+        
+        startImagePreviewAnimation()
+        
+        wishlistNameTextField.delegate = self
+
     }
     
     required init?(coder: NSCoder) {
@@ -120,13 +142,21 @@ class CreateNewListView: UIView {
     }
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
+        createListDelegate?.createListTappedDelegate(with: currentImage, index: currentImageIndex)
+        timer?.invalidate()
+        wishlistNameTextField.resignFirstResponder()
         dismissView()
+        
     }
     
     func dismissView(){
         
         UIView.animate(withDuration: 0.3, animations: {
             self.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.wishlistNameTextField.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.createButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.closeButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.editButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             self.visualEffectView.alpha = 0
             self.imagePreview.alpha = 0
             self.editButton.alpha = 0
@@ -139,9 +169,21 @@ class CreateNewListView: UIView {
         }
     }
     
+    //MARK: ImagePreviewAnimation
+    func startImagePreviewAnimation(){
+        timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+    }
+    
+    @objc func timerAction(){
+        currentImageIndex = (currentImageIndex + 1) % Constants.ImageList.images.count
+        UIView.transition(with: self.imagePreview, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.imagePreview.image = Constants.ImageList.images[self.currentImageIndex]
+        })
+    }
+    
     //MARK: editButtonTapped
     @objc func editButtonTapped(){
-        print("hi")
+ 
             let storyboard: UIStoryboard = UIStoryboard (name: "Main", bundle: nil)
             let vc: ImageCollectionViewController = storyboard.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
             let currentController = self.getCurrentViewController()
@@ -162,6 +204,26 @@ class CreateNewListView: UIView {
         return nil
 
     }
+    
+    //MARK: Enable Button Methods
+    @objc func textFieldDidChange(){
+        if self.wishlistNameTextField.text == "" {
+            disableButton()
+        } else {
+            enableButton()
+        }
+    }
+    
+    func disableButton(){
+        self.createButton.isEnabled = false
+        self.createButton.alpha = 0.7
+    }
+    
+    func enableButton(){
+        self.createButton.isEnabled = true
+        self.createButton.alpha = 1
+    }
+    
     //MARK: createListButtonTapped
     @objc func createListTapped(){
         

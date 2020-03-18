@@ -980,7 +980,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         switch textField {
             
         case usernameTextField:
-            IQKeyboardManager.shared.enableAutoToolbar = false
             IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(usernameView.frame.height) + CGFloat(passwordTextField.frame.height)
             
         case passwordTextField:
