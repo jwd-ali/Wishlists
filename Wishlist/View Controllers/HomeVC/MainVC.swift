@@ -239,9 +239,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
-        // add observer to starte/stop timer for imagePreview-rotation
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
+//        // add observer to starte/stop timer for imagePreview-rotation
+//        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
         
 //        self.view.sendSubviewToBack(wishlistView)
 //        self.view.sendSubviewToBack(wishlistBackgroundView)
@@ -318,42 +318,42 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         ])
     }
     
-    // MARK: ImageRotation-Functions
-    @objc private func appDidEnterBackgroundHandler() {
-
-        if imageTimer != nil {
-            imageTimer!.invalidate()
-            imageTimer = nil
-        }
-    }
-
-    @objc private func appWillEnterForegroundHandler() {
-        startImageTimer()
-    }
-    
-    private func startImageTimer() {
-        // instantiate timer
-        imageTimer = Timer(fire: Date(), interval: 1.8, repeats: true) { (timer) in
-            UIView.transition(with: self.imagePreview,
-            duration: 0.5,
-            options: .transitionCrossDissolve,
-            animations: {
-                var imageStore = self.images.randomElement()
-                if (imageStore == self.imagePreview){
-                    imageStore = self.images.randomElement()
-                }
-                self.imagePreview.image = imageStore
-                self.image = imageStore
-                
-                // keep track of currentImageArraIDX
-                self.currentImageArrayIDX = self.images.firstIndex(where: {$0 == imageStore})
-            },
-            completion: nil)
-        }
-        // add to run loop
-        RunLoop.main.add(imageTimer!, forMode: .common)
-
-    }
+//    // MARK: ImageRotation-Functions
+//    @objc private func appDidEnterBackgroundHandler() {
+//
+//        if imageTimer != nil {
+//            imageTimer!.invalidate()
+//            imageTimer = nil
+//        }
+//    }
+//
+//    @objc private func appWillEnterForegroundHandler() {
+//        startImageTimer()
+//    }
+//    
+//    private func startImageTimer() {
+//        // instantiate timer
+//        imageTimer = Timer(fire: Date(), interval: 1.8, repeats: true) { (timer) in
+//            UIView.transition(with: self.imagePreview,
+//            duration: 0.5,
+//            options: .transitionCrossDissolve,
+//            animations: {
+//                var imageStore = self.images.randomElement()
+//                if (imageStore == self.imagePreview){
+//                    imageStore = self.images.randomElement()
+//                }
+//                self.imagePreview.image = imageStore
+//                self.image = imageStore
+//                
+//                // keep track of currentImageArraIDX
+//                self.currentImageArrayIDX = self.images.firstIndex(where: {$0 == imageStore})
+//            },
+//            completion: nil)
+//        }
+//        // add to run loop
+//        RunLoop.main.add(imageTimer!, forMode: .common)
+//
+//    }
     
     // MARK: CollectionView
     override func viewWillAppear(_ animated: Bool) {
@@ -484,7 +484,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     // from "Liste erstellen" button tap
     @IBAction func closeButtonTappedNewList(_ sender: Any?) {
         
-        self.appDidEnterBackgroundHandler()
+//        self.appDidEnterBackgroundHandler()
         
         self.newListTextfield.resignFirstResponder()
         self.listNameTextfield.text = ""
@@ -508,8 +508,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     @IBAction func createListButtonTapped(_ sender: Any) {
         
        
-        // "Liste erstellen" button was tapped
-        self.appDidEnterBackgroundHandler()
+//        // "Liste erstellen" button was tapped
+//        self.appDidEnterBackgroundHandler()
                    
         // save list to databse -> DataHandler
         self.saveWishlist()
@@ -549,6 +549,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             print("fuck")
         }
         self.navigationController?.present(imageCollectionView, animated: true)
+    }
+    
+    //MARK: createNewList
+    func createNewListView(){
+        
     }
     
     // MARK: AddWishButton
@@ -665,7 +670,7 @@ extension MainViewController: ClassBDelegate {
             self.currentImageArrayIDX = index!
             self.image = image!
             self.imagePreview.image = image!
-            self.appDidEnterBackgroundHandler()
+//            self.appDidEnterBackgroundHandler()
         }
 }
 

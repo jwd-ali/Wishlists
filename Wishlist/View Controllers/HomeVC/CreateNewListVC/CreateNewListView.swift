@@ -120,9 +120,25 @@ class CreateNewListView: UIView {
     }
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
-        print("close")
-        self.removeFromSuperview()
+        dismissView()
     }
+    
+    func dismissView(){
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.visualEffectView.alpha = 0
+            self.imagePreview.alpha = 0
+            self.editButton.alpha = 0
+            self.closeButton.alpha = 0
+            self.wishlistNameTextField.alpha = 0
+            self.createButton.alpha = 0
+
+        }) { (_) in
+            self.removeFromSuperview()
+        }
+    }
+    
     //MARK: editButtonTapped
     @objc func editButtonTapped(){
         print("hi")

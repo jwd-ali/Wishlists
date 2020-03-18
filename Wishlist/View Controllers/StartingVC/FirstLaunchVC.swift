@@ -323,6 +323,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         
         let accessToken = AccessToken.current
         
+        guard let accessTokenString = accessToken?.tokenString else {
+            return
+        }
+        let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+        
         LoginManager().logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
             if error != nil {
                 // stop loading animation
@@ -412,22 +417,23 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                 }
                                 // Email is registered -> login
                                 else {
-               
-                                    // set user status to logged-in
-                                    UserDefaults.standard.setIsLoggedIn(value: true)
-                                    UserDefaults.standard.synchronize()
                                     
-                                    // stop loading animation
-                                    self.logoAnimation.stop()
-                                    // remove animation from view
-                                    self.logoAnimation.removeFromSuperview()
-                                    // reset button title to "Registrieren"
-                                    self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                                    // enable button tap
-                                    self.facebookButton.isEnabled = true
-                                    
-                                    // transition to Home-ViewController
-                                    self.transitionToHome()
+                                    Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                                        if error != nil {
+                                            Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
+                                        } else {
+                                            
+                                            // set user status to logged-in
+                                            UserDefaults.standard.setIsLoggedIn(value: true)
+                                            UserDefaults.standard.synchronize()    
+                                            
+                                            // stop animation
+                                            self.logoAnimation.stop()
+
+                                            //transition to home
+                                            self.transitionToHome()
+                                        }
+                                    })
                                     
                                 }
                             }
@@ -480,7 +486,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                     // remove animation from view
                     self.logoAnimation.removeFromSuperview()
                     // reset button title to "Registrieren"
-                    self.googleButton.setTitle("Mit Facebook fortfahren", for: .normal)
+                    self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
                     // play shake animation
                     self.googleButton.shake()
                     // enable button tap
@@ -510,23 +516,26 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                      }
                      // Email ist registriert -> login
                      else {
-    
-                         // set user status to logged-in
-                         UserDefaults.standard.setIsLoggedIn(value: true)
-                         UserDefaults.standard.synchronize()
-                         
-                         // stop loading animation
-                         self.logoAnimation.stop()
-                         // remove animation from view
-                         self.logoAnimation.removeFromSuperview()
-                         // reset button title to "Registrieren"
-                         self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
-                         // enable button tap
-                         self.googleButton.isEnabled = true
-                         
-                         // transition to Home-ViewController
-                         self.transitionToHome()
-                         
+                    
+                        let credentials = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                                        accessToken: authentication.accessToken)
+                        
+                        Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                            if error != nil {
+                                Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
+                            } else {
+                                
+                                // set user status to logged-in
+                                UserDefaults.standard.setIsLoggedIn(value: true)
+                                UserDefaults.standard.synchronize()
+                                
+                                // stop animation
+                                self.logoAnimation.stop()
+
+                                //transition to home
+                                self.transitionToHome()
+                            }
+                        })
                      }
                  }
             }
