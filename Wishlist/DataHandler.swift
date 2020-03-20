@@ -93,16 +93,16 @@ extension MainViewController {
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: self.mainColor))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: Constants.ImageList.mainColor))
                         // set the drop down menu's options
                         self.theDropDownOptions.append(listName as! String)
                         self.theDropDownImageOptions.append(UIImage(named: "iconRoundedImage")!)
                     }else {
                         
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: self.images[listImageIDX as! Int], wishData: [Wish](), color: self.customColors[listImageIDX as! Int]))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.ImageList.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.ImageList.customColors[listImageIDX as! Int]))
                         
                         self.theDropDownOptions.append(listName as! String)
-                        self.theDropDownImageOptions.append(self.images[listImageIDX as! Int])
+                        self.theDropDownImageOptions.append(Constants.ImageList.images[listImageIDX as! Int])
                     }
                     
                     // reload collectionView and tableView

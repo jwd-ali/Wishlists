@@ -178,6 +178,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         currentImageIndex = (currentImageIndex + 1) % Constants.ImageList.images.count
         UIView.transition(with: self.imagePreview, duration: 0.5, options: .transitionCrossDissolve, animations: {
             self.imagePreview.image = Constants.ImageList.images[self.currentImageIndex]
+            self.currentImage = self.imagePreview.image
         })
     }
     
@@ -186,6 +187,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
  
             let storyboard: UIStoryboard = UIStoryboard (name: "Main", bundle: nil)
             let vc: ImageCollectionViewController = storyboard.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
+            // important: set delegate to self to recieve data from ImagePickVC
+            vc.delegate = self
             let currentController = self.getCurrentViewController()
             currentController?.present(vc, animated: false, completion: nil)
         
@@ -226,7 +229,17 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     //MARK: createListButtonTapped
     @objc func createListTapped(){
-        
+        createListDelegate?.createListTappedDelegate(with: currentImage, index: currentImageIndex)
     }
     
+}
+
+//MARK: Delegate Extension
+extension CreateNewListView: ListImagePickDelegate {
+    func listImagePicked( with image: UIImage?, index: Int?) {
+        self.currentImageIndex = index!
+        self.currentImage = image!
+        self.imagePreview.image = image!
+        self.timer?.invalidate()
+    }
 }
