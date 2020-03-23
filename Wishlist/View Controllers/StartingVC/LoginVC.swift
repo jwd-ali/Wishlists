@@ -35,8 +35,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let emailTextField: CustomTextField = {
-        let v = CustomTextField()
+    let emailTextField: HoshiTextField = {
+        let v = HoshiTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
@@ -52,22 +52,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let passwordTextField: CustomTextField = {
-        let v = CustomTextField()
+    let passwordTextField: HoshiTextField = {
+        let v = HoshiTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
         v.placeholderColor = .white
-        v.placeholderFontScale = 0.8
-        v.clearButtonMode = UITextField.ViewMode.always
+        v.placeholderFontScale = 1
         v.minimumFontSize = 13
         v.borderStyle = .line
-        v.addTarget(self, action: #selector(LoginViewController.textFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         return v
     }()
+    
+
     
     let vergessenButton: UIButton = {
         let v = UIButton(type: .system)
@@ -113,15 +114,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return v
     }()
 
-    @IBOutlet weak var stackViewConstraint: NSLayoutConstraint!
 
     var email = ""
     
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpViews()
         
         self.passwordTextField.addPadding(.right(15))
 
@@ -144,9 +142,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Textfield cursor -> white
         UITextField.appearance().tintColor = .white
         
-        // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
+        setUpViews()
 
+    }
+    
+    //MARK: viewDidAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        passwordTextField.becomeFirstResponder()
     }
     
     func setUpViews() {
@@ -354,7 +357,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             } else {
                 eyeButton.isHidden = true
             }
-            
+
             break
         default:
             break

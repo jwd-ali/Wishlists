@@ -139,3 +139,93 @@ extension MainViewController {
         }
     }
 }
+
+class DataHandler {
+    
+    static func saveWishlist(wishListName: String, imageArrayIDX: Int, wishListIDX: Int) {
+        
+        // track Wishlist IDX
+//        self.wishlistIDX += 1
+        
+        // auto create custom Wishlist with name/listIDX/imageIDX
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        db.collection("users").document(userID).collection("wishlists").document(wishListName).setData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX]) { (error) in
+            if error != nil {
+                print("Error saving Wishlist")
+            }
+        }
+    }
+    
+    //MARK: signIn
+    static func signIn(credentials: Any?, username: String, finished: @escaping (_ done: Bool) -> Void) {
+        
+        let listIDX = 1 // initialize list index to 1 for sorting when retrieving lists
+
+        guard let credentials = credentials as? AuthCredential else {
+
+            finished(false)
+            return
+
+        }
+        
+        let db = Firestore.firestore()
+
+        Auth.auth().signIn(with: credentials, completion: { (result, error) in
+
+            if let userId = result?.user.uid { // successfully signed in
+                 
+                let batch = db.batch()
+                
+                // Set username and uid for user
+                let userRef = Firestore.firestore().collection("users").document(userId)
+                batch.setData(["username": username, "uid": userId, "listIDX": listIDX], forDocument: userRef)
+
+                // create empty 'Main Wishlist' with index 1 for sorting
+                let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
+                batch.setData(["name": "Main Wishlist", "listIDX": listIDX], forDocument: listRef)
+
+                batch.commit { (error) in
+
+                    if let error = error {
+                        Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
+                        finished(false)
+                    } else {
+                        UserDefaults.standard.setIsLoggedIn(value: true)
+                        UserDefaults.standard.synchronize()
+                        finished(true) // sign-in process complete
+                    }
+                }
+
+            } else { // could not sign in
+
+                if let error = error {
+                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
+                }
+                finished(false)
+                return
+
+            }
+        })
+    }
+    
+    //MARK: check username
+    static func checkUsername(field: String, completion: @escaping (Bool) -> Void) {
+        
+        let db = Firestore.firestore()
+        let collectionRef = db.collection("users")
+        collectionRef.whereField("username", isEqualTo: field).getDocuments { (snapshot, err) in
+            if let err = err {
+                print("Error getting document: \(err)")
+            } else if (snapshot?.isEmpty)! {
+                completion(false)
+            } else {
+                for document in (snapshot?.documents)! {
+                    if document.data()["username"] != nil {
+                        completion(true)
+                    }
+                }
+            }
+        }
+    }
+}

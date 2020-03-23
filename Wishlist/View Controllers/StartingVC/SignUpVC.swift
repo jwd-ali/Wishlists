@@ -690,7 +690,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             isValid = false
         }
         // check if username is valid
-        checkUsername(field: usernameTextField.text!) { success in
+        DataHandler.checkUsername(field: usernameTextField.text!) { success in
             if success {
                 // username is taken
                 print("Username is taken")
@@ -774,7 +774,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 //                    let anzeigeName = self.anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-
+                    
                     //create the user
                     Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
 
@@ -1018,7 +1018,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         
         if textField == usernameTextField {
             if textField.text?.isEmpty == false {
-                checkUsername(field: textField.text!) { (success) in
+                DataHandler.checkUsername(field: textField.text!) { (success) in
                     if success == true {
                         // username is taken
                         self.setupUsernameTextField()
@@ -1209,7 +1209,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         if usernameTextField.text! != "" {
             // start loading indicator
             activityIndicator.startAnimating()
-            checkUsername(field: usernameTextField.text!) { (success) in
+            DataHandler.checkUsername(field: usernameTextField.text!) { (success) in
                 print(self.usernameTextField.text!)
                 if success == true {
                     // username is taken
@@ -1235,28 +1235,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             self.timer.invalidate()
         }
     }
-    
-
-    // helper function to check if username is in databse -> later in Datahandler
-    func checkUsername(field: String, completion: @escaping (Bool) -> Void) {
         
-        let db = Firestore.firestore()
-        let collectionRef = db.collection("users")
-        collectionRef.whereField("username", isEqualTo: field).getDocuments { (snapshot, err) in
-            if let err = err {
-                print("Error getting document: \(err)")
-            } else if (snapshot?.isEmpty)! {
-                completion(false)
-            } else {
-                for document in (snapshot?.documents)! {
-                    if document.data()["username"] != nil {
-                        completion(true)
-                    }
-                }
-            }
-        }
-    }
-    
     // disable "space" for every textfield
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if (string == " ") {

@@ -311,52 +311,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             //constrain welcomeLabel
             welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            
-//            // constrain searchButton
-//            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-//            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-//            searchButton.widthAnchor.constraint(equalToConstant: 30),
-//            searchButton.heightAnchor.constraint(equalToConstant: 30),
 
         ])
     }
     
-//    // MARK: ImageRotation-Functions
-//    @objc private func appDidEnterBackgroundHandler() {
-//
-//        if imageTimer != nil {
-//            imageTimer!.invalidate()
-//            imageTimer = nil
-//        }
-//    }
-//
-//    @objc private func appWillEnterForegroundHandler() {
-//        startImageTimer()
-//    }
-//    
-//    private func startImageTimer() {
-//        // instantiate timer
-//        imageTimer = Timer(fire: Date(), interval: 1.8, repeats: true) { (timer) in
-//            UIView.transition(with: self.imagePreview,
-//            duration: 0.5,
-//            options: .transitionCrossDissolve,
-//            animations: {
-//                var imageStore = self.images.randomElement()
-//                if (imageStore == self.imagePreview){
-//                    imageStore = self.images.randomElement()
-//                }
-//                self.imagePreview.image = imageStore
-//                self.image = imageStore
-//                
-//                // keep track of currentImageArraIDX
-//                self.currentImageArrayIDX = self.images.firstIndex(where: {$0 == imageStore})
-//            },
-//            completion: nil)
-//        }
-//        // add to run loop
-//        RunLoop.main.add(imageTimer!, forMode: .common)
-//
-//    }
     
     // MARK: CollectionView
     override func viewWillAppear(_ animated: Bool) {
@@ -573,15 +531,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             })
         }
     }
-//    @IBAction func editButtonTapped(_ sender: Any) {
-//        let imageCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "ImageCollectionVC") as! ImageCollectionViewController
-//        imageCollectionView.delegate = self
-//        if (self.navigationController == nil){
-//            print("fuck")
-//        }
-//        self.navigationController?.present(imageCollectionView, animated: true)
-//    }
-    
     
     // MARK: AddWishButton
     
@@ -682,6 +631,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
         
         self.navigationController?.pushViewController(communityView, animated: true)
+        
+
     }
     
     

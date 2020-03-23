@@ -315,9 +315,23 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         logoAnimation.loopMode = .loop
     }
     
+    //MARK: resetButton
+    func resetButton(button: UIButton, buttonTitle: String){
+        // stop loading animation
+        self.logoAnimation.stop()
+        // remove animation from view
+        self.logoAnimation.removeFromSuperview()
+        // reset button title to "Registrieren"
+        button.setTitle(buttonTitle, for: .normal)
+        // play shake animation
+        button.shake()
+        // enable button tap
+        button.isEnabled = true
+    }
+    
     //MARK: Facebook Login
     @objc func facebookButtonTapped(){
-        
+
         // disable button tap
         self.facebookButton.isEnabled = false
         // hide the buttons title
@@ -326,53 +340,38 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         setupLoadingAnimation(button: self.facebookButton)
         logoAnimation.play()
         
-        let accessToken = AccessToken.current
         
-        guard let accessTokenString = accessToken?.tokenString else {
-            return
-        }
-        let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
         
         LoginManager().logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
+            
+            let accessToken = AccessToken.current
+
+            guard let accessTokenString = accessToken?.tokenString else {
+                Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: accessToken.debugDescription)
+                return
+            }
+
+            let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+            
             if error != nil {
-                // stop loading animation
-                self.logoAnimation.stop()
-                // remove animation from view
-                self.logoAnimation.removeFromSuperview()
-                // reset button title to "Registrieren"
-                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                // play shake animation
-                self.facebookButton.shake()
-                // enable button tap
-                self.facebookButton.isEnabled = true
+                
+                self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                 // some FB error
                 Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
                 return
+                
             }else if result?.isCancelled == true {
-                // stop loading animation
-                self.logoAnimation.stop()
-                // remove animation from view
-                self.logoAnimation.removeFromSuperview()
-                // reset button title to "Registrieren"
-                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                // play shake animation
-                self.facebookButton.shake()
-                // enable button tap
-                self.facebookButton.isEnabled = true
+                
+                self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
+                
             }else {
                 // successfull FB-Login
                 GraphRequest(graphPath: "/me", parameters: ["fields": "id, email, name"]).start { (connection, result, error) in
+                    print(result!)
                     if error != nil {
-                        // stop loading animation
-                        self.logoAnimation.stop()
-                        // remove animation from view
-                        self.logoAnimation.removeFromSuperview()
-                        // reset button title to "Registrieren"
-                        self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                        // play shake animation
-                        self.facebookButton.shake()
-                        // enable button tap
-                        self.facebookButton.isEnabled = true
+                        
+                        self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
+
                         // some FB error
                         Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
                     }else {
@@ -387,36 +386,19 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                         Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
                             
                             if error != nil {
-                                 // stop loading animation
-                               self.logoAnimation.stop()
-                               // remove animation from view
-                               self.logoAnimation.removeFromSuperview()
-                               // reset button title to "Registrieren"
-                               self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                               // play shake animation
-                               self.facebookButton.shake()
-                               // enable button tap
-                               self.facebookButton.isEnabled = true
+                               self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                                 // show error popUp
                                 Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
                             } else {
                                 // no error -> check email adress
-                                                    
-                                // stop loading animation
-                                self.logoAnimation.stop()
-                                // remove animation from view
-                                self.logoAnimation.removeFromSuperview()
-                                // reset button title to "Registrieren"
-                                self.facebookButton.setTitle("Mit Facebook fortfahren", for: .normal)
-                                // enable button tap
-                                self.facebookButton.isEnabled = true
-                                
+                                                                                    
                                 // Email ist noch nicht registriert -> sign up
                                 if methods == nil {
                                     
                                     let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                                     usernameVC.accessToken = accessToken
                                     usernameVC.signInOption = "facebook"
+                                    self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                                     self.navigationController?.pushViewController(usernameVC, animated: true)
                                     
                                 }
@@ -425,15 +407,13 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                     
                                     Auth.auth().signIn(with: credentials, completion: { (user, error) in
                                         if error != nil {
+                                            self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                                             Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
                                         } else {
                                             
                                             // set user status to logged-in
                                             UserDefaults.standard.setIsLoggedIn(value: true)
                                             UserDefaults.standard.synchronize()
-                                            
-                                            // stop animation
-                                            self.logoAnimation.stop()
 
                                             //transition to home
                                             self.transitionToHome()
@@ -464,59 +444,37 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let err = error {
-            print("Error signInFor: " + err.localizedDescription)
-            // stop loading animation
-           self.logoAnimation.stop()
-           // remove animation from view
-           self.logoAnimation.removeFromSuperview()
-           // reset button title to "Registrieren"
-           self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
-           // play shake animation
-           self.googleButton.shake()
-           // enable button tap
-           self.googleButton.isEnabled = true
+
+            self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
+            
+            Utilities.showErrorPopUp(labelContent: "Fehler", description: err.localizedDescription)
             
         }else {
             guard let authentication = user.authentication else { return }
 
             guard let email = user.profile.email else { return }
             
-            print(email)
-            
             Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
                          
                  if error != nil {
-                      // stop loading animation
-                    self.logoAnimation.stop()
-                    // remove animation from view
-                    self.logoAnimation.removeFromSuperview()
-                    // reset button title to "Registrieren"
-                    self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
-                    // play shake animation
-                    self.googleButton.shake()
-                    // enable button tap
-                    self.googleButton.isEnabled = true
+                    // reset button
+                    self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
                      // show error popUp
                      Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                    
                  } else {
                      // no error -> check email adress
-                                         
-                     // stop loading animation
-                     self.logoAnimation.stop()
-                     // remove animation from view
-                     self.logoAnimation.removeFromSuperview()
-                     // reset button title to "Registrieren"
-                     self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
-                     // enable button tap
-                     self.googleButton.isEnabled = true
                      
                      // Email ist noch nicht registriert -> sign up
                      if methods == nil {
                          
-                         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
-                         usernameVC.authentication = authentication
-                         usernameVC.signInOption = "google"
-                         self.navigationController?.pushViewController(usernameVC, animated: true)
+                        let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+                        usernameVC.authentication = authentication
+                        usernameVC.signInOption = "google"
+                            
+                        self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
+                        
+                        self.navigationController?.pushViewController(usernameVC, animated: true)
                          
                      }
                      // Email ist registriert -> login
@@ -527,15 +485,13 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                         
                         Auth.auth().signIn(with: credentials, completion: { (user, error) in
                             if error != nil {
+                                self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
                                 Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
                             } else {
                                 
                                 // set user status to logged-in
                                 UserDefaults.standard.setIsLoggedIn(value: true)
                                 UserDefaults.standard.synchronize()
-                                
-                                // stop animation
-                                self.logoAnimation.stop()
 
                                 //transition to home
                                 self.transitionToHome()
@@ -550,16 +506,9 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
 //MARK: Apple-Login
 
     @objc func appleButtonTapped(){
-        let provider = ASAuthorizationAppleIDProvider()
-        let request = provider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate = self
-        controller.presentationContextProvider = self
-        
-        controller.performRequests()
+        startSignInWithAppleFlow()
     }
+    
     // Unhashed nonce.
     var currentNonce: String?
     
@@ -577,24 +526,60 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
           print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
           return
         }
-//        // Initialize a Firebase credential.
-//        let credential = OAuthProvider.credential(withProviderID: "apple.com",
-//                                                  IDToken: idTokenString,
-//                                                  rawNonce: nonce)
+
         let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+//        print("email: " + appleIDCredential.email!)
+        let email = appleIDCredential.email
         
-        // Sign in with Firebase.
-        Auth.auth().signIn(with: credential) { (authResult, error) in
-            if (error != nil) {
-            // Error. If error.code == .MissingOrInvalidNonce, make sure
-            // you're sending the SHA256-hashed nonce as a hex string with
-            // your request to Apple.
-                print(error!.localizedDescription)
-            return
-          }
-          // User is signed in to Firebase with Apple.
-          // ...
-        }
+        Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
+                     
+             if error != nil {
+                // reset button
+                self.resetButton(button: self.appleButton, buttonTitle: "Mit Apple fortfahren")
+                 // show error popUp
+                Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+             } else {
+                 // no error -> check email adress
+                                     
+                 // stop loading animation
+                 self.logoAnimation.stop()
+                 // remove animation from view
+                 self.logoAnimation.removeFromSuperview()
+                 // reset button title to "Registrieren"
+                 self.appleButton.setTitle("Mit Apple fortfahren", for: .normal)
+                 // enable button tap
+                 self.appleButton.isEnabled = true
+                 
+                 // Email not registered -> sign up
+                 if methods == nil {
+                     
+                     print("signed in")
+                     let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+                     usernameVC.credential = credential
+                     usernameVC.signInOption = "apple"
+                     self.navigationController?.pushViewController(usernameVC, animated: true)
+                     
+                 } else { // Email not registered -> Login
+                    
+                    Auth.auth().signIn(with: credential, completion: { (user, error) in
+                        if error != nil {
+                            Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
+                        } else {
+                            
+                            // set user status to logged-in
+                            UserDefaults.standard.setIsLoggedIn(value: true)
+                            UserDefaults.standard.synchronize()
+                            
+                            // stop animation
+                            self.logoAnimation.stop()
+
+                            //transition to home
+                            self.transitionToHome()
+                        }
+                    })
+                }
+            }
+         }
       }
     }
 
@@ -608,63 +593,62 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     }
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      let charset: Array<Character> =
-          Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-      var result = ""
-      var remainingLength = length
+        precondition(length > 0)
+        let charset: Array<Character> =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
 
-      while remainingLength > 0 {
-        let randoms: [UInt8] = (0 ..< 16).map { _ in
-          var random: UInt8 = 0
-          let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
-          if errorCode != errSecSuccess {
-            fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
-          }
-          return random
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+                }
+                return random
+            }
+
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
         }
+        return result
+    }
 
-        randoms.forEach { random in
-          if remainingLength == 0 {
-            return
-          }
 
-          if random < charset.count {
-            result.append(charset[Int(random)])
-            remainingLength -= 1
-          }
-        }
-      }
-        
-    
 
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
-      let nonce = randomNonceString()
-      currentNonce = nonce
-      let appleIDProvider = ASAuthorizationAppleIDProvider()
-      let request = appleIDProvider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-      request.nonce = sha256(nonce)
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
 
-      let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-      authorizationController.delegate = self
-      authorizationController.presentationContextProvider = self
-      authorizationController.performRequests()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
     }
 
     @available(iOS 13, *)
     func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        return String(format: "%02x", $0)
-      }.joined()
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
 
-      return hashString
-    }
-
-      return result
+        return hashString
     }
     
     

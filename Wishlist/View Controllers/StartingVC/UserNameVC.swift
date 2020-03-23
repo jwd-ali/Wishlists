@@ -132,15 +132,19 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     var accessToken: AccessToken?
     // authentication for Google-Signin
     var authentication: GIDAuthentication?
+    // credential for Apple-Signin
+    var credential: OAuthCredential?
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         usernameTextField.delegate = self
-        
+        usernameTextField.autocorrectionType = .no
         setUpViews()
     }
+    
+    
     //MARK: viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -175,7 +179,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         if usernameTextField.text! != "" {
             // start loading indicator
             activityIndicator.startAnimating()
-            checkUsername(field: usernameTextField.text!) { (success) in
+            DataHandler.checkUsername(field: usernameTextField.text!) { (success) in
                 print(self.usernameTextField.text!)
                 if success == true {
                     // username is taken
@@ -294,6 +298,20 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         logoAnimation.loopMode = .loop
     }
     
+    //MARK: Loading failed
+    func loadingFailed(){
+        // stop loading animation
+        self.logoAnimation.stop()
+        // remove animation from view
+        self.logoAnimation.removeFromSuperview()
+        // reset button title to "Registrieren"
+        self.confirmButton.setTitle("Registrieren", for: .normal)
+        // play shake animation
+        self.confirmButton.shake()
+        // enable button tap
+        self.confirmButton.isEnabled = true
+    }
+    
     //MARK: validate fields
     var isValid = true
     func validateFields(completion: @escaping (Bool) -> Void) {
@@ -303,7 +321,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
             isValid = false
         }
         // check if username is valid
-        checkUsername(field: usernameTextField.text!) { success in
+        DataHandler.checkUsername(field: usernameTextField.text!) { success in
             if success {
                 // username is taken
                 self.setupUsernameTextField()
@@ -316,25 +334,6 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    //MARK: check username
-    func checkUsername(field: String, completion: @escaping (Bool) -> Void) {
-        
-        let db = Firestore.firestore()
-        let collectionRef = db.collection("users")
-        collectionRef.whereField("username", isEqualTo: field).getDocuments { (snapshot, err) in
-            if let err = err {
-                print("Error getting document: \(err)")
-            } else if (snapshot?.isEmpty)! {
-                completion(false)
-            } else {
-                for document in (snapshot?.documents)! {
-                    if document.data()["username"] != nil {
-                        completion(true)
-                    }
-                }
-            }
-        }
-    }
     //MARK: confirmButtonTapped
     @objc func confirmButtonTapped(){
         self.view.endEditing(true)
@@ -355,92 +354,61 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
             if completion {
                 if !self.isValid {
                     // textFields are not valid
-                    // stop loading animation
-                    self.logoAnimation.stop()
-                    // remove animation from view
-                    self.logoAnimation.removeFromSuperview()
-                    // reset button title to "Registrieren"
-                    self.confirmButton.setTitle("Registrieren", for: .normal)
-                    // play shake animation
-                    self.confirmButton.shake()
-                    // enable button tap
-                    self.confirmButton.isEnabled = true
+                    self.loadingFailed()
                     
-                }else if self.signInOption == "facebook" {
-                    //MARK: Facebook-Login
+                }else if self.signInOption == "facebook" { //MARK: Facebook-Login
+                    
                     guard let accessTokenString = self.accessToken?.tokenString else {
                         return
                     }
                     let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                     
-                    Auth.auth().signIn(with: credentials, completion: { (user, error) in
-                        if error != nil {
-                            Utilities.showErrorPopUp(labelContent: "Fehler bei Kontoerstellung", description: error!.localizedDescription)
-                        } else {
-                            //user was created successfully; store name, username and UID
-                            let db = Firestore.firestore()
+                    DataHandler.signIn(credentials: credentials, username: username, finished: { (done) in
 
-                            let userID = user!.user.uid
-
-                            db.collection("users").document(userID).setData(["username": username, "uid": user!.user.uid]) { (error) in
-                                if error != nil {
-                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
-                                }
-                            }
-                            // generate empty "Main Wishlist"
-                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
-                                if error != nil {
-                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
-                                }
-                            }
-                            
-                            // set user status to logged-in
-                            UserDefaults.standard.setIsLoggedIn(value: true)
-                            UserDefaults.standard.synchronize()
-                            
+                        if done { // success
                             // stop animation
                             self.logoAnimation.stop()
 
                             //transition to home
                             self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
                         }
+
                     })
                     
-                } else if self.signInOption == "google" {
-                    //MARK: Google-Login
+                } else if self.signInOption == "google" { //MARK: Google-Login
+                    
                     let credentials = GoogleAuthProvider.credential(withIDToken: self.authentication!.idToken,
                                                                    accessToken: self.authentication!.accessToken)
-                    
-                    Auth.auth().signIn(with: credentials, completion: { (user, error) in
-                        if error != nil {
-                            Utilities.showErrorPopUp(labelContent: "Fehler bei Kontoerstellung", description: error!.localizedDescription)
-                        } else {
-                            //user was created successfully; store name, username and UID
-                            let db = Firestore.firestore()
+                      
+                    DataHandler.signIn(credentials: credentials, username: username, finished: { (done) in
 
-                            let userID = user!.user.uid
-
-                            db.collection("users").document(userID).setData(["username": username, "uid": user!.user.uid]) { (error) in
-                                if error != nil {
-                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
-                                }
-                            }
-                            // generate empty "Main Wishlist"
-                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
-                                if error != nil {
-                                    Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
-                                }
-                            }
-                            
-                            // set user status to logged-in
-                            UserDefaults.standard.setIsLoggedIn(value: true)
-                            UserDefaults.standard.synchronize()
-                            
+                        if done { // success
                             // stop animation
                             self.logoAnimation.stop()
 
                             //transition to home
                             self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
+                        }
+                    })
+                } else if self.signInOption == "apple" { //MARK: Apple-Login
+                    
+                    DataHandler.signIn(credentials: self.credential, username: username, finished: { (done) in
+
+                        if done { // success
+                            // stop animation
+                            self.logoAnimation.stop()
+
+                            //transition to home
+                            self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
                         }
                     })
                 }
