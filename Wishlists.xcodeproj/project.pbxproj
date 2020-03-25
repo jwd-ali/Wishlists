@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		830646B4242BAFA600A7F3B2 /* MenueOptionStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */; };
+		830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */; };
+		830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */; };
 		8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8312BD49231FE29400CBE1E2 /* CustomTextField.swift */; };
 		832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */; };
 		8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */; };
@@ -87,6 +90,9 @@
 /* Begin PBXFileReference section */
 		264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.release.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.release.xcconfig"; sourceTree = "<group>"; };
 		49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.debug.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.debug.xcconfig"; sourceTree = "<group>"; };
+		830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionStruct.swift; sourceTree = "<group>"; };
+		830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionCell.swift; sourceTree = "<group>"; };
+		830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionTableView.swift; sourceTree = "<group>"; };
 		8312BD49231FE29400CBE1E2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimations.swift; sourceTree = "<group>"; };
@@ -181,6 +187,16 @@
 				C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		830646B9242BE4BF00A7F3B2 /* MenueTableView */ = {
+			isa = PBXGroup;
+			children = (
+				830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */,
+				830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */,
+				830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */,
+			);
+			path = MenueTableView;
 			sourceTree = "<group>";
 		};
 		832E9CAD240C69C500135A50 /* CommunityVC */ = {
@@ -335,6 +351,7 @@
 				836A862423880B21000E76E4 /* WhishlistTableViewController.swift */,
 				836A862223875325000E76E4 /* WhishCell.swift */,
 				83D15FDE23BA908900007A53 /* WishlistStruct.swift */,
+				830646B9242BE4BF00A7F3B2 /* MenueTableView */,
 			);
 			path = WishlistVC;
 			sourceTree = "<group>";
@@ -564,10 +581,13 @@
 				83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */,
 				83A193B6230EF686002D22C0 /* MainVC.swift in Sources */,
 				839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */,
+				830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */,
+				830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */,
 				83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */,
 				83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */,
 				836A862323875325000E76E4 /* WhishCell.swift in Sources */,
 				83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */,
+				830646B4242BAFA600A7F3B2 /* MenueOptionStruct.swift in Sources */,
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
 				83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,

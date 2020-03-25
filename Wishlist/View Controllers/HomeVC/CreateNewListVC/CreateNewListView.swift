@@ -10,7 +10,11 @@ import UIKit
 import IQKeyboardManagerSwift
 
 protocol CreateListDelegate {
-    func createListTappedDelegate(with image: UIImage?, index: Int?)
+    func createListTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
+}
+
+protocol SaveListChangesDelegate {
+    func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
 }
 
 class CreateNewListView: UIView, UITextFieldDelegate {
@@ -40,7 +44,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     let editButton: UIButton = {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setImage(UIImage(named: "editButton"), for: .normal)
+        v.setImage(UIImage(named: "editButtonWhite"), for: .normal)
         v.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         return v
     }()
@@ -50,12 +54,13 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.placeholder = "Wie soll deine Wishlist heißen?"
         v.textColor = .white
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.font = UIFont(name: "AvenirNext-Medium", size: 19)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.white)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2.5)
+        v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2)
         v.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        v.autocorrectionType = .no
         return v
     }()
     
@@ -74,6 +79,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var createListDelegate: CreateListDelegate?
     
+    var saveChangesDelegate: SaveListChangesDelegate?
+    
     var currentImage: UIImage?
     var currentImageIndex = 0
     
@@ -84,11 +91,11 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     override init(frame: CGRect) {
     super.init(frame: frame)
         
-        disableButton()
+//        disableButton()
         
         setupViews()
         
-        startImagePreviewAnimation()
+//        startImagePreviewAnimation()
         
         wishlistNameTextField.delegate = self
 
@@ -124,12 +131,12 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         imagePreview.widthAnchor.constraint(equalToConstant: 160).isActive = true
         imagePreview.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
-        editButton.topAnchor.constraint(equalTo: imagePreview.topAnchor, constant: 120).isActive = true
-        editButton.leadingAnchor.constraint(equalTo: imagePreview.leadingAnchor, constant: 120).isActive = true
-        editButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        editButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        editButton.topAnchor.constraint(equalTo: imagePreview.topAnchor, constant: 110).isActive = true
+        editButton.leadingAnchor.constraint(equalTo: imagePreview.leadingAnchor, constant: 110).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        editButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
         
-        wishlistNameTextField.topAnchor.constraint(equalTo: imagePreview.bottomAnchor, constant: 50).isActive = true
+        wishlistNameTextField.topAnchor.constraint(equalTo: imagePreview.bottomAnchor, constant: 65).isActive = true
         wishlistNameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
         wishlistNameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
 //        wishlistNameTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
@@ -142,7 +149,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     }
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
-        createListDelegate?.createListTappedDelegate(with: currentImage, index: currentImageIndex)
         timer?.invalidate()
         wishlistNameTextField.resignFirstResponder()
         dismissView()
@@ -229,7 +235,15 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     //MARK: createListButtonTapped
     @objc func createListTapped(){
-        createListDelegate?.createListTappedDelegate(with: currentImage, index: currentImageIndex)
+        
+        timer?.invalidate()
+        
+        dismissView()
+        
+        createListDelegate?.createListTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        
+        saveChangesDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        
     }
     
 }

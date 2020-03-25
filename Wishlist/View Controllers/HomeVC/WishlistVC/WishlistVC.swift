@@ -67,7 +67,7 @@ class WishlistViewController: UIViewController {
    let wishlistLabel: UILabel = {
        let v = UILabel()
        v.text = "Wishlist"
-       v.font = UIFont(name: "AvenirNext-Bold", size: 23)
+       v.font = UIFont(name: "AvenirNext-Bold", size: 26)
        v.textAlignment = .left
        v.textColor = .white
        v.adjustsFontSizeToFitWidth = true
@@ -101,7 +101,12 @@ class WishlistViewController: UIViewController {
         return v
     }()
     
-    
+    //MARK: CreateListView 
+    let createListView: CreateNewListView = {
+        let v = CreateNewListView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     // track the current selected wish list
     var currentWishListIDX: Int = 0
@@ -128,22 +133,25 @@ class WishlistViewController: UIViewController {
     
     // panGestureRecognizer for interactive gesture dismiss
     var panGR: UIPanGestureRecognizer!
-
-
-    //        // make dismiss button fade away to the top
-    //        self.dismissWishlistViewButton.hero.isEnabled = true
-    //        self.dismissWishlistViewButton.heroID = "dismissButton"
-    //        self.dismissWishlistViewButton.hero.modifiers = [.fade, .translate(CGPoint(x: 0, y: -150), z: 20)]
     
+    //MARK: menueTableView Variables
+    public var menueOptions = [MenueOption(title: "Bearbeiten", image: UIImage(systemName: "pencil")!),
+                               MenueOption(title: "Sichtbar für andere Nutzer machen", image: UIImage(systemName: "lock.open")!),
+                               MenueOption(title: "Wishlist löschen", image: UIImage(systemName: "trash")!),
+                               MenueOption(title: "Teilen", image: UIImage(systemName: "square.and.arrow.up")!)
+                               ]
+                                
+    lazy var transparentView = UIView()
+    lazy var menueTableView = UITableView()
+    var menueTableViewHeight: CGFloat?
+    var bottomConstraint: NSLayoutConstraint?
+    
+    //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
-        
-        
-        
-//        self.wishlistBackgroundView.hero.modifiers = [.translate(CGPoint(x: 0, y: 800), z: 20)]
 
         
         // adding panGestureRecognizer
@@ -156,7 +164,24 @@ class WishlistViewController: UIViewController {
         self.theTableView.wishList = wishList.wishData
         self.theTableView.tableView.reloadData()
         
+        setupViews()
         
+        setupWishTableView()
+        
+        setupMenueTableView()
+        
+        bottomConstraint = self.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        
+        self.menueTableViewHeight = CGFloat(menueOptions.count * 50 + 40)
+        self.menueTableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 40, right: 0)
+        self.menueTableView.layer.cornerRadius = 5
+        self.menueTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.menueTableView.reloadData()
+        self.view.layoutIfNeeded()
+    }
+    
+    //MARK: setupViews
+    func setupViews(){
         view.addSubview(wishlistBackgroundView)
         view.addSubview(dismissWishlistViewButton)
         view.addSubview(menueButton)
@@ -209,18 +234,24 @@ class WishlistViewController: UIViewController {
             addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40),
             
         ])
-        
+    }
+    //MARK: setupWishTableView
+    func setupWishTableView(){
         // disable prefill tableview with cells
         let v = UIView()
         v.backgroundColor = .clear
         self.theTableView.tableView.tableFooterView = v
         
-        
-        
         // set DeleteWishDelegate protocol for the table
         theTableView.deleteWishDelegate = self
-        
+    }
     
+    //MARK: setupMenueTableView
+    func setupMenueTableView(){
+        menueTableView.isScrollEnabled = true
+        menueTableView.delegate = self
+        menueTableView.dataSource = self
+        menueTableView.register(MenueOptionCell.self, forCellReuseIdentifier: MenueOptionCell.reuseID)
     }
     
     // define a small helper function to add two CGPoints
@@ -259,18 +290,53 @@ class WishlistViewController: UIViewController {
            }
       }
     }
-    
+    //MARK: menueButtonTapped
     @objc private func menueButtonTapped(){
-        print("menueButtonTapped")
+        
+        view.removeGestureRecognizer(panGR)
+        
+        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        transparentView.frame = self.view.frame
+        self.view.addSubview(transparentView)
+        
+        let screenSize = UIScreen.main.bounds.size
+        self.menueTableView.backgroundColor = .darkGray
+        self.menueTableView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.menueTableViewHeight!)
+        self.view.addSubview(self.menueTableView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissMenueTableView))
+        transparentView.addGestureRecognizer(tapGesture)
+        
+        transparentView.alpha = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.7
+            self.menueTableView.frame = CGRect(x: 0, y: screenSize.height - self.menueTableViewHeight!, width: screenSize.width, height: self.menueTableViewHeight!)
+        }, completion: nil)
     }
     
+    @objc func dismissMenueTableView() {
+        
+        view.addGestureRecognizer(panGR)
+        
+        let screenSize = UIScreen.main.bounds.size
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0
+            self.menueTableView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.menueTableViewHeight!)
+        }, completion: nil)
+    }
+    
+    
+    
+    //MARK: dismissView
     @objc private func dismissView(){
         //  update datasource array in MainVC
         self.dismissWishDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray)
         
         self.dismiss(animated: true, completion: nil)
     }
-    
+    //MARK: addWishButtonTapped
     @objc private func addWishButtonTapped(){
         
         view.removeGestureRecognizer(panGR)
@@ -344,11 +410,7 @@ class WishlistViewController: UIViewController {
             
             self.makeWishView.grayView.transform = CGAffineTransform.identity
         }
-        
-        
     }
-    
-    
 }
 
 extension WishlistViewController: DeleteWishDelegate {

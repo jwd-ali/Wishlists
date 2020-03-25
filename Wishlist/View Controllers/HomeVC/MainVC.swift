@@ -130,38 +130,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     var image: UIImage?
     
-    private let imageView = UIImageView()
-    private var imageTimer: Timer?
-    
-//    let images: [UIImage] = [
-//        UIImage(named: "avocadoImage")!,
-//        UIImage(named: "beerImage")!,
-//        UIImage(named: "bikeImage")!,
-//        UIImage(named: "christmasImage")!,
-//        UIImage(named: "dressImage")!,
-//        UIImage(named: "giftImage")!,
-//        UIImage(named: "goalImage")!,
-//        UIImage(named: "rollerImage")!,
-//        UIImage(named: "shirtImage")!,
-//        UIImage(named: "shoeImage")!,
-//        UIImage(named: "travelImage")!,
-//    ]
-//
-//    let mainColor = UIColor(red: 49/255, green: 59/255, blue: 65/255, alpha: 1) // main
-//
-//    let customColors: [UIColor] = [
-//        UIColor(red: 215/255, green: 155/255, blue: 131/255, alpha: 1), // avocado
-//        UIColor(red: 0/255, green: 76/255, blue: 98/255, alpha: 1),     // beer
-//        UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1), // bike
-//        UIColor(red: 255/255, green: 255/255, blue: 235/255, alpha: 1), // christmas
-//        UIColor(red: 238/255, green: 196/255, blue: 199/255, alpha: 1), // dress
-//        UIColor(red: 93/255, green: 101/255, blue: 120/255, alpha: 1),  // gift
-//        UIColor(red: 123/255, green: 175/255, blue: 127/255, alpha: 1), // goals
-//        UIColor(red: 242/255, green: 235/255, blue: 191/255, alpha: 1), // roller
-//        UIColor(red: 178/255, green: 215/255, blue: 223/255, alpha: 1), // shirt
-//        UIColor(red: 136/255, green: 152/255, blue: 126/255, alpha: 1), // shoe
-//        UIColor(red: 108/255, green: 189/255, blue: 190/255, alpha: 1), // travel
-//    ]
+//    private let imageView = UIImageView()
+//    private var imageTimer: Timer?
     
     var dataSourceArray = [Wishlist]()
     
@@ -180,9 +150,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     // only animate cells at first start
     var shouldAnimateCells = true
     
-    
-//    CGRect frame = view.frame;
-//    CGPoint topCenter = CGPointMake(CGRectGetMidX(frame), CGRectGetMinY(frame));
 
     
     // MARK: viewDidLoad()
@@ -242,12 +209,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
-//        // add observer to starte/stop timer for imagePreview-rotation
-//        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackgroundHandler), name: UIApplication.didEnterBackgroundNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundHandler), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
-//        self.view.sendSubviewToBack(wishlistView)
-//        self.view.sendSubviewToBack(wishlistBackgroundView)
         self.view.sendSubviewToBack(welcomeLabel)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
@@ -412,6 +373,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.createListView.disableButton()
             // start timer for imagePreview
             self.createListView.startImagePreviewAnimation()
+            // set delegate
+            self.createListView.createListDelegate = self
             
         }
         
@@ -485,7 +448,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.createListView.editButton.transform = CGAffineTransform.identity
             self.createListView.closeButton.transform = CGAffineTransform.identity
        }
-
     }
     
     //hide keyboard, wenn user außerhalb toucht
@@ -568,8 +530,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
             
             // set dropDownButton image and label to current wishlists image and label
-        makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
-        makeWishView.dropDownButton.label.text = self.dataSourceArray[0].name
+            makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
+            makeWishView.dropDownButton.label.text = self.dataSourceArray[0].name
             
             // pass data array
             makeWishView.dataSourceArray = self.dataSourceArray
@@ -643,13 +605,26 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 
 //MARK: DelegateExtensions
 
-extension MainViewController: ListImagePickDelegate {
-    func listImagePicked( with image: UIImage?, index: Int?) {
-            self.currentImageArrayIDX = index!
-            self.image = image!
-            self.imagePreview.image = image!
-//            self.appDidEnterBackgroundHandler()
-        }
+extension MainViewController: CreateListDelegate {
+    func createListTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
+        // append created list to data source array
+        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex]))
+       
+        // append created list to drop down options
+        self.theDropDownOptions.append(listName)
+        self.theDropDownImageOptions.append(self.image!)
+        
+        // reload the collection view
+        theCollectionView.reloadData()
+        theCollectionView.performBatchUpdates(nil, completion: {
+            (result) in
+            // scroll to make newly added row visible (if needed)
+            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
+            let idx = IndexPath(item: i, section: 0)
+            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+            
+        })
+    }
 }
 
 extension MainViewController: SelectedWishlistProtocol{
@@ -660,7 +635,9 @@ extension MainViewController: SelectedWishlistProtocol{
 // allow MainVC to recieve updated datasource array
 extension MainViewController: DismissWishlistDelegate {
     func dismissWishlistVC(dataArray: [Wishlist]) {
+        print("dismiss")
         self.dataSourceArray = dataArray
+        self.theCollectionView.reloadData()
     }
 }
 
@@ -678,6 +655,7 @@ extension MainViewController: DismissWishlistDelegate {
 //        theTableView.tableView.reloadData()
 //    }
 //}
+
 
 extension MainViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
