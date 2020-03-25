@@ -343,18 +343,9 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         
         
         LoginManager().logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
-            
-            let accessToken = AccessToken.current
-
-            guard let accessTokenString = accessToken?.tokenString else {
-                Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: accessToken.debugDescription)
-                return
-            }
-
-            let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
-            
-            if error != nil {
                 
+            if error != nil {
+                print("hi")
                 self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                 // some FB error
                 Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
@@ -365,6 +356,15 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                 self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                 
             }else {
+                let accessToken = AccessToken.current
+
+                guard let accessTokenString = accessToken?.tokenString else {
+                    self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
+                    Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: accessToken.debugDescription)
+                    return
+                }
+
+                let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                 // successfull FB-Login
                 GraphRequest(graphPath: "/me", parameters: ["fields": "id, email, name"]).start { (connection, result, error) in
                     print(result!)
@@ -374,15 +374,19 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
 
                         // some FB error
                         Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
+                        
                     }else {
-                        print(result!)
-                        // check if user has account
-                        guard let Info = result as? [String: Any] else { return }
+                        
+                        // get user Info
+                        guard let Info = result as? [String: Any] else {
+                            self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
+                            Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: result.debugDescription)
+                            return
+                            
+                        }
 
                         let email = Info["email"] as? String
-                        
-                        print(email!)
-                           
+                         // check if user has account
                         Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
                             
                             if error != nil {
@@ -390,7 +394,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                 // show error popUp
                                 Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
                             } else {
-                                // no error -> check email adress
                                                                                     
                                 // Email ist noch nicht registriert -> sign up
                                 if methods == nil {
@@ -447,7 +450,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
 
             self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
             
-            Utilities.showErrorPopUp(labelContent: "Fehler", description: err.localizedDescription)
+            Utilities.showErrorPopUp(labelContent: "Fehler beim Google-Login", description: err.localizedDescription)
             
         }else {
             guard let authentication = user.authentication else { return }
@@ -460,7 +463,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                     // reset button
                     self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
                      // show error popUp
-                     Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
+                     Utilities.showErrorPopUp(labelContent: "Fehler beim Google-Login", description: error!.localizedDescription)
                     
                  } else {
                      // no error -> check email adress
