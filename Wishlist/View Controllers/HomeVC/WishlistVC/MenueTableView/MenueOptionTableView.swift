@@ -114,7 +114,12 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
 extension WishlistViewController: SaveListChangesDelegate {
     func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
         // update current Wishlist
-        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex])
+        var textColor = UIColor.white
+        
+        if Constants.ImageList.darkTextColorIndexes.contains(listIndex) {
+            textColor = UIColor.darkGray
+        }
+        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex], textColor: textColor)
         
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName

@@ -17,18 +17,21 @@ struct Constants {
     }
     
     struct ImageList {
+        
+        static let darkTextColorIndexes = [2,3,6]
+        
         static let images: [UIImage] = [
-            UIImage(named: "avocadoImage")!,
-            UIImage(named: "beerImage")!,
-            UIImage(named: "bikeImage")!,
-            UIImage(named: "christmasImage")!,
-            UIImage(named: "dressImage")!,
-            UIImage(named: "giftImage")!,
+            UIImage(named: "avocadoImage")!,        // 0
+            UIImage(named: "beerImage")!,           // 1
+            UIImage(named: "bikeImage")!,           // 2
+            UIImage(named: "christmasImage")!,      // 3
+            UIImage(named: "dressImage")!,          // 4
+            UIImage(named: "giftImage")!,           // 5
 //            UIImage(named: "goalImage")!,
-            UIImage(named: "rollerImage")!,
-            UIImage(named: "shirtImage")!,
-            UIImage(named: "shoeImage")!,
-            UIImage(named: "travelImage")!,
+            UIImage(named: "rollerImage")!,         // 6
+            UIImage(named: "shirtImage")!,          // 7
+            UIImage(named: "shoeImage")!,           // 8
+            UIImage(named: "travelImage")!,         // 9
         ]
         
         static let customColors: [UIColor] = [

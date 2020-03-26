@@ -311,27 +311,25 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             cell.cellLabel.text = dataSourceArray[indexPath.item].name
             // set cell image
             cell.wishlistImage.image = dataSourceArray[indexPath.item].image
-            if cell.wishlistImage.image == Constants.ImageList.images[2] || cell.wishlistImage.image == Constants.ImageList.images[3] {
-                cell.priceLabel.textColor = .gray
-                cell.priceEuroLabel.textColor = .gray
-                cell.wishCounterLabel.textColor = .gray
-                cell.wünscheLabel.textColor = .gray
-            }
+
+            cell.priceLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.priceEuroLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.wishCounterLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.wünscheLabel.textColor = dataSourceArray[indexPath.item].textColor
+
             // set background color
             cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
             cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
             cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
             
+            let heroID = "wishlistImageIDX\(indexPath.item)"
+            cell.wishlistImage.heroID = heroID
             
+            let addButtonHeroID = "addWishButtonID"
+            self.addButton.heroID = addButtonHeroID
             
             cell.customWishlistTapCallback = {
                 
-                let heroID = "wishlistImageIDX\(indexPath)"
-                cell.wishlistImage.heroID = heroID
-                
-                let addButtonHeroID = "addWishButtonID"
-                self.addButton.heroID = addButtonHeroID
-            
                 // track selected index
                 self.currentWishListIDX = indexPath.item
                     
@@ -395,23 +393,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         }   
     }
     
-    // change "sender: Any" to "sender: Any?" so we can call this
-    // from "Liste erstellen" button tap
-    @IBAction func closeButtonTappedNewList(_ sender: Any?) {
-        
-//        self.appDidEnterBackgroundHandler()
-        
-        self.newListTextfield.resignFirstResponder()
-        self.listNameTextfield.text = ""
-        
-        // let newListView disappear
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            self.blurrImage.transform = CGAffineTransform(translationX: 0, y: 1000)
-            self.newListView.transform = CGAffineTransform(translationX: 0, y: 1000)
-            self.view.layoutIfNeeded()
-        })
-    }
-    
     // MARK: CreateNewListView
     func createNewListView(){
         self.view.addSubview(self.createListView)
@@ -456,43 +437,43 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
  
-    @IBAction func createListButtonTapped(_ sender: Any) {
-        
-       
-//        // "Liste erstellen" button was tapped
-//        self.appDidEnterBackgroundHandler()
-                   
-        // save list to databse -> DataHandler
-        self.saveWishlist()
-       
-        if let txt = listNameTextfield.text {
-            
-            self.newListTextfield.resignFirstResponder()
-            
-            // append created list to data source array
-            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish](), color: Constants.ImageList.customColors[self.currentImageArrayIDX!]))
-           
-            // append created list to drop down options
-            self.theDropDownOptions.append(txt)
-            self.theDropDownImageOptions.append(self.image!)
-//            self.dropDownButton.dropView.tableView.reloadData()
-            
-            
-            // reload the collection view
-            theCollectionView.reloadData()
-            theCollectionView.performBatchUpdates(nil, completion: {
-                (result) in
-                // scroll to make newly added row visible (if needed)
-                let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-                let idx = IndexPath(item: i, section: 0)
-                self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
-               
-                // close (hide) the "New List" view
-                self.closeButtonTappedNewList(nil)
-                
-            })
-        }
-    }
+//    @IBAction func createListButtonTapped(_ sender: Any) {
+//
+//
+////        // "Liste erstellen" button was tapped
+////        self.appDidEnterBackgroundHandler()
+//
+//        // save list to databse -> DataHandler
+//        self.saveWishlist()
+//
+//        if let txt = listNameTextfield.text {
+//
+//            self.newListTextfield.resignFirstResponder()
+//
+//            // append created list to data source array
+//            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish](), color: Constants.ImageList.customColors[self.currentImageArrayIDX!], textColor: <#UIColor#>))
+//
+//            // append created list to drop down options
+//            self.theDropDownOptions.append(txt)
+//            self.theDropDownImageOptions.append(self.image!)
+////            self.dropDownButton.dropView.tableView.reloadData()
+//
+//
+//            // reload the collection view
+//            theCollectionView.reloadData()
+//            theCollectionView.performBatchUpdates(nil, completion: {
+//                (result) in
+//                // scroll to make newly added row visible (if needed)
+//                let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
+//                let idx = IndexPath(item: i, section: 0)
+//                self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+//
+//                // close (hide) the "New List" view
+//                self.closeButtonTappedNewList(nil)
+//
+//            })
+//        }
+//    }
     
     // MARK: AddWishButton
     
@@ -608,7 +589,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 extension MainViewController: CreateListDelegate {
     func createListTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
         // append created list to data source array
-        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex]))
+        var textColor = UIColor.white
+        if Constants.ImageList.darkTextColorIndexes.contains(listIndex) {
+            textColor = UIColor.darkGray
+        }
+        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex], textColor: textColor))
        
         // append created list to drop down options
         self.theDropDownOptions.append(listName)
@@ -635,9 +620,17 @@ extension MainViewController: SelectedWishlistProtocol{
 // allow MainVC to recieve updated datasource array
 extension MainViewController: DismissWishlistDelegate {
     func dismissWishlistVC(dataArray: [Wishlist]) {
-        print("dismiss")
         self.dataSourceArray = dataArray
+        // reload the collection view
         self.theCollectionView.reloadData()
+        self.theCollectionView.performBatchUpdates(nil, completion: {
+            (result) in
+            // scroll to make newly added row visible (if needed)
+            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
+            let idx = IndexPath(item: i, section: 0)
+//            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+
+        })
     }
 }
 

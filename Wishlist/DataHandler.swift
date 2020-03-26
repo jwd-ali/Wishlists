@@ -90,16 +90,21 @@ extension MainViewController {
                     let documentData = document.data()
                     let listName = documentData["name"]
                     let listImageIDX = documentData["imageIDX"]
+                    let textColor = documentData["textColor"]
+                    
+                    guard let color = Color(rawValue: textColor as! String) else { print("handle invalid color error"); return }
+
+                    let colorUnwrapped = color.create //// colorSelected is now UIColor.red
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: Constants.ImageList.mainColor))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: Constants.ImageList.mainColor, textColor: colorUnwrapped))
                         // set the drop down menu's options
                         self.theDropDownOptions.append(listName as! String)
                         self.theDropDownImageOptions.append(UIImage(named: "iconRoundedImage")!)
                     }else {
                         
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.ImageList.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.ImageList.customColors[listImageIDX as! Int]))
+                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.ImageList.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.ImageList.customColors[listImageIDX as! Int], textColor: textColor as! UIColor))
                         
                         self.theDropDownOptions.append(listName as! String)
                         self.theDropDownImageOptions.append(Constants.ImageList.images[listImageIDX as! Int])
@@ -183,7 +188,7 @@ class DataHandler {
 
                 // create empty 'Main Wishlist' with index 1 for sorting
                 let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
-                batch.setData(["name": "Main Wishlist", "listIDX": listIDX], forDocument: listRef)
+                batch.setData(["name": "Main Wishlist", "listIDX": listIDX, "textColor": "white"], forDocument: listRef)
 
                 batch.commit { (error) in
 

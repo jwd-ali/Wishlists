@@ -805,7 +805,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                                 }
                             }
                             // generate empty "Main Wishlist"
-                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1]) { (error) in
+                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1, "textColor": "UIColor.white"]) { (error) in
                                 if error != nil {
                                     self.showErrorPopUp(description: error!.localizedDescription)
                                 }

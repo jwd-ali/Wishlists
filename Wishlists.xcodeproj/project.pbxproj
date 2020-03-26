@@ -10,6 +10,7 @@
 		830646B4242BAFA600A7F3B2 /* MenueOptionStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */; };
 		830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */; };
 		830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */; };
+		830646BB242D210200A7F3B2 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646BA242D210200A7F3B2 /* ColorHelper.swift */; };
 		8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8312BD49231FE29400CBE1E2 /* CustomTextField.swift */; };
 		832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */; };
 		8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */; };
@@ -93,6 +94,7 @@
 		830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionStruct.swift; sourceTree = "<group>"; };
 		830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionCell.swift; sourceTree = "<group>"; };
 		830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionTableView.swift; sourceTree = "<group>"; };
+		830646BA242D210200A7F3B2 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
 		8312BD49231FE29400CBE1E2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimations.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */,
 				83A193B8230F0570002D22C0 /* Utilities.swift */,
 				83A193BD230F2640002D22C0 /* Constants.swift */,
+				830646BA242D210200A7F3B2 /* ColorHelper.swift */,
 				83953A6C23D64F4900589036 /* ButtonHelper.swift */,
 			);
 			path = Helpers;
@@ -580,6 +583,7 @@
 				836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */,
 				83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */,
 				83A193B6230EF686002D22C0 /* MainVC.swift in Sources */,
+				830646BB242D210200A7F3B2 /* ColorHelper.swift in Sources */,
 				839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */,
 				830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */,
 				830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */,

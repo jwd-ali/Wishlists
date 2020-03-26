@@ -37,7 +37,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     let imagePreview: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = UIImage(named: "beerImage")
+        v.image = Constants.ImageList.images[0]
         return v
     }()
 
@@ -81,7 +81,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var saveChangesDelegate: SaveListChangesDelegate?
     
-    var currentImage: UIImage?
+    var currentImage = Constants.ImageList.images[0]
     var currentImageIndex = 0
     
     // timer for imagePreview
@@ -177,14 +177,14 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     //MARK: ImagePreviewAnimation
     func startImagePreviewAnimation(){
-        timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.4, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
     }
     
     @objc func timerAction(){
         currentImageIndex = (currentImageIndex + 1) % Constants.ImageList.images.count
         UIView.transition(with: self.imagePreview, duration: 0.5, options: .transitionCrossDissolve, animations: {
             self.imagePreview.image = Constants.ImageList.images[self.currentImageIndex]
-            self.currentImage = self.imagePreview.image
+            self.currentImage = self.imagePreview.image!
         })
     }
     
@@ -240,9 +240,9 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         
         dismissView()
         
-        createListDelegate?.createListTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        createListDelegate?.createListTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
-        saveChangesDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        saveChangesDelegate?.saveChangesTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
     }
     

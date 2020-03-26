@@ -9,7 +9,7 @@
 import UIKit
 import Hero
 
-// DonMag3 - protocol / delegate pattern
+
 // allows wish table view (and cell) to update wish list data
 protocol DeleteWishDelegate {
     func deleteWish(_ idx: Int)
@@ -152,6 +152,7 @@ class WishlistViewController: UIViewController {
         
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
+        self.hero.isEnabled = true
 
         
         // adding panGestureRecognizer
