@@ -43,7 +43,8 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         case 0: // bearbeiten
             print("Bearbeiten")
             self.createNewListView()
-
+            self.createListView.currentWishlistIndex = self.currentWishListIDX
+            self.createListView.oldListName = self.wishList.name
             self.createListView.wishlistNameTextField.text = wishList.name
             self.createListView.imagePreview.image = wishList.image
             self.createListView.wishlistNameTextField.becomeFirstResponder()
@@ -52,7 +53,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
 //            // start timer for imagePreview
 //            self.createListView.startImagePreviewAnimation()
             // set delegate
-            self.createListView.saveChangesDelegate = self
+            self.createListView.changeListDelegate = self
         
         case 1: // sichtbar machen
             print("sichtbar")
@@ -72,8 +73,6 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
     // MARK: CreateNewListView
     func createNewListView(){
         self.view.addSubview(self.createListView)
-        
-        createListView.createButton.setTitle("Änderung speichern", for: .normal)
         
         self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
@@ -111,15 +110,16 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: SaveListChangesDelegate
-extension WishlistViewController: SaveListChangesDelegate {
+extension WishlistViewController: ChangeListDelegate {
     func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
         // update current Wishlist
         var textColor = UIColor.white
         
-        if Constants.ImageList.darkTextColorIndexes.contains(listIndex) {
+        if Constants.Wishlist.darkTextColorIndexes.contains(listIndex) {
             textColor = UIColor.darkGray
         }
-        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex], textColor: textColor)
+        
+        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listIndex], textColor: textColor, index: self.currentWishListIDX)
         
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName
@@ -127,21 +127,7 @@ extension WishlistViewController: SaveListChangesDelegate {
         // update drop down options
         self.theDropDownOptions[self.currentWishListIDX] = listName
         self.theDropDownImageOptions[self.currentWishListIDX] = listImage
-        
-        
-//        // reload the collection view
-//        theCollectionView.reloadData()
-//        theCollectionView.performBatchUpdates(nil, completion: {
-//            (result) in
-//            // scroll to make newly added row visible (if needed)
-//            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-//            let idx = IndexPath(item: i, section: 0)
-//            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
-//
-////            // close (hide) the "New List" view
-////            self.closeButtonTappedNewList(nil)
-//
-//        })
+
     }
 }
 

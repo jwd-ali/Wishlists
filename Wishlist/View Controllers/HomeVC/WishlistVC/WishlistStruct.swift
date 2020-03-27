@@ -14,4 +14,5 @@ struct Wishlist {
     var wishData: [Wish]
     var color: UIColor
     var textColor: UIColor
+    var index: Int
 }

@@ -98,7 +98,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     //MARK: CreateListView
     
     let createListView: CreateNewListView = {
-        let v = CreateNewListView()
+        let v = CreateNewListView(wishlistMode: Constants.WishlistMode.isCreating)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -108,7 +108,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     let theCollectionView: UICollectionView = {
         let v = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         v.translatesAutoresizingMaskIntoConstraints = false
-//        v.backgroundColor = UIColor(red: 225/255.0, green: 215/255.0, blue: 200/255.0, alpha: 1)
         v.backgroundColor = .clear
         v.contentInsetAdjustmentBehavior = .always
         return v
@@ -331,7 +330,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             cell.customWishlistTapCallback = {
                 
                 // track selected index
-                self.currentWishListIDX = indexPath.item
+                self.currentWishListIDX = self.dataSourceArray[indexPath.item].index
+                print(self.currentWishListIDX)
                     
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
                 
@@ -436,44 +436,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.view.endEditing(true)
     }
     
- 
-//    @IBAction func createListButtonTapped(_ sender: Any) {
-//
-//
-////        // "Liste erstellen" button was tapped
-////        self.appDidEnterBackgroundHandler()
-//
-//        // save list to databse -> DataHandler
-//        self.saveWishlist()
-//
-//        if let txt = listNameTextfield.text {
-//
-//            self.newListTextfield.resignFirstResponder()
-//
-//            // append created list to data source array
-//            self.dataSourceArray.append(Wishlist(name: txt, image: self.image!, wishData: [Wish](), color: Constants.ImageList.customColors[self.currentImageArrayIDX!], textColor: <#UIColor#>))
-//
-//            // append created list to drop down options
-//            self.theDropDownOptions.append(txt)
-//            self.theDropDownImageOptions.append(self.image!)
-////            self.dropDownButton.dropView.tableView.reloadData()
-//
-//
-//            // reload the collection view
-//            theCollectionView.reloadData()
-//            theCollectionView.performBatchUpdates(nil, completion: {
-//                (result) in
-//                // scroll to make newly added row visible (if needed)
-//                let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-//                let idx = IndexPath(item: i, section: 0)
-//                self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
-//
-//                // close (hide) the "New List" view
-//                self.closeButtonTappedNewList(nil)
-//
-//            })
-//        }
-//    }
     
     // MARK: AddWishButton
     
@@ -587,13 +549,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //MARK: DelegateExtensions
 
 extension MainViewController: CreateListDelegate {
-    func createListTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
+    func createListTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String) {
         // append created list to data source array
         var textColor = UIColor.white
-        if Constants.ImageList.darkTextColorIndexes.contains(listIndex) {
+        if Constants.Wishlist.darkTextColorIndexes.contains(listImageIndex) {
             textColor = UIColor.darkGray
         }
-        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.ImageList.customColors[listIndex], textColor: textColor))
+        
+        let newIndex = self.dataSourceArray.last!.index + 1
+        
+        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
        
         // append created list to drop down options
         self.theDropDownOptions.append(listName)

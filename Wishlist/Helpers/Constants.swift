@@ -9,14 +9,31 @@
 import Foundation
 import UIKit
 
-struct Constants {
+struct Constants: Equatable {
     
     struct Storyboard {
         
         static let homeViewController = "HomeVC"
     }
     
-    struct ImageList {
+    enum WishlistMode {
+        case isCreating
+        case isChanging
+    }
+
+    
+    struct Wishlist {
+        
+        struct textColor {
+            
+            public static var white: String {
+                    return "white"
+            }
+            public static var darkGray: String {
+                return "darkGray"
+            }
+            
+        }
         
         static let darkTextColorIndexes = [2,3,6]
         

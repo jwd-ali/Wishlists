@@ -103,7 +103,7 @@ class WishlistViewController: UIViewController {
     
     //MARK: CreateListView 
     let createListView: CreateNewListView = {
-        let v = CreateNewListView()
+        let v = CreateNewListView(wishlistMode: Constants.WishlistMode.isChanging)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

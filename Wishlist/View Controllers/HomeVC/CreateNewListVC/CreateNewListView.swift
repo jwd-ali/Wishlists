@@ -10,10 +10,10 @@ import UIKit
 import IQKeyboardManagerSwift
 
 protocol CreateListDelegate {
-    func createListTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
+    func createListTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String)
 }
 
-protocol SaveListChangesDelegate {
+protocol ChangeListDelegate {
     func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
 }
 
@@ -37,7 +37,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     let imagePreview: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = Constants.ImageList.images[0]
+        v.image = Constants.Wishlist.images[0]
         return v
     }()
 
@@ -79,30 +79,53 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var createListDelegate: CreateListDelegate?
     
-    var saveChangesDelegate: SaveListChangesDelegate?
+    var changeListDelegate: ChangeListDelegate?
     
-    var currentImage = Constants.ImageList.images[0]
+    var currentImage = Constants.Wishlist.images[0]
     var currentImageIndex = 0
+    
+    var currentWishlistIndex: Int?
+    // only important if changing listname
+    var oldListName: String?
     
     // timer for imagePreview
     var timer: Timer?
     
-    //MARK: Init
-    override init(frame: CGRect) {
-    super.init(frame: frame)
-        
-//        disableButton()
+    var wishlistMode: Constants.WishlistMode?
+
+    init(wishlistMode: Constants.WishlistMode) {
+        self.wishlistMode = wishlistMode
+        super.init(frame: CGRect.zero)
         
         setupViews()
         
-//        startImagePreviewAnimation()
-        
         wishlistNameTextField.delegate = self
+        
+        setButtonTitleWithWishlistMode()
+        
+        saveOldListNameIfNeeded()
+        
+    }
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func saveOldListNameIfNeeded(){
+        if self.wishlistMode == .isChanging {
+            self.oldListName = wishlistNameTextField.text!
+        }
+    }
+    
+    func setButtonTitleWithWishlistMode(){
+        switch self.wishlistMode {
+        case .isChanging:
+            self.createButton.setTitle("Änderung speichern", for: .normal)
+        case .isCreating:
+            self.createButton.setTitle("Liste erstellen", for: .normal)
+        default:
+            break
+        }
     }
     
     //MARK: setupViews
@@ -147,6 +170,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         createButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
+    
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
         timer?.invalidate()
@@ -181,9 +205,9 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     }
     
     @objc func timerAction(){
-        currentImageIndex = (currentImageIndex + 1) % Constants.ImageList.images.count
+        currentImageIndex = (currentImageIndex + 1) % Constants.Wishlist.images.count
         UIView.transition(with: self.imagePreview, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.imagePreview.image = Constants.ImageList.images[self.currentImageIndex]
+            self.imagePreview.image = Constants.Wishlist.images[self.currentImageIndex]
             self.currentImage = self.imagePreview.image!
         })
     }
@@ -236,13 +260,29 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     //MARK: createListButtonTapped
     @objc func createListTapped(){
         
+        var textColor = Constants.Wishlist.textColor.white
+        if Constants.Wishlist.darkTextColorIndexes.contains(currentImageIndex){
+            textColor = Constants.Wishlist.textColor.darkGray
+        }
+        
+        switch self.wishlistMode {
+        case .isChanging:
+            DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.currentWishlistIndex!, textColor: textColor)
+            print("isChanging")
+        case .isCreating:
+            DataHandler.saveWishlist(wishListName: wishlistNameTextField.text!, imageArrayIDX: currentImageIndex, textColor: textColor)
+            print("isCreating")
+        default:
+            break
+        }
+        
         timer?.invalidate()
         
         dismissView()
         
-        createListDelegate?.createListTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        createListDelegate?.createListTappedDelegate(listImage: currentImage, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
-        saveChangesDelegate?.saveChangesTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
     }
     

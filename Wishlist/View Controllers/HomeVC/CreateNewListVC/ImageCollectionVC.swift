@@ -98,12 +98,12 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constants.ImageList.images.count
+        return Constants.Wishlist.images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
-        cell.cellImage.image = Constants.ImageList.images[indexPath.item]
+        cell.cellImage.image = Constants.Wishlist.images[indexPath.item]
         cell.backgroundColor = .cyan
         cell.layer.cornerRadius = 2
         return cell
@@ -112,7 +112,7 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     var tappedImage = UIImage()
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tappedImage = Constants.ImageList.images[indexPath.row]
+        tappedImage = Constants.Wishlist.images[indexPath.row]
         delegate?.listImagePicked(with: tappedImage, index: indexPath.row)
         
         self.dismiss(animated: true)

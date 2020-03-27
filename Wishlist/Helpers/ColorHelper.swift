@@ -10,11 +10,6 @@
 import Foundation
 import UIKit
 
-extension UIColor {
-    public class var whiteColor: UIColor {
-        return UIColor.white
-    }
-}
 
 enum Color: String {
  case white
