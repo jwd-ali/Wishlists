@@ -93,7 +93,6 @@ class WhishlistTableViewController: UITableViewController {
         cell.label.text = currentWish.wishName
         
         cell.linkLabel.text = currentWish.wishLink
-        print(cell.linkLabel.text!)
         cell.priceLabel.text = currentWish.wishPrice
         cell.noteLabel.text = currentWish.wishNote
         cell.backgroundColor = .clear

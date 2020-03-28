@@ -318,7 +318,6 @@ class MakeWishView: UIView, UITextFieldDelegate {
     
     @objc private func wishImageButtonTapped(){
         imageButtonDelegate?.showImagePickerControllerActionSheet()
-        print("wishImageButtonTapped")
     }
     
     @objc func closeButtonTapped(){

@@ -202,7 +202,6 @@ class WhishCell: UITableViewCell {
     }
     
     @objc func checkButtonTapped(){
-        print("hi")
         self.checkButton.setBackgroundImage(UIImage(named: "boxChecked"), for: .normal)
         self.checkButton.alpha = 0
         self.checkButton.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)

@@ -49,7 +49,12 @@ struct Constants: Equatable {
             UIImage(named: "shirtImage")!,          // 7
             UIImage(named: "shoeImage")!,           // 8
             UIImage(named: "travelImage")!,         // 9
+            UIImage(named: "iconRoundedImage")!,
         ]
+        
+        static func getCurrentImageIndex(image: UIImage) -> Int{
+            return self.images.firstIndex(of: image)!
+        }
         
         static let customColors: [UIColor] = [
             UIColor(red: 215/255, green: 155/255, blue: 131/255, alpha: 1), // avocado
@@ -63,6 +68,7 @@ struct Constants: Equatable {
             UIColor(red: 178/255, green: 215/255, blue: 223/255, alpha: 1), // shirt
             UIColor(red: 136/255, green: 152/255, blue: 126/255, alpha: 1), // shoe
             UIColor(red: 108/255, green: 189/255, blue: 190/255, alpha: 1), // travel
+            UIColor(red: 49/255, green: 59/255, blue: 65/255, alpha: 1), // main
         ]
         
         static let mainColor = UIColor(red: 49/255, green: 59/255, blue: 65/255, alpha: 1) // main

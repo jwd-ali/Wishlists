@@ -180,7 +180,6 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
             // start loading indicator
             activityIndicator.startAnimating()
             DataHandler.checkUsername(field: usernameTextField.text!) { (success) in
-                print(self.usernameTextField.text!)
                 if success == true {
                     // username is taken
                     self.setupUsernameTextField()

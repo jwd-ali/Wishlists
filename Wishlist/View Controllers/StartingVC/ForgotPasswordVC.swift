@@ -192,7 +192,6 @@ class ForgotPasswordVC: UIViewController {
     }
     
     @objc func resetButtonTappped(){
-        print("reset tapped")
         // disable button tap
         self.resetButton.isEnabled = false
         // hide the buttons title

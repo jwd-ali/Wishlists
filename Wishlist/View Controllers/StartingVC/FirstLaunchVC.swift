@@ -345,7 +345,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         LoginManager().logIn(permissions: ["email", "public_profile"], from: self) { (result, error) in
                 
             if error != nil {
-                print("hi")
                 self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                 // some FB error
                 Utilities.showErrorPopUp(labelContent: "Fehler beim Facebook-Login", description: error!.localizedDescription)
@@ -367,7 +366,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                 let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                 // successfull FB-Login
                 GraphRequest(graphPath: "/me", parameters: ["fields": "id, email, name"]).start { (connection, result, error) in
-                    print(result!)
                     if error != nil {
                         
                         self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
@@ -531,7 +529,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         }
 
         let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-//        print("email: " + appleIDCredential.email!)
+
         let email = appleIDCredential.email
         
         Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
@@ -556,7 +554,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                  // Email not registered -> sign up
                  if methods == nil {
                      
-                     print("signed in")
                      let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                      usernameVC.credential = credential
                      usernameVC.signInOption = "apple"

@@ -12,29 +12,6 @@ import Firebase
 
 extension MainViewController {
     
-    func setupWelcomeLabel() {
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).getDocument { (document, error) in
-            // check for error
-            if error == nil{
-                // check if document exists
-                if document != nil && document!.exists {
-                    let documentData = document!.data()
-                    self.welcomeLabel.text = "Hi " + (documentData?["anzeigename"] as! String) + "."
-                    // show + animate welcomeLabel
-                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
-                        self.welcomeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-                    })
-                }else {
-                    print("document doesn't exist")
-                }
-            }else {
-                print("some error")
-            }
-        }
-    }
-    
     func saveWish() {
         // get name from current Whishlist
 //        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
@@ -49,27 +26,6 @@ extension MainViewController {
 //            }
 //        })
     }
-    //MARK: saveWishlists
-    func saveWishlist() {
-        
-        // track Wishlist IDX
-        self.wishlistIDX += 1
-
-        // get user input
-        let wishListName = self.listNameTextfield.text!
-        let imageArrayIDX = self.currentImageArrayIDX!
-        let wishListIDX = self.wishlistIDX
-        
-        // auto create custom Wishlist with name/listIDX/imageIDX
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").document(wishListName).setData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX]) { (error) in
-            if error != nil {
-                print("Error saving Wishlist")
-            }
-        }
-    }
-    
     
     func retrieveUserDataFromDB() -> Void {
         getWishlists()
@@ -93,9 +49,12 @@ extension MainViewController {
                     let textColor = documentData["textColor"]
                     let index = documentData["listIDX"]
                     
-                    guard let color = Color(rawValue: textColor as! String) else { print("handle invalid color error"); return }
+                    guard let color = Color(rawValue: textColor as! String) else {
+                        print("handle invalid color error");
+                        return
+                    }
 
-                    let colorUnwrapped = color.create //// colorSelected is now UIColor.red
+                    let colorUnwrapped = color.create
                     
                     // if-case for Main Wishlist
                     if listImageIDX as? Int == nil {
@@ -148,7 +107,7 @@ extension MainViewController {
 
 class DataHandler {
     
-    static func getListCounter(finished: @escaping (_ done: Bool) -> Void) {
+    static func getListCounter(finished: @escaping (_ done: Bool, _ index: Any?) -> Void) {
              
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
@@ -159,15 +118,14 @@ class DataHandler {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let property = document.get("listCounter")
-                print("Document data: \(String(describing: property))")
-                finished(true)
+                finished(true, property as! Int)
             } else {
                 print("Document does not exist")
-                finished(false)
+                finished(false, nil)
             }
         }
     }
-    
+    //MARK: updateWishlist
     static func updateWishlist(wishListName: String, oldListName: String, imageArrayIDX: Int, wishListIDX: Int, textColor: String) {
 
         let db = Firestore.firestore()
@@ -207,7 +165,6 @@ class DataHandler {
                 }
             }
         } else { // name wasn't changed
-            print("same name")
             db.collection("users").document(userID).collection("wishlists").document(wishListName).updateData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX, "textColor": textColor]) { (error) in
                 if error != nil {
                     Utilities.showErrorPopUp(labelContent: "Fehler beim Speichern", description: (error?.localizedDescription)!)
@@ -215,36 +172,34 @@ class DataHandler {
             }
         }
     }
-    
+    //MARK: saveWishlist
     static func saveWishlist(wishListName: String, imageArrayIDX: Int, textColor: String) {
-        print("saving")
         
-        let wishListIDX = 1
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
         
-
-        let batch = db.batch()
-        
-        // Set username and uid for user
-        let userRef = Firestore.firestore().collection("users").document(userID)
-
-//        batch.updateData(["population": FieldValue.increment(1)], forDocument: userRef)
-        batch.updateData(["listCounter": wishListIDX + 1], forDocument: userRef)
-        
-
-        let listRef = db.collection("users").document(userID).collection("wishlists").document(wishListName)
-        batch.setData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX, "textColor": textColor], forDocument: listRef)
-        
-//        db.collection("users").document(userID).collection("wishlists").document(wishListName).setData(["name": wishListName, "listIDX": wishListIDX, "imageIDX" : imageArrayIDX, "textColor": textColor]) { (error) in
-//            if error != nil {
-//                print("Error saving Wishlist")
-//            }
-//        }
-        
-        batch.commit { (error) in
-            if let error = error {
-                Utilities.showErrorPopUp(labelContent: "Liste konnte nicht gespeichert werden", description: error.localizedDescription)
+        self.getListCounter { (success, index) in
+            if success && index != nil {
+                guard let wishListIDX = index as? Int else {
+                    Utilities.showErrorPopUp(labelContent: "Fehler", description: "Wishlist konnte nicht gespeichert werden")
+                    return
+                }
+                
+                let batch = db.batch()
+                
+                // update listCounter
+                let userRef = Firestore.firestore().collection("users").document(userID)
+                batch.updateData(["listCounter": wishListIDX + 1], forDocument: userRef)
+                
+                // save wishlist with properties
+                let listRef = db.collection("users").document(userID).collection("wishlists").document(wishListName)
+                batch.setData(["name": wishListName, "listIDX": wishListIDX + 1, "imageIDX" : imageArrayIDX, "textColor": textColor], forDocument: listRef)
+                
+                batch.commit { (error) in
+                    if let error = error {
+                        Utilities.showErrorPopUp(labelContent: "Liste konnte nicht gespeichert werden", description: error.localizedDescription)
+                    }
+                }
             }
         }
     }
@@ -253,6 +208,7 @@ class DataHandler {
     static func signIn(credentials: Any?, username: String, finished: @escaping (_ done: Bool) -> Void) {
         
         let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+        let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
 
         guard let credentials = credentials as? AuthCredential else {
 
@@ -275,7 +231,7 @@ class DataHandler {
 
                 // create empty 'Main Wishlist' with index 1 for sorting
                 let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
-                batch.setData(["name": "Main Wishlist", "listIDX": listCounter, "textColor": Constants.Wishlist.textColor.white], forDocument: listRef)
+                batch.setData(["name": "Main Wishlist", "listIDX": listCounter, "imageIDX" : imageArrayIDX, "textColor": Constants.Wishlist.textColor.white], forDocument: listRef)
 
                 batch.commit { (error) in
 
@@ -306,6 +262,7 @@ class DataHandler {
         
         let db = Firestore.firestore()
         let collectionRef = db.collection("users")
+        
         collectionRef.whereField("username", isEqualTo: field).getDocuments { (snapshot, err) in
             if let err = err {
                 print("Error getting document: \(err)")

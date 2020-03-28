@@ -41,18 +41,15 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
 
         case 0: // bearbeiten
-            print("Bearbeiten")
             self.createNewListView()
+            self.createListView.wishList = self.wishList
             self.createListView.currentWishlistIndex = self.currentWishListIDX
             self.createListView.oldListName = self.wishList.name
             self.createListView.wishlistNameTextField.text = wishList.name
             self.createListView.imagePreview.image = wishList.image
+            self.createListView.currentImage = wishList.image
+            self.createListView.currentImageIndex = Constants.Wishlist.getCurrentImageIndex(image: wishList.image)
             self.createListView.wishlistNameTextField.becomeFirstResponder()
-//            // disable button
-//            self.createListView.disableButton()
-//            // start timer for imagePreview
-//            self.createListView.startImagePreviewAnimation()
-            // set delegate
             self.createListView.changeListDelegate = self
         
         case 1: // sichtbar machen
@@ -118,7 +115,7 @@ extension WishlistViewController: ChangeListDelegate {
         if Constants.Wishlist.darkTextColorIndexes.contains(listIndex) {
             textColor = UIColor.darkGray
         }
-        
+        print("currentIndex: \(self.currentWishListIDX)")
         self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listIndex], textColor: textColor, index: self.currentWishListIDX)
         
         self.wishlistImage.image = listImage

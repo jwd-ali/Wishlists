@@ -81,7 +81,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var changeListDelegate: ChangeListDelegate?
     
-    var currentImage = Constants.Wishlist.images[0]
+    var currentImage: UIImage? //= Constants.Wishlist.images[0]
     var currentImageIndex = 0
     
     var currentWishlistIndex: Int?
@@ -90,6 +90,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     // timer for imagePreview
     var timer: Timer?
+    
+    var wishList: Wishlist?
     
     var wishlistMode: Constants.WishlistMode?
 
@@ -267,22 +269,21 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         
         switch self.wishlistMode {
         case .isChanging:
-            DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.currentWishlistIndex!, textColor: textColor)
-            print("isChanging")
+            DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.wishList!.index, textColor: textColor)
         case .isCreating:
             DataHandler.saveWishlist(wishListName: wishlistNameTextField.text!, imageArrayIDX: currentImageIndex, textColor: textColor)
-            print("isCreating")
         default:
             break
         }
+        
         
         timer?.invalidate()
         
         dismissView()
         
-        createListDelegate?.createListTappedDelegate(listImage: currentImage, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        createListDelegate?.createListTappedDelegate(listImage: currentImage!, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
-        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
     }
     

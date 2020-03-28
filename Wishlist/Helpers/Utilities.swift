@@ -85,7 +85,7 @@ class Utilities {
         attributes.shadow = .active(with: .init(color: .black, opacity: 0.5, radius: 10, offset: .zero))
         attributes.statusBar = .dark
         attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
-        attributes.displayDuration = 5
+        attributes.displayDuration = 4
 
         let title = EKProperty.LabelContent(text: labelContent, style: .init(font: UIFont(name: "AvenirNext-Bold", size: 15)!, color: EKColor(UIColor.darkGray)))
         let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont(name: "AvenirNext-Regular", size: 13)!, color: EKColor(UIColor.darkGray)))

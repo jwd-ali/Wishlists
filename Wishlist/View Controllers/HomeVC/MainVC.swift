@@ -157,9 +157,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         super.viewDidLoad()
         
         let userID = Auth.auth().currentUser!.uid
-        
-        print("id: " + userID)
-        
+                
         // configure image in createNewListPopUpView
         imagePreview?.image = UIImage(named: "iconRoundedImage")
         image = UIImage(named: "iconRoundedImage")
@@ -331,16 +329,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 
                 // track selected index
                 self.currentWishListIDX = self.dataSourceArray[indexPath.item].index
-                print(self.currentWishListIDX)
                     
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
                 
-                vc.wishList = self.dataSourceArray[self.currentWishListIDX]
+                vc.wishList = self.dataSourceArray[indexPath.item]
                 // pass drop down options
                 vc.theDropDownOptions = self.theDropDownOptions
                 vc.theDropDownImageOptions = self.theDropDownImageOptions
                 // pass current wishlist index
-                vc.currentWishListIDX = self.currentWishListIDX
+                vc.currentWishListIDX = indexPath.item
                 // pass the data array
                 vc.dataSourceArray = self.dataSourceArray
                 // set Hero ID for transition

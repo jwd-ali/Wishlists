@@ -498,8 +498,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         let cancellationRange = (text as NSString).range(of: "Datenschutzrichtlinien")
         
         if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: conditionsRange) {
-            print("user tapped on Nutzungsbedingungen")
-            
             let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Nutzungsbedingungen", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
                 
@@ -508,7 +506,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             self.present(alertcontroller, animated: true)
             
         } else if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: cancellationRange){
-            print("user tapped on Datenschutzrichtlinien")
             let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Datenschutzrichtlinien", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
                 
@@ -693,7 +690,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         DataHandler.checkUsername(field: usernameTextField.text!) { success in
             if success {
                 // username is taken
-                print("Username is taken")
                 self.setupUsernameTextField()
                 self.checkUsernameImage.image = UIImage(named: "false")
                 self.checkUserNameLabel.text = "Benutzername ist bereits vergeben"
@@ -1210,7 +1206,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             // start loading indicator
             activityIndicator.startAnimating()
             DataHandler.checkUsername(field: usernameTextField.text!) { (success) in
-                print(self.usernameTextField.text!)
                 if success == true {
                     // username is taken
                     self.setupUsernameTextField()
