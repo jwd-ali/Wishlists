@@ -55,12 +55,6 @@ import UIKit
             updatePlaceholder()
         }
     }
-    
-    @IBInspectable dynamic open var placeHolderFont: UIFont = UIFont(name: "AvenirNext-DemiBold", size: 15)! {
-        didSet {
-            updatePlaceholder()
-        }
-    }
 
     override open var placeholder: String? {
         didSet {
@@ -143,7 +137,6 @@ import UIKit
     
     private func updatePlaceholder() {
         placeholderLabel.text = placeholder
-        placeholderLabel.font = placeHolderFont
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.sizeToFit()
         layoutPlaceholderInTextRect()
@@ -183,12 +176,7 @@ import UIKit
 
     }
     
-    override open func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: 0, y: 0.2, width: 0.1, height: 0.3)
-    }
-    
     // MARK: - Overrides
-    
     
     override open func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.offsetBy(dx: textFieldInsets.x, dy: textFieldInsets.y)
@@ -197,7 +185,5 @@ import UIKit
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.offsetBy(dx: textFieldInsets.x, dy: textFieldInsets.y)
     }
-    
-    
     
 }

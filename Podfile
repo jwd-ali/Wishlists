@@ -1,11 +1,11 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '11.0'
 
-target 'Wishlist' do
+target 'Wishlists' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Wishlist
+  # Pods for Wishlists
 
 	pod 'Firebase/Analytics'
 	pod 'Firebase/Auth'

@@ -178,9 +178,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         // Textfield cursor -> white
         UITextField.appearance().tintColor = .white
         
-        // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
-        
         // google sign in delegate
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self

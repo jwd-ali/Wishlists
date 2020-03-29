@@ -96,8 +96,6 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         
         emailTextField.textContentType = .emailAddress
         
-        // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 25)
     }
     
     override func viewDidAppear(_ animated: Bool) {

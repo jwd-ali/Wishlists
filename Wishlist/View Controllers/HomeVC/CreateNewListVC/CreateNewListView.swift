@@ -17,6 +17,10 @@ protocol ChangeListDelegate {
     func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
 }
 
+protocol CloseNewListViewDelegate {
+    func closeNewListViewTapped()
+}
+
 class CreateNewListView: UIView, UITextFieldDelegate {
     
     let visualEffectView: UIVisualEffectView = {
@@ -80,6 +84,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     var createListDelegate: CreateListDelegate?
     
     var changeListDelegate: ChangeListDelegate?
+    
+    var closeViewDelegate: CloseNewListViewDelegate?
     
     var currentImage: UIImage? //= Constants.Wishlist.images[0]
     var currentImageIndex = 0
@@ -175,6 +181,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
+        closeViewDelegate?.closeNewListViewTapped()
         timer?.invalidate()
         wishlistNameTextField.resignFirstResponder()
         dismissView()

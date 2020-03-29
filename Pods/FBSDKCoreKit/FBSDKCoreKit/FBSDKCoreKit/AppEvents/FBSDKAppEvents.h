@@ -454,6 +454,11 @@ NS_SWIFT_NAME(AppEvents)
 @property (class, nonatomic, copy, nullable) NSString *userID;
 
 /*
+  Returns generated anonymous id that persisted with current install of the app
+*/
+@property (class, nonatomic, readonly) NSString *anonymousID;
+
+/*
  * Basic event logging
  */
 

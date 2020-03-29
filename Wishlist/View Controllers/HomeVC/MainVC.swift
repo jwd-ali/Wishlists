@@ -155,8 +155,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let userID = Auth.auth().currentUser!.uid
                 
         // configure image in createNewListPopUpView
         imagePreview?.image = UIImage(named: "iconRoundedImage")
@@ -184,12 +182,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
         })
-        
-//        // retrieve firstname from DB and animate welcomeLabel
-//        setupWelcomeLabel()
-        
-        // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backGroundImage, magnitude: 20)
         
         setupViews()
         
@@ -276,7 +268,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // MARK: CollectionView
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
@@ -509,15 +500,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
     
         }
-    
-    
-//
-//    func insertWish(){
-//
-////        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
-////        // save Wish to database -> DataHandler
-////        saveWish()
-//    }
     
     //MARK: ProfileButton
     @objc func profileButtonTapped() {

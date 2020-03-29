@@ -62,20 +62,20 @@ class Utilities {
             deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
     
-    static func applyMotionEffect (toView view:UIView, magnitude:Float) {
-        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
-        xMotion.minimumRelativeValue = -magnitude
-        xMotion.maximumRelativeValue = magnitude
-        
-        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
-        yMotion.minimumRelativeValue = -magnitude
-        yMotion.maximumRelativeValue = magnitude
-        
-        let group = UIMotionEffectGroup()
-        group.motionEffects = [xMotion, yMotion]
-        
-        view.addMotionEffect(group)
-    }
+//    static func applyMotionEffect (toView view:UIView, magnitude:Float) {
+//        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
+//        xMotion.minimumRelativeValue = -magnitude
+//        xMotion.maximumRelativeValue = magnitude
+//        
+//        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
+//        yMotion.minimumRelativeValue = -magnitude
+//        yMotion.maximumRelativeValue = magnitude
+//        
+//        let group = UIMotionEffectGroup()
+//        group.motionEffects = [xMotion, yMotion]
+//        
+//        view.addMotionEffect(group)
+//    }
     
     //MARK: Error Pop-up
     static func showErrorPopUp(labelContent: String, description: String){

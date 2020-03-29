@@ -397,9 +397,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         self.eyeButtonOne.isHidden = true
         self.eyeButtonTwo.isHidden = true
         
-        // add motion effect to background image
-        Utilities.applyMotionEffect(toView: self.backgroundImage, magnitude: 20)
-        
         //password hide/show
         passwordTextField.isSecureTextEntry.toggle()
         

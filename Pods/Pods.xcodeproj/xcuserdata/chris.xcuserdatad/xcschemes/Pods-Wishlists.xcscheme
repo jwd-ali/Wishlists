@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7435CBD8127BE64C5913BC45FC99EE47"
-               BuildableName = "Pods_Wishlist.framework"
-               BlueprintName = "Pods-Wishlist"
+               BlueprintIdentifier = "462898E1AE47D9C693118FDA8E594461"
+               BuildableName = "Pods_Wishlists.framework"
+               BlueprintName = "Pods-Wishlists"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

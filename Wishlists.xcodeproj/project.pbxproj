@@ -61,7 +61,7 @@
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
 		83FE84B523DB3BC9008D9F7B /* UserDefault+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */; };
-		D820D101CFF420CD72088C68 /* Pods_Wishlist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */; };
+		DCD3D2EDD1B7AD99D2F0E049 /* Pods_Wishlists.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +89,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1E6F87A0004C35366F403145 /* Pods-Wishlists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlists.release.xcconfig"; path = "Target Support Files/Pods-Wishlists/Pods-Wishlists.release.xcconfig"; sourceTree = "<group>"; };
 		264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.release.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.release.xcconfig"; sourceTree = "<group>"; };
+		3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlists.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.debug.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.debug.xcconfig"; sourceTree = "<group>"; };
 		830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionStruct.swift; sourceTree = "<group>"; };
 		830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionCell.swift; sourceTree = "<group>"; };
@@ -150,7 +152,7 @@
 		83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StrokeAnimation.json; sourceTree = "<group>"; };
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+Helpers.swift"; sourceTree = "<group>"; };
-		C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FFDD986AACAA5B52AF3C702 /* Pods-Wishlists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlists.debug.xcconfig"; path = "Target Support Files/Pods-Wishlists/Pods-Wishlists.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,7 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8392D53E24268B1F00FF6EA0 /* AuthenticationServices.framework in Frameworks */,
-				D820D101CFF420CD72088C68 /* Pods_Wishlist.framework in Frameworks */,
+				DCD3D2EDD1B7AD99D2F0E049 /* Pods_Wishlists.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +180,8 @@
 			children = (
 				49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */,
 				264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */,
+				9FFDD986AACAA5B52AF3C702 /* Pods-Wishlists.debug.xcconfig */,
+				1E6F87A0004C35366F403145 /* Pods-Wishlists.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -186,7 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				8392D53D24268B1F00FF6EA0 /* AuthenticationServices.framework */,
-				C47A4FFC70CDE1BECC6B7924 /* Pods_Wishlist.framework */,
+				3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -510,15 +514,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		396BFD27F19B7A797A126B44 /* [CP] Check Pods Manifest.lock */ = {
@@ -536,7 +540,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Wishlist-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Wishlists-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -549,15 +553,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlist/Pods-Wishlist-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -813,7 +817,7 @@
 		};
 		83A193AD230D6064002D22C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */;
+			baseConfigurationReference = 9FFDD986AACAA5B52AF3C702 /* Pods-Wishlists.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -835,7 +839,7 @@
 		};
 		83A193AE230D6064002D22C0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */;
+			baseConfigurationReference = 1E6F87A0004C35366F403145 /* Pods-Wishlists.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

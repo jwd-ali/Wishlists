@@ -41,22 +41,13 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
 
         case 0: // bearbeiten
-            self.createNewListView()
-            self.createListView.wishList = self.wishList
-            self.createListView.currentWishlistIndex = self.currentWishListIDX
-            self.createListView.oldListName = self.wishList.name
-            self.createListView.wishlistNameTextField.text = wishList.name
-            self.createListView.imagePreview.image = wishList.image
-            self.createListView.currentImage = wishList.image
-            self.createListView.currentImageIndex = Constants.Wishlist.getCurrentImageIndex(image: wishList.image)
-            self.createListView.wishlistNameTextField.becomeFirstResponder()
-            self.createListView.changeListDelegate = self
+            editTapped()
         
         case 1: // sichtbar machen
             print("sichtbar")
         
         case 2: // löschen
-            print("löschen")
+            deleteTapped()
             
         case 3: // teilen
             print("teilen")
@@ -64,6 +55,43 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             break
         }
+    }
+    
+    func deleteTapped(){
+        let alertcontroller = UIAlertController(title: "Wishlist löschen", message: "Sicher, dass du diese Wishlist löschen möchtest?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Löschen", style: .default) { (alert) in
+            print("löschen")
+        }
+        
+        let cancelAction = UIAlertAction(title: "Abbrechen", style: .default) { (alert) in
+            print("abbrechen")
+        }
+
+        
+        alertcontroller.addAction(cancelAction)
+        alertcontroller.addAction(deleteAction)
+        
+        self.present(alertcontroller, animated: true)
+    }
+    
+    func editTapped(){
+        view.removeGestureRecognizer(panGR)
+        self.createNewListView()
+        self.setUpNewListView()
+        
+    }
+    
+    func setUpNewListView(){
+        self.createListView.wishList = self.wishList
+        self.createListView.currentWishlistIndex = self.currentWishListIDX
+        self.createListView.oldListName = self.wishList.name
+        self.createListView.wishlistNameTextField.text = wishList.name
+        self.createListView.imagePreview.image = wishList.image
+        self.createListView.currentImage = wishList.image
+        self.createListView.currentImageIndex = Constants.Wishlist.getCurrentImageIndex(image: wishList.image)
+        self.createListView.wishlistNameTextField.becomeFirstResponder()
+        self.createListView.changeListDelegate = self
+        self.createListView.closeViewDelegate = self
     }
     
     
@@ -107,7 +135,12 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: SaveListChangesDelegate
-extension WishlistViewController: ChangeListDelegate {
+extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
+    
+    func closeNewListViewTapped() {
+        view.addGestureRecognizer(panGR)
+    }
+    
     func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
         // update current Wishlist
         var textColor = UIColor.white
