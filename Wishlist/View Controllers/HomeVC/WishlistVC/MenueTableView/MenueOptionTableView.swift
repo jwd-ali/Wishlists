@@ -91,7 +91,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         self.createListView.currentImageIndex = Constants.Wishlist.getCurrentImageIndex(image: wishList.image)
         self.createListView.wishlistNameTextField.becomeFirstResponder()
         self.createListView.changeListDelegate = self
-        self.createListView.closeViewDelegate = self
+        self.createListView.closeViewDelegate = self 
     }
     
     
