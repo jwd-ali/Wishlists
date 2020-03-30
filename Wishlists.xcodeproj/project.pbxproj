@@ -12,6 +12,7 @@
 		830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */; };
 		830646BB242D210200A7F3B2 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646BA242D210200A7F3B2 /* ColorHelper.swift */; };
 		8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8312BD49231FE29400CBE1E2 /* CustomTextField.swift */; };
+		832E0BA124323AF100CEC488 /* DropDownStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E0BA024323AF100CEC488 /* DropDownStruct.swift */; };
 		832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */; };
 		8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */; };
 		83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */; };
@@ -98,6 +99,7 @@
 		830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionTableView.swift; sourceTree = "<group>"; };
 		830646BA242D210200A7F3B2 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
 		8312BD49231FE29400CBE1E2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		832E0BA024323AF100CEC488 /* DropDownStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownStruct.swift; sourceTree = "<group>"; };
 		832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimations.swift; sourceTree = "<group>"; };
 		83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallTextField.swift; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 			children = (
 				836A862623916FAC000E76E4 /* DropDownTableView.swift */,
 				839A8EE823A80F9C00C432EA /* DropDownCell.swift */,
+				832E0BA024323AF100CEC488 /* DropDownStruct.swift */,
 				836232B323C9E40700FA498D /* MakeWishView.swift */,
 			);
 			path = MakeWishView;
@@ -597,6 +600,7 @@
 				83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */,
 				830646B4242BAFA600A7F3B2 /* MenueOptionStruct.swift in Sources */,
 				836A862723916FAD000E76E4 /* DropDownTableView.swift in Sources */,
+				832E0BA124323AF100CEC488 /* DropDownStruct.swift in Sources */,
 				83DA1B4124210C46008A58EB /* ForgotPasswordVC.swift in Sources */,
 				83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */,
 				83DA1B4324216370008A58EB /* CreateNewListView.swift in Sources */,

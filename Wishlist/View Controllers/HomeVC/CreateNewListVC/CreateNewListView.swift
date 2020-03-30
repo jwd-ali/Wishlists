@@ -278,7 +278,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         
         switch self.wishlistMode {
         case .isChanging:
-            print("createListButtonTapped: \(self.wishList!.index)")
             DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.wishList!.index, textColor: textColor)
         case .isCreating:
             DataHandler.saveWishlist(wishListName: wishlistNameTextField.text!, imageArrayIDX: currentImageIndex, textColor: textColor)

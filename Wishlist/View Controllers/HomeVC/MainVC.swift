@@ -15,17 +15,6 @@ import Firebase
 
 class MainViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var welcomeTextLeftConstraint: NSLayoutConstraint!
-    @IBOutlet weak var welcomeTextLabel: UILabel!
-    @IBOutlet weak var listNameTextfield: UITextField!
-    @IBOutlet weak var blurrImage: UIImageView!
-    @IBOutlet weak var newListView: UIView!
-    @IBOutlet weak var newListTextfield: UITextField!
-    @IBOutlet weak var createListButton: UIButton!
-    @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var imagePreview: UIImageView!
-    @IBOutlet weak var containerView: UIView!
-    
     let backGroundImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "backgroundImage")
@@ -33,20 +22,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    let welcomeLabel: UILabel = {
-        let v = UILabel()
-        v.text = ""
-        v.font = UIFont(name: "AvenirNext-Bold", size: 34)
-        v.textAlignment = .left
-        v.textColor = .white
-        v.adjustsFontSizeToFitWidth = true
-        v.minimumScaleFactor = 0.5
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
     //MARK: BottomBar
-    
     let bottomBar: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "bottomBar")
@@ -91,9 +67,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    var theDropDownOptions = [String]()
-    
-    var theDropDownImageOptions = [UIImage]()
+//    var theDropDownOptions = [String]()
+//
+//    var theDropDownImageOptions = [UIImage]()
+    var dropOptions = [DropDownOption]()
    
     //MARK: CreateListView
     
@@ -122,15 +99,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
  
     // track collection view frame change
     var colViewWidth: CGFloat = 0.0
- 
-//    // collectionView data, Image + Label
-//    var wishListTitlesArray: [String] = [String]()
-//    var wishListImagesArray: [UIImage] = [UIImage]()
     
     var image: UIImage?
-    
-//    private let imageView = UIImageView()
-//    private var imageTimer: Timer?
     
     var dataSourceArray = [Wishlist]()
     
@@ -155,40 +125,26 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        // configure image in createNewListPopUpView
-        imagePreview?.image = UIImage(named: "iconRoundedImage")
-        image = UIImage(named: "iconRoundedImage")
         
         // stop timer for imagePreview inside createNewListView
         self.createListView.timer?.invalidate()
         
-        // set up popUpView
-        self.createListButton?.layer.cornerRadius = 2
-        self.listNameTextfield?.tintColor = .lightGray
-        self.listNameTextfield?.addLine(position: .LINE_POSITION_BOTTOM, color: .lightGray, width: 1.5)
-        self.blurrImage?.transform = CGAffineTransform(translationX: 0, y: 1000)
-        self.newListView?.transform = CGAffineTransform(translationX: 0, y: 1000)
-        
-        // hide welcomeLabel
-        self.welcomeLabel.transform = CGAffineTransform(translationX: -270, y: 0)
-       
-        // set CollectionView to bottom
-        self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 500)
-        
         self.theCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-       
-        // animate collectionView
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            self.theCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
-        })
         
         setupViews()
+        
+        DataHandler.getWishlists { (success, dataArray, dropOptionsArray)  in
+            if success && dataArray != nil {
+                self.dataSourceArray = dataArray as! [Wishlist]
+                self.theCollectionView.reloadData()
+                self.dropOptions = dropOptionsArray as! [DropDownOption]
+            }
+        }
         
         // register the two cell classes for reuse
         theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
         theCollectionView.register(AddItemCell.self, forCellWithReuseIdentifier: "AddItemCell")
-        theCollectionView.register(MainWishlistCell.self, forCellWithReuseIdentifier: "MainWishlistCell")
+//        theCollectionView.register(MainWishlistCell.self, forCellWithReuseIdentifier: "MainWishlistCell")
  
         // set collection view dataSource
         theCollectionView.dataSource = self
@@ -198,15 +154,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         // use custom flow layout
         theCollectionView.collectionViewLayout = columnLayout
         
-        self.view.sendSubviewToBack(welcomeLabel)
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
-        
-        // hide collection view while data is retirieved from server
-        theCollectionView.isHidden = true
 
-        // get the data from the server
-        retrieveUserDataFromDB()
+//        // get the data from the server
+//        retrieveUserDataFromDB()
 
     }
     //MARK: SetupViews
@@ -214,8 +166,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         view.addSubview(backGroundImage)
         view.addSubview(theCollectionView)
-        view.addSubview(welcomeLabel)
-//        view.addSubview(searchButton)
         view.addSubview(bottomBar)
         view.addSubview(communityButton)
         view.addSubview(profileButton)
@@ -250,17 +200,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             // constrain addWishButton
             addButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
             addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -40),
-            
                
             // constrain collectionView
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             theCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             theCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-            
-            //constrain welcomeLabel
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
 
         ])
     }
@@ -274,7 +219,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
- 
         // only want to call this when collection view frame changes
         // to set the item size
         if theCollectionView.frame.width != colViewWidth {
@@ -324,8 +268,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 
                 vc.wishList = self.dataSourceArray[indexPath.item]
                 // pass drop down options
-                vc.theDropDownOptions = self.theDropDownOptions
-                vc.theDropDownImageOptions = self.theDropDownImageOptions
+                vc.dropOptions = self.dropOptions
+//                vc.theDropDownImageOptions = self.theDropDownImageOptions
                 // pass current wishlist index
                 vc.currentWishListIDX = indexPath.item
                 // pass the data array
@@ -335,7 +279,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 vc.addWishButton.heroID = addButtonHeroID
                 // allow MainVC to recieve updated datasource array
                 vc.dismissWishDelegate = self
-                print("MainCallback: \(vc.wishList.index)")
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)
@@ -457,8 +400,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             makeWishView.imageButtonDelegate = self
             
             // set dropDownOptions
-            makeWishView.dropDownButton.dropView.dropDownOptions = self.theDropDownOptions
-            makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
+            makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
+//            makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
             
             // set dropDownButton image and label to current wishlists image and label
             makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
@@ -536,14 +479,13 @@ extension MainViewController: CreateListDelegate {
         }
         
         let newIndex = self.dataSourceArray.last!.index + 1
-        print("oldIndex: \(self.dataSourceArray.last!.index)")
-        print("newIndex: \(newIndex)")
         
         self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
        
         // append created list to drop down options
-        self.theDropDownOptions.append(listName)
-        self.theDropDownImageOptions.append(self.image!)
+//        self.theDropDownOptions.append(listName)
+//        self.theDropDownImageOptions.append(self.image!)
+        self.dropOptions.append(DropDownOption(name: listName, image: self.image!))
         
         // reload the collection view
         theCollectionView.reloadData()
@@ -565,18 +507,16 @@ extension MainViewController: SelectedWishlistProtocol{
 }
 // allow MainVC to recieve updated datasource array
 extension MainViewController: DismissWishlistDelegate {
-    func dismissWishlistVC(dataArray: [Wishlist]) {
+    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption]) {
         self.dataSourceArray = dataArray
+        self.dropOptions = dropDownArray
+        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
         // reload the collection view
         self.theCollectionView.reloadData()
-        self.theCollectionView.performBatchUpdates(nil, completion: {
-            (result) in
-            // scroll to make newly added row visible (if needed)
-            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-            let idx = IndexPath(item: i, section: 0)
-//            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
-
-        })
+//        self.theCollectionView.performBatchUpdates(nil, completion: {
+//            (result) in
+//        })
+        self.theCollectionView.performBatchUpdates(nil, completion: nil)
     }
 }
 

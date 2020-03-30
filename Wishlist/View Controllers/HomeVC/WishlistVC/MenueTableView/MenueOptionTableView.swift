@@ -41,7 +41,6 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
 
         case 0: // bearbeiten
-            print(self.wishList.index)
             editTapped()
         
         case 1: // sichtbar machen
@@ -149,15 +148,17 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         if Constants.Wishlist.darkTextColorIndexes.contains(listImageIndex) {
             textColor = UIColor.darkGray
         }
-        print("currentIndex: \(self.currentWishListIDX)")
-        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
+        self.wishList = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
+        
+        self.dataSourceArray[self.currentWishListIDX] = self.wishList
         
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName
        
         // update drop down options
-        self.theDropDownOptions[self.currentWishListIDX] = listName
-        self.theDropDownImageOptions[self.currentWishListIDX] = listImage
+        self.dropOptions[self.currentWishListIDX].name = listName
+        self.dropOptions[self.currentWishListIDX].image = listImage
+        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
 
     }
 }

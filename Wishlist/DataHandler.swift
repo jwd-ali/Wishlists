@@ -55,24 +55,16 @@ extension MainViewController {
                     }
 
                     let colorUnwrapped = color.create
+                        
+                    self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
                     
-                    // if-case for Main Wishlist
-                    if listImageIDX as? Int == nil {
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: UIImage(named: "iconRoundedImage")!, wishData: [Wish](), color: Constants.Wishlist.mainColor, textColor: colorUnwrapped, index: 1))
-                        // set the drop down menu's options
-                        self.theDropDownOptions.append(listName as! String)
-                        self.theDropDownImageOptions.append(UIImage(named: "iconRoundedImage")!)
-                    }else {
-                        
-                        self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
-                        
-                        self.theDropDownOptions.append(listName as! String)
-                        self.theDropDownImageOptions.append(Constants.Wishlist.images[listImageIDX as! Int])
-                    }
+//                    self.dropOptions.append(listName as! String)
+//                    self.dropOptions.append(Constants.Wishlist.images[listImageIDX as! Int])
+                    self.dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
+                    
                     
                     // reload collectionView and tableView
                     self.theCollectionView.reloadData()
-//                    self.dropDownButton.dropView.tableView.reloadData()
                     
                 }
             }
@@ -106,6 +98,42 @@ extension MainViewController {
 }
 
 class DataHandler {
+    
+    //MARK: getWishlists
+    static func getWishlists(completion: @escaping (_ success: Bool, _ dataArray: Any?, _ dropDownArray: Any?) -> Void) {
+        
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        var dataSourceArray = [Wishlist]()
+        var dropOptions = [DropDownOption]()
+        
+        db.collection("users").document(userID).collection("wishlists").order(by: "listIDX").getDocuments() { ( querySnapshot, error) in
+            if let error = error {
+                Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
+                completion(false, nil, nil)
+            }else {
+                // get all documents from "wishlists"-collection and save attributes
+                for document in querySnapshot!.documents {
+                    let documentData = document.data()
+                    let listName = documentData["name"]
+                    let listImageIDX = documentData["imageIDX"]
+                    let textColor = documentData["textColor"]
+                    let index = documentData["listIDX"]
+                    
+                    guard let color = Color(rawValue: textColor as! String) else {
+                        print("handle invalid color error");
+                        return
+                    }
+
+                    let colorUnwrapped = color.create
+                        
+                    dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
+                    dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
+                }
+                completion(true, dataSourceArray, dropOptions)
+            }
+        }
+    }
     
     static func getListCounter(finished: @escaping (_ done: Bool, _ index: Any?) -> Void) {
              

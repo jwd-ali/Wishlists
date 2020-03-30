@@ -17,7 +17,7 @@ protocol DeleteWishDelegate {
 
 // allow MainVC to recieve updated datasource array
 protocol DismissWishlistDelegate {
-    func dismissWishlistVC(dataArray: [Wishlist])
+    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption])
 }
 
 class WishlistViewController: UIViewController {
@@ -123,9 +123,10 @@ class WishlistViewController: UIViewController {
     // create wishlist
     var wishList: Wishlist!
     
-    var theDropDownOptions: [String]!
-    
-    var theDropDownImageOptions: [UIImage]!
+//    var theDropDownOptions: [String]!
+//    
+//    var theDropDownImageOptions: [UIImage]!
+    var dropOptions: [DropDownOption]!
     
     var dataSourceArray = [Wishlist]()
     
@@ -293,7 +294,6 @@ class WishlistViewController: UIViewController {
     }
     //MARK: menueButtonTapped
     @objc private func menueButtonTapped(){
-        print("menueButtonTapped: \(self.wishList.index)")
         view.removeGestureRecognizer(panGR)
         
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
@@ -333,7 +333,7 @@ class WishlistViewController: UIViewController {
     //MARK: dismissView
     @objc private func dismissView(){
         //  update datasource array in MainVC
-        self.dismissWishDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray)
+        self.dismissWishDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -371,8 +371,8 @@ class WishlistViewController: UIViewController {
         makeWishView.imageButtonDelegate = self
         
         // set dropDownOptions
-        makeWishView.dropDownButton.dropView.dropDownOptions = self.theDropDownOptions
-        makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
+        makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
+//        makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
         
         // set dropDownButton image and label to current wishlists image and label
         makeWishView.dropDownButton.listImage.image = self.wishlistImage.image

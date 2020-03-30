@@ -21,9 +21,10 @@ protocol DropDownProtocol {
 //MARK: DropDownView
 class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     
-    var dropDownOptions = [String]()
-    
-    var dropDownListImages = [UIImage]()
+//    var dropDownOptions = [String]()
+//
+//    var dropDownListImages = [UIImage]()
+    var dropOptions = [DropDownOption]()
     
     var tableView = UITableView()
     
@@ -63,21 +64,21 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dropDownOptions.count
+        return dropOptions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DropDownCell.reuseID, for: indexPath) as! DropDownCell
         
-        cell.label.text = dropDownOptions[indexPath.row]
-        cell.listImage.image = dropDownListImages[indexPath.row]
+        cell.label.text = dropOptions[indexPath.row].name//dropDownOptions[indexPath.row]
+        cell.listImage.image = dropOptions[indexPath.row].image//dropDownListImages[indexPath.row]
         cell.backgroundColor = UIColor.lightGray
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row], image: dropDownListImages[indexPath.row])
+        self.delegate.dropDownPressed(string: dropOptions[indexPath.row].name, image: dropOptions[indexPath.row].image)
 
         self.selectedWishlistDelegate?.didSelectWishlist(idx: indexPath.row)
         
