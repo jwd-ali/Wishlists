@@ -317,7 +317,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.addButton.heroID = addButtonHeroID
             
             cell.customWishlistTapCallback = {
-                
                 // track selected index
                 self.currentWishListIDX = self.dataSourceArray[indexPath.item].index
                     
@@ -336,6 +335,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 vc.addWishButton.heroID = addButtonHeroID
                 // allow MainVC to recieve updated datasource array
                 vc.dismissWishDelegate = self
+                print("MainCallback: \(vc.wishList.index)")
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)
@@ -536,6 +536,8 @@ extension MainViewController: CreateListDelegate {
         }
         
         let newIndex = self.dataSourceArray.last!.index + 1
+        print("oldIndex: \(self.dataSourceArray.last!.index)")
+        print("newIndex: \(newIndex)")
         
         self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
        

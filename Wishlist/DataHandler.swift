@@ -204,8 +204,8 @@ class DataHandler {
         }
     }
     
-    //MARK: signIn
-    static func signIn(credentials: Any?, username: String, finished: @escaping (_ done: Bool) -> Void) {
+    //MARK: signUpWithSocial
+    static func signUpWithSocial(credentials: Any?, username: String, finished: @escaping (_ done: Bool) -> Void) {
         
         let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
         let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
@@ -255,6 +255,43 @@ class DataHandler {
 
             }
         })
+    }
+    
+    //MARK: signUpWithEmail
+    static func signUpWithEmail(email: String, password: String, username: String, finished: @escaping (_ done: Bool) -> Void){
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+            
+            if let userId = result?.user.uid { // successfully signed in
+                
+                let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+                let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
+                
+                let db = Firestore.firestore()
+                 
+                let batch = db.batch()
+                
+                // Set username and uid for user
+                let userRef = Firestore.firestore().collection("users").document(userId)
+                batch.setData(["username": username, "uid": userId, "listCounter": listCounter], forDocument: userRef)
+
+                // create empty 'Main Wishlist' with index 1 for sorting
+                let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
+                batch.setData(["name": "Main Wishlist", "listIDX": listCounter, "imageIDX" : imageArrayIDX, "textColor": Constants.Wishlist.textColor.white], forDocument: listRef)
+
+                batch.commit { (error) in
+
+                    if let error = error {
+                        Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
+                        finished(false)
+                    } else {
+                        UserDefaults.standard.setIsLoggedIn(value: true)
+                        UserDefaults.standard.synchronize()
+                        finished(true) // sign-in process complete
+                    }
+                }
+            }
+        }
     }
     
     //MARK: check username

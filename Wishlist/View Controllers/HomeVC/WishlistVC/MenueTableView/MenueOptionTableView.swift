@@ -41,6 +41,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
 
         case 0: // bearbeiten
+            print(self.wishList.index)
             editTapped()
         
         case 1: // sichtbar machen
@@ -80,10 +81,10 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         self.setUpNewListView()
         
     }
-    
+    //MARK: setUpNewListView
     func setUpNewListView(){
         self.createListView.wishList = self.wishList
-        self.createListView.currentWishlistIndex = self.currentWishListIDX
+//        self.createListView.currentWishlistIndex = self.currentWishListIDX
         self.createListView.oldListName = self.wishList.name
         self.createListView.wishlistNameTextField.text = wishList.name
         self.createListView.imagePreview.image = wishList.image
@@ -91,7 +92,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         self.createListView.currentImageIndex = Constants.Wishlist.getCurrentImageIndex(image: wishList.image)
         self.createListView.wishlistNameTextField.becomeFirstResponder()
         self.createListView.changeListDelegate = self
-        self.createListView.closeViewDelegate = self 
+        self.createListView.closeViewDelegate = self
     }
     
     
@@ -141,15 +142,15 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         view.addGestureRecognizer(panGR)
     }
     
-    func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String) {
+    func saveChangesTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String) {
         // update current Wishlist
         var textColor = UIColor.white
         
-        if Constants.Wishlist.darkTextColorIndexes.contains(listIndex) {
+        if Constants.Wishlist.darkTextColorIndexes.contains(listImageIndex) {
             textColor = UIColor.darkGray
         }
         print("currentIndex: \(self.currentWishListIDX)")
-        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listIndex], textColor: textColor, index: self.currentWishListIDX)
+        self.dataSourceArray[self.currentWishListIDX] = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
         
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName

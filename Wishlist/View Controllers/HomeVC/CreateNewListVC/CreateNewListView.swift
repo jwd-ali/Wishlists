@@ -14,7 +14,7 @@ protocol CreateListDelegate {
 }
 
 protocol ChangeListDelegate {
-    func saveChangesTappedDelegate(listImage: UIImage, listIndex: Int, listName: String)
+    func saveChangesTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String)
 }
 
 protocol CloseNewListViewDelegate {
@@ -90,7 +90,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     var currentImage: UIImage? //= Constants.Wishlist.images[0]
     var currentImageIndex = 0
     
-    var currentWishlistIndex: Int?
+//    var currentWishlistIndex: Int?
+//    var ok: Int?
     // only important if changing listname
     var oldListName: String?
     
@@ -274,8 +275,10 @@ class CreateNewListView: UIView, UITextFieldDelegate {
             textColor = Constants.Wishlist.textColor.darkGray
         }
         
+        
         switch self.wishlistMode {
         case .isChanging:
+            print("createListButtonTapped: \(self.wishList!.index)")
             DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.wishList!.index, textColor: textColor)
         case .isCreating:
             DataHandler.saveWishlist(wishListName: wishlistNameTextField.text!, imageArrayIDX: currentImageIndex, textColor: textColor)
@@ -290,7 +293,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         
         createListDelegate?.createListTappedDelegate(listImage: currentImage!, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
-        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
     }
     

@@ -304,7 +304,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         // remove animation from view
         self.logoAnimation.removeFromSuperview()
         // reset button title to "Registrieren"
-        self.confirmButton.setTitle("Registrieren", for: .normal)
+        self.confirmButton.setTitle("BESTÄTIGEN", for: .normal)
         // play shake animation
         self.confirmButton.shake()
         // enable button tap
@@ -362,7 +362,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     }
                     let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
                     
-                    DataHandler.signIn(credentials: credentials, username: username, finished: { (done) in
+                    DataHandler.signUpWithSocial(credentials: credentials, username: username, finished: { (done) in
 
                         if done { // success
                             // stop animation
@@ -382,7 +382,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     let credentials = GoogleAuthProvider.credential(withIDToken: self.authentication!.idToken,
                                                                    accessToken: self.authentication!.accessToken)
                       
-                    DataHandler.signIn(credentials: credentials, username: username, finished: { (done) in
+                    DataHandler.signUpWithSocial(credentials: credentials, username: username, finished: { (done) in
 
                         if done { // success
                             // stop animation
@@ -397,7 +397,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     })
                 } else if self.signInOption == "apple" { //MARK: Apple-Login
                     
-                    DataHandler.signIn(credentials: self.credential, username: username, finished: { (done) in
+                    DataHandler.signUpWithSocial(credentials: self.credential, username: username, finished: { (done) in
 
                         if done { // success
                             // stop animation

@@ -293,7 +293,7 @@ class WishlistViewController: UIViewController {
     }
     //MARK: menueButtonTapped
     @objc private func menueButtonTapped(){
-        
+        print("menueButtonTapped: \(self.wishList.index)")
         view.removeGestureRecognizer(panGR)
         
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)

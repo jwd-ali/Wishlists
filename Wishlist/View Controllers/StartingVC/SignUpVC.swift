@@ -71,7 +71,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
         v.placeholderFontScale = 1
-        v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.autocapitalizationType = .none
@@ -731,6 +730,20 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         logoAnimation.loopMode = .loop
     }
     
+    //MARK: Loading failed
+    func loadingFailed(){
+        // stop loading animation
+        self.logoAnimation.stop()
+        // remove animation from view
+        self.logoAnimation.removeFromSuperview()
+        // reset button title to "Registrieren"
+        self.signUpButton.setTitle("Registrieren", for: .normal)
+        // play shake animation
+        self.signUpButton.shake()
+        // enable button tap
+        self.signUpButton.isEnabled = true
+    }
+    
     //MARK: SignUp-Tappped
     @objc func signUpButtonTapped(_ sender: Any) {
         self.view.endEditing(true)
@@ -749,72 +762,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             if completion {
                 if !self.isValid {
                     // textFields are not valid
-                    // stop loading animation
-                    self.logoAnimation.stop()
-                    // remove animation from view
-                    self.logoAnimation.removeFromSuperview()
-                    // reset button title to "Registrieren"
-                    self.signUpButton.setTitle("Registrieren", for: .normal)
-                    // play shake animation
-                    self.signUpButton.shake()
-                    // enable button tap
-                    self.signUpButton.isEnabled = true
+                    self.loadingFailed()
                     self.theScrollView.scrollToTop()
                 }else {
                     // correct textfield input
-                    // create cleaned versione of the data
+  
                     let email = self.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-//                    let anzeigeName = self.anzeigeNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let username = self.usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     let password = self.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                     
-                    //create the user
-                    Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-
-                        //check for errors
-                        if let err = err {
-                            // stop loading animation
+                    DataHandler.signUpWithEmail(email: email, password: password, username: username, finished: { (done) in
+                        if done { // success
                             self.logoAnimation.stop()
-                            // remove animation from view
-                            self.logoAnimation.removeFromSuperview()
-                            // reset button title to "Registrieren"
-                            self.signUpButton.setTitle("Registrieren", for: .normal)
-                            // play shake animation
-                            self.signUpButton.shake()
-                            // show error popUp
-                            self.showErrorPopUp(description: err.localizedDescription)
-                            // enable button tap
-                            self.signUpButton.isEnabled = true
-                        }else {
-
-                            //user was created successfully; store name, username and UID
-                            let db = Firestore.firestore()
-
-                            let userID = result!.user.uid
-
-                            db.collection("users").document(userID).setData(["username": username, "uid": result!.user.uid]) { (error) in
-                                if error != nil {
-                                    self.showErrorPopUp(description: error!.localizedDescription)
-                                }
-                            }
-                            // generate empty "Main Wishlist"
-                            db.collection("users").document(userID).collection("wishlists").document("Main Wishlist").setData(["name": "Main Wishlist", "listIDX": 1, "textColor": "UIColor.white"]) { (error) in
-                                if error != nil {
-                                    self.showErrorPopUp(description: error!.localizedDescription)
-                                }
-                            }
-                            
-                            // set user status to logged-in
-                            UserDefaults.standard.setIsLoggedIn(value: true)
-                            UserDefaults.standard.synchronize()
-                            
-                            // stop animation
-                            self.logoAnimation.stop()
-
-                            //transition to home
                             self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
                         }
-                    }
+                    })
                 }
             }
         }
