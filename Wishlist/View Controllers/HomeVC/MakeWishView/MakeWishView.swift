@@ -16,7 +16,7 @@ protocol ImagePickerDelegate {
     func showImagePickerControllerActionSheet()
 }
 
-protocol DismissViewDelegate {
+protocol DismissMakeWishView {
     func dissmissViewComplete()
 }
 
@@ -173,7 +173,7 @@ class MakeWishView: UIView, UITextFieldDelegate {
     
     var imageButtonDelegate: ImagePickerDelegate?
     
-    var dissmissViewDelegate: DismissViewDelegate?
+    var dissmissViewDelegate: DismissMakeWishView?
     
     var amount: Int = 0
     

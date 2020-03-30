@@ -123,14 +123,13 @@ class WishlistViewController: UIViewController {
     // create wishlist
     var wishList: Wishlist!
     
-//    var theDropDownOptions: [String]!
-//    
-//    var theDropDownImageOptions: [UIImage]!
     var dropOptions: [DropDownOption]!
     
     var dataSourceArray = [Wishlist]()
     
-    var dismissWishDelegate: DismissWishlistDelegate?
+    var dismissWishlistDelegate: DismissWishlistDelegate?
+    
+    var deleteListDelegate: DeleteListDelegate?
     
     // panGestureRecognizer for interactive gesture dismiss
     var panGR: UIPanGestureRecognizer!
@@ -333,10 +332,11 @@ class WishlistViewController: UIViewController {
     //MARK: dismissView
     @objc private func dismissView(){
         //  update datasource array in MainVC
-        self.dismissWishDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
+        self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
         
         self.dismiss(animated: true, completion: nil)
     }
+    
     //MARK: addWishButtonTapped
     @objc private func addWishButtonTapped(){
         
@@ -372,7 +372,6 @@ class WishlistViewController: UIViewController {
         
         // set dropDownOptions
         makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
-//        makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
         
         // set dropDownButton image and label to current wishlists image and label
         makeWishView.dropDownButton.listImage.image = self.wishlistImage.image
@@ -429,12 +428,10 @@ extension WishlistViewController: DeleteWishDelegate {
     }
 }
 
-extension WishlistViewController: DismissViewDelegate{
+extension WishlistViewController: DismissMakeWishView{
     func dissmissViewComplete() {
         view.addGestureRecognizer(panGR)
     }
-    
-    
 }
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {

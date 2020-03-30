@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol DeleteListDelegate {
+    func deleteListTapped(dataArray: [Wishlist], dropArray: [DropDownOption])
+}
+
 extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Table view data source
@@ -58,9 +62,21 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func deleteTapped(){
+        
         let alertcontroller = UIAlertController(title: "Wishlist löschen", message: "Sicher, dass du diese Wishlist löschen möchtest?", preferredStyle: .alert)
+        
         let deleteAction = UIAlertAction(title: "Löschen", style: .default) { (alert) in
-            print("löschen")
+
+            DataHandler.deleteWishlist(self.wishList.index)
+            
+            self.dataSourceArray.remove(at: self.currentWishListIDX)
+            self.dropOptions.remove(at: self.currentWishListIDX)
+            
+            //  update datasource array in MainVC
+            self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
+            
+            self.dismiss(animated: false, completion: nil)
+//            self.deleteListDelegate?.deleteListTapped(dataArray: self.dataSourceArray, dropArray: self.dropOptions)         
         }
         
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .default) { (alert) in

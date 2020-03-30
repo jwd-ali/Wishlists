@@ -33,7 +33,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     let closeButton: UIButton = {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setImage(UIImage(named: "closeButton"), for: .normal)
+        v.setImage(UIImage(named: "closeButtonWhite"), for: .normal)
         v.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return v
     }()
@@ -87,7 +87,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var closeViewDelegate: CloseNewListViewDelegate?
     
-    var currentImage: UIImage? //= Constants.Wishlist.images[0]
+    var currentImage: UIImage?
     var currentImageIndex = 0
     
 //    var currentWishlistIndex: Int?
@@ -109,6 +109,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         setupViews()
         
         wishlistNameTextField.delegate = self
+        
+//        currentImage = Constants.Wishlist.images[self.currentImageIndex]
         
         setButtonTitleWithWishlistMode()
         
@@ -215,6 +217,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     }
     
     @objc func timerAction(){
+        currentImage = Constants.Wishlist.images[self.currentImageIndex]
         currentImageIndex = (currentImageIndex + 1) % Constants.Wishlist.images.count
         UIView.transition(with: self.imagePreview, duration: 0.5, options: .transitionCrossDissolve, animations: {
             self.imagePreview.image = Constants.Wishlist.images[self.currentImageIndex]
@@ -284,7 +287,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         default:
             break
         }
-        
         
         timer?.invalidate()
         

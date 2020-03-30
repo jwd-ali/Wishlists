@@ -58,8 +58,6 @@ extension MainViewController {
                         
                     self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
                     
-//                    self.dropOptions.append(listName as! String)
-//                    self.dropOptions.append(Constants.Wishlist.images[listImageIDX as! Int])
                     self.dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
                     
                     
@@ -228,6 +226,24 @@ class DataHandler {
                         Utilities.showErrorPopUp(labelContent: "Liste konnte nicht gespeichert werden", description: error.localizedDescription)
                     }
                 }
+            }
+        }
+    }
+    
+    //MARK: deleteWishlist
+    static func deleteWishlist(_ listIndex: Int) -> Void {
+        
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+
+        db.collection("users").document(userID).collection("wishlists").whereField("listIDX", isEqualTo: listIndex).getDocuments { (querySnapshot, error) in
+            if error != nil {
+                Utilities.showErrorPopUp(labelContent: "Fehler beim löschen", description: error!.localizedDescription)
+            } else {
+                for document in querySnapshot!.documents {
+                    document.reference.delete()
+                }
+
             }
         }
     }

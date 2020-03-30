@@ -66,10 +66,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
-//    var theDropDownOptions = [String]()
-//
-//    var theDropDownImageOptions = [UIImage]()
+
     var dropOptions = [DropDownOption]()
    
     //MARK: CreateListView
@@ -269,7 +266,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 vc.wishList = self.dataSourceArray[indexPath.item]
                 // pass drop down options
                 vc.dropOptions = self.dropOptions
-//                vc.theDropDownImageOptions = self.theDropDownImageOptions
                 // pass current wishlist index
                 vc.currentWishListIDX = indexPath.item
                 // pass the data array
@@ -278,7 +274,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 vc.wishlistImage.heroID = heroID
                 vc.addWishButton.heroID = addButtonHeroID
                 // allow MainVC to recieve updated datasource array
-                vc.dismissWishDelegate = self
+                vc.dismissWishlistDelegate = self
                     
                 vc.theTableView.tableView.reloadData()
                 self.present(vc, animated: true, completion: nil)
@@ -318,7 +314,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if(self.shouldAnimateCells){
             // Add animations here
-            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.1)
             let animator = Animator(animation: animation)
             animator.animate(cell: cell, at: indexPath, in: collectionView)
         }   
@@ -401,9 +397,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
             // set dropDownOptions
             makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
-//            makeWishView.dropDownButton.dropView.dropDownListImages = self.theDropDownImageOptions
             
-            // set dropDownButton image and label to current wishlists image and label
+            // set dropDownButton image and label to first wishlists image and label
             makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
             makeWishView.dropDownButton.label.text = self.dataSourceArray[0].name
             
@@ -483,9 +478,7 @@ extension MainViewController: CreateListDelegate {
         self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
        
         // append created list to drop down options
-//        self.theDropDownOptions.append(listName)
-//        self.theDropDownImageOptions.append(self.image!)
-        self.dropOptions.append(DropDownOption(name: listName, image: self.image!))
+        self.dropOptions.append(DropDownOption(name: listName, image: listImage))
         
         // reload the collection view
         theCollectionView.reloadData()
@@ -512,11 +505,18 @@ extension MainViewController: DismissWishlistDelegate {
         self.dropOptions = dropDownArray
         self.makeWishView.dropDownButton.dropView.tableView.reloadData()
         // reload the collection view
-        self.theCollectionView.reloadData()
-//        self.theCollectionView.performBatchUpdates(nil, completion: {
-//            (result) in
-//        })
-        self.theCollectionView.performBatchUpdates(nil, completion: nil)
+        // reload the collection view
+        theCollectionView.reloadData()
+        theCollectionView.performBatchUpdates(nil, completion: {
+            (result) in
+            // scroll to make newly added row visible (if needed)
+            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
+            let idx = IndexPath(item: i, section: 0)
+            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+            
+        })
+        
+
     }
 }
 

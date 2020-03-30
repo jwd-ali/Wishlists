@@ -20,10 +20,7 @@ protocol DropDownProtocol {
 
 //MARK: DropDownView
 class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
-    
-//    var dropDownOptions = [String]()
-//
-//    var dropDownListImages = [UIImage]()
+
     var dropOptions = [DropDownOption]()
     
     var tableView = UITableView()
@@ -70,8 +67,8 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DropDownCell.reuseID, for: indexPath) as! DropDownCell
         
-        cell.label.text = dropOptions[indexPath.row].name//dropDownOptions[indexPath.row]
-        cell.listImage.image = dropOptions[indexPath.row].image//dropDownListImages[indexPath.row]
+        cell.label.text = dropOptions[indexPath.row].name
+        cell.listImage.image = dropOptions[indexPath.row].image
         cell.backgroundColor = UIColor.lightGray
         return cell
     }
