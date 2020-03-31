@@ -60,7 +60,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
             break
         }
     }
-    
+    //MARK: deleteTapped
     func deleteTapped(){
         
         let alertcontroller = UIAlertController(title: "Wishlist löschen", message: "Sicher, dass du diese Wishlist löschen möchtest?", preferredStyle: .alert)
@@ -72,10 +72,15 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
             self.dataSourceArray.remove(at: self.currentWishListIDX)
             self.dropOptions.remove(at: self.currentWishListIDX)
             
+            // change heroID so wishlist image doesnt animate
+            self.wishlistImage.heroID = "delete"
+            
+            self.dismiss(animated: true, completion: nil)
+            
             //  update datasource array in MainVC
             self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
             
-            self.dismiss(animated: false, completion: nil)
+            
 //            self.deleteListDelegate?.deleteListTapped(dataArray: self.dataSourceArray, dropArray: self.dropOptions)         
         }
         
@@ -89,7 +94,7 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
         
         self.present(alertcontroller, animated: true)
     }
-    
+    //MARK: edidTapped
     func editTapped(){
         view.removeGestureRecognizer(panGR)
         self.createNewListView()
@@ -158,6 +163,7 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
     }
     
     func saveChangesTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String) {
+        view.addGestureRecognizer(panGR)
         // update current Wishlist
         var textColor = UIColor.white
         

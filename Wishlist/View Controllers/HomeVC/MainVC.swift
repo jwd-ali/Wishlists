@@ -312,12 +312,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // animate displaying cells
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if(self.shouldAnimateCells){
+//        if(self.shouldAnimateCells){
             // Add animations here
             let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.1)
             let animator = Animator(animation: animation)
             animator.animate(cell: cell, at: indexPath, in: collectionView)
-        }   
+//        }
     }
     
     // MARK: CreateNewListView
@@ -466,6 +466,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //MARK: DelegateExtensions
 
 extension MainViewController: CreateListDelegate {
+    
     func createListTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String) {
         // append created list to data source array
         var textColor = UIColor.white
@@ -500,22 +501,15 @@ extension MainViewController: SelectedWishlistProtocol{
 }
 // allow MainVC to recieve updated datasource array
 extension MainViewController: DismissWishlistDelegate {
+    
     func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption]) {
         self.dataSourceArray = dataArray
         self.dropOptions = dropDownArray
         self.makeWishView.dropDownButton.dropView.tableView.reloadData()
-        // reload the collection view
+
         // reload the collection view
         theCollectionView.reloadData()
-        theCollectionView.performBatchUpdates(nil, completion: {
-            (result) in
-            // scroll to make newly added row visible (if needed)
-            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-            let idx = IndexPath(item: i, section: 0)
-            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
-            
-        })
-        
+        theCollectionView.performBatchUpdates(nil, completion: nil)
 
     }
 }
