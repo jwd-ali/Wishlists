@@ -259,7 +259,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
             cell.customWishlistTapCallback = {
                 // track selected index
-                self.currentWishListIDX = self.dataSourceArray[indexPath.item].index
+                self.currentWishListIDX = indexPath.item
                     
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
                 
@@ -312,12 +312,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // animate displaying cells
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if(self.shouldAnimateCells){
-            // Add animations here
+        if(self.shouldAnimateCells){
+             // add animations here
             let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.1)
             let animator = Animator(animation: animation)
             animator.animate(cell: cell, at: indexPath, in: collectionView)
-//        }
+        }
     }
     
     // MARK: CreateNewListView
@@ -447,12 +447,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.navigationController?.pushViewController(profileView, animated: true)
     }
     
-    //MARK: AchievementsButton
+    //MARK: CommunityButton
     @objc func communityButtonTapped() {
         
-        let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
-        
-        self.navigationController?.pushViewController(communityView, animated: true)
+//        let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
+//
+//        self.navigationController?.pushViewController(communityView, animated: true)
+        self.theCollectionView.reloadData()
         
 
     }
@@ -468,49 +469,71 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 extension MainViewController: CreateListDelegate {
     
     func createListTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String) {
+        
+        self.shouldAnimateCells = true
+        
         // append created list to data source array
         var textColor = UIColor.white
         if Constants.Wishlist.darkTextColorIndexes.contains(listImageIndex) {
             textColor = UIColor.darkGray
         }
         
-        let newIndex = self.dataSourceArray.last!.index + 1
-        
-        self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
-       
-        // append created list to drop down options
-        self.dropOptions.append(DropDownOption(name: listName, image: listImage))
-        
-        // reload the collection view
-        theCollectionView.reloadData()
-        theCollectionView.performBatchUpdates(nil, completion: {
-            (result) in
-            // scroll to make newly added row visible (if needed)
-            let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
-            let idx = IndexPath(item: i, section: 0)
-            self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+        DataHandler.getListCounter { (success, listCounter) in
+            let newIndex = listCounter as! Int + 1
             
-        })
+            self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
+            
+             // append created list to drop down options
+             self.dropOptions.append(DropDownOption(name: listName, image: listImage))
+             
+             // reload the collection view
+            self.theCollectionView.reloadData()
+            self.theCollectionView.performBatchUpdates(nil, completion: {
+                 (result) in
+                 // scroll to make newly added row visible (if needed)
+                 let i = self.theCollectionView.numberOfItems(inSection: 0) - 1
+                 let idx = IndexPath(item: i, section: 0)
+                 self.theCollectionView.scrollToItem(at: idx, at: .bottom, animated: true)
+                 
+             })
+        }
+    }
+}
+
+// allow MainVC to recieve updated datasource array
+extension MainViewController: DismissWishlistDelegate {
+    
+    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption], shouldDeleteWithAnimation: Bool, indexToDelete: Int) {
+
+        if shouldDeleteWithAnimation {
+
+            self.shouldAnimateCells = true
+            self.dataSourceArray.remove(at: self.currentWishListIDX)
+            self.dropOptions.remove(at: self.currentWishListIDX)
+
+            // reload the collection view
+            theCollectionView.reloadData()
+            
+
+        } else {
+
+            self.shouldAnimateCells = false
+            self.dataSourceArray = dataArray
+            self.dropOptions = dropDownArray
+
+            // reload the collection view
+            theCollectionView.reloadData()
+            theCollectionView.performBatchUpdates(nil, completion: nil)
+        }
+        
+        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
+        
     }
 }
 
 extension MainViewController: SelectedWishlistProtocol{
     func didSelectWishlist(idx: Int) {
         self.selectedWishlistIDX = idx
-    }
-}
-// allow MainVC to recieve updated datasource array
-extension MainViewController: DismissWishlistDelegate {
-    
-    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption]) {
-        self.dataSourceArray = dataArray
-        self.dropOptions = dropDownArray
-        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
-
-        // reload the collection view
-        theCollectionView.reloadData()
-        theCollectionView.performBatchUpdates(nil, completion: nil)
-
     }
 }
 

@@ -132,7 +132,7 @@ class DataHandler {
             }
         }
     }
-    
+    //MARK: getListCounter
     static func getListCounter(finished: @escaping (_ done: Bool, _ index: Any?) -> Void) {
              
         let db = Firestore.firestore()

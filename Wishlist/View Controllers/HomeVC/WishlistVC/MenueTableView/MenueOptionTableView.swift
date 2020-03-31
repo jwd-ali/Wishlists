@@ -69,19 +69,16 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
 
             DataHandler.deleteWishlist(self.wishList.index)
             
-            self.dataSourceArray.remove(at: self.currentWishListIDX)
-            self.dropOptions.remove(at: self.currentWishListIDX)
-            
             // change heroID so wishlist image doesnt animate
             self.wishlistImage.heroID = "delete"
             
             self.dismiss(animated: true, completion: nil)
             
             //  update datasource array in MainVC
-            self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
+            self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions, shouldDeleteWithAnimation: true, indexToDelete: self.currentWishListIDX)
             
             
-//            self.deleteListDelegate?.deleteListTapped(dataArray: self.dataSourceArray, dropArray: self.dropOptions)         
+            self.deleteListDelegate?.deleteListTapped(dataArray: self.dataSourceArray, dropArray: self.dropOptions)
         }
         
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .default) { (alert) in
@@ -173,6 +170,7 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         self.wishList = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
         
         self.dataSourceArray[self.currentWishListIDX] = self.wishList
+        
         
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName

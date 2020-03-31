@@ -87,7 +87,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     
     var closeViewDelegate: CloseNewListViewDelegate?
     
-    var currentImage: UIImage?
+    var currentImage =  Constants.Wishlist.images[0]
     var currentImageIndex = 0
     
 //    var currentWishlistIndex: Int?
@@ -291,10 +291,10 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         timer?.invalidate()
         
         dismissView()
+
+        createListDelegate?.createListTappedDelegate(listImage: currentImage, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
-        createListDelegate?.createListTappedDelegate(listImage: currentImage!, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
-        
-        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage!, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
+        changeListDelegate?.saveChangesTappedDelegate(listImage: currentImage, listImageIndex: currentImageIndex, listName: wishlistNameTextField.text!)
         
     }
     

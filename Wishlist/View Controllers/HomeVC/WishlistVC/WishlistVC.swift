@@ -17,7 +17,7 @@ protocol DeleteWishDelegate {
 
 // allow MainVC to recieve updated datasource array
 protocol DismissWishlistDelegate {
-    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption])
+    func dismissWishlistVC(dataArray: [Wishlist], dropDownArray: [DropDownOption], shouldDeleteWithAnimation: Bool, indexToDelete: Int)
 }
 
 class WishlistViewController: UIViewController {
@@ -270,7 +270,7 @@ class WishlistViewController: UIViewController {
       switch panGR.state {
       case .began:
         // begin the transition as normal
-        dismiss(animated: true, completion: nil)
+        self.dismissView()
         break
       case .changed:
         
@@ -285,6 +285,7 @@ class WishlistViewController: UIViewController {
       default:
         // finish or cancel the transition based on the progress and user's touch velocity
            if progress + panGR.velocity(in: nil).y / view.bounds.height > 0.3 {
+            self.dismissView()
              Hero.shared.finish()
            } else {
              Hero.shared.cancel()
@@ -332,7 +333,7 @@ class WishlistViewController: UIViewController {
     //MARK: dismissView
     @objc private func dismissView(){
         //  update datasource array in MainVC
-        self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions)
+        self.dismissWishlistDelegate?.dismissWishlistVC(dataArray: self.dataSourceArray, dropDownArray: self.dropOptions, shouldDeleteWithAnimation: false, indexToDelete: self.currentWishListIDX)
         
         self.dismiss(animated: true, completion: nil)
     }
