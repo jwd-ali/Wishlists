@@ -527,56 +527,40 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
 
         let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
 
-        let email = appleIDCredential.email
-        
-        Auth.auth().fetchSignInMethods(forEmail: email!) { (methods, error) in
-                     
-             if error != nil {
-                // reset button
-                self.resetButton(button: self.appleButton, buttonTitle: "Mit Apple fortfahren")
-                 // show error popUp
-                Utilities.showErrorPopUp(labelContent: "Fehler", description: error!.localizedDescription)
-             } else {
-                 // no error -> check email adress
-                                     
-                 // stop loading animation
-                 self.logoAnimation.stop()
-                 // remove animation from view
-                 self.logoAnimation.removeFromSuperview()
-                 // reset button title to "Registrieren"
-                 self.appleButton.setTitle("Mit Apple fortfahren", for: .normal)
-                 // enable button tap
-                 self.appleButton.isEnabled = true
-                 
-                 // Email not registered -> sign up
-                 if methods == nil {
-                     
-                     let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
-                     usernameVC.credential = credential
-                     usernameVC.signInOption = "apple"
-                     self.navigationController?.pushViewController(usernameVC, animated: true)
-                     
-                 } else { // Email not registered -> Login
-                    
-                    Auth.auth().signIn(with: credential, completion: { (user, error) in
+        guard appleIDCredential.email != nil else {
+            // User already signed in with this appleId once
+            Auth.auth().signIn(with: credential, completion: { (user, error) in
+                
+                DataHandler.checkIfAppleUserExists(uid: (user?.user.uid)!) { (exists) in
+                    if exists { // user has firebase-profile -> login
                         if error != nil {
                             Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
                         } else {
                             
-                            // set user status to logged-in
                             UserDefaults.standard.setIsLoggedIn(value: true)
                             UserDefaults.standard.synchronize()
                             
-                            // stop animation
                             self.logoAnimation.stop()
 
-                            //transition to home
                             self.transitionToHome()
                         }
-                    })
+                    } else { // user doesn't have firebase-profile -> create username
+                        let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+                        usernameVC.credential = credential
+                        usernameVC.signInOption = "appleExists"
+                        self.navigationController?.pushViewController(usernameVC, animated: true)
+                    }
                 }
-            }
-         }
+        
+            })
+            return
+        }
+        
+        // first time apple sign in
+        let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
+        usernameVC.credential = credential
+        usernameVC.signInOption = "apple"
+        self.navigationController?.pushViewController(usernameVC, animated: true)
       }
     }
 

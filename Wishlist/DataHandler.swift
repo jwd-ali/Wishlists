@@ -338,6 +338,36 @@ class DataHandler {
         }
     }
     
+    //MARK: signInWithApple
+    static func signInWithApple(username: String, finished: @escaping (_ done: Bool) -> Void) {
+        
+        let db = Firestore.firestore()
+        let batch = db.batch()
+        let userId = Auth.auth().currentUser!.uid
+        let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+        let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
+        
+        // Set username and uid for user
+        let userRef = Firestore.firestore().collection("users").document(userId)
+        batch.setData(["username": username, "uid": userId, "listCounter": listCounter], forDocument: userRef)
+
+        // create empty 'Main Wishlist' with index 1 for sorting
+        let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
+        batch.setData(["name": "Main Wishlist", "listIDX": listCounter, "imageIDX" : imageArrayIDX, "textColor": Constants.Wishlist.textColor.white], forDocument: listRef)
+
+        batch.commit { (error) in
+
+            if let error = error {
+                Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
+                finished(false)
+            } else {
+                UserDefaults.standard.setIsLoggedIn(value: true)
+                UserDefaults.standard.synchronize()
+                finished(true) // sign-in process complete
+            }
+        }
+    }
+    
     //MARK: check username
     static func checkUsername(field: String, completion: @escaping (Bool) -> Void) {
         
@@ -355,6 +385,23 @@ class DataHandler {
                         completion(true)
                     }
                 }
+            }
+        }
+    }
+    
+    //MARK: checkIfAppleUserExists
+    static func checkIfAppleUserExists(uid: String, completion: @escaping (Bool) -> Void) {
+        let db = Firestore.firestore()
+        let ref = db.collection("users").document(uid)
+        
+        ref.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                completion(true)
+            } else {
+                print("Document does not exist")
+                completion(false)
             }
         }
     }

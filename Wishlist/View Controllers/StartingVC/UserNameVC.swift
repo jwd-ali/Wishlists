@@ -410,7 +410,22 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     })
+                } else if self.signInOption == "appleExists" {
+                    
+                    DataHandler.signInWithApple(username: username) { (done) in
+                        if done { // success
+                            // stop animation
+                            self.logoAnimation.stop()
+
+                            //transition to home
+                            self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
+                        }
+                    }
                 }
+                
             }
         }
     }
