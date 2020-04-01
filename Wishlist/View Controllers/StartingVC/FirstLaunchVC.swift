@@ -470,7 +470,14 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                         usernameVC.authentication = authentication
                         usernameVC.signInOption = "google"
                             
-                        self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
+                        // stop loading animation
+                        self.logoAnimation.stop()
+                        // remove animation from view
+                        self.logoAnimation.removeFromSuperview()
+                        // reset button title to "Registrieren"
+                        self.googleButton.setTitle("Mit Google fortfahren", for: .normal)
+                        // enable button tap
+                        self.googleButton.isEnabled = true
                         
                         self.navigationController?.pushViewController(usernameVC, animated: true)
                          
@@ -504,6 +511,13 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
 //MARK: Apple-Login
 
     @objc func appleButtonTapped(){
+        // disable button tap
+        self.appleButton.isEnabled = false
+        // hide the buttons title
+        self.appleButton.setTitle("", for: .normal)
+        // start loading animation
+        setupLoadingAnimation(button: self.appleButton)
+        logoAnimation.play()
         startSignInWithAppleFlow()
     }
     
@@ -515,6 +529,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
       if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
         guard let nonce = currentNonce else {
           fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            
         }
         guard let appleIDToken = appleIDCredential.identityToken else {
           print("Unable to fetch identity token")
@@ -534,17 +549,23 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                 DataHandler.checkIfAppleUserExists(uid: (user?.user.uid)!) { (exists) in
                     if exists { // user has firebase-profile -> login
                         if error != nil {
-                            Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
+                            self.resetButton(button: self.appleButton, buttonTitle: "Mit Google fortfahren")
+                            // show error popUp
+                            Utilities.showErrorPopUp(labelContent: "Fehler beim Apple-Login", description: error!.localizedDescription)
                         } else {
                             
                             UserDefaults.standard.setIsLoggedIn(value: true)
                             UserDefaults.standard.synchronize()
-                            
-                            self.logoAnimation.stop()
 
                             self.transitionToHome()
                         }
                     } else { // user doesn't have firebase-profile -> create username
+
+                        self.logoAnimation.stop()
+                        self.logoAnimation.removeFromSuperview()
+                        self.appleButton.setTitle("Mit Apple fortfahren", for: .normal)
+                        self.appleButton.isEnabled = true
+                        
                         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                         usernameVC.credential = credential
                         usernameVC.signInOption = "appleExists"
@@ -556,6 +577,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
             return
         }
         
+        self.logoAnimation.stop()
+        self.logoAnimation.removeFromSuperview()
+        self.appleButton.setTitle("Mit Apple fortfahren", for: .normal)
+        self.appleButton.isEnabled = true
+        
         // first time apple sign in
         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
         usernameVC.credential = credential
@@ -565,8 +591,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-      // Handle error.
-      print("Sign in with Apple errored: \(error)")
+        // Handle error.
+        self.resetButton(button: self.appleButton, buttonTitle: "Mit Apple fortfahren")
+        // show error popUp
+        Utilities.showErrorPopUp(labelContent: "Fehler beim Apple-Login", description: error.localizedDescription)
+
     }
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
