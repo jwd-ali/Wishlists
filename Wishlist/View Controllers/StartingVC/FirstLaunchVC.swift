@@ -504,7 +504,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                     
                                     let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                                     usernameVC.accessToken = accessToken
-                                    usernameVC.signInOption = "facebook"
+                                    usernameVC.signInOption = Constants.SignInMethod.Facebook
                                     self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                                     self.navigationController?.pushViewController(usernameVC, animated: true)
                                     
@@ -577,7 +577,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                          
                         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                         usernameVC.authentication = authentication
-                        usernameVC.signInOption = "google"
+                        usernameVC.signInOption = Constants.SignInMethod.Google
                             
                         // stop loading animation
                         self.logoAnimation.stop()
@@ -677,7 +677,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                         
                         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
                         usernameVC.credential = credential
-                        usernameVC.signInOption = "appleExists"
+                        usernameVC.signInOption = Constants.SignInMethod.AppleExists
                         self.navigationController?.pushViewController(usernameVC, animated: true)
                     }
                 }
@@ -694,7 +694,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         // first time apple sign in
         let usernameVC = self.storyboard?.instantiateViewController(withIdentifier: "UsernameVC") as! UserNameVC
         usernameVC.credential = credential
-        usernameVC.signInOption = "apple"
+        usernameVC.signInOption = Constants.SignInMethod.Apple
         self.navigationController?.pushViewController(usernameVC, animated: true)
       }
     }

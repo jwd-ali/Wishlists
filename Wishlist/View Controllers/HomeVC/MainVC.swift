@@ -130,11 +130,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.theCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
         setupViews()
-        
+        theCollectionView.isHidden = true
         DataHandler.getWishlists { (success, dataArray, dropOptionsArray)  in
             if success && dataArray != nil {
                 self.shouldAnimateCells = true
                 self.dataSourceArray = dataArray as! [Wishlist]
+                self.theCollectionView.isHidden = false
                 self.theCollectionView.reloadData()
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
             }

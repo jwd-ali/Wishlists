@@ -20,6 +20,14 @@ struct Constants: Equatable {
         case isCreating
         case isChanging
     }
+    
+    enum SignInMethod {
+        case Facebook
+        case Google
+        case Email
+        case Apple
+        case AppleExists
+    }
 
     
     struct Wishlist {

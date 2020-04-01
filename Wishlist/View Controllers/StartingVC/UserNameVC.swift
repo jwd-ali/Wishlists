@@ -127,7 +127,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     // timer for username activity indicator
     var timer = Timer()
     
-    var signInOption: String?
+    var signInOption: Constants.SignInMethod?
     // accessToken for FB-Signin
     var accessToken: AccessToken?
     // authentication for Google-Signin
@@ -355,7 +355,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     // textFields are not valid
                     self.loadingFailed()
                     
-                }else if self.signInOption == "facebook" { //MARK: Facebook-Login
+                }else if self.signInOption == Constants.SignInMethod.Facebook { //MARK: Facebook-Login
                     
                     guard let accessTokenString = self.accessToken?.tokenString else {
                         return
@@ -377,7 +377,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
 
                     })
                     
-                } else if self.signInOption == "google" { //MARK: Google-Login
+                } else if self.signInOption == Constants.SignInMethod.Google { //MARK: Google-Login
                     
                     let credentials = GoogleAuthProvider.credential(withIDToken: self.authentication!.idToken,
                                                                    accessToken: self.authentication!.accessToken)
@@ -395,7 +395,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     })
-                } else if self.signInOption == "apple" { //MARK: Apple-Login
+                } else if self.signInOption == Constants.SignInMethod.Apple { //MARK: Apple-Login
                     
                     DataHandler.signUpWithSocial(credentials: self.credential, username: username, finished: { (done) in
 
@@ -410,7 +410,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     })
-                } else if self.signInOption == "appleExists" {
+                } else if self.signInOption == Constants.SignInMethod.AppleExists {
                     
                     DataHandler.signInWithApple(username: username) { (done) in
                         if done { // success
