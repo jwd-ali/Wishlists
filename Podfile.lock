@@ -317,6 +317,7 @@ PODS:
   - PromisesObjC (1.2.8)
   - QuickLayout (3.0.0)
   - RevealingSplashView (0.6.0)
+  - SkeletonView (1.8.7)
   - SwiftEntryKit (1.2.3):
     - QuickLayout (= 3.0.0)
   - TextFieldEffects (1.6.0)
@@ -336,6 +337,7 @@ DEPENDENCIES:
   - LBTAComponents
   - lottie-ios
   - RevealingSplashView
+  - SkeletonView
   - SwiftEntryKit (= 1.2.3)
   - TextFieldEffects
 
@@ -375,6 +377,7 @@ SPEC REPOS:
     - PromisesObjC
     - QuickLayout
     - RevealingSplashView
+    - SkeletonView
     - SwiftEntryKit
     - TextFieldEffects
 
@@ -413,9 +416,10 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   QuickLayout: 07b45a72b10083fee3f095990cfed1c1e7b27f0a
   RevealingSplashView: 40c5a770894459736acdc95655eeba0dd30ce91c
+  SkeletonView: ba5370f41280b2f0a76918bb143c1294232bb4f4
   SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
 
-PODFILE CHECKSUM: 7172748a70bbe29becd0fafba3920dc8e8630175
+PODFILE CHECKSUM: b984ad83b8c67cb1d5ed1616c35839619fdfc04e
 
 COCOAPODS: 1.8.4

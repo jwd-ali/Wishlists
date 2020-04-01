@@ -207,19 +207,26 @@
 			<key>orderHint</key>
 			<integer>35</integer>
 		</dict>
-		<key>SwiftEntryKit.xcscheme</key>
+		<key>SkeletonView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>36</integer>
 		</dict>
-		<key>TextFieldEffects.xcscheme</key>
+		<key>SwiftEntryKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>37</integer>
+		</dict>
+		<key>TextFieldEffects.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>38</integer>
 		</dict>
 		<key>abseil.xcscheme</key>
 		<dict>

@@ -23,6 +23,7 @@ target 'Wishlists' do
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
 	pod 'GoogleSignIn'
+	pod 'SkeletonView'
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

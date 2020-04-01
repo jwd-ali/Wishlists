@@ -15,6 +15,7 @@ import Firebase
 
 class MainViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    
     let backGroundImage: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "backgroundImage")
@@ -114,7 +115,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     var selectedWishlistIDX: Int?
     
     // only animate cells at first start
-    var shouldAnimateCells = true
+    var shouldAnimateCells = false
     
 
     
@@ -132,6 +133,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         DataHandler.getWishlists { (success, dataArray, dropOptionsArray)  in
             if success && dataArray != nil {
+                self.shouldAnimateCells = true
                 self.dataSourceArray = dataArray as! [Wishlist]
                 self.theCollectionView.reloadData()
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
@@ -139,9 +141,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         // register the two cell classes for reuse
-        theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: "ContentCell")
-        theCollectionView.register(AddItemCell.self, forCellWithReuseIdentifier: "AddItemCell")
-//        theCollectionView.register(MainWishlistCell.self, forCellWithReuseIdentifier: "MainWishlistCell")
+        theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: ContentCell.reuseID)
+        theCollectionView.register(AddItemCell.self, forCellWithReuseIdentifier: AddItemCell.reuseID)
  
         // set collection view dataSource
         theCollectionView.dataSource = self
@@ -154,8 +155,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
 
-//        // get the data from the server
-//        retrieveUserDataFromDB()
 
     }
     //MARK: SetupViews
@@ -235,7 +234,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         // if indexPath.item is less than data count, return a "Content" cell
         if indexPath.item < dataSourceArray.count {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContentCell", for: indexPath) as! ContentCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCell.reuseID, for: indexPath) as! ContentCell
             // set cell label
             cell.cellLabel.text = dataSourceArray[indexPath.item].name
             // set cell image
@@ -285,7 +284,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         // past the end of the data count, so return an "Add Item" cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddItemCell", for: indexPath) as! AddItemCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddItemCell.reuseID, for: indexPath) as! AddItemCell
+
         //MARK: addList-Cell-Tapped
         // set the closure
         cell.tapCallback = {

@@ -20,12 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "zauberstab")!, iconInitialSize: CGSize(width: 120, height: 120), backgroundColor: .white)
+    let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "wIcon")!, iconInitialSize: CGSize(width: 120, height: 120), backgroundColor: .white)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         revealingSplashView.startAnimation()
         window?.rootViewController?.view.addSubview(revealingSplashView)
+        
         FirebaseApp.configure()
         
         // disable toolbar for keyboard manager

@@ -11,6 +11,8 @@ import UIKit
 
 // MARK: Add WishList Cell
 class AddItemCell: UICollectionViewCell {
+    
+    public static let reuseID = "AddItemCell"
  
     let btn: UIButton = {
         let v = UIButton()

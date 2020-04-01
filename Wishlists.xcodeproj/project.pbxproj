@@ -43,8 +43,7 @@
 		83A193BE230F2640002D22C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193BD230F2640002D22C0 /* Constants.swift */; };
 		83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */; };
 		83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */; };
-		83A3BD2023A68C3D003FDCC1 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */; };
-		83A3BD2223A68C83003FDCC1 /* MainWishlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */; };
+		83A3BD2023A68C3D003FDCC1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1F23A68C3D003FDCC1 /* Content.swift */; };
 		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
@@ -135,8 +134,7 @@
 		83A193BD230F2640002D22C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedFlowlayout.swift; sourceTree = "<group>"; };
 		83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
-		83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
-		83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWishlistCell.swift; sourceTree = "<group>"; };
+		83A3BD1F23A68C3D003FDCC1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
@@ -312,8 +310,7 @@
 		83A3BD1E23A68C20003FDCC1 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				83A3BD1F23A68C3D003FDCC1 /* CustomCell.swift */,
-				83A3BD2123A68C83003FDCC1 /* MainWishlistCell.swift */,
+				83A3BD1F23A68C3D003FDCC1 /* Content.swift */,
 				83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */,
 				836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */,
 			);
@@ -583,7 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83A3BD2023A68C3D003FDCC1 /* CustomCell.swift in Sources */,
+				83A3BD2023A68C3D003FDCC1 /* Content.swift in Sources */,
 				839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */,
 				83A193B9230F0570002D22C0 /* Utilities.swift in Sources */,
 				83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */,
@@ -622,7 +619,6 @@
 				83A193A0230D6062002D22C0 /* FirstLaunchVC.swift in Sources */,
 				83DA1B38241BBD13008A58EB /* UITapGesture.swift in Sources */,
 				83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */,
-				83A3BD2223A68C83003FDCC1 /* MainWishlistCell.swift in Sources */,
 				83BF292F23DE28DB003A3AF1 /* EmailVC.swift in Sources */,
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
 				832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */,
