@@ -80,7 +80,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         v.setTitleColor(.white, for: .normal)
         v.backgroundColor = UIColor.darkGray
         v.layer.cornerRadius = 3
-        v.addTarget(self, action: #selector(weiterButtonTapped), for: .touchUpInside)
+        v.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
         return v
     }()
     
@@ -169,6 +169,15 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         return v
     }()
     
+    //MARK: Documents
+    let documentsLabel: UILabel = {
+        let v = UILabel()
+        v.textAlignment = .center
+        v.numberOfLines = 0
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     let logoAnimation = AnimationView(name: "LoadingAnimation")
     
     //MARK: ViewDidLoad
@@ -183,6 +192,8 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         GIDSignIn.sharedInstance()?.presentingViewController = self
         
         setUpViews()
+        
+        setUpDocumentsLabel()
         
     }
     
@@ -203,6 +214,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         googleButton.addSubview(googleLogo)
         view.addSubview(appleButton)
         appleButton.addSubview(appleLogo)
+        view.addSubview(documentsLabel)
         
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
@@ -269,11 +281,108 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         appleLogo.leadingAnchor.constraint(equalTo: appleButton.leadingAnchor, constant: 10).isActive = true
         appleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
         appleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        documentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        documentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        documentsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
  
     }
     
+    //MARK: DocumentsLabel
+    struct Fonts {
+        
+        static func boldFontWithSize(size: CGFloat) -> UIFont {
+            return UIFont(name:"AvenirNext-Bold", size: size)!
+        }
+        
+        static func regularFontWithSize(size: CGFloat) -> UIFont {
+            return UIFont(name:"AvenirNext-Regular", size: size)!
+        }
+    }
+
+    struct Colors {
+        
+        static let white = UIColor.white
+
+    }
     
-    @objc func weiterButtonTapped() {
+    func setUpDocumentsLabel(){
+        var textArray = [String]()
+        var fontArray = [UIFont]()
+        var colorArray = [UIColor]()
+        textArray.append("Mit 'fortfahren' akzeptierst du die")
+        textArray.append("Nutzungsbedingungen")
+        textArray.append("und")
+        textArray.append("Datenschutzrichtlinien.")
+        
+        fontArray.append(Fonts.regularFontWithSize(size: 13.0))
+        fontArray.append(Fonts.boldFontWithSize(size: 13.0))
+        fontArray.append(Fonts.regularFontWithSize(size: 13.0))
+        fontArray.append(Fonts.boldFontWithSize(size: 13.0))
+        
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        colorArray.append(Colors.white)
+        
+        self.documentsLabel.attributedText = getAttributedString(arrayText: textArray, arrayColors: colorArray, arrayFonts: fontArray)
+        
+        self.documentsLabel.isUserInteractionEnabled = true
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(tappedOnLabel(_ :)))
+        tapgesture.numberOfTapsRequired = 1
+        self.documentsLabel.addGestureRecognizer(tapgesture)
+    }
+    
+    //MARK:- tappedOnLabel
+    @objc func tappedOnLabel(_ gesture: UITapGestureRecognizer) {
+        guard let text = self.documentsLabel.text else { return }
+        let conditionsRange = (text as NSString).range(of: "Nutzungsbedingungen")
+        let cancellationRange = (text as NSString).range(of: "Datenschutzrichtlinien")
+        
+        if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: conditionsRange) {
+            
+            let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Nutzungsbedingungen", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+                
+            }
+            alertcontroller.addAction(alertAction)
+            self.present(alertcontroller, animated: true)
+            
+        } else if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: cancellationRange){
+            
+            let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Datenschutzrichtlinien", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+                
+            }
+            alertcontroller.addAction(alertAction)
+            self.present(alertcontroller, animated: true)
+
+        }
+    }
+    
+    //MARK:- getAttributedString
+    func getAttributedString(arrayText:[String]?, arrayColors:[UIColor]?, arrayFonts:[UIFont]?) -> NSMutableAttributedString {
+        
+        let finalAttributedString = NSMutableAttributedString()
+        
+        for i in 0 ..< (arrayText?.count)! {
+            
+            let attributes = [NSAttributedString.Key.foregroundColor: arrayColors?[i], NSAttributedString.Key.font: arrayFonts?[i]]
+            let attributedStr = (NSAttributedString.init(string: arrayText?[i] ?? "", attributes: attributes as [NSAttributedString.Key : Any]))
+            
+            if i != 0 {
+                
+                finalAttributedString.append(NSAttributedString.init(string: " "))
+            }
+            
+            finalAttributedString.append(attributedStr)
+        }
+        
+        return finalAttributedString
+    }
+    
+    
+    @objc func emailButtonTapped() {
         
         let emailVC = self.storyboard?.instantiateViewController(withIdentifier: "EmailVC") as! EmailViewController
         
