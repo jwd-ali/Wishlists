@@ -97,6 +97,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         v.autocapitalizationType = .none
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
+        v.returnKeyType = .done
         return v
     }()
     
@@ -130,10 +131,13 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     var signInOption: Constants.SignInMethod?
     // accessToken for FB-Signin
     var accessToken: AccessToken?
-    // authentication for Google-Signin
+    // authentication for Google-Signup
     var authentication: GIDAuthentication?
-    // credential for Apple-Signin
+    // credential for Apple-Signup
     var credential: OAuthCredential?
+    // email and password for Email-Signup
+    var email: String?
+    var password: String?
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -424,8 +428,20 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     }
+                } else if self.signInOption == Constants.SignInMethod.Email {
+                    DataHandler.signUpWithEmail(email: self.email!, password: self.password!, username: username) { (done) in
+                        if done { // success
+                            // stop animation
+                            self.logoAnimation.stop()
+
+                            //transition to home
+                            self.transitionToHome()
+                            
+                        } else { // failure
+                            self.loadingFailed()
+                        }
+                    }
                 }
-                
             }
         }
     }
@@ -452,4 +468,13 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
+    // done key action
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == usernameTextField {
+            self.confirmButton.sendActions(for: .touchUpInside)
+        }
+        return true
+    }
+
 }

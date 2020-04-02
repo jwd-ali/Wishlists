@@ -14,7 +14,7 @@ import SwiftEntryKit
 import Lottie
 
 
-class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
+class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     
     let backgroundImage: UIImageView = {
         let v = UIImageView()
@@ -46,6 +46,9 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
         v.placeholderFontScale = 0.8
+        v.textContentType = .emailAddress
+        v.keyboardType = .emailAddress
+        v.returnKeyType = .done
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.autocapitalizationType = .none
@@ -94,13 +97,13 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
 
         setUpViews()
         
-        emailTextField.textContentType = .emailAddress
+        emailTextField.delegate = self
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        emailTextField.becomeFirstResponder() 
+        emailTextField.becomeFirstResponder()
     }
     
     func setUpViews() {
@@ -268,5 +271,13 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate {
     // hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    // done key action
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailTextField {
+            self.weiterButton.sendActions(for: .touchUpInside)
+        }
+        return true
     }
 }

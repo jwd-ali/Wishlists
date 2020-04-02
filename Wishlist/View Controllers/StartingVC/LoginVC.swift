@@ -44,7 +44,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
         v.placeholderFontScale = 0.8
-        v.clearButtonMode = .always
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.autocapitalizationType = .none
