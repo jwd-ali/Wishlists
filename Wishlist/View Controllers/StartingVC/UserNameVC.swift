@@ -43,7 +43,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
     let confirmButton: CustomButton = {
         let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("BESTÄTIGEN", for: .normal)
+        v.setTitle("Bestätigen", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.titleLabel?.textColor = .white
         v.setTitleColor(.white, for: .normal)
@@ -359,7 +359,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                     // textFields are not valid
                     self.loadingFailed()
                     
-                }else if self.signInOption == Constants.SignInMethod.Facebook { //MARK: Facebook-Login
+                }else if self.signInOption == Constants.SignInMethod.Facebook { //MARK: Facebook-SignUp
                     
                     guard let accessTokenString = self.accessToken?.tokenString else {
                         return
@@ -381,7 +381,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
 
                     })
                     
-                } else if self.signInOption == Constants.SignInMethod.Google { //MARK: Google-Login
+                } else if self.signInOption == Constants.SignInMethod.Google { //MARK: Google-SignUp
                     
                     let credentials = GoogleAuthProvider.credential(withIDToken: self.authentication!.idToken,
                                                                    accessToken: self.authentication!.accessToken)
@@ -399,7 +399,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     })
-                } else if self.signInOption == Constants.SignInMethod.Apple { //MARK: Apple-Login
+                } else if self.signInOption == Constants.SignInMethod.Apple { //MARK: Apple-SignUp
                     
                     DataHandler.signUpWithSocial(credentials: self.credential, username: username, finished: { (done) in
 
@@ -428,7 +428,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
                             self.loadingFailed()
                         }
                     }
-                } else if self.signInOption == Constants.SignInMethod.Email {
+                } else if self.signInOption == Constants.SignInMethod.Email { //MARK: Email-SignUp
                     DataHandler.signUpWithEmail(email: self.email!, password: self.password!, username: username) { (done) in
                         if done { // success
                             // stop animation
@@ -445,7 +445,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
+    //MARK: transitionToHome
     func transitionToHome () {
 
         let homeViewCotnroller =
@@ -455,6 +455,8 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         view.window?.rootViewController = navigationController
         view.window?.makeKeyAndVisible()
     }
+    
+    //MARK: textFiel-Methods
     
     // disable "space" for every textfield
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

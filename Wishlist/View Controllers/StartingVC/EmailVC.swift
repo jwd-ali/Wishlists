@@ -53,6 +53,7 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         v.borderStyle = .line
         v.autocapitalizationType = .none
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         return v
     }()
     
@@ -279,5 +280,11 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UIText
             self.weiterButton.sendActions(for: .touchUpInside)
         }
         return true
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        let text = emailTextField.text ?? ""
+        let trimmedText = text.trimmingCharacters(in: .whitespaces)
+        emailTextField.text = trimmedText
     }
 }
