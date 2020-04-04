@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WishStackView: UIStackView, UITextFieldDelegate {
+class WishStackView: UIStackView, UITextFieldDelegate { 
     
     public var height = CGFloat(0)
     
