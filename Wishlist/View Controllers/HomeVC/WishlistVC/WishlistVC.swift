@@ -150,6 +150,8 @@ class WishlistViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.makeWishView.dropDownButton.dropView.tableView.backgroundColor = .clear
+        
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
         self.hero.isEnabled = true
@@ -349,9 +351,6 @@ class WishlistViewController: UIViewController {
         makeWishView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         makeWishView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        makeWishView.grayView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-        makeWishView.visualEffectView.alpha = 0
-        makeWishView.grayView.alpha = 0
         makeWishView.wishButton.alpha = 0
         makeWishView.closeButton.alpha = 0
         makeWishView.dropDownButton.alpha = 0
@@ -393,9 +392,6 @@ class WishlistViewController: UIViewController {
         makeWishView.wishNameTextField.becomeFirstResponder()        
             
         UIView.animate(withDuration: 0.3) {
-            
-            self.makeWishView.visualEffectView.alpha = 1
-            self.makeWishView.grayView.alpha = 1
             self.makeWishView.wishButton.alpha = 1
             self.makeWishView.closeButton.alpha = 1
             self.makeWishView.dropDownButton.alpha = 1
@@ -409,7 +405,6 @@ class WishlistViewController: UIViewController {
             self.makeWishView.priceImage.alpha = 1
             self.makeWishView.noteImage.alpha = 1
             
-            self.makeWishView.grayView.transform = CGAffineTransform.identity
         }
     }
 }

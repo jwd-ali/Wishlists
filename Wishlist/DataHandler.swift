@@ -83,12 +83,12 @@ extension MainViewController {
                     print(error.localizedDescription)
                 } else {
                     // append every Wish to array at wishIDX
-                    for document in querySnapshot!.documents {
-                        let documentData = document.data()
-                        let wishName = documentData["name"]
-                        let wishIDX = documentData["wishIDX"]
+//                    for document in querySnapshot!.documents {
+//                        let documentData = document.data()
+//                        let wishName = documentData["name"]
+//                        let wishIDX = documentData["wishIDX"]
 //                        self.dataSourceArray[wishIDX as! Int].wishData.append(Wish(withWishName: wishName as! String, link: "", price: 0, note: "", checked: false))
-                    }
+//                    }
                 }
             }
         }

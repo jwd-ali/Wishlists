@@ -67,6 +67,17 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    lazy var transparentView =  UIView()
+    
+    let wishWishView: WishStackView = {
+        let v = WishStackView()
+        v.theStackView.addBackgroundColorWithTopCornerRadius(color: .darkCustom)
+//        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    var wishWishConstraint: NSLayoutConstraint!
 
     var dropOptions = [DropDownOption]()
    
@@ -124,6 +135,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // setting dropDownTableView color only works here
+        wishWishView.dropDownButton.dropView.tableView.backgroundColor = .clear
+        
         // stop timer for imagePreview inside createNewListView
         self.createListView.timer?.invalidate()
         
@@ -155,9 +169,24 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
-
-
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
     }
+    
+    var keyboardHeight = CGFloat(0)
+    //MARK: keyboardWillShow
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+        }
+    }
+    
     //MARK: SetupViews
     func setupViews() {
         
@@ -207,120 +236,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         ])
     }
     
-    
-    // MARK: CollectionView
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-   
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // only want to call this when collection view frame changes
-        // to set the item size
-        if theCollectionView.frame.width != colViewWidth {
-            let w = theCollectionView.frame.width
-            columnLayout.itemSize = CGSize(width: w, height: 160)
-            colViewWidth = theCollectionView.frame.width
-        }
-    }
-    
- 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // return 1 more than our data array (the extra one will be the "add item" cell)
-        return dataSourceArray.count + 1
-    }
- 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // if indexPath.item is less than data count, return a "Content" cell
-        if indexPath.item < dataSourceArray.count {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCell.reuseID, for: indexPath) as! ContentCell
-            // set cell label
-            cell.cellLabel.text = dataSourceArray[indexPath.item].name
-            // set cell image
-            cell.wishlistImage.image = dataSourceArray[indexPath.item].image
-
-            cell.priceLabel.textColor = dataSourceArray[indexPath.item].textColor
-            cell.priceEuroLabel.textColor = dataSourceArray[indexPath.item].textColor
-            cell.wishCounterLabel.textColor = dataSourceArray[indexPath.item].textColor
-            cell.wünscheLabel.textColor = dataSourceArray[indexPath.item].textColor
-
-            // set background color
-            cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
-            cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
-            cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
-            
-            let heroID = "wishlistImageIDX\(indexPath.item)"
-            cell.wishlistImage.heroID = heroID
-            
-            let addButtonHeroID = "addWishButtonID"
-            self.addButton.heroID = addButtonHeroID
-            
-            cell.customWishlistTapCallback = {
-                // track selected index
-                self.currentWishListIDX = indexPath.item
-                    
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "WishlistVC") as! WishlistViewController
-                
-                vc.wishList = self.dataSourceArray[indexPath.item]
-                // pass drop down options
-                vc.dropOptions = self.dropOptions
-                // pass current wishlist index
-                vc.currentWishListIDX = indexPath.item
-                // pass the data array
-                vc.dataSourceArray = self.dataSourceArray
-                // set Hero ID for transition
-                vc.wishlistImage.heroID = heroID
-                vc.addWishButton.heroID = addButtonHeroID
-                // allow MainVC to recieve updated datasource array
-                vc.dismissWishlistDelegate = self
-                    
-                vc.theTableView.tableView.reloadData()
-                self.present(vc, animated: true, completion: nil)
-                
-            }
-            
-            return cell
-        }
-        
-        // past the end of the data count, so return an "Add Item" cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddItemCell.reuseID, for: indexPath) as! AddItemCell
-
-        //MARK: addList-Cell-Tapped
-        // set the closure
-        cell.tapCallback = {
-            
-            self.createNewListView()
-            // reset textfield
-            self.createListView.wishlistNameTextField.text = ""
-            self.createListView.wishlistNameTextField.becomeFirstResponder()
-            // disable button
-            self.createListView.disableButton()
-            // start timer for imagePreview
-            self.createListView.startImagePreviewAnimation()
-            // set delegate
-            self.createListView.createListDelegate = self
-            
-        }
-        
-        return cell
-        
-    }
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.shouldAnimateCells = false
-    }
-    
-    // animate displaying cells
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if(self.shouldAnimateCells){
-             // add animations here
-            let animation = AnimationFactory.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.1)
-            let animator = Animator(animation: animation)
-            animator.animate(cell: cell, at: indexPath, in: collectionView)
-        }
-    }
-    
     // MARK: CreateNewListView
     func createNewListView(){
         self.view.addSubview(self.createListView)
@@ -359,86 +274,68 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
        }
     }
     
-    //hide keyboard, wenn user außerhalb toucht
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
     
     // MARK: AddWishButton
     
     @objc func addWishButtonTapped(){
         
-        view.addSubview(makeWishView)
+        wishWishView.dropDownButton.dropView.dropOptions = self.dropOptions
+
+        // set dropDownButton image and label to first wishlists image and label
+        wishWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
+        wishWishView.dropDownButton.label.text = self.dataSourceArray[0].name
+
+        // pass data array
+        wishWishView.dataSourceArray = self.dataSourceArray
+        
+        wishWishView.wishNameTextField.becomeFirstResponder()
+        wishWishView.disableButton()
+        wishWishView.wishNameTextField.text = ""
+        
+        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        transparentView.frame = self.view.frame
+        self.view.addSubview(transparentView)
             
-            makeWishView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            makeWishView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            makeWishView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            makeWishView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        let screenSize = UIScreen.main.bounds.size
+        self.wishWishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishWishView.height)
+        self.view.addSubview(self.wishWishView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishWishView))
+        transparentView.addGestureRecognizer(tapGesture)
+        
+        transparentView.alpha = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.7
+            self.wishWishView.frame = CGRect(x: 0, y: screenSize.height - self.wishWishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishWishView.height)
             
-            makeWishView.grayView.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-            makeWishView.visualEffectView.alpha = 0
-            makeWishView.grayView.alpha = 0
-            makeWishView.wishButton.alpha = 0
-            makeWishView.closeButton.alpha = 0
-            makeWishView.dropDownButton.alpha = 0
-            makeWishView.wishNameTextField.alpha = 0
-            makeWishView.wishImageView.alpha = 0
-            makeWishView.wishImageButton.alpha = 0
-            makeWishView.linkTextField.alpha = 0
-            makeWishView.priceTextField.alpha = 0
-            makeWishView.noteTextField.alpha = 0
-            makeWishView.linkImage.alpha = 0
-            makeWishView.priceImage.alpha = 0
-            makeWishView.noteImage.alpha = 0
-            
-            makeWishView.addWishDelegate = self
-            
-            makeWishView.imageButtonDelegate = self
-            
-            // set dropDownOptions
-            makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
-            
-            // set dropDownButton image and label to first wishlists image and label
-            makeWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
-            makeWishView.dropDownButton.label.text = self.dataSourceArray[0].name
-            
-            // pass data array
-            makeWishView.dataSourceArray = self.dataSourceArray
-            
-            // update selectedWishlistIDX
-            makeWishView.selectedWishlistIDX = currentWishListIDX
-            
-            // reset textfield
-            makeWishView.wishNameTextField.text = ""
-            // hide wishButton
-            makeWishView.wishButton.isHidden = true
-            makeWishView.wishButtonDisabled.isHidden = false
-            
-            makeWishView.wishNameTextField.becomeFirstResponder()
-                
-            UIView.animate(withDuration: 0.3) {
-                
-                self.makeWishView.visualEffectView.alpha = 1
-                self.makeWishView.grayView.alpha = 1
-                self.makeWishView.wishButton.alpha = 1
-                self.makeWishView.closeButton.alpha = 1
-                self.makeWishView.dropDownButton.alpha = 1
-                self.makeWishView.wishNameTextField.alpha = 1
-                self.makeWishView.wishImageView.alpha = 1
-                self.makeWishView.wishImageButton.alpha = 1
-                self.makeWishView.linkTextField.alpha = 1
-                self.makeWishView.priceTextField.alpha = 1
-                self.makeWishView.noteTextField.alpha = 1
-                self.makeWishView.linkImage.alpha = 1
-                self.makeWishView.priceImage.alpha = 1
-                self.makeWishView.noteImage.alpha = 1
-                
-                self.makeWishView.grayView.transform = CGAffineTransform.identity
-            }
-            
+        }, completion: nil)
+
+//            makeWishView.addWishDelegate = self
+//
+//            makeWishView.imageButtonDelegate = self
+//
+//            // pass data array
+//            makeWishView.dataSourceArray = self.dataSourceArray
+//
+//            // update selectedWishlistIDX
+//            makeWishView.selectedWishlistIDX = currentWishListIDX
+  
+    }
     
-        }
+    @objc func dismissWishWishView() {
+        
+        wishWishView.dropDownButton.dismissDropDown()
+       
+        let screenSize = UIScreen.main.bounds.size
+        
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
+            self.transparentView.alpha = 0
+            self.wishWishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishWishView.height)
+            self.wishWishView.wishNameTextField.resignFirstResponder()
+        }, completion: nil)
+        
+    }
     
     //MARK: ProfileButton
     @objc func profileButtonTapped() {

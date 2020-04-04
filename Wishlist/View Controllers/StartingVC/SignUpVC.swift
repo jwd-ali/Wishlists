@@ -264,7 +264,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         return v
     }()
     
-    var signUpButtonConstraint:NSLayoutConstraint!
+    var signUpButtonConstraint: NSLayoutConstraint!
     
     let logoAnimation = AnimationView(name: "LoadingAnimation")
     
@@ -388,17 +388,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         emailTextField.topAnchor.constraint(equalTo: emailView.topAnchor).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: emailView.leadingAnchor).isActive = true
         emailTextField.trailingAnchor.constraint(equalTo: emailView.trailingAnchor).isActive = true
-        
-//        usernameConstraint = usernameView.heightAnchor.constraint(equalToConstant: 60)
-//        usernameConstraint.isActive = true
-//        usernameTextField.heightAnchor.constraint(equalToConstant: 60).isActive = true
-//        usernameTextField.topAnchor.constraint(equalTo: usernameView.topAnchor).isActive = true
-//        usernameTextField.leadingAnchor.constraint(equalTo: usernameView.leadingAnchor).isActive = true
-//        usernameTextField.trailingAnchor.constraint(equalTo: usernameView.trailingAnchor).isActive = true
-//        activityIndicator.centerYAnchor.constraint(equalTo: usernameTextField.centerYAnchor, constant: 10).isActive = true
-//        activityIndicator.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor, constant: -5).isActive = true
-//        activityIndicator.heightAnchor.constraint(equalToConstant: 15).isActive = true
-//        activityIndicator.widthAnchor.constraint(equalToConstant: 15).isActive = true
         
         passwordConstraint = passwordView.heightAnchor.constraint(equalToConstant: 60)
         passwordConstraint.isActive = true

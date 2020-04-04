@@ -121,3 +121,14 @@ extension UIScrollView {
    }
 }
 
+extension UIStackView {
+    func addBackgroundColorWithTopCornerRadius(color: UIColor) {
+        let subView = UIView(frame: bounds)
+        subView.backgroundColor = color
+        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        subView.layer.cornerRadius = 10
+        subView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        insertSubview(subView, at: 0)
+    }
+}
+

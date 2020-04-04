@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Hero
 
-// MARK: Simple Whishlist Cell
+// MARK: ContentCell
 class ContentCell: UICollectionViewCell {
     
     public static let reuseID = "ContentCell"

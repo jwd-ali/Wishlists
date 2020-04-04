@@ -153,7 +153,6 @@ class MakeWishView: UIView, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-
     
     var dataSourceArray = [Wishlist]()
     

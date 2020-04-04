@@ -64,7 +64,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2)
         v.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        v.autocorrectionType = .no
+        v.keyboardAppearance = UIKeyboardAppearance.dark
         return v
     }()
     
@@ -101,7 +101,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     var wishList: Wishlist?
     
     var wishlistMode: Constants.WishlistMode?
-
+    //MARK: init
     init(wishlistMode: Constants.WishlistMode) {
         self.wishlistMode = wishlistMode
         super.init(frame: CGRect.zero)

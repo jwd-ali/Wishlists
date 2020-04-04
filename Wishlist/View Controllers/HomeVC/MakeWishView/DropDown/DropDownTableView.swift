@@ -32,8 +32,10 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        tableView.backgroundColor = UIColor.lightGray
-        self.backgroundColor = UIColor.lightGray
+        self.backgroundColor = UIColor.darkCustom
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 3
         
         self.tableView.register(DropDownCell.self, forCellReuseIdentifier: DropDownCell.reuseID)
         
@@ -69,7 +71,7 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         
         cell.label.text = dropOptions[indexPath.row].name
         cell.listImage.image = dropOptions[indexPath.row].image
-        cell.backgroundColor = UIColor.lightGray
+        cell.backgroundColor = UIColor.clear
         return cell
     }
     
@@ -90,7 +92,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext-Regular", size: 20)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textColor = .white
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -98,7 +100,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
     
     let listImage: UIImageView = {
         let v = UIImageView()
-        v.backgroundColor = .cyan
+        v.backgroundColor = .clear
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -118,28 +120,28 @@ class DropDownBtn: UIButton, DropDownProtocol {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.darkGray
+        self.backgroundColor = UIColor.clear
         self.layer.borderColor = UIColor.white.cgColor
-        self.layer.borderWidth = 2.0
-        
+        self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 3
         
         
         // add image
         self.addSubview(listImage)
-        self.listImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
+        self.listImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         self.listImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.listImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        self.listImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.listImage.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        self.listImage.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         // add label
         self.addSubview(label)
-        self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 35).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 32).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         dropView = DropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         dropView.delegate = self
         dropView.layer.borderColor = UIColor.white.cgColor
-        dropView.layer.borderWidth = 2.0
+        dropView.layer.borderWidth = 1.0
         dropView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -201,7 +203,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
         
         self.height.constant = 0
         NSLayoutConstraint.activate([self.height])
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
             self.dropView.center.y += self.dropView.frame.height / 2
             self.dropView.layoutIfNeeded()
         }, completion: nil)

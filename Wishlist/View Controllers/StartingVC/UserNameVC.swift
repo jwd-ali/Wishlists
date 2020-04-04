@@ -83,8 +83,8 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         return v
     }()
     
-    let usernameTextField: CustomTextField = {
-        let v = CustomTextField()
+    let usernameTextField: HoshiTextField = {
+        let v = HoshiTextField()
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white

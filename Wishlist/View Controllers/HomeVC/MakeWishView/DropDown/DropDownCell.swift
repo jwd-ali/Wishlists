@@ -14,7 +14,7 @@ class DropDownCell: UITableViewCell {
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textColor = .white
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -29,17 +29,17 @@ class DropDownCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .clear
         
         // add image
         self.contentView.addSubview(listImage)
-        self.listImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
+        self.listImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         self.listImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.listImage.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        self.listImage.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.listImage.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        self.listImage.heightAnchor.constraint(equalToConstant: 22).isActive = true
         // add label
         self.contentView.addSubview(label)
-        self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 35).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 32).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         

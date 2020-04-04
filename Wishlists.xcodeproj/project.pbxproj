@@ -11,11 +11,11 @@
 		830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */; };
 		830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */; };
 		830646BB242D210200A7F3B2 /* ColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646BA242D210200A7F3B2 /* ColorHelper.swift */; };
-		8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8312BD49231FE29400CBE1E2 /* CustomTextField.swift */; };
 		832E0BA124323AF100CEC488 /* DropDownStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E0BA024323AF100CEC488 /* DropDownStruct.swift */; };
 		832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */; };
 		8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */; };
-		83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */; };
+		8357A270243657CB00DFF949 /* MainCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8357A26F243657CB00DFF949 /* MainCollectionView.swift */; };
+		8357A273243677B300DFF949 /* WishWishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8357A272243677B300DFF949 /* WishWishView.swift */; };
 		83605075232674760013EBD2 /* TextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83605074232674760013EBD2 /* TextfieldExtension.swift */; };
 		836232B423C9E40800FA498D /* MakeWishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B323C9E40700FA498D /* MakeWishView.swift */; };
 		836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */; };
@@ -43,7 +43,7 @@
 		83A193BE230F2640002D22C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A193BD230F2640002D22C0 /* Constants.swift */; };
 		83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */; };
 		83A3BD1D23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */; };
-		83A3BD2023A68C3D003FDCC1 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1F23A68C3D003FDCC1 /* Content.swift */; };
+		83A3BD2023A68C3D003FDCC1 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD1F23A68C3D003FDCC1 /* ContentCell.swift */; };
 		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
@@ -97,11 +97,11 @@
 		830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionCell.swift; sourceTree = "<group>"; };
 		830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionTableView.swift; sourceTree = "<group>"; };
 		830646BA242D210200A7F3B2 /* ColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelper.swift; sourceTree = "<group>"; };
-		8312BD49231FE29400CBE1E2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		832E0BA024323AF100CEC488 /* DropDownStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownStruct.swift; sourceTree = "<group>"; };
 		832E9CAE240C6A5C00135A50 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		8338857923F8A0AE0043DC12 /* TableViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewAnimations.swift; sourceTree = "<group>"; };
-		83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSmallTextField.swift; sourceTree = "<group>"; };
+		8357A26F243657CB00DFF949 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
+		8357A272243677B300DFF949 /* WishWishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishWishView.swift; sourceTree = "<group>"; };
 		83605074232674760013EBD2 /* TextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldExtension.swift; sourceTree = "<group>"; };
 		836232B323C9E40700FA498D /* MakeWishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeWishView.swift; sourceTree = "<group>"; };
 		836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewAnimations.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 		83A193BD230F2640002D22C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		83A3BD1A23A68809003FDCC1 /* CenterAlignedFlowlayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedFlowlayout.swift; sourceTree = "<group>"; };
 		83A3BD1C23A6887E003FDCC1 /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
-		83A3BD1F23A68C3D003FDCC1 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
+		83A3BD1F23A68C3D003FDCC1 /* ContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCell.swift; sourceTree = "<group>"; };
 		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
@@ -220,6 +220,16 @@
 				83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */,
 			);
 			path = LottieFiles;
+			sourceTree = "<group>";
+		};
+		8357A271243676CB00DFF949 /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				836A862623916FAC000E76E4 /* DropDownTableView.swift */,
+				839A8EE823A80F9C00C432EA /* DropDownCell.swift */,
+				832E0BA024323AF100CEC488 /* DropDownStruct.swift */,
+			);
+			path = DropDown;
 			sourceTree = "<group>";
 		};
 		8392D555242798F000FF6EA0 /* ShareExtension */ = {
@@ -310,8 +320,9 @@
 		83A3BD1E23A68C20003FDCC1 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				83A3BD1F23A68C3D003FDCC1 /* Content.swift */,
+				83A3BD1F23A68C3D003FDCC1 /* ContentCell.swift */,
 				83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */,
+				8357A26F243657CB00DFF949 /* MainCollectionView.swift */,
 				836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */,
 			);
 			path = CollectionView;
@@ -320,8 +331,6 @@
 		83A68D06239ED5D800DBDB45 /* TextfieldExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				8312BD49231FE29400CBE1E2 /* CustomTextField.swift */,
-				83430BE4234E4AE30050A377 /* CustomSmallTextField.swift */,
 				83605074232674760013EBD2 /* TextfieldExtension.swift */,
 				83DA1B37241BBD13008A58EB /* UITapGesture.swift */,
 				83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */,
@@ -389,10 +398,9 @@
 		83A68D0D239EDA5000DBDB45 /* MakeWishView */ = {
 			isa = PBXGroup;
 			children = (
-				836A862623916FAC000E76E4 /* DropDownTableView.swift */,
-				839A8EE823A80F9C00C432EA /* DropDownCell.swift */,
-				832E0BA024323AF100CEC488 /* DropDownStruct.swift */,
+				8357A271243676CB00DFF949 /* DropDown */,
 				836232B323C9E40700FA498D /* MakeWishView.swift */,
+				8357A272243677B300DFF949 /* WishWishView.swift */,
 			);
 			path = MakeWishView;
 			sourceTree = "<group>";
@@ -580,7 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83A3BD2023A68C3D003FDCC1 /* Content.swift in Sources */,
+				83A3BD2023A68C3D003FDCC1 /* ContentCell.swift in Sources */,
 				839091CE237220690034ED79 /* ImageCollectionVC.swift in Sources */,
 				83A193B9230F0570002D22C0 /* Utilities.swift in Sources */,
 				83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */,
@@ -590,8 +598,8 @@
 				830646BB242D210200A7F3B2 /* ColorHelper.swift in Sources */,
 				839A8EE923A80F9C00C432EA /* DropDownCell.swift in Sources */,
 				830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */,
+				8357A270243657CB00DFF949 /* MainCollectionView.swift in Sources */,
 				830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */,
-				83430BE5234E4AE30050A377 /* CustomSmallTextField.swift in Sources */,
 				83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */,
 				836A862323875325000E76E4 /* WhishCell.swift in Sources */,
 				83DA1B3F241FD915008A58EB /* UserNameVC.swift in Sources */,
@@ -611,7 +619,6 @@
 				836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */,
 				83FE84B523DB3BC9008D9F7B /* UserDefault+Helpers.swift in Sources */,
 				8338857A23F8A0AE0043DC12 /* TableViewAnimations.swift in Sources */,
-				8312BD4A231FE29400CBE1E2 /* CustomTextField.swift in Sources */,
 				83F0A97E238025B000EA701D /* ContainerViewController.swift in Sources */,
 				83A193BE230F2640002D22C0 /* Constants.swift in Sources */,
 				83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */,
@@ -623,6 +630,7 @@
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
 				832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */,
 				836232B423C9E40800FA498D /* MakeWishView.swift in Sources */,
+				8357A273243677B300DFF949 /* WishWishView.swift in Sources */,
 				83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

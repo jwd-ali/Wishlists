@@ -24,3 +24,8 @@ enum Color: String {
      }
   }
 }
+
+extension UIColor {
+    
+    static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+}
