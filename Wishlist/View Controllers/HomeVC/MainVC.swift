@@ -332,11 +332,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             if isHidden {
                 UIView.animate(withDuration: 0.3) {
                     self.wishConstraint.constant -= height
+                    self.wishView.priceTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
                 }
             } else {
                 UIView.animate(withDuration: 0.3) {
                     self.wishConstraint.constant += height
+//                    self.wishView.priceTextField.resignFirstResponder()
+                    self.wishView.wishNameTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
                 }
             }

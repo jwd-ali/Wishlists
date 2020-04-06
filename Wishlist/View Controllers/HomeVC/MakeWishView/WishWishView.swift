@@ -172,6 +172,7 @@ class WishView: UIView, UITextFieldDelegate {
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textAlignment = .right
         v.keyboardType = .numberPad
+        v.keyboardAppearance = .dark
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -395,7 +396,10 @@ class WishView: UIView, UITextFieldDelegate {
     //MARK: priceButtonTapped
     @objc func priceButtonTapped(){
         let priceViewIsHidden = priceView.isHidden
-        priceView.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            self.priceView.isHidden = false
+        }
+        
         if priceViewIsHidden {
             self.onPriceButtonTapped?(priceView.frame.height, true)
         } else {
