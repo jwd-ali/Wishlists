@@ -195,8 +195,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.curve = curve as? NSNumber
             
             if self.wishViewIsVisible {
-                self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
-                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                            self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
+                            self.view.layoutIfNeeded()
+                        }, completion: nil)
             }
             
             
@@ -349,11 +351,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
-
-      UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+        
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
             self.transparentView.alpha = 0.7
-            self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
-            self.view.layoutIfNeeded()
         }, completion: nil)
 
 //            makeWishView.addWishDelegate = self
