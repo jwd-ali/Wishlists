@@ -181,11 +181,25 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     var keyboardHeight = CGFloat(0)
+    var duration: Any?
+    var curve: NSNumber?
     //MARK: keyboardWillShow
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             self.keyboardHeight = keyboardRectangle.height
+            
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+            self.duration = duration
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
+            self.curve = curve as? NSNumber
+            
+            if self.wishViewIsVisible {
+                self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
+                self.view.layoutIfNeeded()
+            }
+            
+            
         }
     }
     
@@ -290,7 +304,11 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // MARK: AddWishButton
     
+    var wishViewIsVisible = false
+    
     @objc func addWishButtonTapped(){
+        
+        self.wishViewIsVisible = true
         
         wishView.dropDownButton.dropView.dropOptions = self.dropOptions
 
@@ -323,7 +341,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             
         }
         
-        
         transparentView.gestureRecognizers?.forEach {
             self.transparentView.removeGestureRecognizer($0)
         }
@@ -332,10 +349,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
-        
-        self.view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+
+      UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
             self.transparentView.alpha = 0.7
             self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
             self.view.layoutIfNeeded()
@@ -355,6 +370,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     
     @objc func dismissWishWishView() {
+        
+        self.wishViewIsVisible = false
         
         wishView.dropDownButton.dismissDropDown()
         
