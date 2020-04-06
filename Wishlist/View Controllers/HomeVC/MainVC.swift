@@ -336,6 +336,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.transparentView.alpha = 0
             self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
             self.wishView.endEditing(true)
+            self.wishView.removeFromSuperview()
         }, completion: nil)
         
     }
