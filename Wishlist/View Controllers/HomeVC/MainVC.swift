@@ -328,7 +328,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
               
         self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
-            self.view.layoutIfNeeded()
             if isHidden {
                 UIView.animate(withDuration: 0.3) {
                     self.wishConstraint.constant -= height

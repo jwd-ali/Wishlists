@@ -396,15 +396,20 @@ class WishView: UIView, UITextFieldDelegate {
     //MARK: priceButtonTapped
     @objc func priceButtonTapped(){
         let priceViewIsHidden = priceView.isHidden
-        UIView.animate(withDuration: 0.2) {
-            self.priceView.isHidden = false
-        }
         
         if priceViewIsHidden {
+            UIView.animate(withDuration: 0.2) {
+                self.priceView.isHidden = false
+                self.theStackView.layoutIfNeeded()
+            }
             self.onPriceButtonTapped?(priceView.frame.height, true)
         } else {
+            UIView.animate(withDuration: 0.2) {
+                self.priceView.isHidden = true
+                self.theStackView.layoutIfNeeded()
+            }
             self.onPriceButtonTapped?(priceView.frame.height, false)
-            priceView.isHidden = true
+            
         }
     }
     
