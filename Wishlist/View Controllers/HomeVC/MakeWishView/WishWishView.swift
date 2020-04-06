@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WishStackView: UIStackView, UITextFieldDelegate { 
+class WishView: UIStackView, UITextFieldDelegate { 
     
     public var height = CGFloat(0)
     
@@ -47,51 +47,14 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         return v
     }()
     
-    //MARK: Link
-    let linkTextField: UITextField = {
-        let v = UITextField()
-        v.backgroundColor = .clear
-        v.placeholder = "Link hinzufügen"
-        v.textColor = .white
-        v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
-        v.textAlignment = .right
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    //MARK: Price
-    let priceTextField: UITextField = {
-        let v = UITextField()
-        v.backgroundColor = .clear
-        v.placeholder = "Preis hinzufügen"
-        v.textColor = .white
-        v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
-        v.textAlignment = .right
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    //MARK: Note
-    let noteTextField: UITextField = {
-        let v = UITextField()
-        v.backgroundColor = .clear
-        v.placeholder = "Notiz hinzufügen"
-        v.textColor = .white
-        v.placeholderColor(color: UIColor.white)
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
-        v.textAlignment = .right
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
     //MARK: ItemView
     let itemView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    let itemViewHeight = 60
     
     let imageButton: UIButton = {
         let v = UIButton()
@@ -155,6 +118,8 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         return v
     }()
     
+    let wishViewHeight = 70
+    
     let wishNameTextField: UITextField = {
         let v = UITextField()
         v.backgroundColor = .clear
@@ -186,9 +151,56 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         return v
     }()
     
+    let priceViewHeight = 50
+    
+    let priceLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .white
+        v.text = "Preis:"
+        v.textAlignment = .left
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let priceTextField: UITextField = {
+        let v = UITextField()
+        v.backgroundColor = .clear
+        v.placeholder = "Preis hinzufügen"
+        v.textColor = .white
+        v.placeholderColor(color: UIColor.lightGray)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.textAlignment = .right
+        v.keyboardType = .numberPad
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     //MARK: LinkView
     let linkView: UIView = {
         let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let linkLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .white
+        v.text = "Link:"
+        v.textAlignment = .left
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let linkTextField: UITextField = {
+        let v = UITextField()
+        v.backgroundColor = .clear
+        v.placeholder = "Link hinzufügen"
+        v.textColor = .white
+        v.placeholderColor(color: UIColor.lightGray)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -200,6 +212,27 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         return v
     }()
     
+    let noteLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .white
+        v.text = "Link:"
+        v.textAlignment = .left
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let noteTextField: UITextField = {
+        let v = UITextField()
+        v.backgroundColor = .clear
+        v.placeholder = "Notiz hinzufügen"
+        v.textColor = .white
+        v.placeholderColor(color: UIColor.lightGray)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.textAlignment = .right
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
          
     let dropDownButton: DropDownBtn = {
         let v = DropDownBtn()
@@ -215,8 +248,10 @@ class WishStackView: UIStackView, UITextFieldDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.layer.cornerRadius = 10
         setupViews()
+        
+        priceTextField.delegate = self
+        priceTextField.placeholder = updateAmount()
     }
     
     required init(coder: NSCoder) {
@@ -237,7 +272,7 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         wishView.addSubview(wishButton)
         
         wishView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        self.height += 70
+        self.height += CGFloat(self.wishViewHeight)
         
         wishButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
         wishButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
@@ -248,6 +283,20 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         wishNameTextField.centerYAnchor.constraint(equalTo: wishView.centerYAnchor, constant: 10).isActive = true
         wishNameTextField.trailingAnchor.constraint(equalTo: wishButton.leadingAnchor, constant: -20).isActive = true
         
+        theStackView.addArrangedSubview(self.priceView)
+        priceView.addSubview(priceLabel)
+        priceView.addSubview(priceTextField)
+        
+        priceView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        priceView.isHidden = true
+        
+        priceLabel.leadingAnchor.constraint(equalTo: priceView.leadingAnchor, constant: 20).isActive = true
+        priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
+        
+        priceTextField.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 10).isActive = true
+        priceTextField.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -195).isActive = true
+        priceTextField.centerYAnchor.constraint(equalTo: priceView.centerYAnchor, constant: 1).isActive = true
+        
         
         theStackView.addArrangedSubview(self.itemView)
         itemView.addSubview(imageButton)
@@ -257,7 +306,7 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         self.addSubview(dropDownButton)
         
         itemView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.height += 60
+        self.height += CGFloat(self.itemViewHeight)
         
         imageButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         imageButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
@@ -283,9 +332,6 @@ class WishStackView: UIStackView, UITextFieldDelegate {
         dropDownButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
         dropDownButton.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -20).isActive = true
         dropDownButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
-        
-        
-               
     }
     
     //MARK: Enable Button Methods
@@ -306,6 +352,39 @@ class WishStackView: UIStackView, UITextFieldDelegate {
             enableButton()
         }
     }
+    //MARK: PriceTextField - formatter
+    var amount: Int = 0
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.priceTextField {
+            // check if added character is Int and add digit
+            if let digit = Int(string){
+                
+                amount = amount * 10 + digit
+                
+                if amount > 100000000000 {
+                    priceTextField.text = ""
+                    amount = 0
+             
+                }else {
+                    priceTextField.text = updateAmount()
+                }
+            }
+            // update textfield if character is deleted
+            if string == "" {
+                amount = amount/10
+                priceTextField.text =  amount == 0 ? "" :updateAmount()
+            }
+        }
+        return false
+    }
+    
+    func updateAmount() -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = NumberFormatter.Style.currency
+        let amt = Double(amount/100) + Double(amount%100)/100
+        return formatter.string(from: NSNumber(value: amt))
+    }
     
     //MARK: imageButtonTapped
     @objc func imageButtonTapped(){
@@ -314,7 +393,8 @@ class WishStackView: UIStackView, UITextFieldDelegate {
     
     //MARK: priceButtonTapped
     @objc func priceButtonTapped(){
-        
+        self.height += CGFloat(priceViewHeight)
+        priceView.isHidden = false
     }
     
     //MARK: linkButtonTapped

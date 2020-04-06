@@ -55,6 +55,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         let v = UIButton()
         v.setImage(UIImage(named: "addButtonDark"), for: .normal)
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
+        v.isEnabled = false
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -70,8 +71,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     lazy var transparentView =  UIView()
     
-    let wishWishView: WishStackView = {
-        let v = WishStackView()
+    let wishView: WishView = {
+        let v = WishView()
         v.theStackView.addBackgroundColorWithTopCornerRadius(color: .darkCustom)
 //        v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -136,7 +137,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         super.viewDidLoad()
         
         // setting dropDownTableView color only works here
-        wishWishView.dropDownButton.dropView.tableView.backgroundColor = .clear
+        wishView.dropDownButton.dropView.tableView.backgroundColor = .clear
         
         // stop timer for imagePreview inside createNewListView
         self.createListView.timer?.invalidate()
@@ -152,6 +153,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.theCollectionView.isHidden = false
                 self.theCollectionView.reloadData()
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
+                self.addButton.isEnabled = true
             }
         }
         
@@ -279,26 +281,27 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     @objc func addWishButtonTapped(){
         
-        wishWishView.dropDownButton.dropView.dropOptions = self.dropOptions
+        wishView.dropDownButton.dropView.dropOptions = self.dropOptions
 
         // set dropDownButton image and label to first wishlists image and label
-        wishWishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
-        wishWishView.dropDownButton.label.text = self.dataSourceArray[0].name
+        wishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
+        wishView.dropDownButton.label.text = self.dataSourceArray[0].name
 
         // pass data array
-        wishWishView.dataSourceArray = self.dataSourceArray
+        wishView.dataSourceArray = self.dataSourceArray
         
-        wishWishView.wishNameTextField.becomeFirstResponder()
-        wishWishView.disableButton()
-        wishWishView.wishNameTextField.text = ""
+        wishView.wishNameTextField.becomeFirstResponder()
+        wishView.disableButton()
+        wishView.wishNameTextField.text = ""
         
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         transparentView.frame = self.view.frame
         self.view.addSubview(transparentView)
             
         let screenSize = UIScreen.main.bounds.size
-        self.wishWishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishWishView.height)
-        self.view.addSubview(self.wishWishView)
+        self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
+        
+        self.view.addSubview(self.wishView)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishWishView))
         transparentView.addGestureRecognizer(tapGesture)
@@ -307,7 +310,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.7
-            self.wishWishView.frame = CGRect(x: 0, y: screenSize.height - self.wishWishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishWishView.height)
+            self.wishView.frame = CGRect(x: 0, y: screenSize.height - self.wishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishView.height)
             
         }, completion: nil)
 
@@ -325,14 +328,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     @objc func dismissWishWishView() {
         
-        wishWishView.dropDownButton.dismissDropDown()
+        wishView.dropDownButton.dismissDropDown()
        
         let screenSize = UIScreen.main.bounds.size
         
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
             self.transparentView.alpha = 0
-            self.wishWishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishWishView.height)
-            self.wishWishView.wishNameTextField.resignFirstResponder()
+            self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
+            self.wishView.endEditing(true)
         }, completion: nil)
         
     }
