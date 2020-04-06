@@ -303,21 +303,35 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.view.addSubview(self.wishView)
         
+        self.wishView.onPriceButtonTapped = { [unowned self] height in
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3) {
+                self.wishWishConstraint.constant -= height
+                self.view.layoutIfNeeded()
+            }
+        }
+        
         wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        wishWishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
+        wishWishConstraint.isActive = true
         
+        transparentView.gestureRecognizers?.forEach {
+            self.transparentView.removeGestureRecognizer($0)
+        }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishWishView))
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
         
+        self.view.layoutIfNeeded()
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.7
 //            self.wishView.frame = CGRect(x: 0, y: screenSize.height - self.wishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishView.height)
-            
+            self.wishWishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
+            self.view.layoutIfNeeded()
         }, completion: nil)
 
 //            makeWishView.addWishDelegate = self
@@ -337,16 +351,21 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         wishView.dropDownButton.dismissDropDown()
        
-        let screenSize = UIScreen.main.bounds.size
+//        let screenSize = UIScreen.main.bounds.size
         
+        self.view.layoutIfNeeded()
+        
+        self.wishView.endEditing(true)
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
             self.transparentView.alpha = 0
-            self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
-            
-            self.wishView.endEditing(true)
+//            self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
+            self.wishWishConstraint.constant = 0
+            self.view.layoutIfNeeded()
+
         }) { (done) in
             self.transparentView.removeFromSuperview()
             self.wishView.removeFromSuperview()
+            self.wishView.priceView.isHidden = true
         }
         
     }

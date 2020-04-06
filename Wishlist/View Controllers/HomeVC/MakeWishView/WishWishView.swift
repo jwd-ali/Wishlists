@@ -11,7 +11,7 @@ import UIKit
 
 class WishView: UIView, UITextFieldDelegate { 
     
-    public var height = CGFloat(0)
+//    public var height = CGFloat(0)
     
     //MARK: StackView
     let theStackView: UIStackView = {
@@ -244,6 +244,8 @@ class WishView: UIView, UITextFieldDelegate {
     
     var dataSourceArray = [Wishlist]()
     
+    var onPriceButtonTapped: ((CGFloat) -> Void)?
+    
     //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -272,7 +274,7 @@ class WishView: UIView, UITextFieldDelegate {
         wishView.addSubview(wishButton)
         
         wishView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        self.height += CGFloat(self.wishViewHeight)
+//        self.height += CGFloat(self.wishViewHeight)
         
         wishButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
         wishButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
@@ -306,7 +308,7 @@ class WishView: UIView, UITextFieldDelegate {
         self.addSubview(dropDownButton)
         
         itemView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.height += CGFloat(self.itemViewHeight)
+//        self.height += CGFloat(self.itemViewHeight)
         
         imageButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         imageButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
@@ -393,8 +395,13 @@ class WishView: UIView, UITextFieldDelegate {
     
     //MARK: priceButtonTapped
     @objc func priceButtonTapped(){
-        self.height += CGFloat(priceViewHeight)
+//        self.height += CGFloat(priceViewHeight)
+        
+        let priceViewIsHidden = priceView.isHidden
         priceView.isHidden = false
+        if priceViewIsHidden {
+            self.onPriceButtonTapped?(priceView.frame.height)
+        }
     }
     
     //MARK: linkButtonTapped
