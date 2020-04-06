@@ -78,7 +78,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    var wishWishConstraint: NSLayoutConstraint!
+    var wishConstraint: NSLayoutConstraint!
 
     var dropOptions = [DropDownOption]()
    
@@ -236,6 +236,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
 
         ])
+        
+        self.view.addSubview(self.wishView)
+        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        wishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
+        wishConstraint.isActive = true
     }
     
     // MARK: CreateNewListView
@@ -297,24 +303,23 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         transparentView.frame = self.view.frame
         self.view.addSubview(transparentView)
-            
-//        let screenSize = UIScreen.main.bounds.size
-//        self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
-        
-        self.view.addSubview(self.wishView)
-        
-        self.wishView.onPriceButtonTapped = { [unowned self] height in
+              
+        self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
             self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.3) {
-                self.wishWishConstraint.constant -= height
-                self.view.layoutIfNeeded()
+            if isHidden {
+                UIView.animate(withDuration: 0.3) {
+                    self.wishConstraint.constant -= height
+                    self.view.layoutIfNeeded()
+                }
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.wishConstraint.constant += height
+                    self.view.layoutIfNeeded()
+                }
             }
+            
         }
         
-        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        wishWishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
-        wishWishConstraint.isActive = true
         
         transparentView.gestureRecognizers?.forEach {
             self.transparentView.removeGestureRecognizer($0)
@@ -329,8 +334,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.7
-//            self.wishView.frame = CGRect(x: 0, y: screenSize.height - self.wishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishView.height)
-            self.wishWishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
+            self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
             self.view.layoutIfNeeded()
         }, completion: nil)
 
@@ -350,16 +354,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     @objc func dismissWishWishView() {
         
         wishView.dropDownButton.dismissDropDown()
-       
-//        let screenSize = UIScreen.main.bounds.size
         
         self.view.layoutIfNeeded()
         
         self.wishView.endEditing(true)
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
             self.transparentView.alpha = 0
-//            self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
-            self.wishWishConstraint.constant = 0
+            self.wishConstraint.constant = 0
             self.view.layoutIfNeeded()
 
         }) { (done) in
