@@ -237,11 +237,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 
         ])
         
+        transparentView.frame = self.view.frame
+        self.view.addSubview(transparentView)
+        transparentView.alpha = 0
+        
         self.view.addSubview(self.wishView)
         wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         wishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
         wishConstraint.isActive = true
+        
     }
     
     // MARK: CreateNewListView
@@ -301,8 +306,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishView.wishNameTextField.text = ""
         
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        transparentView.frame = self.view.frame
-        self.view.addSubview(transparentView)
               
         self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
             self.view.layoutIfNeeded()
@@ -364,8 +367,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.view.layoutIfNeeded()
 
         }) { (done) in
-            self.transparentView.removeFromSuperview()
-            self.wishView.removeFromSuperview()
             self.wishView.priceView.isHidden = true
         }
         
