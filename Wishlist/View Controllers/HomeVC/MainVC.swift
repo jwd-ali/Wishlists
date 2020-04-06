@@ -74,7 +74,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     let wishView: WishView = {
         let v = WishView()
         v.theStackView.addBackgroundColorWithTopCornerRadius(color: .darkCustom)
-//        v.translatesAutoresizingMaskIntoConstraints = false
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
@@ -298,10 +298,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         transparentView.frame = self.view.frame
         self.view.addSubview(transparentView)
             
-        let screenSize = UIScreen.main.bounds.size
-        self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
+//        let screenSize = UIScreen.main.bounds.size
+//        self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
         
         self.view.addSubview(self.wishView)
+        
+        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishWishView))
         transparentView.addGestureRecognizer(tapGesture)
@@ -310,7 +316,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.7
-            self.wishView.frame = CGRect(x: 0, y: screenSize.height - self.wishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishView.height)
+//            self.wishView.frame = CGRect(x: 0, y: screenSize.height - self.wishView.height - self.keyboardHeight, width: screenSize.width, height: self.wishView.height)
             
         }, completion: nil)
 
@@ -326,6 +332,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
   
     }
     
+    
     @objc func dismissWishWishView() {
         
         wishView.dropDownButton.dismissDropDown()
@@ -335,9 +342,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
             self.transparentView.alpha = 0
             self.wishView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.wishView.height)
+            
             self.wishView.endEditing(true)
+        }) { (done) in
+            self.transparentView.removeFromSuperview()
             self.wishView.removeFromSuperview()
-        }, completion: nil)
+        }
         
     }
     
