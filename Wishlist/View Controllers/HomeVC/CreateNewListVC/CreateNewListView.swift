@@ -55,16 +55,16 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     let wishlistNameTextField: UITextField = {
         let v = UITextField()
         v.backgroundColor = .clear
-        v.placeholder = "Wie soll deine Wishlist heißen?"
-        v.textColor = .white
-        v.tintColor = .white
-        v.font = UIFont(name: "AvenirNext-Medium", size: 19)
+        v.placeholder = "Wunschliste"
+        v.textColor = .darkCustom
+        v.tintColor = .lightGray
+        v.font = UIFont(name: "AvenirNext-Bold", size: 19)
         v.textAlignment = .center
-        v.placeholderColor(color: UIColor.white)
+        v.placeholderColor(color: UIColor.lightGray)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addLine(position: .LINE_POSITION_BOTTOM, color: .white, width: 2)
         v.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        v.keyboardAppearance = UIKeyboardAppearance.dark
+        v.keyboardAppearance = UIKeyboardAppearance.default
         return v
     }()
     
@@ -73,9 +73,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("Liste erstellen", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-        v.titleLabel?.textColor = .white
-        v.setTitleColor(.white, for: .normal)
-        v.backgroundColor = UIColor.darkGray
+        v.setTitleColor(.darkCustom, for: .normal)
+        v.backgroundColor = UIColor.white
         v.layer.cornerRadius = 3
         v.addTarget(self, action: #selector(createListTapped), for: .touchUpInside)
         return v
@@ -99,6 +98,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     var timer: Timer?
     
     var wishList: Wishlist?
+    
+    var bottomConstraint: NSLayoutConstraint!
     
     var wishlistMode: Constants.WishlistMode?
     //MARK: init
@@ -142,6 +143,9 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     //MARK: setupViews
     func setupViews(){
         
+        let screenHeight = UIScreen.main.bounds.size.height
+        let screenWidth  = UIScreen.main.bounds.size.width
+        
         addSubview(visualEffectView)
         addSubview(closeButton)
         addSubview(imagePreview)
@@ -160,54 +164,48 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         closeButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
         closeButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
         
-        imagePreview.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-        imagePreview.heightAnchor.constraint(equalToConstant: 160).isActive = true
-        imagePreview.widthAnchor.constraint(equalToConstant: 160).isActive = true
-        imagePreview.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        editButton.topAnchor.constraint(equalTo: imagePreview.topAnchor, constant: 110).isActive = true
-        editButton.leadingAnchor.constraint(equalTo: imagePreview.leadingAnchor, constant: 110).isActive = true
-        editButton.heightAnchor.constraint(equalToConstant: 90).isActive = true
-        editButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        
-        wishlistNameTextField.topAnchor.constraint(equalTo: imagePreview.bottomAnchor, constant: 65).isActive = true
-        wishlistNameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
-        wishlistNameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
-//        wishlistNameTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        
-        createButton.topAnchor.constraint(equalTo: wishlistNameTextField.bottomAnchor, constant: 20).isActive = true
         createButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
         createButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
         createButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.bottomConstraint = createButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -screenHeight/2)
+        bottomConstraint.isActive = true
         
+        wishlistNameTextField.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -20).isActive = true
+        wishlistNameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
+        wishlistNameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
+        
+        imagePreview.bottomAnchor.constraint(equalTo: wishlistNameTextField.topAnchor, constant: -55).isActive = true
+        imagePreview.heightAnchor.constraint(equalToConstant: screenWidth/2.3).isActive = true
+        imagePreview.widthAnchor.constraint(equalToConstant: screenWidth/2.3).isActive = true
+        imagePreview.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        editButton.topAnchor.constraint(equalTo: imagePreview.topAnchor, constant: screenWidth/2.3 - 45).isActive = true
+        editButton.leadingAnchor.constraint(equalTo: imagePreview.leadingAnchor, constant: screenWidth/2.3 - 45).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        editButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+
     }
     
     //MARK: closeButtonTapped
     @objc func closeButtonTapped(){
         closeViewDelegate?.closeNewListViewTapped()
         timer?.invalidate()
-        wishlistNameTextField.resignFirstResponder()
         dismissView()
-        
     }
     
     func dismissView(){
         
+        wishlistNameTextField.resignFirstResponder()
+        
         UIView.animate(withDuration: 0.3, animations: {
-            self.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.wishlistNameTextField.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.createButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.closeButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.editButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            self.visualEffectView.alpha = 0
-            self.imagePreview.alpha = 0
-            self.editButton.alpha = 0
-            self.closeButton.alpha = 0
-            self.wishlistNameTextField.alpha = 0
-            self.createButton.alpha = 0
+            
+            for view in self.subviews as [UIView] {
+                view.alpha = 0
+                view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            }
 
         }) { (_) in
-            self.removeFromSuperview()
+            self.isHidden = true
         }
     }
     

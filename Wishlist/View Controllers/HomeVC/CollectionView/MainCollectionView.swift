@@ -96,7 +96,7 @@ extension MainViewController {
                self.createNewListView()
                // reset textfield
                self.createListView.wishlistNameTextField.text = ""
-               self.createListView.wishlistNameTextField.becomeFirstResponder()
+//               self.createListView.wishlistNameTextField.becomeFirstResponder()
                // disable button
                self.createListView.disableButton()
                // start timer for imagePreview

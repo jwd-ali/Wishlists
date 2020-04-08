@@ -133,8 +133,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     // only animate cells at first start
     var shouldAnimateCells = false
     
-
-    
     // MARK: viewDidLoad()
     
     override func viewDidLoad() {
@@ -201,6 +199,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                             self.view.layoutIfNeeded()
                         }, completion: nil)
             }
+            
+            if !self.createListView.isHidden {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
+                    self.view.layoutIfNeeded()
+                    }, completion: nil)
+            }
+            
         }
     }
     
@@ -251,7 +257,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             theCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
 
         ])
-        
+        //MARK: constrain wishView
         transparentView.frame = self.view.frame
         self.view.addSubview(transparentView)
         transparentView.alpha = 0
@@ -262,45 +268,36 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
         wishConstraint.isActive = true
         
-        
-    }
-    
-    // MARK: CreateNewListView
-    func createNewListView(){
+        //MARK: constrain createListView
         self.view.addSubview(self.createListView)
         
         self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-
-        self.createListView.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.wishlistNameTextField.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.createButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.closeButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.editButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.visualEffectView.alpha = 0
-        self.createListView.imagePreview.alpha = 0
-        self.createListView.editButton.alpha = 0
-        self.createListView.closeButton.alpha = 0
-        self.createListView.wishlistNameTextField.alpha = 0
-        self.createListView.createButton.alpha = 0
+        self.createListView.isHidden = true
+        
+    }
+    
+    // MARK: CreateNewListView
+    func createNewListView(){
+        
+        createListView.isHidden = false
+        createListView.wishlistNameTextField.becomeFirstResponder()
+        
+        for view in self.createListView.subviews as [UIView] {
+            view.alpha = 0
+            view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        }
         
         UIView.animate(withDuration: 0.3) {
-                       
-            self.createListView.visualEffectView.alpha = 1
-            self.createListView.imagePreview.alpha = 1
-            self.createListView.editButton.alpha = 1
-            self.createListView.closeButton.alpha = 1
-            self.createListView.wishlistNameTextField.alpha = 1
-            self.createListView.createButton.alpha = 1
-           
-            self.createListView.imagePreview.transform = CGAffineTransform.identity
-            self.createListView.wishlistNameTextField.transform = CGAffineTransform.identity
-            self.createListView.createButton.transform = CGAffineTransform.identity
-            self.createListView.editButton.transform = CGAffineTransform.identity
-            self.createListView.closeButton.transform = CGAffineTransform.identity
+            
+            for view in self.createListView.subviews as [UIView] {
+                view.alpha = 1
+                view.transform = CGAffineTransform.identity
+            }
        }
+        
     }
     
     

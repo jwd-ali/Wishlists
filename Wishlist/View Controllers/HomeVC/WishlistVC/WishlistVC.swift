@@ -175,12 +175,43 @@ class WishlistViewController: UIViewController {
         
         bottomConstraint = self.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         
-        self.menueTableViewHeight = CGFloat(menueOptions.count * 50 + 40)
+        self.menueTableViewHeight = CGFloat(menueOptions.count * 50)
         self.menueTableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 40, right: 0)
         self.menueTableView.layer.cornerRadius = 5
         self.menueTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.menueTableView.reloadData()
         self.view.layoutIfNeeded()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+    }
+    
+    var keyboardHeight = CGFloat(0)
+    var duration: Any?
+    var curve: NSNumber?
+    //MARK: keyboardWillShow
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+            self.duration = duration
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
+            self.curve = curve as? NSNumber
+            
+            if !self.createListView.isHidden {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
+                    self.view.layoutIfNeeded()
+                    }, completion: nil)
+            }
+            
+        }
     }
     
     //MARK: setupViews
@@ -237,6 +268,14 @@ class WishlistViewController: UIViewController {
             addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40),
             
         ])
+        //MARK: constrain createListView
+        self.view.addSubview(self.createListView)
+        
+        self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.createListView.isHidden = true
     }
     //MARK: setupWishTableView
     func setupWishTableView(){

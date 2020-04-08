@@ -101,7 +101,6 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: setUpNewListView
     func setUpNewListView(){
         self.createListView.wishList = self.wishList
-//        self.createListView.currentWishlistIndex = self.currentWishListIDX
         self.createListView.oldListName = self.wishList.name
         self.createListView.wishlistNameTextField.text = wishList.name
         self.createListView.imagePreview.image = wishList.image
@@ -115,40 +114,23 @@ extension WishlistViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: CreateNewListView
     func createNewListView(){
-        self.view.addSubview(self.createListView)
         
-        self.createListView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.createListView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-
-        self.createListView.imagePreview.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.wishlistNameTextField.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.createButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.closeButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.editButton.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        self.createListView.visualEffectView.alpha = 0
-        self.createListView.imagePreview.alpha = 0
-        self.createListView.editButton.alpha = 0
-        self.createListView.closeButton.alpha = 0
-        self.createListView.wishlistNameTextField.alpha = 0
-        self.createListView.createButton.alpha = 0
+        createListView.isHidden = false
+        createListView.wishlistNameTextField.becomeFirstResponder()
+         
+         for view in self.createListView.subviews as [UIView] {
+             view.alpha = 0
+             view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+         }
+         
+         UIView.animate(withDuration: 0.3) {
+             
+             for view in self.createListView.subviews as [UIView] {
+                 view.alpha = 1
+                 view.transform = CGAffineTransform.identity
+             }
+        }
         
-        UIView.animate(withDuration: 0.3) {
-                       
-            self.createListView.visualEffectView.alpha = 1
-            self.createListView.imagePreview.alpha = 1
-            self.createListView.editButton.alpha = 1
-            self.createListView.closeButton.alpha = 1
-            self.createListView.wishlistNameTextField.alpha = 1
-            self.createListView.createButton.alpha = 1
-           
-            self.createListView.imagePreview.transform = CGAffineTransform.identity
-            self.createListView.wishlistNameTextField.transform = CGAffineTransform.identity
-            self.createListView.createButton.transform = CGAffineTransform.identity
-            self.createListView.editButton.transform = CGAffineTransform.identity
-            self.createListView.closeButton.transform = CGAffineTransform.identity
-       }
     }
 }
 

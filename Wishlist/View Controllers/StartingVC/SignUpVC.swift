@@ -71,7 +71,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
-        v.placeholderFontScale = 1
+        v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.autocapitalizationType = .none
@@ -117,7 +117,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
         v.placeholderColor = .white
-        v.placeholderFontScale = 1
+        v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
@@ -206,7 +206,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort wiederholen"
         v.placeholderColor = .white
-        v.placeholderFontScale = 1
+        v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
