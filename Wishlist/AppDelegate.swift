@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import RevealingSplashView
-import IQKeyboardManagerSwift
 import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
@@ -28,9 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController?.view.addSubview(revealingSplashView)
         
         FirebaseApp.configure()
-        
-        // disable toolbar for keyboard manager
-        IQKeyboardManager.shared.enableAutoToolbar = false
         
         // Google Sign in
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID

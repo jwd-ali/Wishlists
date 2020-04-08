@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import IQKeyboardManagerSwift
 
 protocol CreateListDelegate {
     func createListTappedDelegate(listImage: UIImage, listImageIndex: Int, listName: String)
@@ -58,6 +57,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.placeholder = "Wie soll deine Wishlist heißen?"
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Medium", size: 19)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.white)

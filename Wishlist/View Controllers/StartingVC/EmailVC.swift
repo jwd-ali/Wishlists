@@ -42,6 +42,7 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UIText
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
@@ -70,7 +71,7 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UIText
     let weiterButton: CustomButton = {
         let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("WEITER", for: .normal)
+        v.setTitle("Weiter", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.titleLabel?.textColor = .white
         v.setTitleColor(.white, for: .normal)
@@ -257,7 +258,12 @@ class EmailViewController: UIViewController, UIGestureRecognizerDelegate, UIText
                     // pass email to LoginVC
                     LoginView.email = self.email
                     
-                    self.navigationController?.pushViewController(LoginView, animated: false)
+                    let weiterButtonID = "weiterButtonID"
+                    self.weiterButton.heroID = weiterButtonID
+                    
+                    LoginView.loginButton.heroID = weiterButtonID
+                    
+                    self.navigationController?.pushViewController(LoginView, animated: true)
                 }
             }
             

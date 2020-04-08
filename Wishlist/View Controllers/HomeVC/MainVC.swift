@@ -53,7 +53,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let addButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButtonDark"), for: .normal)
+        v.setImage(UIImage(named: "addButtonLight"), for: .normal)
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
         v.isEnabled = false
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -69,11 +69,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    lazy var transparentView =  UIView()
+    let transparentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        return v
+    }()
     
     let wishView: WishView = {
         let v = WishView()
-        v.theStackView.addBackgroundColorWithTopCornerRadius(color: .darkCustom)
+        v.theStackView.addBackgroundColorWithTopCornerRadius(color: .white)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -136,9 +140,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setting dropDownTableView color only works here
-        wishView.dropDownButton.dropView.tableView.backgroundColor = .clear
-        
         // stop timer for imagePreview inside createNewListView
         self.createListView.timer?.invalidate()
         
@@ -200,8 +201,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                             self.view.layoutIfNeeded()
                         }, completion: nil)
             }
-            
-            
         }
     }
     
@@ -263,6 +262,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
         wishConstraint.isActive = true
         
+        
     }
     
     // MARK: CreateNewListView
@@ -313,6 +313,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.wishViewIsVisible = true
         
         wishView.dropDownButton.dropView.dropOptions = self.dropOptions
+        wishView.dropDownButton.dropView.tableView.reloadData()
 
         // set dropDownButton image and label to first wishlists image and label
         wishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
@@ -324,26 +325,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishView.wishNameTextField.becomeFirstResponder()
         wishView.disableButton()
         wishView.wishNameTextField.text = ""
+        wishView.priceTextField.text = ""
+        wishView.linkTextField.text = ""
         
-        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-              
-        self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
-            if isHidden {
-                UIView.animate(withDuration: 0.3) {
-                    self.wishConstraint.constant -= height
-                    self.wishView.priceTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }
-            } else {
-                UIView.animate(withDuration: 0.3) {
-                    self.wishConstraint.constant += height
-//                    self.wishView.priceTextField.resignFirstResponder()
-                    self.wishView.wishNameTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }
-            }
-            
-        }
+        onPriceButtonTappedClosure()
+        onLinkButtonTappedClosure()
+        onNoteButtonTappedClosure()
         
         transparentView.gestureRecognizers?.forEach {
             self.transparentView.removeGestureRecognizer($0)
@@ -354,8 +341,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         transparentView.alpha = 0
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
-            self.transparentView.alpha = 0.7
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+            self.transparentView.alpha = 0.6
         }, completion: nil)
 
 //            makeWishView.addWishDelegate = self
@@ -368,6 +355,65 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //            // update selectedWishlistIDX
 //            makeWishView.selectedWishlistIDX = currentWishListIDX
   
+    }
+    //MARK: onPriceButtonClosure
+    func onPriceButtonTappedClosure(){
+        self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
+            
+            if isHidden {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.priceTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    //MARK: onLinkButtonTappedClosure
+    func onLinkButtonTappedClosure(){
+       self.wishView.onLinkButtonTapped = { [unowned self] height, isHidden in
+            if isHidden {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.linkTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    
+    //MARK: onNoteButtonTappedClosure
+    func onNoteButtonTappedClosure(){
+       self.wishView.onNoteButtonTapped = { [unowned self] height, isHidden in
+            if isHidden {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.noteTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
     }
     
     
@@ -387,6 +433,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 
         }) { (done) in
             self.wishView.priceView.isHidden = true
+            self.wishView.linkView.isHidden = true
         }
         
     }

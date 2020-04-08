@@ -11,7 +11,6 @@ import FirebaseAuth
 import Firebase
 import SwiftEntryKit
 import Lottie
-import IQKeyboardManagerSwift
 import TextFieldEffects
 
 class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
@@ -68,6 +67,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
@@ -113,6 +113,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
         v.placeholderColor = .white
@@ -201,6 +202,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort wiederholen"
         v.placeholderColor = .white
@@ -308,21 +310,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 //        usernameTextField.delegate = self
         passwordTextField.delegate = self
         passwordWiederholenTextField.delegate = self
-        
-        
-//        // set textfield content type
-//        emailTextField.textContentType = .emailAddress
-//        passwordTextField.textContentType = .newPassword
-//        passwordWiederholenTextField.textContentType = .newPassword
 
         // set bottom inset for ScrollView
         theScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
-        
-        //Textfield cursor -> white
-        UITextField.appearance().tintColor = .white
-        
-        // enable that view moves when keyboard is activ 
-        IQKeyboardManager.shared.enable = true
         
         setUpViews()
         
@@ -701,16 +691,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             
         case passwordTextField:
             setupPasswortTextfield()
-            IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(passwordView.frame.height) + CGFloat(passwordWiederholenTextField.frame.height)
             break
             
         case passwordWiederholenTextField:
             setupPasswortWiederholenTextfield()
-            IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(passwordWiederholenView.frame.height)
             break
             
         default:
-            IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
             break
         }
         

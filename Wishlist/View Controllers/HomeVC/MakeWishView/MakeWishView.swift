@@ -187,7 +187,6 @@ class MakeWishView: UIView, UITextFieldDelegate {
         )
 
         self.wishNameTextField.becomeFirstResponder()
-        UITextField.appearance().tintColor = .white
         
         // add target to wishNameTextfield to check if empty or not
         setupAddTargetIsNotEmptyTextFields()

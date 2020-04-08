@@ -43,6 +43,7 @@ class ForgotPasswordVC: UIViewController {
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white

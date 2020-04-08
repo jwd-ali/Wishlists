@@ -40,6 +40,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Email-Adresse"
         v.placeholderColor = .white
@@ -56,6 +57,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.borderActiveColor = .white
         v.borderInactiveColor = .white
         v.textColor = .white
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
         v.placeholderColor = .white
@@ -82,7 +84,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let loginButton: CustomButton = {
         let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("LOGIN", for: .normal)
+        v.setTitle("Login", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.titleLabel?.textColor = .white
         v.setTitleColor(.white, for: .normal)
@@ -138,8 +140,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // password hide/show
         passwordTextField.isSecureTextEntry.toggle()
         
-        // Textfield cursor -> white
-        UITextField.appearance().tintColor = .white
+//        // Textfield cursor -> white
+//        UITextField.appearance().tintColor = .white
         
         setUpViews()
 
@@ -289,7 +291,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func backButtonTapped() {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: true)
     }
 
     

@@ -89,6 +89,7 @@ class UserNameVC: UIViewController, UITextFieldDelegate {
         v.borderInactiveColor = .white
         v.textColor = .white
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
+        v.tintColor = .white
         v.placeholder = "Benutzername"
         v.placeholderColor = .white
         v.placeholderFontScale = 1

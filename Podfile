@@ -18,7 +18,6 @@ target 'Wishlists' do
 	pod 'LBTAComponents'
 	pod 'lottie-ios'
 	pod 'SwiftEntryKit', '1.2.3'
-	pod 'IQKeyboardManagerSwift'
 	pod 'FBSDKCoreKit'
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'

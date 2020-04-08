@@ -32,10 +32,10 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.darkCustom
-        self.layer.borderColor = UIColor.white.cgColor
-        self.layer.borderWidth = 1.0
-        self.layer.cornerRadius = 3
+//        self.backgroundColor = UIColor.darkCustom
+        self.tableView.layer.borderColor = UIColor.darkCustom.cgColor
+        self.tableView.layer.borderWidth = 1.0
+        self.tableView.layer.cornerRadius = 3
         
         self.tableView.register(DropDownCell.self, forCellReuseIdentifier: DropDownCell.reuseID)
         
@@ -71,7 +71,7 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         
         cell.label.text = dropOptions[indexPath.row].name
         cell.listImage.image = dropOptions[indexPath.row].image
-        cell.backgroundColor = UIColor.clear
+//        cell.backgroundColor = UIColor.clear
         return cell
     }
     
@@ -92,8 +92,8 @@ class DropDownBtn: UIButton, DropDownProtocol {
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.textColor = .darkCustom
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -101,6 +101,8 @@ class DropDownBtn: UIButton, DropDownProtocol {
     let listImage: UIImageView = {
         let v = UIImageView()
         v.backgroundColor = .clear
+        v.layer.cornerRadius = 3
+        v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -121,7 +123,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.clear
-        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderColor = UIColor.darkCustom.cgColor
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 3
         
@@ -140,8 +142,6 @@ class DropDownBtn: UIButton, DropDownProtocol {
         
         dropView = DropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         dropView.delegate = self
-        dropView.layer.borderColor = UIColor.white.cgColor
-        dropView.layer.borderWidth = 1.0
         dropView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -163,6 +163,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
     var isOpen = false
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         if isOpen == false {
             
             isOpen = true

@@ -14,22 +14,22 @@ class DropDownCell: UITableViewCell {
     
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        v.textColor = .white
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.textColor = .darkCustom
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     let listImage: UIImageView = {
         let v = UIImageView()
+        v.layer.cornerRadius = 3
+        v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.backgroundColor = .clear
         
         // add image
         self.contentView.addSubview(listImage)

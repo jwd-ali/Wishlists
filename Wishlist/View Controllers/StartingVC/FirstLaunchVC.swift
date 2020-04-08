@@ -184,9 +184,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Textfield cursor -> white
-        UITextField.appearance().tintColor = .white
-        
         // google sign in delegate
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
