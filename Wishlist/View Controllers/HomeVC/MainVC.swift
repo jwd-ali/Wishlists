@@ -23,6 +23,15 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
+    let activityIndicator: UIActivityIndicatorView = {
+        let v = UIActivityIndicatorView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.style = UIActivityIndicatorView.Style.large
+        v.color = .white
+        v.hidesWhenStopped = true
+        return v
+    }()
+    
     //MARK: BottomBar
     let bottomBar: UIImageView = {
         let v = UIImageView()
@@ -143,6 +152,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.theCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
+        activityIndicator.startAnimating()
+        
         setupViews()
         theCollectionView.isHidden = true
         DataHandler.getWishlists { (success, dataArray, dropOptionsArray)  in
@@ -153,6 +164,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.theCollectionView.reloadData()
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
                 self.addButton.isEnabled = true
+                self.activityIndicator.stopAnimating()
             }
         }
         
@@ -214,6 +226,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     func setupViews() {
         
         view.addSubview(backGroundImage)
+        view.addSubview(activityIndicator)
         view.addSubview(theCollectionView)
         view.addSubview(bottomBar)
         view.addSubview(communityButton)
@@ -228,6 +241,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
             backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20),
             backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
+            
+            // constrain activity indicator
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             //constrain bottomBar
             bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
