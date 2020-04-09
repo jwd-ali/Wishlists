@@ -61,7 +61,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         v.font = UIFont(name: "AvenirNext-Regular", size: 17)
         v.placeholder = "Passwort"
         v.placeholderColor = .white
-        v.placeholderFontScale = 1
+        v.placeholderFontScale = 0.8
         v.minimumFontSize = 13
         v.borderStyle = .line
         v.translatesAutoresizingMaskIntoConstraints = false

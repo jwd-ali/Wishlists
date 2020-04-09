@@ -279,9 +279,9 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         appleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
         appleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
-        documentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-        documentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        documentsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        documentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        documentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        documentsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
  
     }
     
