@@ -15,8 +15,8 @@ class WhishlistTableViewController: UITableViewController {
     // protocol / delegate pattern
     public var deleteWishDelegate: DeleteWishDelegate?
     
-    let nightSky: UIImageView = {
-        let v = UIImageView()
+    let nightSky: AlignedAspectFitImageView = {
+        let v = AlignedAspectFitImageView()
         v.image = UIImage(named: "nightSky")
         v.translatesAutoresizingMaskIntoConstraints = false
         v.contentMode = .scaleAspectFit
@@ -50,7 +50,33 @@ class WhishlistTableViewController: UITableViewController {
         // add top inset for tableview
         self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
+        setupView()
+    }
+    
+    func setupView(){
+        view.addSubview(self.nightSky)
+        view.addSubview(self.noWishes)
         
+        let screenHeight = UIScreen.main.bounds.size.height
+                    
+        nightSky.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        nightSky.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        nightSky.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 30).isActive = true
+        nightSky.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: -30).isActive = true
+        
+//        nightSky.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+//        nightSky.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//        nightSky.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+//        nightSky.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+//        nightSky.heightAnchor.constraint(equalToConstant: 50).isActive = true
+      
+        noWishes.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        noWishes.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+//        noWishes.topAnchor.constraint(equalTo: nightSky.bottomAnchor).isActive = true
+        noWishes.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        nightSky.isHidden = true
+        noWishes.isHidden = true
     }
 
     // MARK: - Table view data source
@@ -62,20 +88,12 @@ class WhishlistTableViewController: UITableViewController {
         
         // show background image and text if wishlist is empty
         if wishList.count == 0 {
-            view.addSubview(self.nightSky)
-            view.addSubview(self.noWishes)
-            
-            nightSky.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
-            nightSky.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-            nightSky.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-            
-            noWishes.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-            noWishes.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-            noWishes.topAnchor.constraint(equalTo: nightSky.bottomAnchor, constant: 10).isActive = true
+            nightSky.isHidden = false
+            noWishes.isHidden = false
             
         } else {
-            nightSky.removeFromSuperview()
-            noWishes.removeFromSuperview()
+            nightSky.isHidden = true
+            noWishes.isHidden = true
         }
         return wishList.count
     }
