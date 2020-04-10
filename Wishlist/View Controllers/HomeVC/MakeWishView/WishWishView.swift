@@ -52,7 +52,13 @@ class WishView: UIView, UITextFieldDelegate {
         return v
     }()
     
-    let itemViewHeight = 60
+    let itemScrollView: UIScrollView = {
+        let v = UIScrollView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .red
+        v.alwaysBounceVertical = true
+        return v
+    }()
     
     let imageButton: UIButton = {
         let v = UIButton()
@@ -341,38 +347,44 @@ class WishView: UIView, UITextFieldDelegate {
         
         //MARK: items
         theStackView.addArrangedSubview(self.itemView)
-        itemView.addSubview(imageButton)
-        itemView.addSubview(priceButton)
-        itemView.addSubview(linkButton)
-        itemView.addSubview(noteButton)
+        itemView.addSubview(itemScrollView)
+        itemScrollView.addSubview(imageButton)
+        itemScrollView.addSubview(priceButton)
+        itemScrollView.addSubview(linkButton)
+        itemScrollView.addSubview(noteButton)
         self.addSubview(dropDownButton)
         
         itemView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+        dropDownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        dropDownButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        dropDownButton.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -20).isActive = true
+        dropDownButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
+        
+        itemScrollView.topAnchor.constraint(equalTo: itemView.topAnchor).isActive = true
+        itemScrollView.leadingAnchor.constraint(equalTo: itemView.leadingAnchor).isActive = true
+        itemScrollView.trailingAnchor.constraint(equalTo: dropDownButton.leadingAnchor).isActive = true
+        itemScrollView.bottomAnchor.constraint(equalTo: itemView.bottomAnchor).isActive = true
+        
         imageButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         imageButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        imageButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
-        imageButton.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 20).isActive = true
+        imageButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
+        imageButton.leadingAnchor.constraint(equalTo: itemScrollView.leadingAnchor, constant: 20).isActive = true
         
         priceButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         priceButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        priceButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
-        priceButton.leadingAnchor.constraint(equalTo: imageButton.leadingAnchor, constant: 50).isActive = true
+        priceButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
+        priceButton.leadingAnchor.constraint(equalTo: imageButton.leadingAnchor, constant: 45).isActive = true
         
         linkButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         linkButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        linkButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
-        linkButton.leadingAnchor.constraint(equalTo: priceButton.leadingAnchor, constant: 50).isActive = true
+        linkButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
+        linkButton.leadingAnchor.constraint(equalTo: priceButton.leadingAnchor, constant: 45).isActive = true
         
         noteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         noteButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        noteButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
-        noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 50).isActive = true
-        
-        dropDownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        dropDownButton.widthAnchor.constraint(equalToConstant: 170).isActive = true
-        dropDownButton.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -20).isActive = true
-        dropDownButton.centerYAnchor.constraint(equalTo: itemView.centerYAnchor).isActive = true
+        noteButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
+        noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 45).isActive = true
     }
     
     //MARK: Enable Button Methods
