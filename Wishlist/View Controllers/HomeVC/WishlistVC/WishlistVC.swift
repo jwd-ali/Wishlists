@@ -94,6 +94,27 @@ class WishlistViewController: UIViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+   
+    //MARK: emptyListViews
+    let emptyWishlistImage: UIImageView = {
+        let v = UIImageView()
+        v.image = UIImage(named: "nightSky")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    let emptyWishlistLabel: UILabel = {
+        let v = UILabel()
+        v.text = "Du scheinst wunschlos glücklich zu sein!"
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+//        v.backgroundColor = .cyan
+        v.textColor = .lightGray
+        v.textAlignment = .center
+        v.numberOfLines = 0
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     let makeWishView: MakeWishView = {
         let v = MakeWishView()
@@ -164,7 +185,7 @@ class WishlistViewController: UIViewController {
         
         self.wishlistLabel.text = wishList.name
         self.wishlistImage.image = wishList.image
-        self.theTableView.wishList = wishList.wishData
+        self.theTableView.wishData = wishList.wishData
         self.theTableView.tableView.reloadData()
         
         setupViews()
@@ -172,6 +193,8 @@ class WishlistViewController: UIViewController {
         setupWishTableView()
         
         setupMenueTableView()
+        
+        isTableViewEmptyClosure()
         
         bottomConstraint = self.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         
@@ -225,6 +248,9 @@ class WishlistViewController: UIViewController {
         view.addSubview(theTableView.tableView)
         view.addSubview(addWishButton)
         
+        view.addSubview(self.emptyWishlistImage)
+        view.addSubview(self.emptyWishlistLabel)
+        
         NSLayoutConstraint.activate([
             
             
@@ -276,7 +302,38 @@ class WishlistViewController: UIViewController {
         self.createListView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         self.createListView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.createListView.isHidden = true
+        
+        //MARK: constrain emptyTableView
+        let screenSize = UIScreen.main.bounds.size
+        
+        emptyWishlistImage.centerYAnchor.constraint(equalTo: wishlistView.centerYAnchor, constant: -50).isActive = true
+        emptyWishlistImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emptyWishlistImage.heightAnchor.constraint(equalToConstant: screenSize.height / 5).isActive = true
+        emptyWishlistImage.widthAnchor.constraint(equalToConstant: screenSize.width - 60).isActive = true
+
+        emptyWishlistLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        emptyWishlistLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        emptyWishlistLabel.topAnchor.constraint(equalTo: emptyWishlistImage.bottomAnchor, constant: 10).isActive = true
+        
+        emptyWishlistImage.isHidden = true
+        emptyWishlistLabel.isHidden = true
     }
+    
+    func isTableViewEmptyClosure(){
+        // show background image and text if wishlist is empty
+        self.theTableView.tableViewIsEmpty = { [unowned self] isEmpty in
+            if isEmpty {
+                self.emptyWishlistImage.isHidden = false
+                self.emptyWishlistLabel.isHidden = false
+                
+            } else {
+                self.emptyWishlistImage.isHidden = true
+                self.emptyWishlistLabel.isHidden = true
+            }
+        }
+    }
+    
+    
     //MARK: setupWishTableView
     func setupWishTableView(){
         // disable prefill tableview with cells
@@ -453,7 +510,7 @@ extension WishlistViewController: DeleteWishDelegate {
         // remove the wish from the user's currently selected wishlist
         wishList.wishData.remove(at: idx)
         // set the updated data as the data for the table view
-        theTableView.wishList = wishList.wishData
+        theTableView.wishData = wishList.wishData
         theTableView.tableView.beginUpdates()
         theTableView.tableView.deleteRows(at: [
             (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
@@ -476,10 +533,10 @@ extension WishlistViewController: AddWishDelegate {
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
             wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
-            theTableView.wishList = wishList.wishData
+            theTableView.wishData = wishList.wishData
             theTableView.tableView.beginUpdates()
             theTableView.tableView.insertRows(at: [
-                (NSIndexPath(row: theTableView.wishList.count-1, section: 0) as IndexPath)], with: .left)
+                (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)
             theTableView.tableView.endUpdates()
         }
     }

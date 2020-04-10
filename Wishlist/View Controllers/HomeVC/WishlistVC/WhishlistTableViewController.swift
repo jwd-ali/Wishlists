@@ -10,29 +10,12 @@ import UIKit
 
 class WhishlistTableViewController: UITableViewController {
 
-    public var wishList = [Wish]()
+    public var wishData = [Wish]()
+    
+    var tableViewIsEmpty: ((Bool) -> Void)?
     
     // protocol / delegate pattern
     public var deleteWishDelegate: DeleteWishDelegate?
-    
-    let nightSky: AlignedAspectFitImageView = {
-        let v = AlignedAspectFitImageView()
-        v.image = UIImage(named: "nightSky")
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.contentMode = .scaleAspectFit
-        return v
-    }()
-    
-    let noWishes: UILabel = {
-        let v = UILabel()
-        v.text = "Du scheinst wunschlos glücklich zu sein!"
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        v.textColor = .lightGray
-        v.textAlignment = .center
-        v.numberOfLines = 0
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,33 +33,6 @@ class WhishlistTableViewController: UITableViewController {
         // add top inset for tableview
         self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
-        setupView()
-    }
-    
-    func setupView(){
-        view.addSubview(self.nightSky)
-        view.addSubview(self.noWishes)
-        
-        let screenHeight = UIScreen.main.bounds.size.height
-                    
-        nightSky.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        nightSky.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        nightSky.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 30).isActive = true
-        nightSky.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: -30).isActive = true
-        
-//        nightSky.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-//        nightSky.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//        nightSky.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-//        nightSky.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-//        nightSky.heightAnchor.constraint(equalToConstant: 50).isActive = true
-      
-        noWishes.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-        noWishes.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-//        noWishes.topAnchor.constraint(equalTo: nightSky.bottomAnchor).isActive = true
-        noWishes.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        nightSky.isHidden = true
-        noWishes.isHidden = true
     }
 
     // MARK: - Table view data source
@@ -85,24 +41,19 @@ class WhishlistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        // show background image and text if wishlist is empty
-        if wishList.count == 0 {
-            nightSky.isHidden = false
-            noWishes.isHidden = false
-            
+        if wishData.count == 0 {
+            tableViewIsEmpty?(true)
         } else {
-            nightSky.isHidden = true
-            noWishes.isHidden = true
+            tableViewIsEmpty?(false)
         }
-        return wishList.count
+        return wishData.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
         
         
-        let currentWish = self.wishList[indexPath.row]
+        let currentWish = self.wishData[indexPath.row]
         if currentWish.wishImage == UIImage(named: "image"){
             cell.wishImage.image = .none
         }else {
