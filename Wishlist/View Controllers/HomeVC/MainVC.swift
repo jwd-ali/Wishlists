@@ -212,8 +212,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     var keyboardHeight = CGFloat(0)
-    var duration: Any?
-    var curve: NSNumber?
+//    var duration: Any?
+//    var curve: NSNumber?
     //MARK: keyboardWillShow
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -221,19 +221,19 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.keyboardHeight = keyboardRectangle.height
             
             let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
-            self.duration = duration
+//            self.duration = duration
             let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
-            self.curve = curve as? NSNumber
+//            self.curve = curve as? NSNumber
             
             if self.wishViewIsVisible {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
                             self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
                             self.view.layoutIfNeeded()
                         }, completion: nil)
             }
             
             if !self.createListView.isHidden {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
                     self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
                     self.view.layoutIfNeeded()
                     }, completion: nil)
@@ -413,14 +413,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
             
             if isHidden {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant -= height
                     self.wishView.priceTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
                 }, completion: nil)
                 
             } else {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant += height
                     self.wishView.wishNameTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
@@ -432,14 +432,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     func onLinkButtonTappedClosure(){
        self.wishView.onLinkButtonTapped = { [unowned self] height, isHidden in
             if isHidden {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant -= height
                     self.wishView.linkTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
                 }, completion: nil)
                 
             } else {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant += height
                     self.wishView.wishNameTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
@@ -452,14 +452,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     func onNoteButtonTappedClosure(){
        self.wishView.onNoteButtonTapped = { [unowned self] height, isHidden in
             if isHidden {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant -= height
                     self.wishView.noteTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
                 }, completion: nil)
                 
             } else {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
                     self.wishConstraint.constant += height
                     self.wishView.wishNameTextField.becomeFirstResponder()
                     self.view.layoutIfNeeded()
@@ -486,6 +486,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         }) { (done) in
             self.wishView.priceView.isHidden = true
             self.wishView.linkView.isHidden = true
+            self.wishView.noteView.isHidden = true
         }
         
     }

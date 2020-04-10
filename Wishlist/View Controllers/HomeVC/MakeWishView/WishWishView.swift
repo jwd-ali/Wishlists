@@ -465,14 +465,14 @@ class WishView: UIView, UITextFieldDelegate {
                 self.linkView.isHidden = false
                 self.theStackView.layoutIfNeeded()
             }
-            self.onLinkButtonTapped?(linkView.frame.height, true)
+            self.onPriceButtonTapped?(linkView.frame.height, true)
         } else {
             UIView.animate(withDuration: 0.25) {
                 self.linkView.alpha = 0
                 self.linkView.isHidden = true
                 self.theStackView.layoutIfNeeded()
             }
-            self.onLinkButtonTapped?(linkView.frame.height, false)
+            self.onPriceButtonTapped?(linkView.frame.height, false)
             
         }
     }
