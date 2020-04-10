@@ -45,25 +45,11 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     
     var delegate: ListImagePickDelegate?
     
-    let columnLayout = CenterAlignedCollectionViewFlowLayout(
-//        itemSize: CGSize(width: 150, height: 150),
-//        minimumInteritemSpacing: 25,
-//        minimumLineSpacing: 10,
-//        sectionInset: UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
-    )
-    
-    var colViewWidth: CGFloat = 0.0
+    let columnLayout = CenterAlignedCollectionViewFlowLayout()
         
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        
-        if theCollectionView.frame.width != colViewWidth {
-            let w = theCollectionView.frame.width / 2 - 30
-            columnLayout.itemSize = CGSize(width: w, height: w)
-            colViewWidth = theCollectionView.frame.width
-            theCollectionView.collectionViewLayout = columnLayout
-        }
         setupViews()
         
         theCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
@@ -82,7 +68,7 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
         view.addSubview(theLabel)
         view.addSubview(theCollectionView)
         
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         closeButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
         closeButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -104,7 +90,7 @@ class ImageCollectionViewController: UIViewController, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
         cell.cellImage.image = Constants.Wishlist.images[indexPath.item]
-        cell.backgroundColor = .cyan
+        cell.backgroundColor = .clear
         cell.layer.cornerRadius = 2
         return cell
     }

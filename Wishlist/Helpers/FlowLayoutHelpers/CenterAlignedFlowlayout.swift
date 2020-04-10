@@ -13,8 +13,10 @@ import UIKit
 
 class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
+    let screenWidth = UIScreen.main.bounds.size.width
+    
     override var itemSize: CGSize {
-        get { return CGSize(width: 150, height: 150) }
+        get { return CGSize(width: screenWidth/3, height: screenWidth/3) }
         set {}
     }
         

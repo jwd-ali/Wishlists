@@ -36,17 +36,42 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     let bottomBar: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "bottomBar")
+        v.tintColor = .white
+        v.image = v.image?.withRenderingMode(.alwaysTemplate)
+        v.tintColor = UIColor.white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let bottomRight: UIView = {
+        let v = UIView()
+        v.backgroundColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let bottomLeft: UIView = {
+        let v = UIView()
+        v.backgroundColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let bottomBottom: UIView = {
+        let v = UIView()
+        v.backgroundColor = .white
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     let communityButton: UIButton = {
         let v = UIButton()
-        if #available(iOS 13.0, *) {
-            v.setImage(UIImage(named: "achievements"), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        v.tintColor = UIColor.darkCustom
+        v.imageView?.contentMode = .scaleAspectFit
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .large)
+        v.setImage(UIImage(systemName: "person.3.fill", withConfiguration: imageSymbolConfiguration), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(communityButtonTapped), for: .touchUpInside)
         return v
@@ -54,7 +79,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let profileButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "profile"), for: .normal)
+        v.tintColor = UIColor.darkCustom
+        v.imageView?.contentMode = .scaleAspectFit
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .large)
+        v.setImage(UIImage(systemName: "person.fill", withConfiguration: imageSymbolConfiguration), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         return v
@@ -62,7 +92,10 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let addButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButtonLight"), for: .normal)
+        v.setImage(UIImage(named: "addButtonSimple"), for: .normal)
+        v.imageView?.contentMode = .scaleAspectFill
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
         v.isEnabled = false
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +160,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     var dataSourceArray = [Wishlist]()
     
-    // DonMag3 - track the current selected wish list
+    // track the current selected wish list
     var currentWishListIDX: Int = 0
     
     // track current listImageIdx
@@ -228,7 +261,12 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         view.addSubview(backGroundImage)
         view.addSubview(activityIndicator)
         view.addSubview(theCollectionView)
+        
         view.addSubview(bottomBar)
+        view.addSubview(bottomRight)
+        view.addSubview(bottomLeft)
+        view.addSubview(bottomBottom)
+        
         view.addSubview(communityButton)
         view.addSubview(profileButton)
         view.addSubview(addButton)
@@ -247,25 +285,38 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             //constrain bottomBar
-            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bottomBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bottomBar.heightAnchor.constraint(equalToConstant: 49),
+            
+            bottomRight.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bottomRight.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomRight.heightAnchor.constraint(equalToConstant: 49),
+            bottomRight.leadingAnchor.constraint(equalTo: bottomBar.trailingAnchor),
+            
+            bottomLeft.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            bottomLeft.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomLeft.heightAnchor.constraint(equalToConstant: 49),
+            bottomLeft.trailingAnchor.constraint(equalTo: bottomBar.leadingAnchor),
+            
+            bottomBottom.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBottom.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBottom.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBottom.topAnchor.constraint(equalTo: bottomBar.bottomAnchor),
             
             //contrain communityButton
-            communityButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            communityButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             communityButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: -view.frame.width/3.5),
-            communityButton.widthAnchor.constraint(equalToConstant: 50),
-            communityButton.heightAnchor.constraint(equalToConstant: 50),
             
             // constrain profileButton
-            profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor, constant: -5),
+            profileButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             profileButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor, constant: view.frame.width/3.5),
-            profileButton.widthAnchor.constraint(equalToConstant: 50),
-            profileButton.heightAnchor.constraint(equalToConstant: 50),
             
             // constrain addWishButton
             addButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
-            addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -40),
+            addButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -18),
+            addButton.widthAnchor.constraint(equalToConstant: 70),
+            addButton.heightAnchor.constraint(equalToConstant: 70),
                
             // constrain collectionView
             theCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),

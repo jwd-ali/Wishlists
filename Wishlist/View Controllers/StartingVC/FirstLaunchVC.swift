@@ -43,7 +43,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         v.textAlignment = .left
         v.textColor = .white
         v.adjustsFontSizeToFitWidth = true
-        v.minimumScaleFactor = 0.5
+//        v.minimumScaleFactor = 0.5
         return v
     }()
     

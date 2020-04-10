@@ -57,7 +57,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.placeholder = "Wunschliste"
         v.textColor = .darkCustom
-        v.tintColor = .lightGray
+        v.tintColor = .white
         v.font = UIFont(name: "AvenirNext-Bold", size: 19)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.lightGray)
@@ -167,7 +167,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         createButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
         createButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
         createButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        self.bottomConstraint = createButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -screenHeight/2)
+        self.bottomConstraint = createButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(screenHeight/3))
         bottomConstraint.isActive = true
         
         wishlistNameTextField.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -20).isActive = true
