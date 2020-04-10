@@ -469,7 +469,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 }
             }
             completion(true)
-            print(self.isValid)
         }
     }
 

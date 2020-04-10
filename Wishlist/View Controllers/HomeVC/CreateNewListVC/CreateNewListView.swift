@@ -68,8 +68,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         return v
     }()
     
-    let createButton: CustomButton = {
-        let v = CustomButton(type: .system)
+    let createButton: UIButton = {
+        let v = UIButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("Liste erstellen", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
@@ -102,6 +102,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
     var bottomConstraint: NSLayoutConstraint!
     
     var wishlistMode: Constants.WishlistMode?
+    
     //MARK: init
     init(wishlistMode: Constants.WishlistMode) {
         self.wishlistMode = wishlistMode
@@ -198,7 +199,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         wishlistNameTextField.resignFirstResponder()
         
         UIView.animate(withDuration: 0.3, animations: {
-            
             for view in self.subviews as [UIView] {
                 view.alpha = 0
                 view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
@@ -231,7 +231,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
             // important: set delegate to self to recieve data from ImagePickVC
             vc.delegate = self
             let currentController = self.getCurrentViewController()
-            currentController?.present(vc, animated: false, completion: nil)
+            currentController?.present(vc, animated: true, completion: nil)
         
     }
     

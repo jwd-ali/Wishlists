@@ -136,7 +136,7 @@ class WishlistViewController: UIViewController {
     
     //MARK: menueTableView Variables
     public var menueOptions = [MenueOption(title: "Bearbeiten", image: UIImage(systemName: "pencil")!),
-                               MenueOption(title: "Sichtbar für andere Nutzer machen", image: UIImage(systemName: "lock.open")!),
+                               MenueOption(title: "Öffentlich machen", image: UIImage(systemName: "lock.open")!),
                                MenueOption(title: "Wishlist löschen", image: UIImage(systemName: "trash")!),
                                MenueOption(title: "Teilen", image: UIImage(systemName: "square.and.arrow.up")!)
                                ]

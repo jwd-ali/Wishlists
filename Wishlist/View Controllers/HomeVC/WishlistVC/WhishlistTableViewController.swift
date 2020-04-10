@@ -26,9 +26,10 @@ class WhishlistTableViewController: UITableViewController {
     let noWishes: UILabel = {
         let v = UILabel()
         v.text = "Du scheinst wunschlos glücklich zu sein!"
-        v.font = UIFont(name: "AvenirNext-Regular", size: 16)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textColor = .lightGray
         v.textAlignment = .center
+        v.numberOfLines = 0
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -64,14 +65,13 @@ class WhishlistTableViewController: UITableViewController {
             view.addSubview(self.nightSky)
             view.addSubview(self.noWishes)
             
-            nightSky.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
             nightSky.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
             nightSky.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
             nightSky.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
             
-            
-            noWishes.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-            noWishes.bottomAnchor.constraint(equalTo: nightSky.bottomAnchor, constant: 10).isActive = true
+            noWishes.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+            noWishes.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+            noWishes.topAnchor.constraint(equalTo: nightSky.bottomAnchor, constant: 10).isActive = true
             
         } else {
             nightSky.removeFromSuperview()
