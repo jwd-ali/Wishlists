@@ -145,16 +145,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         v.contentInsetAdjustmentBehavior = .always
         return v
     }()
- 
-    let columnLayout = FlowLayout(
-        itemSize: CGSize(width: 150, height: 150),
-        minimumInteritemSpacing: 20,
-        minimumLineSpacing: 13,
-        sectionInset: UIEdgeInsets(top: 20, left: 0, bottom: 10, right: 0)
-    )
- 
-    // track collection view frame change
-    var colViewWidth: CGFloat = 0.0
     
     var image: UIImage?
     
@@ -209,9 +199,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         theCollectionView.dataSource = self
         
         theCollectionView.delegate = self
- 
-        // use custom flow layout
-        theCollectionView.collectionViewLayout = columnLayout
         
         self.view.sendSubviewToBack(theCollectionView)
         self.view.sendSubviewToBack(backGroundImage)
