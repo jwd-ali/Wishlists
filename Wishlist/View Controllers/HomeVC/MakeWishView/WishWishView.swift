@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WishView: UIView, UITextFieldDelegate {
+class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
     
     //MARK: StackView
     let theStackView: UIStackView = {
@@ -56,7 +56,7 @@ class WishView: UIView, UITextFieldDelegate {
         let v = UIScrollView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .red
-        v.alwaysBounceVertical = true
+        v.alwaysBounceHorizontal = true
         return v
     }()
     
@@ -268,6 +268,8 @@ class WishView: UIView, UITextFieldDelegate {
                 
         setupViews()
         
+        itemScrollView.delegate = self
+        
         priceTextField.delegate = self
         priceTextField.placeholder = updateAmount()
     }
@@ -386,6 +388,12 @@ class WishView: UIView, UITextFieldDelegate {
         noteButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
         noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 45).isActive = true
     }
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if itemScrollView.contentOffset.y != 0 {
+//            itemScrollView.contentOffset.y = 0
+//        }
+//    }
     
     //MARK: Enable Button Methods
     func disableButton(){

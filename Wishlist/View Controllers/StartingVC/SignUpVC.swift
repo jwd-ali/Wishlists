@@ -39,7 +39,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     let theScrollView: UIScrollView = {
         let v = UIScrollView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .red
+        v.backgroundColor = .clear
         return v
     }()
     
@@ -129,7 +129,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
 //        v.textContentType = .newPassword
-        v.keyboardType = .default
+//        v.keyboardType = .default
         return v
     }()
     
@@ -218,7 +218,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
 //        v.textContentType = .newPassword
-        v.keyboardType = .default
+//        v.keyboardType = .default
         return v
     }()
     
@@ -346,10 +346,23 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             let keyboardRectangle = keyboardFrame.cgRectValue
             self.keyboardHeight = keyboardRectangle.height
             
-            if self.passwordWiederholenTextField.isEditing {
-                scrollBottomViewConstraint.constant = -(self.keyboardHeight!)
-                self.theScrollView.setContentOffset(CGPoint(x: 0, y: 20), animated: true)
+            let activeField: UITextField? = [passwordTextField, passwordWiederholenTextField].first { $0.isFirstResponder }
+            
+            switch activeField {
+            case passwordTextField:
+                let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight! + 130, right: 0)
+                theScrollView.contentInset = insets
+                theScrollView.scrollIndicatorInsets = insets
                 self.view.layoutIfNeeded()
+                
+            case passwordWiederholenTextField:
+                let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight! + 30, right: 0)
+                theScrollView.contentInset = insets
+                theScrollView.scrollIndicatorInsets = insets
+                self.view.layoutIfNeeded()
+
+            default:
+                break
             }
             
         }
@@ -360,10 +373,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             let keyboardRectangle = keyboardFrame.cgRectValue
             self.keyboardHeight = keyboardRectangle.height
             
-            if self.passwordWiederholenTextField.isEditing {
-                scrollBottomViewConstraint.constant = 0
-                self.view.layoutIfNeeded()
-            }
+            theScrollView.contentInset = UIEdgeInsets.zero
+            theScrollView.scrollIndicatorInsets = UIEdgeInsets.zero
             
         }
     }
