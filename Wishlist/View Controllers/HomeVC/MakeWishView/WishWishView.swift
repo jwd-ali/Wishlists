@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
+class WishView: UIView, UITextFieldDelegate {
     
     //MARK: StackView
     let theStackView: UIStackView = {
@@ -55,10 +55,10 @@ class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
     let itemScrollView: UIScrollView = {
         let v = UIScrollView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .red
-        v.alwaysBounceHorizontal = true
         return v
     }()
+    
+
     
     let imageButton: UIButton = {
         let v = UIButton()
@@ -267,9 +267,7 @@ class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
         super.init(frame: frame)
                 
         setupViews()
-        
-        itemScrollView.delegate = self
-        
+    
         priceTextField.delegate = self
         priceTextField.placeholder = updateAmount()
     }
@@ -356,6 +354,8 @@ class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
         itemScrollView.addSubview(noteButton)
         self.addSubview(dropDownButton)
         
+        itemScrollView.contentSize = CGSize(width: 200, height: 60)
+        
         itemView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         dropDownButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -388,12 +388,6 @@ class WishView: UIView, UITextFieldDelegate, UIScrollViewDelegate {
         noteButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
         noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 45).isActive = true
     }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if itemScrollView.contentOffset.y != 0 {
-//            itemScrollView.contentOffset.y = 0
-//        }
-//    }
     
     //MARK: Enable Button Methods
     func disableButton(){
