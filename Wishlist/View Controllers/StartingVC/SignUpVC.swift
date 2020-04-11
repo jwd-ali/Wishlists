@@ -39,8 +39,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
     let theScrollView: UIScrollView = {
         let v = UIScrollView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .red
         return v
     }()
+    
+    var scrollBottomViewConstraint: NSLayoutConstraint!
     
     let theStackView: UIStackView = {
         let v = UIStackView()
@@ -51,6 +54,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    var stackViewBottomConstraint: NSLayoutConstraint!
+    
     //MARK: Email
     
     var emailConstraint:NSLayoutConstraint!
@@ -122,7 +128,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.borderStyle = .line
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.textContentType = .newPassword
+//        v.textContentType = .newPassword
         v.keyboardType = .default
         return v
     }()
@@ -211,7 +217,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         v.borderStyle = .line
         v.addTarget(self, action: #selector(textFieldDidChange(_:)),for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.textContentType = .newPassword
+//        v.textContentType = .newPassword
         v.keyboardType = .default
         return v
     }()
@@ -311,13 +317,55 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         passwordTextField.delegate = self
         passwordWiederholenTextField.delegate = self
 
-        // set bottom inset for ScrollView
-        theScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+//        // set bottom inset for ScrollView
+//        theScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
         
         setUpViews()
         
         self.emailTextField.text = email
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    var keyboardHeight: CGFloat?
+    //MARK: keyboardObserver
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            if self.passwordWiederholenTextField.isEditing {
+                scrollBottomViewConstraint.constant = -(self.keyboardHeight!)
+                self.theScrollView.setContentOffset(CGPoint(x: 0, y: 20), animated: true)
+                self.view.layoutIfNeeded()
+            }
+            
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            if self.passwordWiederholenTextField.isEditing {
+                scrollBottomViewConstraint.constant = 0
+                self.view.layoutIfNeeded()
+            }
+            
+        }
     }
         
     //MARK: setupViews
@@ -364,13 +412,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
         theScrollView.topAnchor.constraint(equalTo: theLabel.bottomAnchor, constant: 20).isActive = true
         theScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         theScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        theScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        scrollBottomViewConstraint = theScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        scrollBottomViewConstraint.isActive = true
         
         theStackView.topAnchor.constraint(equalTo: theScrollView.topAnchor).isActive = true
         theStackView.leadingAnchor.constraint(equalTo: theScrollView.leadingAnchor).isActive = true
         theStackView.trailingAnchor.constraint(equalTo: theScrollView.trailingAnchor).isActive = true
-        theStackView.bottomAnchor.constraint(equalTo: theScrollView.bottomAnchor).isActive = true
         theStackView.widthAnchor.constraint(equalTo: theScrollView.widthAnchor).isActive = true
+        stackViewBottomConstraint = theStackView.bottomAnchor.constraint(equalTo: theScrollView.bottomAnchor)
+        stackViewBottomConstraint.isActive = true
         
         emailConstraint = emailView.heightAnchor.constraint(equalToConstant: 60)
         emailConstraint.isActive = true
@@ -683,9 +733,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UITextViewDel
 
     // MARK: textFieldshouldBegin
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        
-        
-        
         switch textField {
             
         case passwordTextField:
