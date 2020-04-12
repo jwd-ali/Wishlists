@@ -673,15 +673,12 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-//            makeWishView.wishImageView.image = editedImage
 //            makeWishView.wishImageButton.titleLabel?.text = ""
             
-//            self.wishView.wishImageView.image = editedImage
-            self.wishView.wishImageView.image = editedImage  //.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
+            self.wishView.set(image: editedImage)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             makeWishView.wishImageButton.titleLabel?.text = ""
-//            self.wishView.wishImageView.image = originalImage
-            self.wishView.wishImageView.image = originalImage //.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
+            self.wishView.set(image: originalImage)
         }
         dismiss(animated: true, completion: nil)
     }
