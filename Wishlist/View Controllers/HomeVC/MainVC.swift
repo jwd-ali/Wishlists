@@ -137,7 +137,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }()
     
     // MARK: CollectionView
-   
     let theCollectionView: UICollectionView = {
         let v = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -364,6 +363,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.wishViewIsVisible = true
         
+        self.wishView.imageButtonDelegate = self
+        
         wishView.dropDownButton.dropView.dropOptions = self.dropOptions
         wishView.dropDownButton.dropView.tableView.reloadData()
 
@@ -380,6 +381,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishView.priceTextField.text = ""
         wishView.linkTextField.text = ""
         
+        onImageButtonTappedClosure()
         onPriceButtonTappedClosure()
         onLinkButtonTappedClosure()
         onNoteButtonTappedClosure()
@@ -408,6 +410,25 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //            makeWishView.selectedWishlistIDX = currentWishListIDX
   
     }
+    
+    //MARK: onLinkButtonTappedClosure
+    func onImageButtonTappedClosure(){
+       self.wishView.onImageButtonTapped = { [unowned self] height, isHidden in
+            if isHidden {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant -= height
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant += height
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    
     //MARK: onPriceButtonClosure
     func onPriceButtonTappedClosure(){
         self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
@@ -652,11 +673,15 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            makeWishView.wishImageView.image = editedImage
-            makeWishView.wishImageButton.titleLabel?.text = ""
+//            makeWishView.wishImageView.image = editedImage
+//            makeWishView.wishImageButton.titleLabel?.text = ""
+            
+//            self.wishView.wishImageView.image = editedImage
+            self.wishView.wishImageView.image = editedImage.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             makeWishView.wishImageButton.titleLabel?.text = ""
-            makeWishView.wishImageView.image = originalImage
+//            self.wishView.wishImageView.image = originalImage
+            self.wishView.wishImageView.image = originalImage.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
         }
         dismiss(animated: true, completion: nil)
     }

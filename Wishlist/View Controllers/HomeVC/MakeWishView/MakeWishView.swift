@@ -12,9 +12,7 @@ protocol AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
 }
 
-protocol ImagePickerDelegate {
-    func showImagePickerControllerActionSheet()
-}
+
 
 protocol DismissMakeWishView {
     func dissmissViewComplete()

@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol ImagePickerDelegate {
+    func showImagePickerControllerActionSheet()
+}
+
 class WishView: UIView, UITextFieldDelegate {
     
     //MARK: StackView
@@ -21,29 +25,6 @@ class WishView: UIView, UITextFieldDelegate {
         return v
     }()
     
-    //MARK: Image
-    
-    
-    let wishImageView: UIImageView = {
-        let v = UIImageView()
-        v.backgroundColor = .clear
-        v.layer.borderColor = UIColor.white.cgColor
-        v.layer.borderWidth = 2
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let wishImageButton: UIButton = {
-        let v = UIButton()
-        v.backgroundColor = .clear
-        v.setTitle("Bild hinzufügen", for: .normal)
-        v.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 13)
-        v.titleLabel?.numberOfLines = 0
-        v.titleLabel?.textAlignment = .center
-        v.addTarget(self, action: #selector(wishImageButtonTapped), for: .touchUpInside)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
     
     //MARK: ItemView
     let itemView: UIView = {
@@ -109,11 +90,44 @@ class WishView: UIView, UITextFieldDelegate {
     }()
     
     //MARK: ImageView
+    
+    var onImageButtonTapped: ((_ height: CGFloat, _ isHidden: Bool) -> Void)?
+    
     let imageView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    let wishImageView: UIImageView = {
+        let v = UIImageView()
+        v.backgroundColor = .clear
+//        v.layer.borderColor = UIColor.darkCustom.cgColor
+//        v.layer.borderWidth = 2
+//        v.layer.cornerRadius = 3
+//        v.layer.shadowColor = UIColor.darkGray.cgColor
+//
+//        v.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+//        v.layer.shadowOpacity = 0.8
+//        v.layer.shadowRadius = 2
+        
+        v.layer.cornerRadius = 3
+        v.layer.masksToBounds = true
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .left
+        return v
+    }()
+    
+    
+    let deleteImageButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        v.tintColor = .darkCustom
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(deleteImageButtonTapped), for: .touchUpInside)
+        return v
+    }()
+    
     
     //MARK: WishView
     let wishView: UIView = {
@@ -259,8 +273,8 @@ class WishView: UIView, UITextFieldDelegate {
     }()
     
     var dataSourceArray = [Wishlist]()
-    
-    
+
+    var imageButtonDelegate: ImagePickerDelegate?
     
     //MARK: Init
     override init(frame: CGRect) {
@@ -299,6 +313,24 @@ class WishView: UIView, UITextFieldDelegate {
         wishNameTextField.leadingAnchor.constraint(equalTo: wishView.leadingAnchor, constant: 20).isActive = true
         wishNameTextField.centerYAnchor.constraint(equalTo: wishView.centerYAnchor, constant: 10).isActive = true
         wishNameTextField.trailingAnchor.constraint(equalTo: wishButton.leadingAnchor, constant: -20).isActive = true
+        
+        //MARK: image
+        theStackView.addArrangedSubview(self.imageView)
+        imageView.addSubview(wishImageView)
+        imageView.addSubview(deleteImageButton)
+        
+        imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        imageView.isHidden = true
+        
+        wishImageView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20).isActive = true
+        wishImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 3).isActive = true
+        wishImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 3).isActive = true
+        wishImageView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20).isActive = true
+        
+        deleteImageButton.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        deleteImageButton.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        deleteImageButton.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: 5).isActive = true
+        deleteImageButton.trailingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: -5).isActive = true
         
         //MARK: price
         theStackView.addArrangedSubview(self.priceView)
@@ -441,9 +473,31 @@ class WishView: UIView, UITextFieldDelegate {
         return formatter.string(from: NSNumber(value: amt))
     }
     
+    @objc func deleteImageButtonTapped(){
+        print("yeet")
+    }
+    
     //MARK: imageButtonTapped
     @objc func imageButtonTapped(){
+        let imageViewIsHidden = imageView.isHidden
         
+        if imageViewIsHidden {
+            UIView.animate(withDuration: 0.25) {
+                self.imageView.alpha = 1
+                self.imageView.isHidden = false
+                self.theStackView.layoutIfNeeded()
+                self.imageButtonDelegate?.showImagePickerControllerActionSheet()
+            }
+            self.onImageButtonTapped?(imageView.frame.height, true)
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.imageView.alpha = 0
+                self.imageView.isHidden = true
+                self.theStackView.layoutIfNeeded()
+            }
+            self.onImageButtonTapped?(imageView.frame.height, false)
+            
+        }
     }
     
     //MARK: priceButtonTapped
