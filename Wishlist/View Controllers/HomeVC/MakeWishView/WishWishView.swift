@@ -96,8 +96,11 @@ class WishView: UIView, UITextFieldDelegate {
     let imageContainerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .orange
         return v
     }()
+    
+    let wishImageViewHeight: CGFloat = 60
     
     let wishImageView: UIImageView = {
         let v = UIImageView()
@@ -118,6 +121,8 @@ class WishView: UIView, UITextFieldDelegate {
         v.backgroundColor = .cyan
         return v
     }()
+    
+    var wishImageViewWidthConstraint: NSLayoutConstraint!
     
     
     let deleteImageButton: UIButton = {
@@ -291,6 +296,12 @@ class WishView: UIView, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func set(image: UIImage) {
+        let ratio = image.size.width / image.size.height
+        wishImageView.image = image
+        wishImageViewWidthConstraint.constant = ratio * wishImageViewHeight
+    }
+    
     //MARK: setupViews
     func setupViews(){
         
@@ -320,13 +331,14 @@ class WishView: UIView, UITextFieldDelegate {
         imageContainerView.addSubview(wishImageView)
         imageContainerView.addSubview(deleteImageButton)
         
-        imageContainerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         imageContainerView.isHidden = true
         
         wishImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor, constant: 20).isActive = true
         wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 3).isActive = true
-        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 3).isActive = true
-        wishImageView.trailingAnchor.constraint(greaterThanOrEqualTo: imageContainerView.trailingAnchor, constant: -20).isActive = true
+        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -3).isActive = true
+        wishImageViewWidthConstraint = wishImageView.widthAnchor.constraint(equalToConstant: wishImageViewHeight)
+        wishImageViewWidthConstraint.isActive = true
+        wishImageView.heightAnchor.constraint(equalToConstant: wishImageViewHeight).isActive = true
         
         deleteImageButton.widthAnchor.constraint(equalToConstant: 10).isActive = true
         deleteImageButton.heightAnchor.constraint(equalToConstant: 10).isActive = true
