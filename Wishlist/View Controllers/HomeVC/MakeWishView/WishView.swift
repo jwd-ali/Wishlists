@@ -325,7 +325,7 @@ class WishView: UIView, UITextFieldDelegate {
         
         wishImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor, constant: 20).isActive = true
         wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 3).isActive = true
-        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 3).isActive = true
+        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -3).isActive = true
         wishImageView.trailingAnchor.constraint(greaterThanOrEqualTo: imageContainerView.trailingAnchor, constant: -20).isActive = true
         
         deleteImageButton.widthAnchor.constraint(equalToConstant: 10).isActive = true

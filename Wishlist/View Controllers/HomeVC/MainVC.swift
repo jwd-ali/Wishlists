@@ -411,7 +411,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
   
     }
     
-    //MARK: onLinkButtonTappedClosure
+    //MARK: onImageButtonTappedClosure
     func onImageButtonTappedClosure(){
        self.wishView.onImageButtonTapped = { [unowned self] height, isHidden in
             if isHidden {
