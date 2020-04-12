@@ -96,7 +96,7 @@ class WishView: UIView, UITextFieldDelegate {
     let imageContainerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .orange
+        v.backgroundColor = .clear
         return v
     }()
     
@@ -336,18 +336,15 @@ class WishView: UIView, UITextFieldDelegate {
         wishImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor, constant: 20).isActive = true
         wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 3).isActive = true
         wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -3).isActive = true
-<<<<<<< HEAD:Wishlist/View Controllers/HomeVC/MakeWishView/WishView.swift
-        wishImageView.trailingAnchor.constraint(greaterThanOrEqualTo: imageContainerView.trailingAnchor, constant: -20).isActive = true
-=======
+        
         wishImageViewWidthConstraint = wishImageView.widthAnchor.constraint(equalToConstant: wishImageViewHeight)
         wishImageViewWidthConstraint.isActive = true
         wishImageView.heightAnchor.constraint(equalToConstant: wishImageViewHeight).isActive = true
->>>>>>> 68f0e04c081b90abba90e9bf639cfd0ac39cc614:Wishlist/View Controllers/HomeVC/MakeWishView/WishWishView.swift
         
-        deleteImageButton.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        deleteImageButton.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        deleteImageButton.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: 5).isActive = true
-        deleteImageButton.trailingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: -5).isActive = true
+        deleteImageButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        deleteImageButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        deleteImageButton.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: -10).isActive = true
+        deleteImageButton.trailingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: 10).isActive = true
         
         //MARK: price
         theStackView.addArrangedSubview(self.priceView)
