@@ -93,7 +93,7 @@ class WishView: UIView, UITextFieldDelegate {
     
     var onImageButtonTapped: ((_ height: CGFloat, _ isHidden: Bool) -> Void)?
     
-    let imageView: UIView = {
+    let imageContainerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -114,7 +114,8 @@ class WishView: UIView, UITextFieldDelegate {
         v.layer.cornerRadius = 3
         v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.contentMode = .left
+        v.contentMode = .scaleAspectFit
+        v.backgroundColor = .cyan
         return v
     }()
     
@@ -315,17 +316,17 @@ class WishView: UIView, UITextFieldDelegate {
         wishNameTextField.trailingAnchor.constraint(equalTo: wishButton.leadingAnchor, constant: -20).isActive = true
         
         //MARK: image
-        theStackView.addArrangedSubview(self.imageView)
-        imageView.addSubview(wishImageView)
-        imageView.addSubview(deleteImageButton)
+        theStackView.addArrangedSubview(self.imageContainerView)
+        imageContainerView.addSubview(wishImageView)
+        imageContainerView.addSubview(deleteImageButton)
         
-        imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        imageView.isHidden = true
+        imageContainerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        imageContainerView.isHidden = true
         
-        wishImageView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 20).isActive = true
-        wishImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 3).isActive = true
-        wishImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 3).isActive = true
-        wishImageView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -20).isActive = true
+        wishImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor, constant: 20).isActive = true
+        wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 3).isActive = true
+        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 3).isActive = true
+        wishImageView.trailingAnchor.constraint(greaterThanOrEqualTo: imageContainerView.trailingAnchor, constant: -20).isActive = true
         
         deleteImageButton.widthAnchor.constraint(equalToConstant: 10).isActive = true
         deleteImageButton.heightAnchor.constraint(equalToConstant: 10).isActive = true
@@ -479,23 +480,23 @@ class WishView: UIView, UITextFieldDelegate {
     
     //MARK: imageButtonTapped
     @objc func imageButtonTapped(){
-        let imageViewIsHidden = imageView.isHidden
+        let imageViewIsHidden = imageContainerView.isHidden
         
         if imageViewIsHidden {
             UIView.animate(withDuration: 0.25) {
-                self.imageView.alpha = 1
-                self.imageView.isHidden = false
+                self.imageContainerView.alpha = 1
+                self.imageContainerView.isHidden = false
                 self.theStackView.layoutIfNeeded()
                 self.imageButtonDelegate?.showImagePickerControllerActionSheet()
             }
-            self.onImageButtonTapped?(imageView.frame.height, true)
+            self.onImageButtonTapped?(imageContainerView.frame.height, true)
         } else {
             UIView.animate(withDuration: 0.25) {
-                self.imageView.alpha = 0
-                self.imageView.isHidden = true
+                self.imageContainerView.alpha = 0
+                self.imageContainerView.isHidden = true
                 self.theStackView.layoutIfNeeded()
             }
-            self.onImageButtonTapped?(imageView.frame.height, false)
+            self.onImageButtonTapped?(imageContainerView.frame.height, false)
             
         }
     }

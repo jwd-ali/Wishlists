@@ -677,11 +677,11 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
 //            makeWishView.wishImageButton.titleLabel?.text = ""
             
 //            self.wishView.wishImageView.image = editedImage
-            self.wishView.wishImageView.image = editedImage.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
+            self.wishView.wishImageView.image = editedImage  //.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             makeWishView.wishImageButton.titleLabel?.text = ""
 //            self.wishView.wishImageView.image = originalImage
-            self.wishView.wishImageView.image = originalImage.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
+            self.wishView.wishImageView.image = originalImage //.aspectFitImage(inRect:  self.wishView.wishImageView.frame)
         }
         dismiss(animated: true, completion: nil)
     }
