@@ -28,30 +28,6 @@ extension UIImage {
     }
 }
 
-final class ImageWithShadowAndRoundCorner: UIImageView {
-
-    private var shadowLayer: CAShapeLayer!
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if shadowLayer == nil {
-            shadowLayer = CAShapeLayer()
-            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 12).cgPath
-            shadowLayer.fillColor = UIColor.white.cgColor
-
-            shadowLayer.shadowColor = UIColor.darkGray.cgColor
-            shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-            shadowLayer.shadowOpacity = 0.8
-            shadowLayer.shadowRadius = 2
-
-            layer.insertSublayer(shadowLayer, at: 0)
-            //layer.insertSublayer(shadowLayer, below: nil) // also works
-        }
-    }
-
-}
 
 class ShadowRoundedImageView: UIView {
     @IBInspectable var image: UIImage? = nil {
@@ -63,7 +39,7 @@ class ShadowRoundedImageView: UIView {
     var shadowLayer: CALayer = CALayer()
 
     var shape: UIBezierPath {
-        return UIBezierPath(roundedRect: bounds, cornerRadius:50) }
+        return UIBezierPath(roundedRect: bounds, cornerRadius:3) }
 
     var shapeAsPath: CGPath {
         return shape.cgPath }
@@ -86,6 +62,10 @@ class ShadowRoundedImageView: UIView {
 
         imageLayer.mask = shapeAsMask
         shadowLayer.shadowPath = (image == nil) ? nil : shapeAsPath
-        shadowLayer.shadowOpacity = 0.80 // etc ...
+
+        shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        shadowLayer.shadowColor = UIColor.darkCustom.cgColor
+        shadowLayer.shadowRadius = 3
+        shadowLayer.shadowOpacity = 0.80
     }
 }

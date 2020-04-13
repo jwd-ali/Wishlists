@@ -676,9 +676,11 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
 //            makeWishView.wishImageButton.titleLabel?.text = ""
             
             self.wishView.set(image: editedImage)
+
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             makeWishView.wishImageButton.titleLabel?.text = ""
             self.wishView.set(image: originalImage)
+
         }
         dismiss(animated: true, completion: nil)
     }

@@ -102,8 +102,8 @@ class WishView: UIView, UITextFieldDelegate {
     
     let wishImageViewHeight: CGFloat = 60
     
-    let wishImageView: UIImageView = {
-        let v = UIImageView()
+    let wishImageView: ShadowRoundedImageView = {
+        let v = ShadowRoundedImageView()
         v.backgroundColor = .clear
 //        v.layer.borderColor = UIColor.darkCustom.cgColor
 //        v.layer.borderWidth = 2
@@ -114,7 +114,11 @@ class WishView: UIView, UITextFieldDelegate {
 //        v.layer.shadowOpacity = 0.8
 //        v.layer.shadowRadius = 2
         
-        v.layer.cornerRadius = 3
+//        v.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+//        v.layer.shadowColor = UIColor.darkCustom.cgColor
+//        v.layer.shadowRadius = 2
+//        v.layer.shadowOpacity = 0.80
+        
         v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
         v.contentMode = .scaleAspectFit
