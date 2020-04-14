@@ -13,39 +13,38 @@ class WhishCell: UITableViewCell {
     // change "callback" to "deleteWishCallback" so we know what its purpose
     var deleteWishCallback : (() -> ())?
     
+    let mainStackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.alignment = .fill
+        v.addBackgroundColorWithTopCornerRadius(color: .orange)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     let label: UILabel = {
        let v = UILabel()
-        v.font = UIFont(name: "AvenirNext-Medium", size: 23)
-        v.textColor = .white
-        v.font = v.font.withSize(23)
+        v.font = UIFont(name: "AvenirNext-Bold", size: 19)
+        v.textColor = .darkCustom
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     lazy var checkButton: UIButton =  {
         let v = UIButton()
-        v.backgroundColor = .darkGray
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setBackgroundImage(UIImage(named: "boxUnchecked"), for: .normal)
+        v.setImage(UIImage(named: "circleUnchecked"), for: .normal)
         v.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         return v
     }()
     
     let wishImage: UIImageView = {
         let v = UIImageView()
-        v.backgroundColor = .clear
-        v.layer.borderColor = UIColor.white.cgColor
-        v.layer.borderWidth = 2
+//        v.backgroundColor = .clear
+//        v.layer.borderColor = UIColor.white.cgColor
+//        v.layer.borderWidth = 2
         v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let emptyImage: UIImageView = {
-        let v = UIImageView()
-        v.image = UIImage(named: "image")?.withRenderingMode(.alwaysTemplate)
-        v.tintColor = .lightGray
-        v.backgroundColor = .clear
-        v.translatesAutoresizingMaskIntoConstraints = false
+        v.contentMode = .scaleAspectFit
         return v
     }()
     
@@ -122,13 +121,10 @@ class WhishCell: UITableViewCell {
         
         self.backgroundColor = .clear
         
-        
-        
-        
-        
-        contentView.addSubview(label)
+        contentView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(label)
+//        contentView.addSubview(label)
         contentView.addSubview(checkButton)
-        contentView.addSubview(emptyImage)
         contentView.addSubview(wishImage)
         
         
@@ -140,13 +136,20 @@ class WhishCell: UITableViewCell {
         contentView.addSubview(priceLabel)
         contentView.addSubview(noteLabel)
         
+        mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        mainStackView.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 10).isActive = true
+        mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        
         //constrain wish label
-        label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 65).isActive = true
-        label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
+        label.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: mainStackView.topAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: mainStackView.bottomAnchor).isActive = true
         
         // constrain checkButton
-        checkButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
-        checkButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15).isActive = true
+        checkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -156,12 +159,6 @@ class WhishCell: UITableViewCell {
         wishImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30).isActive = true
         wishImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
         wishImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
-        // constain emptyImage
-        emptyImage.topAnchor.constraint(equalTo: wishImage.topAnchor, constant: 10).isActive = true
-        emptyImage.bottomAnchor.constraint(equalTo: wishImage.bottomAnchor, constant: -10).isActive = true
-        emptyImage.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor, constant: 10).isActive = true
-        emptyImage.trailingAnchor.constraint(equalTo: wishImage.trailingAnchor, constant: -10).isActive = true
         
         // constrain linkImage
         linkImage.topAnchor.constraint(equalTo: label.topAnchor, constant: 45).isActive = true

@@ -88,7 +88,7 @@ class WishlistViewController: UIViewController {
     
     let addWishButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButtonSimple"), for: .normal)
+        v.setImage(UIImage(named: "addButtonDark"), for: .normal)
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -400,12 +400,6 @@ class WishlistViewController: UIViewController {
         
         Hero.shared.update(progress)
         
-//        // update views' position based on the translation
-//        let viewPosition = CGPoint(x: wishlistBackgroundView.center.x, y: translation.y + wishlistBackgroundView.center.y)
-//
-//        Hero.shared.apply(modifiers: [.position(viewPosition)], to: self.wishlistBackgroundView)
-//
-        
       default:
         // finish or cancel the transition based on the progress and user's touch velocity
            if progress + panGR.velocity(in: nil).y / view.bounds.height > 0.3 {
@@ -425,7 +419,6 @@ class WishlistViewController: UIViewController {
         self.view.addSubview(transparentView)
         
         let screenSize = UIScreen.main.bounds.size
-        self.menueTableView.backgroundColor = .darkGray
         self.menueTableView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.menueTableViewHeight!)
         self.view.addSubview(self.menueTableView)
         
@@ -620,16 +613,17 @@ class WishlistViewController: UIViewController {
 
 extension WishlistViewController: DeleteWishDelegate {
     func deleteWish(_ idx: Int){
-        // remove the wish from the user's currently selected wishlist
-        wishList.wishData.remove(at: idx)
-        // set the updated data as the data for the table view
-        theTableView.wishData = wishList.wishData
-        theTableView.tableView.beginUpdates()
-        theTableView.tableView.deleteRows(at: [
-            (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
-        theTableView.tableView.endUpdates()
-        // reload data so index is updated
-        theTableView.tableView.reloadData()
+//        // remove the wish from the user's currently selected wishlist
+//        wishList.wishData.remove(at: idx)
+//        // set the updated data as the data for the table view
+//        theTableView.wishData = wishList.wishData
+//        theTableView.tableView.beginUpdates()
+//        theTableView.tableView.deleteRows(at: [
+//            (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
+//        theTableView.tableView.endUpdates()
+//        // reload data so index is updated
+//        theTableView.tableView.reloadData()
+        print("deleted")
     }
 }
 
