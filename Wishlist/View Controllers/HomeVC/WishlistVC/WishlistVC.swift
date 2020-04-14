@@ -24,17 +24,16 @@ class WishlistViewController: UIViewController {
 
     
     let wishlistBackgroundView: UIImageView = {
-           let v = UIImageView()
-           v.translatesAutoresizingMaskIntoConstraints = false
-//           v.backgroundColor = .gray
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         v.image = UIImage(named: "backgroundImage")
-           return v
+        return v
        }()
        
    let wishlistView: UIView = {
        let v = UIView()
        v.translatesAutoresizingMaskIntoConstraints = false
-       v.backgroundColor = .darkGray
+       v.backgroundColor = .white
        v.layer.cornerRadius = 30
        v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
        return v
@@ -89,7 +88,7 @@ class WishlistViewController: UIViewController {
     
     let addWishButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButton"), for: .normal)
+        v.setImage(UIImage(named: "addButtonSimple"), for: .normal)
         v.addTarget(self, action: #selector(addWishButtonTapped), for: .touchUpInside)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -108,7 +107,6 @@ class WishlistViewController: UIViewController {
         let v = UILabel()
         v.text = "Du scheinst wunschlos glücklich zu sein!"
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-//        v.backgroundColor = .cyan
         v.textColor = .lightGray
         v.textAlignment = .center
         v.numberOfLines = 0
@@ -116,11 +114,26 @@ class WishlistViewController: UIViewController {
         return v
     }()
     
-    let makeWishView: MakeWishView = {
-        let v = MakeWishView()
+    //MARK: WishView
+    let transparentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        return v
+    }()
+    
+    let wishView: WishView = {
+        let v = WishView()
+        v.theStackView.addBackgroundColorWithTopCornerRadius(color: .white)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    var wishConstraint: NSLayoutConstraint!
+    
+    var wishViewIsVisible = false
+
+    var dropOptions = [DropDownOption]()
+    
     
     //MARK: CreateListView 
     let createListView: CreateNewListView = {
@@ -144,8 +157,6 @@ class WishlistViewController: UIViewController {
     // create wishlist
     var wishList: Wishlist!
     
-    var dropOptions: [DropDownOption]!
-    
     var dataSourceArray = [Wishlist]()
     
     var dismissWishlistDelegate: DismissWishlistDelegate?
@@ -162,7 +173,6 @@ class WishlistViewController: UIViewController {
                                MenueOption(title: "Teilen", image: UIImage(systemName: "square.and.arrow.up")!)
                                ]
                                 
-    lazy var transparentView = UIView()
     lazy var menueTableView = UITableView()
     var menueTableViewHeight: CGFloat?
     var bottomConstraint: NSLayoutConstraint?
@@ -170,8 +180,6 @@ class WishlistViewController: UIViewController {
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.makeWishView.dropDownButton.dropView.tableView.backgroundColor = .clear
         
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
@@ -214,8 +222,7 @@ class WishlistViewController: UIViewController {
     }
     
     var keyboardHeight = CGFloat(0)
-    var duration: Any?
-    var curve: NSNumber?
+    
     //MARK: keyboardWillShow
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -223,17 +230,22 @@ class WishlistViewController: UIViewController {
             self.keyboardHeight = keyboardRectangle.height
             
             let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
-            self.duration = duration
+
             let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
-            self.curve = curve as? NSNumber
-            
-            if !self.createListView.isHidden {
-                UIView.animate(withDuration: self.duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: self.curve!)), animations: {
-                    self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
-                    self.view.layoutIfNeeded()
-                    }, completion: nil)
+
+            if self.wishViewIsVisible {
+                UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
+                            self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
+                            self.view.layoutIfNeeded()
+                        }, completion: nil)
             }
             
+            if !self.createListView.isHidden {
+                UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
+                self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
+                self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
         }
     }
     
@@ -253,7 +265,7 @@ class WishlistViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             
-            
+
             // constrain wishlistView
             wishlistBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             wishlistBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -292,6 +304,8 @@ class WishlistViewController: UIViewController {
             
             addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40),
+            addWishButton.widthAnchor.constraint(equalToConstant: 70),
+            addWishButton.heightAnchor.constraint(equalToConstant: 70),
             
         ])
         //MARK: constrain createListView
@@ -317,7 +331,19 @@ class WishlistViewController: UIViewController {
         
         emptyWishlistImage.isHidden = true
         emptyWishlistLabel.isHidden = true
+        
+        //MARK: constrain wishView
+        transparentView.frame = self.view.frame
+        self.view.addSubview(transparentView)
+        transparentView.alpha = 0
+        
+        self.view.addSubview(self.wishView)
+        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        wishConstraint = wishView.topAnchor.constraint(equalTo: self.view.bottomAnchor)
+        wishConstraint.isActive = true
     }
+    
     
     func isTableViewEmptyClosure(){
         // show background image and text if wishlist is empty
@@ -374,11 +400,11 @@ class WishlistViewController: UIViewController {
         
         Hero.shared.update(progress)
         
-        // update views' position based on the translation
-        let viewPosition = CGPoint(x: wishlistBackgroundView.center.x, y: translation.y + wishlistBackgroundView.center.y)
-            
-        Hero.shared.apply(modifiers: [.position(viewPosition)], to: self.wishlistBackgroundView)
-        
+//        // update views' position based on the translation
+//        let viewPosition = CGPoint(x: wishlistBackgroundView.center.x, y: translation.y + wishlistBackgroundView.center.y)
+//
+//        Hero.shared.apply(modifiers: [.position(viewPosition)], to: self.wishlistBackgroundView)
+//
         
       default:
         // finish or cancel the transition based on the progress and user's touch velocity
@@ -436,72 +462,159 @@ class WishlistViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: addWishButtonTapped
-    @objc private func addWishButtonTapped(){
+// MARK: AddWishButton
+    
+    @objc func addWishButtonTapped(){
         
         view.removeGestureRecognizer(panGR)
-        view.addSubview(makeWishView)
         
-        makeWishView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        makeWishView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        makeWishView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        makeWishView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        self.wishViewIsVisible = true
         
-        makeWishView.wishButton.alpha = 0
-        makeWishView.closeButton.alpha = 0
-        makeWishView.dropDownButton.alpha = 0
-        makeWishView.wishNameTextField.alpha = 0
-        makeWishView.wishImageView.alpha = 0
-        makeWishView.wishImageButton.alpha = 0
-        makeWishView.linkTextField.alpha = 0
-        makeWishView.priceTextField.alpha = 0
-        makeWishView.noteTextField.alpha = 0
-        makeWishView.linkImage.alpha = 0
-        makeWishView.priceImage.alpha = 0
-        makeWishView.noteImage.alpha = 0
+        self.view.bringSubviewToFront(self.wishView)
         
-        makeWishView.addWishDelegate = self
+        self.wishView.imageButtonDelegate = self
         
-        makeWishView.dissmissViewDelegate = self
-        
-        makeWishView.imageButtonDelegate = self
-        
-        // set dropDownOptions
-        makeWishView.dropDownButton.dropView.dropOptions = self.dropOptions
-        
-        // set dropDownButton image and label to current wishlists image and label
-        makeWishView.dropDownButton.listImage.image = self.wishlistImage.image
-        makeWishView.dropDownButton.label.text = self.wishlistLabel.text
-        
+        wishView.dropDownButton.dropView.dropOptions = self.dropOptions
+        wishView.dropDownButton.dropView.tableView.reloadData()
+
+        // set dropDownButton image and label to first wishlists image and label
+        wishView.dropDownButton.listImage.image = self.dataSourceArray[self.currentWishListIDX].image
+        wishView.dropDownButton.label.text = self.dataSourceArray[self.currentWishListIDX].name
+
         // pass data array
-        makeWishView.dataSourceArray = self.dataSourceArray
+        wishView.dataSourceArray = self.dataSourceArray
         
-        // update selectedWishlistIDX
-        makeWishView.selectedWishlistIDX = currentWishListIDX
+        wishView.wishNameTextField.becomeFirstResponder()
+        wishView.disableButton()
+        wishView.wishNameTextField.text = ""
+        wishView.priceTextField.text = ""
+        wishView.linkTextField.text = ""
         
-        // reset textfield 
-        makeWishView.wishNameTextField.text = ""
-        // hide wishButton
-        makeWishView.wishButton.isHidden = true
-        makeWishView.wishButtonDisabled.isHidden = false
+        onImageButtonTappedClosure()
+        onPriceButtonTappedClosure()
+        onLinkButtonTappedClosure()
+        onNoteButtonTappedClosure()
         
-        makeWishView.wishNameTextField.becomeFirstResponder()        
-            
-        UIView.animate(withDuration: 0.3) {
-            self.makeWishView.wishButton.alpha = 1
-            self.makeWishView.closeButton.alpha = 1
-            self.makeWishView.dropDownButton.alpha = 1
-            self.makeWishView.wishNameTextField.alpha = 1
-            self.makeWishView.wishImageView.alpha = 1
-            self.makeWishView.wishImageButton.alpha = 1
-            self.makeWishView.linkTextField.alpha = 1
-            self.makeWishView.priceTextField.alpha = 1
-            self.makeWishView.noteTextField.alpha = 1
-            self.makeWishView.linkImage.alpha = 1
-            self.makeWishView.priceImage.alpha = 1
-            self.makeWishView.noteImage.alpha = 1
+        transparentView.gestureRecognizers?.forEach {
+            self.transparentView.removeGestureRecognizer($0)
+        }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
+        transparentView.addGestureRecognizer(tapGesture)
+        
+        transparentView.alpha = 0
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+            self.transparentView.alpha = 0.6
+        }, completion: nil)
+
+//            makeWishView.addWishDelegate = self
+//
+//            makeWishView.imageButtonDelegate = self
+//
+//            // pass data array
+//            makeWishView.dataSourceArray = self.dataSourceArray
+//
+//            // update selectedWishlistIDX
+//            makeWishView.selectedWishlistIDX = currentWishListIDX
+  
+    }
+    
+    //MARK: onImageButtonTappedClosure
+    func onImageButtonTappedClosure(){
+        self.wishView.onImageButtonTapped = { [unowned self] height, isHidden in
+
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                self.wishConstraint.constant += height
+                self.view.layoutIfNeeded()
+            }, completion: nil)
             
         }
+    }
+    
+    //MARK: onPriceButtonClosure
+    func onPriceButtonTappedClosure(){
+        self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
+            
+            if isHidden {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.priceTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    //MARK: onLinkButtonTappedClosure
+    func onLinkButtonTappedClosure(){
+       self.wishView.onLinkButtonTapped = { [unowned self] height, isHidden in
+            if isHidden {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.linkTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    
+    //MARK: onNoteButtonTappedClosure
+    func onNoteButtonTappedClosure(){
+       self.wishView.onNoteButtonTapped = { [unowned self] height, isHidden in
+            if isHidden {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant -= height
+                    self.wishView.noteTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+                
+            } else {
+                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                    self.wishConstraint.constant += height
+                    self.wishView.wishNameTextField.becomeFirstResponder()
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
+    }
+    
+    
+    @objc func dismissWishView() {
+        
+        view.addGestureRecognizer(panGR)
+        
+        self.wishViewIsVisible = false
+        
+        wishView.dropDownButton.dismissDropDown()
+        
+        self.view.layoutIfNeeded()
+        
+        self.wishView.endEditing(true)
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
+            self.transparentView.alpha = 0
+            self.wishConstraint.constant = 0
+            self.view.layoutIfNeeded()
+
+        }) { (done) in
+            self.wishView.priceView.isHidden = true
+            self.wishView.linkView.isHidden = true
+            self.wishView.noteView.isHidden = true
+        }
+        
     }
 }
 
@@ -520,11 +633,7 @@ extension WishlistViewController: DeleteWishDelegate {
     }
 }
 
-extension WishlistViewController: DismissMakeWishView{
-    func dissmissViewComplete() {
-        view.addGestureRecognizer(panGR)
-    }
-}
+
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
         view.addGestureRecognizer(panGR)
@@ -547,6 +656,9 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
     
     // delegate function
     func showImagePickerControllerActionSheet() {
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
         // choose Alert Options
         let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
             self.showImagePickerController(sourceType: .photoLibrary)
@@ -558,8 +670,12 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
         
         let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
         
-        
-        AlertService.showAlert(style: .actionSheet, title: "Wähle ein Bild aus", message: nil, actions: [photoLibraryActionn, cameraAction, cancelAction], completion: nil)
+        // Add the actions to your actionSheet
+        actionSheet.addAction(photoLibraryActionn)
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(cancelAction)
+        // Present the controller
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
@@ -573,11 +689,29 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            makeWishView.wishImageView.image = editedImage
-            makeWishView.wishImageButton.titleLabel?.text = ""
+            
+            self.wishView.set(image: editedImage)
+            
+            UIView.animate(withDuration: 0.25) {
+                self.wishView.imageContainerView.alpha = 1
+                self.wishView.imageContainerView.isHidden = false
+                self.wishView.deleteImageButton.isHidden = false
+                self.wishView.wishImageView.isHidden = false
+                self.wishView.theStackView.layoutIfNeeded()
+            }
+
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            makeWishView.wishImageButton.titleLabel?.text = ""
-            makeWishView.wishImageView.image = originalImage
+
+            self.wishView.set(image: originalImage)
+            
+            UIView.animate(withDuration: 0.25) {
+                self.wishView.imageContainerView.alpha = 1
+                self.wishView.imageContainerView.isHidden = false
+                self.wishView.deleteImageButton.isHidden = false
+                self.wishView.wishImageView.isHidden = false
+                self.wishView.theStackView.layoutIfNeeded()
+            }
+
         }
         dismiss(animated: true, completion: nil)
     }

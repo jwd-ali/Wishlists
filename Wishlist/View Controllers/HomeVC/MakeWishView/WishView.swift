@@ -13,6 +13,10 @@ protocol ImagePickerDelegate {
     func showImagePickerControllerActionSheet()
 }
 
+protocol AddWishDelegate {
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
+}
+
 class WishView: UIView, UITextFieldDelegate {
     
     //MARK: StackView
@@ -105,20 +109,6 @@ class WishView: UIView, UITextFieldDelegate {
     let wishImageView: ShadowRoundedImageView = {
         let v = ShadowRoundedImageView()
         v.backgroundColor = .clear
-//        v.layer.borderColor = UIColor.darkCustom.cgColor
-//        v.layer.borderWidth = 2
-//        v.layer.cornerRadius = 3
-//        v.layer.shadowColor = UIColor.darkGray.cgColor
-//
-//        v.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-//        v.layer.shadowOpacity = 0.8
-//        v.layer.shadowRadius = 2
-        
-//        v.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-//        v.layer.shadowColor = UIColor.darkCustom.cgColor
-//        v.layer.shadowRadius = 2
-//        v.layer.shadowOpacity = 0.80
-        
         v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
         v.contentMode = .scaleAspectFit
@@ -335,20 +325,25 @@ class WishView: UIView, UITextFieldDelegate {
         imageContainerView.addSubview(wishImageView)
         imageContainerView.addSubview(deleteImageButton)
         
+        imageContainerView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         imageContainerView.isHidden = true
         
         wishImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor, constant: 20).isActive = true
-        wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 3).isActive = true
-        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -3).isActive = true
+        wishImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 5).isActive = true
+        wishImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -5).isActive = true
         
         wishImageViewWidthConstraint = wishImageView.widthAnchor.constraint(equalToConstant: wishImageViewHeight)
         wishImageViewWidthConstraint.isActive = true
         wishImageView.heightAnchor.constraint(equalToConstant: wishImageViewHeight).isActive = true
         
+        wishImageView.isHidden = true
+        
         deleteImageButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         deleteImageButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         deleteImageButton.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: -10).isActive = true
         deleteImageButton.trailingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: 10).isActive = true
+        
+        deleteImageButton.isHidden = true
         
         //MARK: price
         theStackView.addArrangedSubview(self.priceView)
@@ -492,7 +487,14 @@ class WishView: UIView, UITextFieldDelegate {
     }
     
     @objc func deleteImageButtonTapped(){
-        print("yeet")
+        UIView.animate(withDuration: 0.25) {
+            self.imageContainerView.alpha = 0
+            self.imageContainerView.isHidden = true
+            self.deleteImageButton.isHidden = true
+            self.wishImageView.isHidden = true
+            self.theStackView.layoutIfNeeded()
+        }
+        self.onImageButtonTapped?(imageContainerView.frame.height, false)
     }
     
     //MARK: imageButtonTapped
@@ -500,19 +502,12 @@ class WishView: UIView, UITextFieldDelegate {
         let imageViewIsHidden = imageContainerView.isHidden
         
         if imageViewIsHidden {
-            UIView.animate(withDuration: 0.25) {
-                self.imageContainerView.alpha = 1
-                self.imageContainerView.isHidden = false
-                self.theStackView.layoutIfNeeded()
-                self.imageButtonDelegate?.showImagePickerControllerActionSheet()
-            }
+            
+            self.imageButtonDelegate?.showImagePickerControllerActionSheet()
             self.onImageButtonTapped?(imageContainerView.frame.height, true)
         } else {
-            UIView.animate(withDuration: 0.25) {
-                self.imageContainerView.alpha = 0
-                self.imageContainerView.isHidden = true
-                self.theStackView.layoutIfNeeded()
-            }
+            
+            self.imageButtonDelegate?.showImagePickerControllerActionSheet()
             self.onImageButtonTapped?(imageContainerView.frame.height, false)
             
         }

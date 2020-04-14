@@ -102,15 +102,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         return v
     }()
     
-    
-    // MARK: MakeWishView
-    
-    let makeWishView: MakeWishView = {
-        let v = MakeWishView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
     let transparentView: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor.black.withAlphaComponent(0.6)
@@ -211,8 +202,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     var keyboardHeight = CGFloat(0)
-//    var duration: Any?
-//    var curve: NSNumber?
+
     //MARK: keyboardWillShow
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -220,10 +210,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.keyboardHeight = keyboardRectangle.height
             
             let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
-//            self.duration = duration
+
             let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
-//            self.curve = curve as? NSNumber
-            
+
             if self.wishViewIsVisible {
                 UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
                             self.wishConstraint.constant = -(self.wishView.frame.height + self.keyboardHeight)
@@ -390,7 +379,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.transparentView.removeGestureRecognizer($0)
         }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishWishView))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
@@ -413,19 +402,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     //MARK: onImageButtonTappedClosure
     func onImageButtonTappedClosure(){
-       self.wishView.onImageButtonTapped = { [unowned self] height, isHidden in
-            if isHidden {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant -= height
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-                
-            } else {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant += height
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-            }
+        self.wishView.onImageButtonTapped = { [unowned self] height, isHidden in
+
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
+                self.wishConstraint.constant += height
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+            
         }
     }
     
@@ -490,7 +473,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     
-    @objc func dismissWishWishView() {
+    @objc func dismissWishView() {
         
         self.wishViewIsVisible = false
         
@@ -598,9 +581,6 @@ extension MainViewController: DismissWishlistDelegate {
             theCollectionView.reloadData()
             theCollectionView.performBatchUpdates(nil, completion: nil)
         }
-        
-        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
-        
     }
 }
 
@@ -647,6 +627,9 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
     
     // delegate function
     func showImagePickerControllerActionSheet() {
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
         // choose Alert Options
         let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
             self.showImagePickerController(sourceType: .photoLibrary)
@@ -658,8 +641,12 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
         
         let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
         
-        
-        AlertService.showAlert(style: .actionSheet, title: "Wähle ein Bild aus", message: nil, actions: [photoLibraryActionn, cameraAction, cancelAction], completion: nil)
+        // Add the actions to your actionSheet
+        actionSheet.addAction(photoLibraryActionn)
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(cancelAction)
+        // Present the controller
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
@@ -673,13 +660,28 @@ extension MainViewController: ImagePickerDelegate, UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-//            makeWishView.wishImageButton.titleLabel?.text = ""
             
             self.wishView.set(image: editedImage)
+            
+            UIView.animate(withDuration: 0.25) {
+                self.wishView.imageContainerView.alpha = 1
+                self.wishView.imageContainerView.isHidden = false
+                self.wishView.deleteImageButton.isHidden = false
+                self.wishView.wishImageView.isHidden = false
+                self.wishView.theStackView.layoutIfNeeded()
+            }
 
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            makeWishView.wishImageButton.titleLabel?.text = ""
+
             self.wishView.set(image: originalImage)
+            
+            UIView.animate(withDuration: 0.25) {
+                self.wishView.imageContainerView.alpha = 1
+                self.wishView.imageContainerView.isHidden = false
+                self.wishView.deleteImageButton.isHidden = false
+                self.wishView.wishImageView.isHidden = false
+                self.wishView.theStackView.layoutIfNeeded()
+            }
 
         }
         dismiss(animated: true, completion: nil)

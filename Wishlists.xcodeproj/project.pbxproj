@@ -17,7 +17,6 @@
 		8357A270243657CB00DFF949 /* MainCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8357A26F243657CB00DFF949 /* MainCollectionView.swift */; };
 		8357A273243677B300DFF949 /* WishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8357A272243677B300DFF949 /* WishView.swift */; };
 		83605075232674760013EBD2 /* TextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83605074232674760013EBD2 /* TextfieldExtension.swift */; };
-		836232B423C9E40800FA498D /* MakeWishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B323C9E40700FA498D /* MakeWishView.swift */; };
 		836232B623CD2BC700FA498D /* CollectionViewAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */; };
 		836A862323875325000E76E4 /* WhishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862223875325000E76E4 /* WhishCell.swift */; };
 		836A862523880B21000E76E4 /* WhishlistTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862423880B21000E76E4 /* WhishlistTableViewController.swift */; };
@@ -106,7 +105,6 @@
 		8357A26F243657CB00DFF949 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
 		8357A272243677B300DFF949 /* WishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishView.swift; sourceTree = "<group>"; };
 		83605074232674760013EBD2 /* TextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldExtension.swift; sourceTree = "<group>"; };
-		836232B323C9E40700FA498D /* MakeWishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeWishView.swift; sourceTree = "<group>"; };
 		836232B523CD2BC700FA498D /* CollectionViewAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewAnimations.swift; sourceTree = "<group>"; };
 		836A862223875325000E76E4 /* WhishCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishCell.swift; sourceTree = "<group>"; };
 		836A862423880B21000E76E4 /* WhishlistTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhishlistTableViewController.swift; sourceTree = "<group>"; };
@@ -407,7 +405,6 @@
 			isa = PBXGroup;
 			children = (
 				8357A271243676CB00DFF949 /* DropDown */,
-				836232B323C9E40700FA498D /* MakeWishView.swift */,
 				8357A272243677B300DFF949 /* WishView.swift */,
 			);
 			path = MakeWishView;
@@ -645,7 +642,6 @@
 				83BF292F23DE28DB003A3AF1 /* EmailVC.swift in Sources */,
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
 				832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */,
-				836232B423C9E40800FA498D /* MakeWishView.swift in Sources */,
 				8357A273243677B300DFF949 /* WishView.swift in Sources */,
 				83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */,
 			);

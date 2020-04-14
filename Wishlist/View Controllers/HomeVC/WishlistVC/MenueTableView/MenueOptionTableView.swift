@@ -160,7 +160,7 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         // update drop down options
         self.dropOptions[self.currentWishListIDX].name = listName
         self.dropOptions[self.currentWishListIDX].image = listImage
-        self.makeWishView.dropDownButton.dropView.tableView.reloadData()
+        self.wishView.dropDownButton.dropView.tableView.reloadData()
 
     }
 }
