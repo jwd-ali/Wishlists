@@ -43,8 +43,6 @@ class WishView: UIView, UITextFieldDelegate {
         return v
     }()
     
-
-    
     let imageButton: UIButton = {
         let v = UIButton()
         v.setImage(UIImage(systemName: "photo"), for: .normal)

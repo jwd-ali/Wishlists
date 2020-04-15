@@ -11,15 +11,15 @@ import UIKit
 class WhishlistTableViewController: UITableViewController {
 
     public var wishDataTest = [
-        Wish(withWishName: "Ultra Boost", link: "www.adidas.com", price: "180", note: "US 44", image: UIImage(named: "testImage")!, checked: false),
+        Wish(withWishName: "Ultra Boost", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false),
         
-        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
+        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
     ]
     
     public var wishData = [Wish]()
     
     var tableViewIsEmpty: ((Bool) -> Void)?
-    
+
     // protocol / delegate pattern
     public var deleteWishDelegate: DeleteWishDelegate?
     
@@ -27,8 +27,8 @@ class WhishlistTableViewController: UITableViewController {
         super.viewDidLoad()
         
         
-        self.tableView.rowHeight = 180
-        
+        self.tableView.rowHeight = 140
+    
         // disable didSelectAt
         self.tableView.allowsSelection = false
         
