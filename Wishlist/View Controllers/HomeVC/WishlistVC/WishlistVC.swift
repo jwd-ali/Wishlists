@@ -184,7 +184,6 @@ class WishlistViewController: UIViewController {
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
         self.hero.isEnabled = true
-
         
         // adding panGestureRecognizer
         panGR = UIPanGestureRecognizer(target: self,
@@ -275,14 +274,14 @@ class WishlistViewController: UIViewController {
             
             wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160.0),
             wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            wishlistView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            wishlistView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            wishlistView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            wishlistView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             
             // constrain wishTableView
             theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 40.0),
-            theTableView.view.bottomAnchor.constraint(equalTo: wishlistView.bottomAnchor, constant: 0),
-            theTableView.view.leadingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.leadingAnchor, constant: 30.0),
-            theTableView.view.trailingAnchor.constraint(equalTo: wishlistView.safeAreaLayoutGuide.trailingAnchor, constant: -30.0),
+            theTableView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            theTableView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            theTableView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
            
             // constrain dismissButton
             dismissWishlistViewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),

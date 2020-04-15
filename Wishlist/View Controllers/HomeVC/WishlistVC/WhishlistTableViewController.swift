@@ -26,13 +26,10 @@ class WhishlistTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.tableView.rowHeight = 140
-    
+
         // disable didSelectAt
         self.tableView.allowsSelection = false
-        
-//        self.tableView.separatorStyle = .none
         
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
         

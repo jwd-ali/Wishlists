@@ -174,6 +174,7 @@ class WhishCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = .clear
+        self.clipsToBounds = false
         
         setupViews()
         setupLoadingAnimation()
@@ -188,16 +189,14 @@ class WhishCell: UITableViewCell {
     
     //MARK: setup Loading-Animation
     func setupLoadingAnimation(){
-       
-        successAnimation.contentMode = .scaleAspectFit
+
         successAnimation.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(successAnimation)
-        
-        
-//        successAnimation.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+       
+        successAnimation.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -30).isActive = true
         successAnimation.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        successAnimation.widthAnchor.constraint(equalToConstant: 180).isActive = true
-        successAnimation.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        successAnimation.widthAnchor.constraint(equalToConstant: 160).isActive = true
+        successAnimation.heightAnchor.constraint(equalToConstant: 160).isActive = true
         
         successAnimation.isHidden = true
         successAnimation.loopMode = .playOnce
@@ -233,7 +232,7 @@ class WhishCell: UITableViewCell {
         
         mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         mainStackView.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15).isActive = true
-        mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
         //constrain wish label
@@ -243,7 +242,7 @@ class WhishCell: UITableViewCell {
         label.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         // constrain checkButton
-        checkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        checkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30).isActive = true
         checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
