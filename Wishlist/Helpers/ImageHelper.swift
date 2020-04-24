@@ -26,6 +26,12 @@ extension UIImage {
 
         return UIGraphicsGetImageFromCurrentImageContext()
     }
+    
+//    func set(image: UIImage) {
+//        let ratio = image.size.width / image.size.height
+//        wishImageView.image = image
+//        wishImageViewWidthConstraint.constant = ratio * wishImageViewHeight
+//    }
 }
 
 

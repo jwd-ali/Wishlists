@@ -18,7 +18,7 @@ class WhishCell: UITableViewCell {
     let mainStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .orange)
+//        v.addBackgroundColorWithTopCornerRadius(color: .orange)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -26,7 +26,7 @@ class WhishCell: UITableViewCell {
     let secondaryStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
+//        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -34,7 +34,7 @@ class WhishCell: UITableViewCell {
     let thirdStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .red)
+//        v.addBackgroundColorWithTopCornerRadius(color: .red)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -248,9 +248,10 @@ class WhishCell: UITableViewCell {
         checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         // constrain wishImage
-        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
+        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 8).isActive = true
         wishImage.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor).isActive = true
 //        wishImage.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor).isActive = true
+//        wishImage.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor).isActive = true
         wishImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
         wishImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
         

@@ -71,7 +71,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
                vc.addWishButton.heroID = addButtonHeroID
                // allow MainVC to recieve updated datasource array
                vc.dismissWishlistDelegate = self
-                   
+            
+               vc.selectedWishlistIDX = indexPath.item
+            
                vc.theTableView.tableView.reloadData()
                self.present(vc, animated: true, completion: nil)
                

@@ -185,6 +185,8 @@ class WishlistViewController: UIViewController {
         self.wishlistBackgroundView.heroID = "wishlistView"
         self.hero.isEnabled = true
         
+        self.wishView.addWishDelegate = self
+        
         // adding panGestureRecognizer
         panGR = UIPanGestureRecognizer(target: self,
                   action: #selector(handlePan(gestureRecognizer:)))
@@ -472,6 +474,8 @@ class WishlistViewController: UIViewController {
         // set dropDownButton image and label to first wishlists image and label
         wishView.dropDownButton.listImage.image = self.dataSourceArray[self.currentWishListIDX].image
         wishView.dropDownButton.label.text = self.dataSourceArray[self.currentWishListIDX].name
+        
+        wishView.selectedWishlistIDX = self.selectedWishlistIDX
 
         // pass data array
         wishView.dataSourceArray = self.dataSourceArray
@@ -499,16 +503,6 @@ class WishlistViewController: UIViewController {
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.6
         }, completion: nil)
-
-//            makeWishView.addWishDelegate = self
-//
-//            makeWishView.imageButtonDelegate = self
-//
-//            // pass data array
-//            makeWishView.dataSourceArray = self.dataSourceArray
-//
-//            // update selectedWishlistIDX
-//            makeWishView.selectedWishlistIDX = currentWishListIDX
   
     }
     
@@ -629,7 +623,7 @@ extension WishlistViewController: DeleteWishDelegate {
 
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
-        view.addGestureRecognizer(panGR)
+
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
         // only update current list if selectedWishlist is currentWishlist

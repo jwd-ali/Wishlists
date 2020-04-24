@@ -354,12 +354,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         self.wishView.imageButtonDelegate = self
         
+        self.wishView.addWishDelegate = self
+        
         wishView.dropDownButton.dropView.dropOptions = self.dropOptions
         wishView.dropDownButton.dropView.tableView.reloadData()
 
         // set dropDownButton image and label to first wishlists image and label
         wishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
         wishView.dropDownButton.label.text = self.dataSourceArray[0].name
+        
+        wishView.selectedWishlistIDX = 0
 
         // pass data array
         wishView.dataSourceArray = self.dataSourceArray
@@ -608,6 +612,7 @@ extension MainViewController: SelectedWishlistProtocol{
 
 extension MainViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
 //        // only update current list if selectedWishlist is currentWishlist

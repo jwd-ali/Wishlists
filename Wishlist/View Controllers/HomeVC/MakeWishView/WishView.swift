@@ -274,6 +274,10 @@ class WishView: UIView, UITextFieldDelegate {
 
     var imageButtonDelegate: ImagePickerDelegate?
     
+    var addWishDelegate: AddWishDelegate?
+    
+    var selectedWishlistIDX: Int?
+    
     //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -583,11 +587,21 @@ class WishView: UIView, UITextFieldDelegate {
     //MARK: wishButtonTapped
     @objc func wishButtonTapped(){
        print("wishButtonTapped")
+        
+        let name = self.wishNameTextField.text!
+        let listIDX = self.selectedWishlistIDX!
+        let image = self.wishImageView.image ?? nil
+        let link = self.linkTextField.text ?? ""
+        let price = self.priceTextField.text ?? ""
+        let note = self.noteTextField.text ?? ""
+        
+        self.addWishDelegate?.addWishComplete(wishName: name, selectedWishlistIDX: listIDX, wishImage: image, wishLink: link, wishPrice: price, wishNote: note)
     }
     
-    
-    //MARK: wishImageButtonTapped
-    @objc func wishImageButtonTapped(){
-        print("wishImageButtonTapped")
+}
+
+extension WishView: SelectedWishlistProtocol {
+    func didSelectWishlist(idx: Int) {
+        self.selectedWishlistIDX = idx
     }
 }

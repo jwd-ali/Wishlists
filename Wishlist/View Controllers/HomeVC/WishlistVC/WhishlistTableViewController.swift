@@ -10,13 +10,13 @@ import UIKit
 
 class WhishlistTableViewController: UITableViewController {
 
-    public var wishDataTest = [
-        Wish(withWishName: "Ultra Boost", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false),
+    public var wishData = [
+        Wish(withWishName: "Ultra Boost Kith Aspen", link: "www.adidas.com", price: "180,00€", note: "EU 44 / US 10", image: UIImage(named: "testImageShoes-1")!, checked: false),
         
-        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
+//        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
     ]
     
-    public var wishData = [Wish]()
+//    public var wishData = [Wish]()
     
     var tableViewIsEmpty: ((Bool) -> Void)?
 
@@ -44,12 +44,12 @@ class WhishlistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if wishDataTest.count == 0 {
+        if wishData.count == 0 {
             tableViewIsEmpty?(true)
         } else {
             tableViewIsEmpty?(false)
         }
-        return wishDataTest.count
+        return wishData.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -57,7 +57,7 @@ class WhishlistTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
         
-        let currentWish = self.wishDataTest[indexPath.row]
+        let currentWish = self.wishData[indexPath.row]
         if currentWish.wishImage == UIImage(named: "image"){
             cell.wishImage.image = .none
         }else {

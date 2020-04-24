@@ -205,8 +205,8 @@
 			isa = PBXGroup;
 			children = (
 				830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */,
-				830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */,
 				830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */,
+				830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */,
 			);
 			path = MenueTableView;
 			sourceTree = "<group>";
