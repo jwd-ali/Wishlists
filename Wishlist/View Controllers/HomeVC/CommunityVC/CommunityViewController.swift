@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Lottie
+import SwiftSoup
 
 class CommunityViewController: UIViewController {
     
@@ -23,38 +23,120 @@ class CommunityViewController: UIViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setImage(UIImage(named: "backButton"), for: .normal)
         v.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        v.setImageTintColor(.darkGray)
+        v.setImageTintColor(.white)
         return v
     }()
     
-    let showAnimation: UIButton = {
-        let v = UIButton()
+    let actionButton: CustomButton = {
+        let v = CustomButton(type: .system)
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("show animation", for: .normal)
-        v.addTarget(self, action: #selector(showAnimationTapped), for: .touchUpInside)
-        v.setImageTintColor(.darkGray)
+        v.setTitle("Action", for: .normal)
+        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 23)
+        v.titleLabel?.textColor = .white
+        v.setTitleColor(.white, for: .normal)
+        v.backgroundColor = UIColor.darkGray
+        v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         return v
     }()
+    
+    let priceLabel: UILabel = {
+        let v = UILabel()
+        v.text = ""
+        v.font = UIFont(name: "AvenirNext-Bold", size: 23)
+        v.numberOfLines = 0
+        v.textAlignment = .center
+        v.textColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let theImageView: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .cyan
+        return v
+    }()
+    
+    
+    
+    let images = [UIImage]()
+    
+    var currentImage = 0
 
     override func viewDidLoad() {
-        super.viewDidLoad()
         
         setupView()
+        super.viewDidLoad()
+        
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        self.view.addGestureRecognizer(swipeRight)
+
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        self.view.addGestureRecognizer(swipeLeft)
+        // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+
+
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizer.Direction.left:
+                if currentImage == images.count - 1 {
+                    currentImage = 0
+
+                }else{
+                    currentImage += 1
+                }
+                theImageView.image = images[currentImage]
+
+            case UISwipeGestureRecognizer.Direction.right:
+                if currentImage == 0 {
+                    currentImage = images.count - 1
+                }else{
+                    currentImage -= 1
+                }
+                theImageView.image = images[currentImage]
+            default:
+                break
+            }
+        }
+    }
+    
+    
     
     func setupView() {
         
         view.addSubview(backGroundImage)
         view.addSubview(backButton)
-        view.addSubview(showAnimation)
+        view.addSubview(actionButton)
+        view.addSubview(priceLabel)
+        view.addSubview(theImageView)
         
-        backGroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
-        backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
-        backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
-        backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
+        backGroundImage.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        backGroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        backGroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        showAnimation.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 300).isActive = true
-        showAnimation.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+        actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        actionButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        actionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        theImageView.topAnchor.constraint(equalTo: view.topAnchor, constant:  100).isActive = true
+        theImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        theImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        theImageView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        priceLabel.topAnchor.constraint(equalTo: theImageView.bottomAnchor, constant: 80).isActive = true
+        priceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        priceLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         
         backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
@@ -64,20 +146,53 @@ class CommunityViewController: UIViewController {
         
     }
     
-    @objc func showAnimationTapped(){
+    @objc func actionButtonTapped(){
         
-        let logoAnimation = AnimationView(name: "StrokeAnimation")
-        logoAnimation.contentMode = .scaleAspectFit
-        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(logoAnimation)
+        let url = "https://www.overkillshop.com/de/c2h4-interstellar-liaison-panelled-zip-up-windbreaker-r001-b012-vanward-black-grey.html"
         
-        logoAnimation.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoAnimation.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        logoAnimation.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        logoAnimation.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        let url2 = "https://www.asos.com/de/asos-design/asos-design-schwarzer-backpack-mit-ringdetail-und-kroko-muster/prd/14253083?clr=schwarz&colourWayId=16603012&SearchQuery=&cid=4877"
         
-        logoAnimation.play()
-        
+        let url3 = "https://www.adidas.de/adistar-trikot/CV7089.html"
+
+        do {
+            
+
+            let html: String = Utilities.getHTMLfromURL(url: url2)
+            let doc: Document = try SwiftSoup.parse(html)
+            
+            let priceClasses: Elements = try doc.select("[class~=(?i)price]")
+
+            for priceClass: Element in priceClasses.array() {
+                let priceText : String = try priceClass.text()
+                print(try priceClass.className())
+                print("pricetext: \(priceText)")
+            }
+            
+            let srcs: Elements = try doc.select("img[src]")
+            let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
+            
+            for imageName in srcsStringArray {
+                print(imageName!)
+            }
+            // do something with srcsStringArray
+            
+//            print(try price?.text() as Any)
+//            print(try price?.className() as Any)
+            
+//            let priceText : String? = try (price?.text())! as String
+            
+//            if priceText == "" {
+//                result.text = "price not found"
+//            }else {
+//                result.text = priceText
+//            }
+//            result.text = priceText ?? "price not found"
+    
+        } catch Exception.Error( _, let message) {
+            print(message)
+        } catch {
+            print("error")
+        }
     }
     
     @objc func backButtonTapped() {

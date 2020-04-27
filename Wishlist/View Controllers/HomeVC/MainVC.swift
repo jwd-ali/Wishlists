@@ -510,11 +510,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     //MARK: CommunityButton
     @objc func communityButtonTapped() {
         
-//        let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
-//
-//        self.navigationController?.pushViewController(communityView, animated: true)
-        self.theCollectionView.reloadData()
-        
+        let communityView = self.storyboard?.instantiateViewController(withIdentifier: "CommunityVC") as! CommunityViewController
+
+        self.navigationController?.pushViewController(communityView, animated: true)
 
     }
     

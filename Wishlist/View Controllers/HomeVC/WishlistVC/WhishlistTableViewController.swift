@@ -26,7 +26,7 @@ class WhishlistTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.rowHeight = 140
+//        self.tableView.rowHeight = 140
 
         // disable didSelectAt
         self.tableView.allowsSelection = false
@@ -77,6 +77,11 @@ class WhishlistTableViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.estimatedRowHeight = 140
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
 }

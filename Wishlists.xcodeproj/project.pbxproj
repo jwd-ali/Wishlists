@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021A7682E9AED86FD3091B2A /* Pods_Wishlists.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C460682B44A74949E586A85D /* Pods_Wishlists.framework */; };
 		830646B4242BAFA600A7F3B2 /* MenueOptionStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */; };
 		830646B6242BB05F00A7F3B2 /* MenueOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */; };
 		830646B8242BB69000A7F3B2 /* MenueOptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830646B7242BB69000A7F3B2 /* MenueOptionTableView.swift */; };
@@ -46,7 +47,8 @@
 		83A3BD2423A68CA7003FDCC1 /* AddItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */; };
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
-		83BE0A7A243E8E460095DCAD /* TextFieldEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 83BE0A79243E8E460095DCAD /* TextFieldEffects */; };
+		83BA2560245637CF002B5C64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A4230D6064002D22C0 /* Assets.xcassets */; };
+		83BE0A7A243E8E460095DCAD /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */; };
 		83BE0A7C2440F1AC0095DCAD /* AlignedAspectFitImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE0A7B2440F1AA0095DCAD /* AlignedAspectFitImageViewHelper.swift */; };
 		83BE0A7E244387110095DCAD /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE0A7D2443870F0095DCAD /* ImageHelper.swift */; };
 		83BE0A8024476FAD0095DCAD /* successAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83BE0A7F24476FAC0095DCAD /* successAnimation.json */; };
@@ -64,7 +66,6 @@
 		83F51D63240D0D5D00FC6036 /* StrokeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83F51D62240D0D5D00FC6036 /* StrokeAnimation.json */; };
 		83FE84B323DB3128008D9F7B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B223DB3128008D9F7B /* ProfileViewController.swift */; };
 		83FE84B523DB3BC9008D9F7B /* UserDefault+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */; };
-		DCD3D2EDD1B7AD99D2F0E049 /* Pods_Wishlists.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,7 +95,6 @@
 /* Begin PBXFileReference section */
 		1E6F87A0004C35366F403145 /* Pods-Wishlists.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlists.release.xcconfig"; path = "Target Support Files/Pods-Wishlists/Pods-Wishlists.release.xcconfig"; sourceTree = "<group>"; };
 		264894DEC8A3670A3F48B4D4 /* Pods-Wishlist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.release.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.release.xcconfig"; sourceTree = "<group>"; };
-		3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlists.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49FD15AA770B5322A0BC7C36 /* Pods-Wishlist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlist.debug.xcconfig"; path = "Target Support Files/Pods-Wishlist/Pods-Wishlist.debug.xcconfig"; sourceTree = "<group>"; };
 		830646B3242BAFA600A7F3B2 /* MenueOptionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionStruct.swift; sourceTree = "<group>"; };
 		830646B5242BB05F00A7F3B2 /* MenueOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueOptionCell.swift; sourceTree = "<group>"; };
@@ -158,6 +158,7 @@
 		83FE84B223DB3128008D9F7B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		83FE84B423DB3BC9008D9F7B /* UserDefault+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+Helpers.swift"; sourceTree = "<group>"; };
 		9FFDD986AACAA5B52AF3C702 /* Pods-Wishlists.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wishlists.debug.xcconfig"; path = "Target Support Files/Pods-Wishlists/Pods-Wishlists.debug.xcconfig"; sourceTree = "<group>"; };
+		C460682B44A74949E586A85D /* Pods_Wishlists.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wishlists.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,9 +173,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83BE0A7A243E8E460095DCAD /* TextFieldEffects in Frameworks */,
+				83BE0A7A243E8E460095DCAD /* BuildFile in Frameworks */,
 				8392D53E24268B1F00FF6EA0 /* AuthenticationServices.framework in Frameworks */,
-				DCD3D2EDD1B7AD99D2F0E049 /* Pods_Wishlists.framework in Frameworks */,
+				021A7682E9AED86FD3091B2A /* Pods_Wishlists.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,7 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				8392D53D24268B1F00FF6EA0 /* AuthenticationServices.framework */,
-				3F3ED32CB60A419611E0D26F /* Pods_Wishlists.framework */,
+				C460682B44A74949E586A85D /* Pods_Wishlists.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -449,9 +450,9 @@
 				83A19396230D6062002D22C0 /* Sources */,
 				83A19397230D6062002D22C0 /* Frameworks */,
 				83A19398230D6062002D22C0 /* Resources */,
-				02F830CCF22F747FE40F23AB /* [CP] Embed Pods Frameworks */,
 				E3F54B9247CAE7B9BD09B2C3 /* [CP] Copy Pods Resources */,
 				8392D562242798F000FF6EA0 /* Embed App Extensions */,
+				A01BA209E00AFCD473485A61 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -460,7 +461,7 @@
 			);
 			name = Wishlists;
 			packageProductDependencies = (
-				83BE0A79243E8E460095DCAD /* TextFieldEffects */,
+				83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */,
 			);
 			productName = Wishlist;
 			productReference = 83A1939A230D6062002D22C0 /* Wishlists.app */;
@@ -494,7 +495,7 @@
 			);
 			mainGroup = 83A19391230D6062002D22C0;
 			packageReferences = (
-				83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */,
+				83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 83A1939B230D6062002D22C0 /* Products */;
 			projectDirPath = "";
@@ -511,6 +512,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83BA2560245637CF002B5C64 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,23 +533,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02F830CCF22F747FE40F23AB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		396BFD27F19B7A797A126B44 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -568,6 +553,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A01BA209E00AFCD473485A61 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wishlists/Pods-Wishlists-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E3F54B9247CAE7B9BD09B2C3 /* [CP] Copy Pods Resources */ = {
@@ -916,7 +918,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */ = {
+		83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/raulriera/TextFieldEffects.git";
 			requirement = {
@@ -927,9 +929,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		83BE0A79243E8E460095DCAD /* TextFieldEffects */ = {
+		83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */;
+			package = 83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */;
 			productName = TextFieldEffects;
 		};
 /* End XCSwiftPackageProductDependency section */

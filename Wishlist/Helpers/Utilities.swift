@@ -12,28 +12,6 @@ import SwiftEntryKit
 
 class Utilities {
     
-    static func styleTextField(_ textfield:UITextField) {
-        
-        // Create the bottom line
-        let bottomLine = CALayer()
-
-        bottomLine.frame = CGRect(x: 0, y: textfield.frame.height - 2, width: textfield.frame.width, height: 1)
-
-        bottomLine.backgroundColor = UIColor.white.cgColor
-        
-
-
-        
-        // Remove border on text field
-        textfield.borderStyle = .none
-
-        // Add the line to the text field
-        textfield.layer.addSublayer(bottomLine)
-
-    }
-    
-    
-    
     static func isPasswordValid(_ password : String) -> Bool {
         
         /*
@@ -62,20 +40,6 @@ class Utilities {
             deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
     
-//    static func applyMotionEffect (toView view:UIView, magnitude:Float) {
-//        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
-//        xMotion.minimumRelativeValue = -magnitude
-//        xMotion.maximumRelativeValue = magnitude
-//        
-//        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
-//        yMotion.minimumRelativeValue = -magnitude
-//        yMotion.maximumRelativeValue = magnitude
-//        
-//        let group = UIMotionEffectGroup()
-//        group.motionEffects = [xMotion, yMotion]
-//        
-//        view.addMotionEffect(group)
-//    }
     
     //MARK: Error Pop-up
     static func showErrorPopUp(labelContent: String, description: String){
@@ -97,7 +61,26 @@ class Utilities {
         let contentView = EKNotificationMessageView(with: notificationMessage)
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
+    
+    //MARK: getHTMLfromURL
+    static func getHTMLfromURL(url: String) -> String{
+        let myURLString = url
+        guard let myURL = URL(string: myURLString) else {
+            print("Error: \(myURLString) doesn't seem to be a valid URL")
+            return ""
+        }
+
+        do {
+            let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
+            return myHTMLString
+        } catch let error {
+            print("Error: \(error)")
+        }
+        
+        return ""
+    }
 }
+
 
 public extension UIView {
 

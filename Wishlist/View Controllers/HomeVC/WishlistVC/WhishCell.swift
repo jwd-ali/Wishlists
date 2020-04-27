@@ -18,7 +18,7 @@ class WhishCell: UITableViewCell {
     let mainStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-//        v.addBackgroundColorWithTopCornerRadius(color: .orange)
+        v.addBackgroundColorWithTopCornerRadius(color: .orange)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -26,7 +26,7 @@ class WhishCell: UITableViewCell {
     let secondaryStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-//        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
+        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -34,7 +34,7 @@ class WhishCell: UITableViewCell {
     let thirdStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-//        v.addBackgroundColorWithTopCornerRadius(color: .red)
+        v.addBackgroundColorWithTopCornerRadius(color: .red)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -234,6 +234,8 @@ class WhishCell: UITableViewCell {
         mainStackView.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15).isActive = true
         mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        
+        mainStackView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         
         //constrain wish label
         label.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor).isActive = true
