@@ -153,11 +153,13 @@ class CommunityViewController: UIViewController {
         let url2 = "https://www.asos.com/de/asos-design/asos-design-schwarzer-backpack-mit-ringdetail-und-kroko-muster/prd/14253083?clr=schwarz&colourWayId=16603012&SearchQuery=&cid=4877"
         
         let url3 = "https://www.adidas.de/adistar-trikot/CV7089.html"
-
+        
+        let URLs = [url, url2, url3]
+        
         do {
             
 
-            let html: String = Utilities.getHTMLfromURL(url: url2)
+            let html: String = Utilities.getHTMLfromURL(url: URLs[0])
             let doc: Document = try SwiftSoup.parse(html)
             
             let priceClasses: Elements = try doc.select("[class~=(?i)price]")
@@ -174,19 +176,6 @@ class CommunityViewController: UIViewController {
             for imageName in srcsStringArray {
                 print(imageName!)
             }
-            // do something with srcsStringArray
-            
-//            print(try price?.text() as Any)
-//            print(try price?.className() as Any)
-            
-//            let priceText : String? = try (price?.text())! as String
-            
-//            if priceText == "" {
-//                result.text = "price not found"
-//            }else {
-//                result.text = priceText
-//            }
-//            result.text = priceText ?? "price not found"
     
         } catch Exception.Error( _, let message) {
             print(message)

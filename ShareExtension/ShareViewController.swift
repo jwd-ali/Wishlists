@@ -95,10 +95,51 @@ class CustomShareViewController: UIViewController {
     }
     
     @objc func actionButtonTapped(){
-        print("yeet")
         
-//        print(extensionContext?.inputItems as Any)
-        
+            var html: String?
+            
+            if let item = extensionContext?.inputItems.first as? NSExtensionItem,
+                let itemProvider = item.attachments?.first,
+                itemProvider.hasItemConformingToTypeIdentifier("public.url") {
+                itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil) { (url, error) in
+                    if (url as? URL) != nil {
+                        html = (self.getHTMLfromURL(url: url as? URL))
+                        print("bruh")
+                        
+                        self.doStuff(html: html)
+                    }
+                }
+            }
+    }
+    
+    func doStuff(html: String?){
+        do {
+            let doc: Document = try SwiftSoup.parse(html ?? "")
+
+            let priceClasses: Elements? = try doc.select("[class~=(?i)price]")
+
+                for priceClass: Element in priceClasses!.array() {
+                let priceText : String = try priceClass.text()
+                print(try priceClass.className())
+                print("pricetext: \(priceText)")
+            }
+
+            let srcs: Elements = try doc.select("img[src]")
+            let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
+
+            for imageName in srcsStringArray {
+                print(imageName!)
+            }
+                
+                } catch Exception.Error( _, let message) {
+                    print(message)
+                } catch {
+                    print("error")
+                
+            }
+    }
+    
+    func getCurrentURL(){
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let itemProvider = item.attachments?.first,
             itemProvider.hasItemConformingToTypeIdentifier("public.url") {
@@ -106,11 +147,18 @@ class CustomShareViewController: UIViewController {
                 if (url as? URL) != nil {
                     print(self.getHTMLfromURL(url: url as? URL))
                 }
-                
             }
         }
-        
     }
+    
+    func method(arg: Bool, completion: (Bool) -> ()) {
+        print("First line of code executed")
+        // do stuff here to determine what you want to "send back".
+        // we are just sending the Boolean value that was sent in "back"
+        completion(arg)
+    }
+    
+
     
     
     func getHTMLfromURL(url: URL?) -> String{
