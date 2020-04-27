@@ -396,7 +396,7 @@ class DataHandler {
         
         ref.getDocument { (document, error) in
             if let document = document, document.exists {
-                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                 completion(true)
             } else {
                 print("Document does not exist")

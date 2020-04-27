@@ -8,6 +8,7 @@
 
 import UIKit
 import Social
+import SwiftSoup
 
 
 class CustomShareViewController: UIViewController {

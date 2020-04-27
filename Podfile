@@ -29,3 +29,11 @@ target 'Wishlists' do
 # https://firebase.google.com/docs/ios/setup#available-pods 
 
 end
+
+target 'ShareExtension' do 
+ 
+ use_frameworks!
+
+    pod 'SwiftSoup'
+
+end
