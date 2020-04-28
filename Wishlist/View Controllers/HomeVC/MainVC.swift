@@ -70,7 +70,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         v.imageView?.contentMode = .scaleAspectFit
         v.contentHorizontalAlignment = .fill
         v.contentVerticalAlignment = .fill
-        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .large)
+        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .default)
         v.setImage(UIImage(systemName: "person.3.fill", withConfiguration: imageSymbolConfiguration), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(communityButtonTapped), for: .touchUpInside)
@@ -83,7 +83,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         v.imageView?.contentMode = .scaleAspectFit
         v.contentHorizontalAlignment = .fill
         v.contentVerticalAlignment = .fill
-        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .large)
+        let imageSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular, scale: .default)
         v.setImage(UIImage(systemName: "person.fill", withConfiguration: imageSymbolConfiguration), for: .normal)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)

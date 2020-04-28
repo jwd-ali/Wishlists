@@ -41,16 +41,69 @@ class CustomShareViewController: UIViewController {
         return v
     }()
     
+    let swipeImageView: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .cyan
+        v.contentMode = .scaleAspectFit
+        v.isUserInteractionEnabled = true
+        return v
+    }()
+    
+    let nextButton: UIButton = {
+        let v = UIButton(type: .system)
+        v.setImage(UIImage(systemName: "arrow.right.square.fill"), for: .normal)
+        v.tintColor = UIColor.darkCustom
+        v.imageView?.contentMode = .scaleAspectFit
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return v
+    }()
+    
+    let prevButton: UIButton = {
+        let v = UIButton()
+        v.setImage(UIImage(systemName: "arrow.left.square.fill"), for: .normal)
+        v.tintColor = UIColor.darkCustom
+        v.imageView?.contentMode = .scaleAspectFit
+        v.contentHorizontalAlignment = .fill
+        v.contentVerticalAlignment = .fill
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(prevButtonTapped), for: .touchUpInside)
+        return v
+    }()
+    
+    
+    var imagesArray = [UIImage]()
+
+    var currentImageIndex = 0
+    
+    var currentImage: UIImage?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // 1: Set the background and call the function to create the navigation bar
         self.view.backgroundColor = .clear
         self.navigationController?.isNavigationBarHidden = true
         
         setupViews()
-//        setupNavBar()
+        
     }
+    
+    @objc func nextButtonTapped(){
+        currentImage = imagesArray[self.currentImageIndex]
+        currentImageIndex = (currentImageIndex + 1) % imagesArray.count
+        UIView.transition(with: self.swipeImageView, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
+        })
+    }
+    
+    @objc func prevButtonTapped(){
+        
+    }
+    
+
     
     private func setupViews(){
         view.addSubview(visualEffectView)
@@ -71,20 +124,28 @@ class CustomShareViewController: UIViewController {
         actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         actionButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         actionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        view.addSubview(swipeImageView)
+        swipeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant:  100).isActive = true
+        swipeImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        swipeImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        swipeImageView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        view.addSubview(nextButton)
+        nextButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 30).isActive = true
+        nextButton.topAnchor.constraint(equalTo: swipeImageView.bottomAnchor, constant: 30).isActive = true
+        
+        view.addSubview(prevButton)
+        prevButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        prevButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        prevButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -30).isActive = true
+        prevButton.topAnchor.constraint(equalTo: swipeImageView.bottomAnchor, constant: 30).isActive = true
+        
     }
     
-    // 2: Set the title and the navigation items
-    private func setupNavBar() {
-        self.navigationItem.title = "Wishlists"
-
-        let itemCancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
-        self.navigationItem.setLeftBarButton(itemCancel, animated: false)
-
-        let itemDone = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
-        self.navigationItem.setRightBarButton(itemDone, animated: false)
-    }
-
-    // 3: Define the actions for the navigation items
+    
     @objc private func cancelAction () {
         let error = NSError(domain: "some.bundle.identifier", code: 0, userInfo: [NSLocalizedDescriptionKey: "An error description"])
         extensionContext?.cancelRequest(withError: error)
@@ -95,7 +156,7 @@ class CustomShareViewController: UIViewController {
     }
     
     @objc func actionButtonTapped(){
-        
+            print("yeet")
             var html: String?
             
             if let item = extensionContext?.inputItems.first as? NSExtensionItem,
@@ -103,8 +164,8 @@ class CustomShareViewController: UIViewController {
                 itemProvider.hasItemConformingToTypeIdentifier("public.url") {
                 itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil) { (url, error) in
                     if (url as? URL) != nil {
+                        
                         html = (self.getHTMLfromURL(url: url as? URL))
-                        print("bruh")
                         
                         self.doStuff(html: html)
                     }
@@ -128,37 +189,31 @@ class CustomShareViewController: UIViewController {
             let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
 
             for imageName in srcsStringArray {
-                print(imageName!)
-            }
-                
-                } catch Exception.Error( _, let message) {
-                    print(message)
-                } catch {
-                    print("error")
-                
-            }
-    }
-    
-    func getCurrentURL(){
-        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first,
-            itemProvider.hasItemConformingToTypeIdentifier("public.url") {
-            itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil) { (url, error) in
-                if (url as? URL) != nil {
-                    print(self.getHTMLfromURL(url: url as? URL))
+                if (imageName?.matches("^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$"))! {
+                    
+                    guard let url = URL(string: imageName!) else { return }
+                    
+                    UIImage.loadFrom(url: url) { image in
+                        
+                        if let image = image {
+                            print("append")
+                           self.imagesArray.append(image)
+                        } else {
+                            print("Image '\(String(describing: imageName))' does not exist!")
+                        }
+                        
+                    }
                 }
+                
             }
+                
+        } catch Exception.Error( _, let message) {
+            print(message)
+        } catch {
+            print("error")
+                
         }
     }
-    
-    func method(arg: Bool, completion: (Bool) -> ()) {
-        print("First line of code executed")
-        // do stuff here to determine what you want to "send back".
-        // we are just sending the Boolean value that was sent in "back"
-        completion(arg)
-    }
-    
-
     
     
     func getHTMLfromURL(url: URL?) -> String{
@@ -177,4 +232,36 @@ class CustomShareViewController: UIViewController {
         
         return ""
     }
+    
+    
+}
+
+
+public extension String {
+    func matches(_ regex: String) -> Bool {
+        return self.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
+    }
+}
+
+extension UIImage {
+
+    public static func loadFrom(url: URL, completion: @escaping (_ image: UIImage?) -> ()) {
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url) {
+                DispatchQueue.main.async {
+                    completion(UIImage(data: data))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+        }
+    }
+
+}
+
+extension UIColor {
+    
+    static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
 }

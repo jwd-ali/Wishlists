@@ -60,6 +60,13 @@ struct Constants: Equatable {
             UIImage(named: "iconRoundedImage")!,
         ]
         
+        static let freeImages: [UIImage] = [
+            UIImage(named: "free-1")!,
+            UIImage(named: "free-2")!,
+            UIImage(named: "free-3")!,
+            UIImage(named: "free-4")!,
+        ]
+        
         static func getCurrentImageIndex(image: UIImage) -> Int{
             return self.images.firstIndex(of: image)!
         }

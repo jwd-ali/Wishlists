@@ -97,17 +97,17 @@ class WishlistViewController: UIViewController {
     //MARK: emptyListViews
     let emptyWishlistImage: UIImageView = {
         let v = UIImageView()
-        v.image = UIImage(named: "nightSky")
         v.translatesAutoresizingMaskIntoConstraints = false
         v.contentMode = .scaleAspectFit
+        v.alpha = 0.9
         return v
     }()
     
     let emptyWishlistLabel: UILabel = {
         let v = UILabel()
         v.text = "Du scheinst wunschlos glücklich zu sein!"
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        v.textColor = .lightGray
+        v.font = UIFont(name: "AvenirNext-Medium", size: 13)
+        v.textColor = .gray
         v.textAlignment = .center
         v.numberOfLines = 0
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -180,6 +180,9 @@ class WishlistViewController: UIViewController {
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let randomIndex = Int(arc4random_uniform(UInt32(Constants.Wishlist.freeImages.count)))
+        self.emptyWishlistImage.image = Constants.Wishlist.freeImages[randomIndex]
         
         self.wishlistBackgroundView.hero.isEnabled = true
         self.wishlistBackgroundView.heroID = "wishlistView"
@@ -328,7 +331,7 @@ class WishlistViewController: UIViewController {
 
         emptyWishlistLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         emptyWishlistLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        emptyWishlistLabel.topAnchor.constraint(equalTo: emptyWishlistImage.bottomAnchor, constant: 10).isActive = true
+        emptyWishlistLabel.topAnchor.constraint(equalTo: emptyWishlistImage.bottomAnchor, constant: 20).isActive = true
         
         emptyWishlistImage.isHidden = true
         emptyWishlistLabel.isHidden = true
