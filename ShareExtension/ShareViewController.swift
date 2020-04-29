@@ -194,10 +194,12 @@ class CustomShareViewController: UIViewController {
                             switch result {
                             case let .success(data, _):
                                 // do something
-                                print(data.pageTitle!)
+                                guard let title = data.pageTitle else { return }
+            
+                                print(title)
                                 
-                                guard let url = data.imageUrl else { return }
-                                UIImage.loadFrom(url: url, completion: { (image) in
+                                guard let imageURL = data.imageUrl else { return }
+                                UIImage.loadFrom(url: imageURL, completion: { (image) in
                                     self.swipeImageView.image = image
                                 })
                             case let .failure(error, _):
@@ -207,7 +209,7 @@ class CustomShareViewController: UIViewController {
                             
                         }
                         
-//                        self.doStuff(html: html)
+                        self.doStuff(html: html)
                     }
                 }
             }

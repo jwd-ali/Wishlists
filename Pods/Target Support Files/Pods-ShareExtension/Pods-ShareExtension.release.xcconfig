@@ -1,6 +1,6 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup-iOS13.2" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup-iOS13.2/SwiftSoup.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView/URLEmbeddedView.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup/SwiftSoup.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView/URLEmbeddedView.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks' '@executable_path/../../Frameworks'
 OTHER_LDFLAGS = $(inherited) -framework "CoreData" -framework "CoreGraphics" -framework "SwiftSoup" -framework "UIKit" -framework "URLEmbeddedView"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS

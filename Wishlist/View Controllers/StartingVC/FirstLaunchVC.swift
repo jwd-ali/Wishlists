@@ -188,15 +188,35 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         
-        setUpViews()
+        setupViewsDon()
         
         setUpDocumentsLabel()
         
     }
     
-    //MARK: setupViews
-    func setUpViews(){
-        
+    func setupViewsDon(){
+
+        // setting these properties here, so I don't have to change your original initialization
+        willkommenLabel.numberOfLines = 1
+        willkommenLabel.adjustsFontSizeToFitWidth = true
+        willkommenLabel.minimumScaleFactor = 0.5
+
+        textLabel.numberOfLines = 2
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
+
+        // prevent willkommenLabel from being compressed or streched
+        willkommenLabel.setContentHuggingPriority(.required, for: .vertical)
+        willkommenLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        // prevent oderLabel from being compressed or streched
+        oderLabel.setContentHuggingPriority(.required, for: .vertical)
+        oderLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        // prevent documentsLabel from being compressed or streched
+        documentsLabel.setContentHuggingPriority(.required, for: .vertical)
+        documentsLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
         view.addSubview(backgroundImage)
         view.addSubview(willkommenLabel)
         view.addSubview(textLabel)
@@ -212,77 +232,83 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         view.addSubview(appleButton)
         appleButton.addSubview(appleLogo)
         view.addSubview(documentsLabel)
-        
+
         backgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: -20).isActive = true
         backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20).isActive = true
         backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -20).isActive = true
         backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
-        
-        willkommenLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
+
+        // add a layout guide for percentage top spacing
+        let topSpaceGuide = UILayoutGuide()
+        view.addLayoutGuide(topSpaceGuide)
+
+        // based on iPhone 8 ... 80-pts from top
+        // will be shorter on smaller devices, taller on larger devices
+        topSpaceGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        topSpaceGuide.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 80.0 / 667.0).isActive = true
+
+        willkommenLabel.topAnchor.constraint(equalTo: topSpaceGuide.bottomAnchor).isActive = true
         willkommenLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         willkommenLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-        
-        textLabel.topAnchor.constraint(equalTo: willkommenLabel.bottomAnchor, constant: 30).isActive = true
+
+        // textLabel top constrained to willkommenLabel bottom
+        textLabel.topAnchor.constraint(equalTo: willkommenLabel.bottomAnchor, constant: 0).isActive = true
         textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-        emailButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-        emailButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        emailButton.topAnchor.constraint(equalTo: textLabel.topAnchor, constant: 100).isActive = true
+
+        // textLabel height = a percentage of view height using 100-pts based on an iPhone 8
+        //  priority = .defaultHigh so it can be compressed if needed (on smaller devices)
+        let c = textLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 100.0 / 667.0)
+        c.priority = .defaultHigh
+        c.isActive = true
+
+        // set email button height
         emailButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        emailImage.centerYAnchor.constraint(equalTo: emailButton.centerYAnchor).isActive = true
-        emailImage.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor, constant: 10).isActive = true
-        emailImage.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        emailImage.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        
+
+        // set other button heights equal to emailButton
+        facebookButton.heightAnchor.constraint(equalTo: emailButton.heightAnchor).isActive = true
+        googleButton.heightAnchor.constraint(equalTo: emailButton.heightAnchor).isActive = true
+        appleButton.heightAnchor.constraint(equalTo: emailButton.heightAnchor).isActive = true
+
+        // add the logo images to the buttons, and make their heights relative to button heights
+        //      in case you want to change the button heights
+
+        for (btn, img) in [(emailButton, emailImage), (facebookButton, facebookLogo), (googleButton, googleLogo), (appleButton, appleLogo)] {
+            btn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+            btn.addSubview(img)
+            img.centerYAnchor.constraint(equalTo: btn.centerYAnchor).isActive = true
+            img.leadingAnchor.constraint(equalTo: btn.leadingAnchor, constant: 10).isActive = true
+            img.heightAnchor.constraint(equalTo: btn.heightAnchor, multiplier: 0.5).isActive = true
+            img.widthAnchor.constraint(equalTo: img.heightAnchor).isActive = true
+        }
+
+        emailButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 20).isActive = true
+        oderLabel.topAnchor.constraint(equalTo: emailButton.bottomAnchor, constant: 15).isActive = true
+        facebookButton.topAnchor.constraint(equalTo: oderLabel.bottomAnchor, constant: 15).isActive = true
+        googleButton.topAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 10).isActive = true
+        appleButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 10).isActive = true
+
+        // make sure appleButton stays above documentsLabel
+        appleButton.bottomAnchor.constraint(lessThanOrEqualTo: documentsLabel.topAnchor, constant: -20.0).isActive = true
+
+        // horizontal arrangement of oderLabel and left/right lines
         oderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        oderLabel.bottomAnchor.constraint(equalTo: emailButton.bottomAnchor, constant: 40).isActive = true
         oderLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
+
         lineLeft.centerYAnchor.constraint(equalTo: oderLabel.centerYAnchor).isActive = true
         lineLeft.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         lineLeft.trailingAnchor.constraint(equalTo: oderLabel.leadingAnchor).isActive = true
-        
+
         lineRight.centerYAnchor.constraint(equalTo: oderLabel.centerYAnchor).isActive = true
         lineRight.leadingAnchor.constraint(equalTo: oderLabel.trailingAnchor).isActive = true
         lineRight.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-        facebookButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
-        facebookButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
-        facebookButton.bottomAnchor.constraint(equalTo: oderLabel.bottomAnchor, constant: 55 + 10).isActive = true
-        facebookButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        facebookLogo.centerYAnchor.constraint(equalTo: facebookButton.centerYAnchor).isActive = true
-        facebookLogo.leadingAnchor.constraint(equalTo: facebookButton.leadingAnchor, constant: 10).isActive = true
-        facebookLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        facebookLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        googleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
-        googleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
-        googleButton.bottomAnchor.constraint(equalTo: facebookButton.bottomAnchor, constant: 55 + 10).isActive = true
-        googleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        googleLogo.centerYAnchor.constraint(equalTo: googleButton.centerYAnchor).isActive = true
-        googleLogo.leadingAnchor.constraint(equalTo: googleButton.leadingAnchor, constant: 10).isActive = true
-        googleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        googleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        appleButton.leadingAnchor.constraint(equalTo: emailButton.leadingAnchor).isActive = true
-        appleButton.trailingAnchor.constraint(equalTo: emailButton.trailingAnchor).isActive = true
-        appleButton.bottomAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 55 + 10).isActive = true
-        appleButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        appleLogo.centerYAnchor.constraint(equalTo: appleButton.centerYAnchor).isActive = true
-        appleLogo.leadingAnchor.constraint(equalTo: appleButton.leadingAnchor, constant: 10).isActive = true
-        appleLogo.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        appleLogo.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        
+
+        // documentsLabel stay at bottom
         documentsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         documentsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        documentsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
- 
+        documentsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+
     }
     
     //MARK: DocumentsLabel
@@ -333,10 +359,10 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     //MARK:- tappedOnLabel
     @objc func tappedOnLabel(_ gesture: UITapGestureRecognizer) {
         guard let text = self.documentsLabel.text else { return }
-        let conditionsRange = (text as NSString).range(of: "Nutzungsbedingungen")
-        let cancellationRange = (text as NSString).range(of: "Datenschutzrichtlinien")
+        let nutzen = (text as NSString).range(of: "Nutzungsbedingungen")
+        let daten = (text as NSString).range(of: "Datenschutzrichtlinien")
         
-        if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: conditionsRange) {
+        if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: nutzen) {
             
             let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Nutzungsbedingungen", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
@@ -345,7 +371,7 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
             alertcontroller.addAction(alertAction)
             self.present(alertcontroller, animated: true)
             
-        } else if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: cancellationRange){
+        } else if gesture.didTapAttributedTextInLabel(label: self.documentsLabel, inRange: daten){
             
             let alertcontroller = UIAlertController(title: "Tapped on", message: "user tapped on Datenschutzrichtlinien", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .default) { (alert) in
