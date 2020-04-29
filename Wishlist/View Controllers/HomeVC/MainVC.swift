@@ -373,6 +373,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         wishView.wishNameTextField.text = ""
         wishView.priceTextField.text = ""
         wishView.linkTextField.text = ""
+        wishView.noteTextField.text = ""
         
         onImageButtonTappedClosure()
         onPriceButtonTappedClosure()
@@ -401,6 +402,8 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //
 //            // update selectedWishlistIDX
 //            makeWishView.selectedWishlistIDX = currentWishListIDX
+        
+        
   
     }
     
@@ -495,6 +498,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.wishView.priceView.isHidden = true
             self.wishView.linkView.isHidden = true
             self.wishView.noteView.isHidden = true
+            self.wishView.imageContainerView.isHidden = true
         }
         
     }
@@ -613,15 +617,8 @@ extension MainViewController: AddWishDelegate {
         
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
-//        // only update current list if selectedWishlist is currentWishlist
-//        if selectedWishlistIDX == currentWishListIDX {
-//            wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
-//            theTableView.wishList = wishList.wishData
-//            theTableView.tableView.beginUpdates()
-//            theTableView.tableView.insertRows(at: [
-//                (NSIndexPath(row: theTableView.wishList.count-1, section: 0) as IndexPath)], with: .left)
-//            theTableView.tableView.endUpdates()
-//        }
+        self.dismissWishView()
+        
     }
 }
 

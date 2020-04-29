@@ -488,6 +488,9 @@ class WishlistViewController: UIViewController {
         wishView.wishNameTextField.text = ""
         wishView.priceTextField.text = ""
         wishView.linkTextField.text = ""
+        wishView.noteTextField.text = ""
+        wishView.wishImageView.image = nil
+        wishView.amount = 0
         
         onImageButtonTappedClosure()
         onPriceButtonTappedClosure()
@@ -602,6 +605,7 @@ class WishlistViewController: UIViewController {
             self.wishView.priceView.isHidden = true
             self.wishView.linkView.isHidden = true
             self.wishView.noteView.isHidden = true
+            self.wishView.imageContainerView.isHidden = true
         }
         
     }

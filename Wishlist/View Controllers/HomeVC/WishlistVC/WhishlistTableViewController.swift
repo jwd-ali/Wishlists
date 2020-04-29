@@ -27,6 +27,10 @@ class WhishlistTableViewController: UITableViewController {
         super.viewDidLoad()
         
 //        self.tableView.rowHeight = 140
+        
+        tableView.estimatedRowHeight = 40
+        tableView.rowHeight = UITableView.automaticDimension
+        
 
         // disable didSelectAt
         self.tableView.allowsSelection = false
@@ -34,7 +38,7 @@ class WhishlistTableViewController: UITableViewController {
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
         
         // add top inset for tableview
-        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
     }
 
@@ -51,10 +55,7 @@ class WhishlistTableViewController: UITableViewController {
         }
         return wishData.count
     }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
-    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -62,17 +63,43 @@ class WhishlistTableViewController: UITableViewController {
         
         let currentWish = self.wishData[indexPath.row]
         
-        if !currentWish.wishImage!.hasContent {
-            if currentWish.wishNote == "" {
-                cell.noteView.isHidden = true
-            }
-            print("this bitch empty")
-            cell.imageContainerView.isHidden = true
-
-            
-        }else {
-            print("yeet")
+        if currentWish.wishNote == "" {
+            cell.noteView.isHidden = true
         }
+        if currentWish.wishPrice == "" {
+            cell.priceView.isHidden = true
+        }
+        if currentWish.wishLink == "" {
+            cell.linkView.isHidden = true
+        }
+        
+        if !currentWish.wishImage!.hasContent {
+            cell.imageContainerView.isHidden = true
+        }
+        
+        
+        // everything empty -> hide secondary StackView
+        if currentWish.wishNote!.isEmpty
+            && currentWish.wishPrice!.isEmpty
+            && currentWish.wishLink!.isEmpty
+            && !currentWish.wishImage!.hasContent {
+            
+            cell.secondaryStackView.isHidden = true
+        }
+        
+        // Image or third StackView is filled -> show secondary StackView + activate constraint with height
+        if (!currentWish.wishNote!.isEmpty
+            && !currentWish.wishPrice!.isEmpty
+            && !currentWish.wishLink!.isEmpty)
+            || currentWish.wishImage!.hasContent {
+            
+            cell.secondaryStackView.isHidden = false
+//            print(cell.secondaryStackViewHeightConstraint.constant)
+        }
+        
+        
+        
+        
         cell.wishImage.image = currentWish.wishImage
         
         cell.label.text = currentWish.wishName
@@ -87,6 +114,8 @@ class WhishlistTableViewController: UITableViewController {
         cell.deleteWishCallback = {
             self.deleteWishDelegate?.deleteWish(indexPath.row)
         }
+        
+        print("height: \(cell.bounds.height)")
         
         return cell
     }

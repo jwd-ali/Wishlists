@@ -11,14 +11,13 @@ import Lottie
 
 class WhishCell: UITableViewCell {
     
-    // change "callback" to "deleteWishCallback" so we know what its purpose
     var deleteWishCallback : (() -> ())?
     
     //MARK: StackViews
     let mainStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .orange)
+//        v.addBackgroundColorWithTopCornerRadius(color: .orange)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -26,18 +25,22 @@ class WhishCell: UITableViewCell {
     let secondaryStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
+//        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
+    var secondaryStackViewHeightConstraint: NSLayoutConstraint!
+    
     let thirdStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .red)
+//        v.addBackgroundColorWithTopCornerRadius(color: .red)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
+    
+    var thrirdStackViewHeightConstraint: NSLayoutConstraint!
     
     let rowHeightThirdStackView = CGFloat(30)
     
@@ -176,8 +179,6 @@ class WhishCell: UITableViewCell {
         self.backgroundColor = .clear
         self.clipsToBounds = false
         
-        
-        
         setupViews()
         setupLoadingAnimation()
         
@@ -186,7 +187,7 @@ class WhishCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
     }
     
     //MARK: setup Loading-Animation
@@ -211,14 +212,16 @@ class WhishCell: UITableViewCell {
         mainStackView.addArrangedSubview(label)
         mainStackView.addArrangedSubview(secondaryStackView)
         
-        secondaryStackView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView * 3).isActive = true
-        
         secondaryStackView.addArrangedSubview(imageContainerView)
         imageContainerView.addSubview(wishImage)
-        imageContainerView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        imageContainerView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+//        secondaryStackViewHeightConstraint = secondaryStackView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView * 3)
         
         secondaryStackView.addArrangedSubview(thirdStackView)
-        secondaryStackView.spacing = 15
+        
+//        thrirdStackViewHeightConstraint = thirdStackView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView * 3)
+//        thrirdStackViewHeightConstraint.isActive = true
         
         thirdStackView.addArrangedSubview(priceView)
         priceView.addSubview(priceImage)
@@ -237,8 +240,6 @@ class WhishCell: UITableViewCell {
         mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
-        mainStackView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        
         //constrain wish label
         label.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor).isActive = true
         label.topAnchor.constraint(equalTo: mainStackView.topAnchor).isActive = true
@@ -252,10 +253,8 @@ class WhishCell: UITableViewCell {
         checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         // constrain wishImage
-        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor, constant: 8).isActive = true
+        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
         wishImage.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor).isActive = true
-//        wishImage.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor).isActive = true
-//        wishImage.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor).isActive = true
         wishImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
         wishImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
@@ -270,7 +269,6 @@ class WhishCell: UITableViewCell {
         priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
         priceLabel.leadingAnchor.constraint(equalTo: priceImage.trailingAnchor, constant: 10).isActive = true
         priceLabel.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -10).isActive = true
-
         
         // constrain linkView
         linkView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
@@ -299,17 +297,6 @@ class WhishCell: UITableViewCell {
     }
     
     @objc func checkButtonTapped(){
-//        self.checkButton.setBackgroundImage(UIImage(named: "boxChecked"), for: .normal)
-//        self.checkButton.alpha = 0
-//        self.checkButton.transform =  CGAffineTransform(scaleX: 1.3, y: 1.3)
-//
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.checkButton.alpha = 1
-//            self.checkButton.transform = CGAffineTransform.identity
-//        }) { (_) in
-//            // DonMag3 - tell the callback to delete this wish
-//            self.deleteWishCallback?()
-//        }
         self.deleteWishCallback?()
         self.successAnimation.isHidden = false
         self.successAnimation.play()
