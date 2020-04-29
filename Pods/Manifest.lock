@@ -320,6 +320,7 @@ PODS:
   - SwiftEntryKit (1.2.3):
     - QuickLayout (= 3.0.0)
   - SwiftSoup (2.3.1)
+  - URLEmbeddedView (0.18.0)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -338,6 +339,7 @@ DEPENDENCIES:
   - SkeletonView
   - SwiftEntryKit (= 1.2.3)
   - SwiftSoup
+  - URLEmbeddedView
 
 SPEC REPOS:
   trunk:
@@ -377,6 +379,7 @@ SPEC REPOS:
     - SkeletonView
     - SwiftEntryKit
     - SwiftSoup
+    - URLEmbeddedView
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
@@ -415,7 +418,8 @@ SPEC CHECKSUMS:
   SkeletonView: ba5370f41280b2f0a76918bb143c1294232bb4f4
   SwiftEntryKit: 340713c2e4a6662c5149629990bf1088bf5f0389
   SwiftSoup: e5af192bc99be8398d5f93e15ff6a3c80ba81de1
+  URLEmbeddedView: 3fe17ae535d2b8d38c3b08ab8ba0aea5efe5d1cd
 
-PODFILE CHECKSUM: 47a3a4a721223fa12047f4be790552e1ddc9d512
+PODFILE CHECKSUM: 4f239bb06d9c49c52a5611c289e228cde401e5ab
 
 COCOAPODS: 1.8.4

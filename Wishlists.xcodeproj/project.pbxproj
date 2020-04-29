@@ -49,7 +49,8 @@
 		83A6622D236F3C1600412A46 /* bottomBorderTextfieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */; };
 		83A68D05239EBB6800DBDB45 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A68D04239EBB6800DBDB45 /* DataHandler.swift */; };
 		83BA2560245637CF002B5C64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A4230D6064002D22C0 /* Assets.xcassets */; };
-		83BE0A7A243E8E460095DCAD /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */; };
+		83BA25632458F326002B5C64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA25622458F326002B5C64 /* Extensions.swift */; };
+		83BE0A7A243E8E460095DCAD /* TextFieldEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 83BE0A79243E8E460095DCAD /* TextFieldEffects */; };
 		83BE0A7C2440F1AC0095DCAD /* AlignedAspectFitImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE0A7B2440F1AA0095DCAD /* AlignedAspectFitImageViewHelper.swift */; };
 		83BE0A7E244387110095DCAD /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE0A7D2443870F0095DCAD /* ImageHelper.swift */; };
 		83BE0A8024476FAD0095DCAD /* successAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83BE0A7F24476FAC0095DCAD /* successAnimation.json */; };
@@ -142,6 +143,7 @@
 		83A3BD2323A68CA7003FDCC1 /* AddItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemCell.swift; sourceTree = "<group>"; };
 		83A6622C236F3C1600412A46 /* bottomBorderTextfieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bottomBorderTextfieldExtension.swift; sourceTree = "<group>"; };
 		83A68D04239EBB6800DBDB45 /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		83BA25622458F326002B5C64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		83BE0A7B2440F1AA0095DCAD /* AlignedAspectFitImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedAspectFitImageViewHelper.swift; sourceTree = "<group>"; };
 		83BE0A7D2443870F0095DCAD /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		83BE0A7F24476FAC0095DCAD /* successAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = successAnimation.json; sourceTree = "<group>"; };
@@ -178,7 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83BE0A7A243E8E460095DCAD /* BuildFile in Frameworks */,
+				83BE0A7A243E8E460095DCAD /* TextFieldEffects in Frameworks */,
 				8392D53E24268B1F00FF6EA0 /* AuthenticationServices.framework in Frameworks */,
 				021A7682E9AED86FD3091B2A /* Pods_Wishlists.framework in Frameworks */,
 			);
@@ -253,6 +255,7 @@
 			children = (
 				8392D5652427A1DA00FF6EA0 /* ShareExtension.entitlements */,
 				8392D556242798F000FF6EA0 /* ShareViewController.swift */,
+				83BA25622458F326002B5C64 /* Extensions.swift */,
 				8392D5632427A08100FF6EA0 /* CustomShareNavigationController.swift */,
 				8392D55B242798F000FF6EA0 /* Info.plist */,
 			);
@@ -470,7 +473,7 @@
 			);
 			name = Wishlists;
 			packageProductDependencies = (
-				83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */,
+				83BE0A79243E8E460095DCAD /* TextFieldEffects */,
 			);
 			productName = Wishlist;
 			productReference = 83A1939A230D6062002D22C0 /* Wishlists.app */;
@@ -504,7 +507,7 @@
 			);
 			mainGroup = 83A19391230D6062002D22C0;
 			packageReferences = (
-				83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */,
+				83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */,
 			);
 			productRefGroup = 83A1939B230D6062002D22C0 /* Products */;
 			projectDirPath = "";
@@ -628,6 +631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8392D5642427A08100FF6EA0 /* CustomShareNavigationController.swift in Sources */,
+				83BA25632458F326002B5C64 /* Extensions.swift in Sources */,
 				8392D557242798F000FF6EA0 /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -951,7 +955,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */ = {
+		83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/raulriera/TextFieldEffects.git";
 			requirement = {
@@ -962,9 +966,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		83BE0A79243E8E460095DCAD /* SwiftPackageProductDependency */ = {
+		83BE0A79243E8E460095DCAD /* TextFieldEffects */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 83BE0A78243E8E460095DCAD /* RemoteSwiftPackageReference */;
+			package = 83BE0A78243E8E460095DCAD /* XCRemoteSwiftPackageReference "TextFieldEffects" */;
 			productName = TextFieldEffects;
 		};
 /* End XCSwiftPackageProductDependency section */

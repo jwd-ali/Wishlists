@@ -9,6 +9,7 @@
 import UIKit
 import Social
 import SwiftSoup
+import URLEmbeddedView
 
 
 class CustomShareViewController: UIViewController {
@@ -63,7 +64,7 @@ class CustomShareViewController: UIViewController {
     }()
     
     let prevButton: UIButton = {
-        let v = UIButton()
+        let v = UIButton(type: .system)
         v.setImage(UIImage(systemName: "arrow.left.square.fill"), for: .normal)
         v.tintColor = UIColor.darkCustom
         v.imageView?.contentMode = .scaleAspectFit
@@ -89,20 +90,36 @@ class CustomShareViewController: UIViewController {
         
         setupViews()
         
-    }
-    
-    @objc func nextButtonTapped(){
-        currentImage = imagesArray[self.currentImageIndex]
-        currentImageIndex = (currentImageIndex + 1) % imagesArray.count
-        UIView.transition(with: self.swipeImageView, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
-        })
-    }
-    
-    @objc func prevButtonTapped(){
+        prevButton.isEnabled = false
+        nextButton.isEnabled = false
         
     }
     
+    @objc func nextButtonTapped(){
+        if imagesArray.count != 0 {
+            currentImage = imagesArray[self.currentImageIndex]
+            currentImageIndex = (currentImageIndex + 1) % imagesArray.count
+            UIView.transition(with: self.swipeImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
+            })
+        }
+    }
+    
+    @objc func prevButtonTapped(){
+        if imagesArray.count != 0 {
+            currentImage = imagesArray[self.currentImageIndex]
+            
+            if currentImageIndex - 1 < 0 {
+                currentImageIndex = imagesArray.count - 1
+            }else {
+                currentImageIndex = (currentImageIndex - 1) % imagesArray.count
+            }
+            
+            UIView.transition(with: self.swipeImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
+            })
+        }
+    }
 
     
     private func setupViews(){
@@ -167,13 +184,39 @@ class CustomShareViewController: UIViewController {
                         
                         html = (self.getHTMLfromURL(url: url as? URL))
                         
-                        self.doStuff(html: html)
+                        print(url as Any)
+                        
+                        let directoryURL = url as! NSURL
+
+                        let urlString: String = directoryURL.absoluteString!
+                        
+                        OpenGraphDataDownloader.shared.fetchOGData(urlString: urlString) { result in
+                            switch result {
+                            case let .success(data, _):
+                                // do something
+                                print(data.pageTitle!)
+                                
+                                guard let url = data.imageUrl else { return }
+                                UIImage.loadFrom(url: url, completion: { (image) in
+                                    self.swipeImageView.image = image
+                                })
+                            case let .failure(error, _):
+                                // do something
+                                print(error.localizedDescription)
+                            }
+                            
+                        }
+                        
+//                        self.doStuff(html: html)
                     }
                 }
             }
     }
     
     func doStuff(html: String?){
+        
+        var imageCounter = 0
+        
         do {
             let doc: Document = try SwiftSoup.parse(html ?? "")
 
@@ -196,16 +239,29 @@ class CustomShareViewController: UIViewController {
                     UIImage.loadFrom(url: url) { image in
                         
                         if let image = image {
-                            print("append")
-                           self.imagesArray.append(image)
+                            self.imagesArray.append(image)
+                            imageCounter += 1
+                            
+                            if imageCounter == 1 {
+                                self.swipeImageView.image = self.imagesArray[0]
+                            }else if imageCounter == 2 {
+                                self.prevButton.isEnabled = true
+                                self.nextButton.isEnabled = true
+                            }
+                            
+                            
                         } else {
                             print("Image '\(String(describing: imageName))' does not exist!")
                         }
                         
+                        
                     }
                 }
                 
+                
             }
+            
+            
                 
         } catch Exception.Error( _, let message) {
             print(message)
@@ -213,6 +269,8 @@ class CustomShareViewController: UIViewController {
             print("error")
                 
         }
+        
+        
     }
     
     
@@ -237,31 +295,4 @@ class CustomShareViewController: UIViewController {
 }
 
 
-public extension String {
-    func matches(_ regex: String) -> Bool {
-        return self.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
-    }
-}
 
-extension UIImage {
-
-    public static func loadFrom(url: URL, completion: @escaping (_ image: UIImage?) -> ()) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    completion(UIImage(data: data))
-                }
-            } else {
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
-            }
-        }
-    }
-
-}
-
-extension UIColor {
-    
-    static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
-}

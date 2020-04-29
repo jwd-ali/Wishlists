@@ -35,5 +35,6 @@ target 'ShareExtension' do
  use_frameworks!
 
     pod 'SwiftSoup'
+    pod 'URLEmbeddedView'
 
 end
