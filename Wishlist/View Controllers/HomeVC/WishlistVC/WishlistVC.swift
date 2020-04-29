@@ -629,15 +629,19 @@ extension WishlistViewController: AddWishDelegate {
 
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
+        
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
             wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+            
             theTableView.wishData = wishList.wishData
             theTableView.tableView.beginUpdates()
             theTableView.tableView.insertRows(at: [
                 (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)
             theTableView.tableView.endUpdates()
         }
+        
+        dismissWishView()
     }
 }
 

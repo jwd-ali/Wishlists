@@ -32,6 +32,12 @@ extension UIImage {
 //        wishImageView.image = image
 //        wishImageViewWidthConstraint.constant = ratio * wishImageViewHeight
 //    }
+    
+
+    public var hasContent: Bool {
+        return cgImage != nil || ciImage != nil
+    }
+    
 }
 
 

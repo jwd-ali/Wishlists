@@ -52,17 +52,29 @@ class WhishlistTableViewController: UITableViewController {
         return wishData.count
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
         
         let currentWish = self.wishData[indexPath.row]
-        if currentWish.wishImage == UIImage(named: "image"){
-            cell.wishImage.image = .none
+        
+        if !currentWish.wishImage!.hasContent {
+            if currentWish.wishNote == "" {
+                cell.noteView.isHidden = true
+            }
+            print("this bitch empty")
+            cell.imageContainerView.isHidden = true
+
+            
         }else {
-            cell.wishImage.image = currentWish.wishImage
+            print("yeet")
         }
+        cell.wishImage.image = currentWish.wishImage
+        
         cell.label.text = currentWish.wishName
         
         cell.linkLabel.text = currentWish.wishLink
@@ -77,11 +89,6 @@ class WhishlistTableViewController: UITableViewController {
         }
         
         return cell
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.estimatedRowHeight = 140
-        tableView.rowHeight = UITableView.automaticDimension
     }
 
 }

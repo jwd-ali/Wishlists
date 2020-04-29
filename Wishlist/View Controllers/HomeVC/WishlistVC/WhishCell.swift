@@ -176,6 +176,8 @@ class WhishCell: UITableViewCell {
         self.backgroundColor = .clear
         self.clipsToBounds = false
         
+        
+        
         setupViews()
         setupLoadingAnimation()
         

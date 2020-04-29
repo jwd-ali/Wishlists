@@ -172,7 +172,6 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     //MARK: Documents
     let documentsLabel: UILabel = {
         let v = UILabel()
-        v.textAlignment = .center
         v.numberOfLines = 0
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -385,22 +384,28 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
     
     //MARK:- getAttributedString
     func getAttributedString(arrayText:[String]?, arrayColors:[UIColor]?, arrayFonts:[UIFont]?) -> NSMutableAttributedString {
-        
+
         let finalAttributedString = NSMutableAttributedString()
-        
+
         for i in 0 ..< (arrayText?.count)! {
-            
+
             let attributes = [NSAttributedString.Key.foregroundColor: arrayColors?[i], NSAttributedString.Key.font: arrayFonts?[i]]
             let attributedStr = (NSAttributedString.init(string: arrayText?[i] ?? "", attributes: attributes as [NSAttributedString.Key : Any]))
-            
+
             if i != 0 {
-                
+
                 finalAttributedString.append(NSAttributedString.init(string: " "))
             }
-            
+
             finalAttributedString.append(attributedStr)
         }
-        
+
+        // add paragraph attribute
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let attributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.paragraphStyle: paragraph]
+        finalAttributedString.addAttributes(attributes, range: NSRange(location: 0, length: finalAttributedString.length))
+
         return finalAttributedString
     }
     

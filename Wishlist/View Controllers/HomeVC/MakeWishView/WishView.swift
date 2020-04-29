@@ -590,7 +590,7 @@ class WishView: UIView, UITextFieldDelegate {
         
         let name = self.wishNameTextField.text!
         let listIDX = self.selectedWishlistIDX!
-        let image = self.wishImageView.image ?? nil
+        let image = self.wishImageView.image ?? UIImage()
         let link = self.linkTextField.text ?? ""
         let price = self.priceTextField.text ?? ""
         let note = self.noteTextField.text ?? ""
