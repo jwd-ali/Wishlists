@@ -187,7 +187,7 @@ class WhishCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
     }
     
     //MARK: setup Loading-Animation
@@ -241,10 +241,9 @@ class WhishCell: UITableViewCell {
         mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
         //constrain wish label
-        label.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: mainStackView.topAnchor).isActive = true
-        label.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        let labelHeight = label.heightAnchor.constraint(equalToConstant: 40)
+        labelHeight.priority = .defaultHigh
+        labelHeight.isActive = true
         
         // constrain checkButton
         checkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30).isActive = true
@@ -260,6 +259,7 @@ class WhishCell: UITableViewCell {
         
         // constrain priceView
         priceView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
+        
         
         priceImage.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
         priceImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true

@@ -627,7 +627,7 @@ extension WishlistViewController: DeleteWishDelegate {
     }
 }
 
-
+//MARK: AddWishDelegate
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
 
@@ -643,6 +643,7 @@ extension WishlistViewController: AddWishDelegate {
             theTableView.tableView.insertRows(at: [
                 (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)
             theTableView.tableView.endUpdates()
+            theTableView.view.layoutIfNeeded()
         }
         
         dismissWishView()

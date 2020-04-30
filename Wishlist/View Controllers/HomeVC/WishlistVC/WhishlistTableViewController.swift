@@ -94,7 +94,7 @@ class WhishlistTableViewController: UITableViewController {
             || currentWish.wishImage!.hasContent {
             
             cell.secondaryStackView.isHidden = false
-//            print(cell.secondaryStackViewHeightConstraint.constant)
+
         }
         
         
@@ -114,8 +114,6 @@ class WhishlistTableViewController: UITableViewController {
         cell.deleteWishCallback = {
             self.deleteWishDelegate?.deleteWish(indexPath.row)
         }
-        
-        print("height: \(cell.bounds.height)")
         
         return cell
     }
