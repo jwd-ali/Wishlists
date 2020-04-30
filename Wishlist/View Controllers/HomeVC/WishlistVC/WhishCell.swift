@@ -261,36 +261,36 @@ class WhishCell: UITableViewCell {
         priceView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
         
         
-        priceImage.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
+        priceImage.topAnchor.constraint(equalTo: priceView.topAnchor).isActive = true
         priceImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
         priceImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         priceImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
-        priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
+        priceLabel.topAnchor.constraint(equalTo: priceView.topAnchor).isActive = true
         priceLabel.leadingAnchor.constraint(equalTo: priceImage.trailingAnchor, constant: 10).isActive = true
         priceLabel.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -10).isActive = true
         
         // constrain linkView
         linkView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
         
-        linkImage.centerYAnchor.constraint(equalTo: linkView.centerYAnchor).isActive = true
+        linkImage.topAnchor.constraint(equalTo: linkView.topAnchor).isActive = true
         linkImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
         linkImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         linkImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
-        linkLabel.centerYAnchor.constraint(equalTo: linkView.centerYAnchor).isActive = true
+        linkLabel.topAnchor.constraint(equalTo: linkView.topAnchor).isActive = true
         linkLabel.leadingAnchor.constraint(equalTo: linkImage.trailingAnchor, constant: 10).isActive = true
         linkLabel.trailingAnchor.constraint(equalTo: linkView.trailingAnchor, constant: -10).isActive = true
 
         // constrain noteView
         noteView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
         
-        noteImage.centerYAnchor.constraint(equalTo: noteView.centerYAnchor).isActive = true
+        noteImage.topAnchor.constraint(equalTo: noteView.topAnchor).isActive = true
         noteImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
         noteImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
         noteImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
-        noteLabel.centerYAnchor.constraint(equalTo: noteView.centerYAnchor).isActive = true
+        noteLabel.topAnchor.constraint(equalTo: noteView.topAnchor).isActive = true
         noteLabel.leadingAnchor.constraint(equalTo: noteImage.trailingAnchor, constant: 10).isActive = true
         noteLabel.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -10).isActive = true
                 
