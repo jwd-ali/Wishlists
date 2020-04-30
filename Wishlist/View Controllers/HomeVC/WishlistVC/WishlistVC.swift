@@ -460,7 +460,7 @@ class WishlistViewController: UIViewController {
     }
     
 // MARK: AddWishButton
-    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
     @objc func addWishButtonTapped(){
         
         view.removeGestureRecognizer(panGR)
@@ -501,7 +501,7 @@ class WishlistViewController: UIViewController {
             self.transparentView.removeGestureRecognizer($0)
         }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
+        
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
@@ -584,7 +584,7 @@ class WishlistViewController: UIViewController {
         }
     }
     
-    
+    //MARK: dismissWishView
     @objc func dismissWishView() {
         
         view.addGestureRecognizer(panGR)
@@ -674,7 +674,9 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
         actionSheet.addAction(cameraAction)
         actionSheet.addAction(cancelAction)
         // Present the controller
+        
         self.present(actionSheet, animated: true, completion: nil)
+        
     }
     
     func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
@@ -712,6 +714,7 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
             }
 
         }
+        
         dismiss(animated: true, completion: nil)
     }
 }

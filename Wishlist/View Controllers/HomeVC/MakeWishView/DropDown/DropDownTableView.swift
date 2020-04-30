@@ -71,7 +71,6 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         
         cell.label.text = dropOptions[indexPath.row].name
         cell.listImage.image = dropOptions[indexPath.row].image
-//        cell.backgroundColor = UIColor.clear
         return cell
     }
     
@@ -146,6 +145,11 @@ class DropDownBtn: UIButton, DropDownProtocol {
     }
     
     override func didMoveToSuperview() {
+        
+        if let wishView = superview as? WishView {
+            wishView.dropDown = dropView
+        }
+        
         self.superview?.addSubview(dropView)
         self.superview?.bringSubviewToFront(dropView)
         dropView.bottomAnchor.constraint(equalTo: self.topAnchor).isActive = true
@@ -190,7 +194,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
             NSLayoutConstraint.deactivate([self.height])
             self.height.constant = 0
             NSLayoutConstraint.activate([self.height])
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
                 self.dropView.center.y += self.dropView.frame.height / 2
                 self.dropView.layoutIfNeeded()
             }, completion: nil)
@@ -204,7 +208,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
         
         self.height.constant = 0
         NSLayoutConstraint.activate([self.height])
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
             self.dropView.center.y += self.dropView.frame.height / 2
             self.dropView.layoutIfNeeded()
         }, completion: nil)

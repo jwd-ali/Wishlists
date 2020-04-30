@@ -292,6 +292,7 @@ class WishView: UIView, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: set
     func set(image: UIImage) {
         let ratio = image.size.width / image.size.height
         wishImageView.image = image
@@ -435,6 +436,20 @@ class WishView: UIView, UITextFieldDelegate {
         noteButton.centerYAnchor.constraint(equalTo: itemScrollView.centerYAnchor).isActive = true
         noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 45).isActive = true
     }
+    
+
+    var dropDown: DropDownView?
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+
+        let newPoint = self.convert(point, to: dropDown!)
+        if dropDown?.point(inside: newPoint, with: event) == true {
+            return dropDown?.hitTest(newPoint, with: event)
+        } else {
+        }
+        return super.hitTest(point, with: event)
+    }
+    
     
     //MARK: Enable Button Methods
     func disableButton(){

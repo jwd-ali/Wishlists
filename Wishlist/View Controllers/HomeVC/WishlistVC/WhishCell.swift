@@ -72,13 +72,9 @@ class WhishCell: UITableViewCell {
     
     let wishImage: UIImageView = {
         let v = UIImageView()
-//        v.backgroundColor = .blue
+        v.backgroundColor = .blue
         v.translatesAutoresizingMaskIntoConstraints = false
-//        v.contentMode = .top
-        v.layer.cornerRadius = 3
-        v.contentMode = .scaleAspectFit
-        v.layer.masksToBounds = true
-        v.layer.masksToBounds = true
+        v.roundCornersForAspectFit(radius: 3)
         return v
     }()
     
