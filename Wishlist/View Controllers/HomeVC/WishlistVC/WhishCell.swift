@@ -72,10 +72,12 @@ class WhishCell: UITableViewCell {
     
     let wishImage: UIImageView = {
         let v = UIImageView()
-        v.backgroundColor = .blue
+//        v.backgroundColor = .blue
         v.translatesAutoresizingMaskIntoConstraints = false
 //        v.contentMode = .top
         v.layer.cornerRadius = 3
+        v.contentMode = .scaleAspectFit
+        v.layer.masksToBounds = true
         v.layer.masksToBounds = true
         return v
     }()
@@ -214,7 +216,7 @@ class WhishCell: UITableViewCell {
         
         secondaryStackView.addArrangedSubview(imageContainerView)
         imageContainerView.addSubview(wishImage)
-        imageContainerView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        imageContainerView.widthAnchor.constraint(equalToConstant: 90).isActive = true
         
 //        secondaryStackViewHeightConstraint = secondaryStackView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView * 3)
         
@@ -254,8 +256,12 @@ class WhishCell: UITableViewCell {
         // constrain wishImage
         wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
         wishImage.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor).isActive = true
+        wishImage.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -10).isActive = true
         wishImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        wishImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        let imageHeight = wishImage.heightAnchor.constraint(equalToConstant: 70)
+        imageHeight.priority = .defaultHigh
+        imageHeight.isActive = true
         
         // constrain priceView
         priceView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView).isActive = true
