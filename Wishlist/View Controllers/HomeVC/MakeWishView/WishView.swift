@@ -437,7 +437,7 @@ class WishView: UIView, UITextFieldDelegate {
         noteButton.leadingAnchor.constraint(equalTo: linkButton.leadingAnchor, constant: 45).isActive = true
     }
     
-
+    //MARK: Helper for DropDownTableView
     var dropDown: DropDownView?
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

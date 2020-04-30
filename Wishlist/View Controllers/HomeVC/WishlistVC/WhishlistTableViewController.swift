@@ -75,6 +75,8 @@ class WhishlistTableViewController: UITableViewController {
         
         if !currentWish.wishImage!.hasContent {
             cell.imageContainerView.isHidden = true
+        }else {
+            cell.set(image: currentWish.wishImage!)
         }
         
         
@@ -96,9 +98,6 @@ class WhishlistTableViewController: UITableViewController {
             cell.secondaryStackView.isHidden = false
 
         }
-        
-        
-        
         
         cell.wishImage.image = currentWish.wishImage
         

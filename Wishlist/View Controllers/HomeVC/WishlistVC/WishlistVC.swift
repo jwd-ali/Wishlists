@@ -460,7 +460,6 @@ class WishlistViewController: UIViewController {
     }
     
 // MARK: AddWishButton
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
     @objc func addWishButtonTapped(){
         
         view.removeGestureRecognizer(panGR)
@@ -501,7 +500,7 @@ class WishlistViewController: UIViewController {
             self.transparentView.removeGestureRecognizer($0)
         }
         
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
         transparentView.addGestureRecognizer(tapGesture)
         
         transparentView.alpha = 0
@@ -630,7 +629,7 @@ extension WishlistViewController: DeleteWishDelegate {
 //MARK: AddWishDelegate
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
-
+        
         self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
         
         
