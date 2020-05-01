@@ -75,6 +75,23 @@ class CustomShareViewController: UIViewController {
         return v
     }()
     
+    let wishView: WishView = {
+        let v = WishView()
+        v.theStackView.addBackgroundColorWithTopCornerRadius(color: .white)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let transparentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        return v
+    }()
+    
+    var wishConstraint: NSLayoutConstraint!
+    
+    var theWish: Wish!
+    
     
     var imagesArray = [UIImage]()
 
@@ -82,6 +99,8 @@ class CustomShareViewController: UIViewController {
     
     var currentImage: UIImage?
     
+    
+    //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -92,6 +111,8 @@ class CustomShareViewController: UIViewController {
         
         prevButton.isEnabled = false
         nextButton.isEnabled = false
+        
+        self.wishView.addWishDelegate = self
         
     }
     
@@ -121,7 +142,7 @@ class CustomShareViewController: UIViewController {
         }
     }
 
-    
+    //MARK: setupViews
     private func setupViews(){
         view.addSubview(visualEffectView)
         // constrain blurrEffectView
@@ -160,15 +181,27 @@ class CustomShareViewController: UIViewController {
         prevButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -30).isActive = true
         prevButton.topAnchor.constraint(equalTo: swipeImageView.bottomAnchor, constant: 30).isActive = true
         
+        //MARK: constrain wishView
+        transparentView.frame = self.view.frame
+        self.view.addSubview(transparentView)
+        transparentView.alpha = 0
+        
+        self.view.addSubview(self.wishView)
+        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        wishConstraint = wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        wishConstraint.isActive = true
+        
     }
     
-    
-    @objc private func cancelAction () {
+    //MARK: cancelAction
+    @objc func cancelAction () {
         let error = NSError(domain: "some.bundle.identifier", code: 0, userInfo: [NSLocalizedDescriptionKey: "An error description"])
         extensionContext?.cancelRequest(withError: error)
     }
 
-    @objc private func doneAction() {
+    //MARK: doneAction
+    @objc func doneAction() {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
     

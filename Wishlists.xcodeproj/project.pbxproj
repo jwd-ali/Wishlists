@@ -56,6 +56,15 @@
 		83BE0A8024476FAD0095DCAD /* successAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 83BE0A7F24476FAC0095DCAD /* successAnimation.json */; };
 		83BF292F23DE28DB003A3AF1 /* EmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BF292E23DE28DB003A3AF1 /* EmailVC.swift */; };
 		83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C041EB23DA435100AF527F /* MainNavigationControllerViewController.swift */; };
+		83CB48E4245C77D1001CE933 /* WishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB48E3245C77D1001CE933 /* WishView.swift */; };
+		83CB48E5245C7824001CE933 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
+		83CB48E6245C7828001CE933 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8EE823A80F9C00C432EA /* DropDownCell.swift */; };
+		83CB48E7245C782C001CE933 /* DropDownStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E0BA024323AF100CEC488 /* DropDownStruct.swift */; };
+		83CB48E8245C782F001CE933 /* DropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836A862623916FAC000E76E4 /* DropDownTableView.swift */; };
+		83CB48EA245C784C001CE933 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB48E9245C784C001CE933 /* Wish.swift */; };
+		83CB48EB245C7878001CE933 /* Wish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB48E9245C784C001CE933 /* Wish.swift */; };
+		83CB48EC245C78C4001CE933 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE0A7D2443870F0095DCAD /* ImageHelper.swift */; };
+		83CB48EE245C7A0B001CE933 /* ShareViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CB48ED245C7A0B001CE933 /* ShareViewExtension.swift */; };
 		83D15FDD23B6731A00007A53 /* WishlistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDC23B6731A00007A53 /* WishlistVC.swift */; };
 		83D15FDF23BA908900007A53 /* WishlistStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15FDE23BA908900007A53 /* WishlistStruct.swift */; };
 		83D39BB92421774900AE88F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A193A4230D6064002D22C0 /* Assets.xcassets */; };
@@ -149,6 +158,9 @@
 		83BE0A7F24476FAC0095DCAD /* successAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = successAnimation.json; sourceTree = "<group>"; };
 		83BF292E23DE28DB003A3AF1 /* EmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVC.swift; sourceTree = "<group>"; };
 		83C041EB23DA435100AF527F /* MainNavigationControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationControllerViewController.swift; sourceTree = "<group>"; };
+		83CB48E3245C77D1001CE933 /* WishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishView.swift; sourceTree = "<group>"; };
+		83CB48E9245C784C001CE933 /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
+		83CB48ED245C7A0B001CE933 /* ShareViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewExtension.swift; sourceTree = "<group>"; };
 		83D15FDC23B6731A00007A53 /* WishlistVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistVC.swift; sourceTree = "<group>"; };
 		83D15FDE23BA908900007A53 /* WishlistStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistStruct.swift; sourceTree = "<group>"; };
 		83DA1B37241BBD13008A58EB /* UITapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITapGesture.swift; sourceTree = "<group>"; };
@@ -255,7 +267,9 @@
 			children = (
 				8392D5652427A1DA00FF6EA0 /* ShareExtension.entitlements */,
 				8392D556242798F000FF6EA0 /* ShareViewController.swift */,
+				83CB48ED245C7A0B001CE933 /* ShareViewExtension.swift */,
 				83BA25622458F326002B5C64 /* Extensions.swift */,
+				83CB48E3245C77D1001CE933 /* WishView.swift */,
 				8392D5632427A08100FF6EA0 /* CustomShareNavigationController.swift */,
 				8392D55B242798F000FF6EA0 /* Info.plist */,
 			);
@@ -385,6 +399,7 @@
 			children = (
 				83D15FDC23B6731A00007A53 /* WishlistVC.swift */,
 				836A862423880B21000E76E4 /* WhishlistTableViewController.swift */,
+				83CB48E9245C784C001CE933 /* Wish.swift */,
 				836A862223875325000E76E4 /* WhishCell.swift */,
 				83D15FDE23BA908900007A53 /* WishlistStruct.swift */,
 				830646B9242BE4BF00A7F3B2 /* MenueTableView */,
@@ -631,8 +646,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8392D5642427A08100FF6EA0 /* CustomShareNavigationController.swift in Sources */,
+				83CB48EC245C78C4001CE933 /* ImageHelper.swift in Sources */,
+				83CB48EE245C7A0B001CE933 /* ShareViewExtension.swift in Sources */,
 				83BA25632458F326002B5C64 /* Extensions.swift in Sources */,
+				83CB48E8245C782F001CE933 /* DropDownTableView.swift in Sources */,
+				83CB48E7245C782C001CE933 /* DropDownStruct.swift in Sources */,
+				83CB48EA245C784C001CE933 /* Wish.swift in Sources */,
 				8392D557242798F000FF6EA0 /* ShareViewController.swift in Sources */,
+				83CB48E4245C77D1001CE933 /* WishView.swift in Sources */,
+				83CB48E6245C7828001CE933 /* DropDownCell.swift in Sources */,
+				83CB48E5245C7824001CE933 /* WishlistStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,6 +705,7 @@
 				83A3BD1B23A68809003FDCC1 /* CenterAlignedFlowlayout.swift in Sources */,
 				83BF292F23DE28DB003A3AF1 /* EmailVC.swift in Sources */,
 				83A1939E230D6062002D22C0 /* AppDelegate.swift in Sources */,
+				83CB48EB245C7878001CE933 /* Wish.swift in Sources */,
 				832E9CAF240C6A5C00135A50 /* CommunityViewController.swift in Sources */,
 				8357A273243677B300DFF949 /* WishView.swift in Sources */,
 				83C041EC23DA435100AF527F /* MainNavigationControllerViewController.swift in Sources */,

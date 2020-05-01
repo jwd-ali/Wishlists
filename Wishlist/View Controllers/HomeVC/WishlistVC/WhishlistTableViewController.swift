@@ -119,21 +119,3 @@ class WhishlistTableViewController: UITableViewController {
 
 }
 
-class Wish: NSObject {
-    public var wishName : String?
-    public var checkedStatus : Bool?
-    public var wishLink : String?
-    public var wishPrice : String?
-    public var wishNote : String?
-    public var wishImage : UIImage?
-    
-    init(withWishName name: String, link: String, price: String, note: String, image: UIImage, checked: Bool) {
-        super.init()
-        wishName = name
-        checkedStatus = checked
-        wishLink = link
-        wishPrice = price
-        wishNote = note
-        wishImage = image
-    }
-}
