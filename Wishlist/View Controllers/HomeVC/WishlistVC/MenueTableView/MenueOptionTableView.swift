@@ -149,7 +149,7 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         if Constants.Wishlist.darkTextColorIndexes.contains(listImageIndex) {
             textColor = UIColor.darkGray
         }
-        self.wishList = Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
+        self.wishList = Wishlist(name: listName, image: listImage, wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
         
         self.dataSourceArray[self.currentWishListIDX] = self.wishList
         

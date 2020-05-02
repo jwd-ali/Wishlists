@@ -178,6 +178,14 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
                 self.addButton.isEnabled = true
                 self.activityIndicator.stopAnimating()
+                
+                // save dataSourceArray in UserDefaults
+                if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                    defaults.setDataSourceArray(data: dataArray as! [Wishlist])
+                    defaults.synchronize()
+                } else {
+                    print("error Main")
+                }
             }
         }
         
@@ -543,7 +551,7 @@ extension MainViewController: CreateListDelegate {
         DataHandler.getListCounter { (success, listCounter) in
             let newIndex = listCounter as! Int + 1
             
-            self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
+            self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
             
              // append created list to drop down options
              self.dropOptions.append(DropDownOption(name: listName, image: listImage))
@@ -615,7 +623,7 @@ extension MainViewController: SelectedWishlistProtocol{
 extension MainViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
         
-        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+        self.dataSourceArray[selectedWishlistIDX!].wishes.append(Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
         
         self.dismissWishView()
         

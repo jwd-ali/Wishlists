@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 
-enum Color: String {
+enum ColorMode: String {
  case white
  case darkGray
     
@@ -28,4 +28,34 @@ enum Color: String {
 extension UIColor {
     
     static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+}
+
+struct Color: Codable {
+    let red: CGFloat
+    let green: CGFloat
+    let blue: CGFloat
+    let alpha: CGFloat
+
+    init(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    }
+
+    init(uiColor: UIColor) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        self.red = red
+        self.green = green
+        self.blue = blue
+        self.alpha = alpha
+    }
+
+    var uiColor: UIColor { UIColor(red: red, green: green, blue: blue, alpha: alpha) }
 }

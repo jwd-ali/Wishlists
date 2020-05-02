@@ -99,6 +99,9 @@ class CustomShareViewController: UIViewController {
     
     var currentImage: UIImage?
     
+    var dropOptions = [DropDownOption]()
+    var dataSourceArray = [Wishlist]()
+    
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -113,6 +116,20 @@ class CustomShareViewController: UIViewController {
         nextButton.isEnabled = false
         
         self.wishView.addWishDelegate = self
+        
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            if let data = defaults.getDataSourceArray() {
+                dataSourceArray = data
+                defaults.synchronize()
+                print(dataSourceArray[0].name)
+            }else {
+                print("error 2")
+            }
+            
+        } else {
+            print("error 1")
+        }
+        
         
     }
     
@@ -217,10 +234,12 @@ class CustomShareViewController: UIViewController {
                         
                         html = (self.getHTMLfromURL(url: url as? URL))
                         
+                        
+                        
                         print(url as Any)
                         
                         let directoryURL = url as! NSURL
-
+                        
                         let urlString: String = directoryURL.absoluteString!
                         
                         OpenGraphDataDownloader.shared.fetchOGData(urlString: urlString) { result in

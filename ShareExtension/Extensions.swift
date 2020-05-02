@@ -33,10 +33,6 @@ public extension UIImage {
 
 }
 
-public extension UIColor {
-    static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
-}
-
 extension UIStackView {
     func addBackgroundColorWithTopCornerRadius(color: UIColor) {
         let subView = UIView(frame: bounds)

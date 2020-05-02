@@ -197,7 +197,7 @@ class WishlistViewController: UIViewController {
         
         self.wishlistLabel.text = wishList.name
         self.wishlistImage.image = wishList.image
-        self.theTableView.wishData = wishList.wishData
+        self.theTableView.wishData = wishList.wishes
         self.theTableView.tableView.reloadData()
         
         setupViews()
@@ -630,14 +630,14 @@ extension WishlistViewController: DeleteWishDelegate {
 extension WishlistViewController: AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
         
-        self.dataSourceArray[selectedWishlistIDX!].wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+        self.dataSourceArray[selectedWishlistIDX!].wishes.append(Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
         
         
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
-            wishList.wishData.append(Wish(withWishName: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checked: false))
+            wishList.wishes.append(Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
             
-            theTableView.wishData = wishList.wishData
+            theTableView.wishData = wishList.wishes
             theTableView.tableView.beginUpdates()
             theTableView.tableView.insertRows(at: [
                 (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)

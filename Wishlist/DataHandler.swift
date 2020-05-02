@@ -49,14 +49,14 @@ extension MainViewController {
                     let textColor = documentData["textColor"]
                     let index = documentData["listIDX"]
                     
-                    guard let color = Color(rawValue: textColor as! String) else {
+                    guard let color = ColorMode(rawValue: textColor as! String) else {
                         print("handle invalid color error");
                         return
                     }
 
                     let colorUnwrapped = color.create
                         
-                    self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
+                    self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
                     
                     self.dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
                     
@@ -118,14 +118,14 @@ class DataHandler {
                     let textColor = documentData["textColor"]
                     let index = documentData["listIDX"]
                     
-                    guard let color = Color(rawValue: textColor as! String) else {
+                    guard let color = ColorMode(rawValue: textColor as! String) else {
                         print("handle invalid color error");
                         return
                     }
 
                     let colorUnwrapped = color.create
                         
-                    dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishData: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
+                    dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
                     dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
                 }
                 completion(true, dataSourceArray, dropOptions)

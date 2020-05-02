@@ -11,7 +11,7 @@ import UIKit
 class WhishlistTableViewController: UITableViewController {
 
     public var wishData = [
-        Wish(withWishName: "Ultra Boost Kith Aspen", link: "www.adidas.com", price: "180,00€", note: "EU 44 / US 10", image: UIImage(named: "testImageShoes-1")!, checked: false),
+        Wish(name: "Ultra Boost Kith Aspen", link: "www.adidas.com", price: "180,00€", note: "EU 44 / US 10", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false),
         
 //        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
     ]
@@ -63,49 +63,49 @@ class WhishlistTableViewController: UITableViewController {
         
         let currentWish = self.wishData[indexPath.row]
         
-        if currentWish.wishNote == "" {
+        if currentWish.note == "" {
             cell.noteView.isHidden = true
         }
-        if currentWish.wishPrice == "" {
+        if currentWish.price == "" {
             cell.priceView.isHidden = true
         }
-        if currentWish.wishLink == "" {
+        if currentWish.link == "" {
             cell.linkView.isHidden = true
         }
         
-        if !currentWish.wishImage!.hasContent {
+        if !currentWish.image.hasContent {
             cell.imageContainerView.isHidden = true
         }else {
-            cell.set(image: currentWish.wishImage!)
+            cell.set(image: currentWish.image)
         }
         
         
         // everything empty -> hide secondary StackView
-        if currentWish.wishNote!.isEmpty
-            && currentWish.wishPrice!.isEmpty
-            && currentWish.wishLink!.isEmpty
-            && !currentWish.wishImage!.hasContent {
+        if currentWish.note.isEmpty
+            && currentWish.price.isEmpty
+            && currentWish.link.isEmpty
+            && !currentWish.image.hasContent {
             
             cell.secondaryStackView.isHidden = true
         }
         
         // Image or third StackView is filled -> show secondary StackView + activate constraint with height
-        if (!currentWish.wishNote!.isEmpty
-            && !currentWish.wishPrice!.isEmpty
-            && !currentWish.wishLink!.isEmpty)
-            || currentWish.wishImage!.hasContent {
+        if (!currentWish.note.isEmpty
+            && !currentWish.price.isEmpty
+            && !currentWish.link.isEmpty)
+            || currentWish.image.hasContent {
             
             cell.secondaryStackView.isHidden = false
 
         }
         
-        cell.wishImage.image = currentWish.wishImage
+        cell.wishImage.image = currentWish.image
         
-        cell.label.text = currentWish.wishName
+        cell.label.text = currentWish.name
         
-        cell.linkLabel.text = currentWish.wishLink
-        cell.priceLabel.text = currentWish.wishPrice
-        cell.noteLabel.text = currentWish.wishNote
+        cell.linkLabel.text = currentWish.link
+        cell.priceLabel.text = currentWish.price
+        cell.noteLabel.text = currentWish.note
         cell.backgroundColor = .clear
         
         // DonMag3 - tapping the checkbox in the wish cell will call back here
