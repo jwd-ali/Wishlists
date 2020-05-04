@@ -17,7 +17,7 @@ class WhishCell: UITableViewCell {
     let mainStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-//        v.addBackgroundColorWithTopCornerRadius(color: .orange)
+        v.addBackgroundColorWithTopCornerRadius(color: .orange)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -25,7 +25,7 @@ class WhishCell: UITableViewCell {
     let secondaryStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-//        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
+        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -35,7 +35,7 @@ class WhishCell: UITableViewCell {
     let thirdStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-//        v.addBackgroundColorWithTopCornerRadius(color: .red)
+        v.addBackgroundColorWithTopCornerRadius(color: .red)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -89,7 +89,7 @@ class WhishCell: UITableViewCell {
     //MARK: priceStack
     let priceView: UIView = {
         let v = UIView()
-        v.backgroundColor = .clear
+        v.backgroundColor = .blue
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -117,7 +117,7 @@ class WhishCell: UITableViewCell {
     //MARK: linkStack
     let linkView: UIView = {
         let v = UIView()
-        v.backgroundColor = .clear
+        v.backgroundColor = .lightGray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -150,7 +150,7 @@ class WhishCell: UITableViewCell {
     //MARK: noteStack
     let noteView: UIView = {
         let v = UIView()
-        v.backgroundColor = .clear
+        v.backgroundColor = .gray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -193,7 +193,7 @@ class WhishCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
     }
     
     //MARK: setup Loading-Animation
@@ -221,7 +221,15 @@ class WhishCell: UITableViewCell {
         secondaryStackView.addArrangedSubview(imageContainerView)
         imageContainerView.addSubview(wishImage)
         
+        secondaryStackViewHeightConstraint = secondaryStackView.heightAnchor.constraint(equalToConstant: 90)
+        secondaryStackViewHeightConstraint.priority = .defaultHigh
+        secondaryStackViewHeightConstraint.isActive = true
+        
         secondaryStackView.addArrangedSubview(thirdStackView)
+        
+        thrirdStackViewHeightConstraint = thirdStackView.heightAnchor.constraint(equalToConstant: 90)
+        thrirdStackViewHeightConstraint.priority = .defaultHigh
+        thrirdStackViewHeightConstraint.isActive = true
         
         thirdStackView.addArrangedSubview(priceView)
         priceView.addSubview(priceImage)

@@ -642,10 +642,27 @@ extension WishlistViewController: AddWishDelegate {
             theTableView.tableView.insertRows(at: [
                 (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)
             theTableView.tableView.endUpdates()
-            theTableView.view.layoutIfNeeded()
+        
         }
         
         dismissWishView()
+    }
+    
+    func updateLastRow() {
+        DispatchQueue.main.async {
+            let lastIndexPath = IndexPath(row: self.wishList.wishes.count - 1, section: 0)
+
+            self.theTableView.tableView.beginUpdates()
+            self.theTableView.tableView.insertRows(at: [lastIndexPath], with: .left)
+            self.theTableView.tableView.endUpdates()
+
+            self.theTableView.tableView.layoutIfNeeded()
+//            self.theTableView.tableView()
+
+            self.theTableView.tableView.scrollToRow(at: lastIndexPath,
+                                       at: UITableView.ScrollPosition.bottom,
+                                       animated: true)
+        }
     }
 }
 

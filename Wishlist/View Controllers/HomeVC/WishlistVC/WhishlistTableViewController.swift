@@ -28,7 +28,7 @@ class WhishlistTableViewController: UITableViewController {
         
 //        self.tableView.rowHeight = 140
         
-        tableView.estimatedRowHeight = 40
+        tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
         
 
@@ -63,14 +63,27 @@ class WhishlistTableViewController: UITableViewController {
         
         let currentWish = self.wishData[indexPath.row]
         
+        // reset height constraint
+        cell.secondaryStackViewHeightConstraint.constant = 0
+        cell.thrirdStackViewHeightConstraint.constant = 0
+        
         if currentWish.note == "" {
             cell.noteView.isHidden = true
+        } else {
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
         if currentWish.price == "" {
             cell.priceView.isHidden = true
+        } else {
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
         if currentWish.link == "" {
             cell.linkView.isHidden = true
+        } else {
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
         
         if !currentWish.image.hasContent {
@@ -85,7 +98,7 @@ class WhishlistTableViewController: UITableViewController {
             && currentWish.price.isEmpty
             && currentWish.link.isEmpty
             && !currentWish.image.hasContent {
-            
+
             cell.secondaryStackView.isHidden = true
         }
         
@@ -94,7 +107,7 @@ class WhishlistTableViewController: UITableViewController {
             && !currentWish.price.isEmpty
             && !currentWish.link.isEmpty)
             || currentWish.image.hasContent {
-            
+            cell.secondaryStackViewHeightConstraint.constant = 90
             cell.secondaryStackView.isHidden = false
 
         }
@@ -108,7 +121,7 @@ class WhishlistTableViewController: UITableViewController {
         cell.noteLabel.text = currentWish.note
         cell.backgroundColor = .clear
         
-        // DonMag3 - tapping the checkbox in the wish cell will call back here
+        // tapping the checkbox in the wish cell will call back here
         // and we tell the delegate to delete the wish
         cell.deleteWishCallback = {
             self.deleteWishDelegate?.deleteWish(indexPath.row)
