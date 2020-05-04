@@ -360,9 +360,10 @@ class WishView: UIView, UITextFieldDelegate {
         
         priceLabel.leadingAnchor.constraint(equalTo: priceView.leadingAnchor, constant: 20).isActive = true
         priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor).isActive = true
+        priceLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         priceTextField.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 10).isActive = true
-        priceTextField.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -195).isActive = true
+        priceTextField.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -20).isActive = true
         priceTextField.centerYAnchor.constraint(equalTo: priceView.centerYAnchor, constant: 1).isActive = true
         
         //MARK: link
@@ -375,9 +376,10 @@ class WishView: UIView, UITextFieldDelegate {
         
         linkLabel.leadingAnchor.constraint(equalTo: linkView.leadingAnchor, constant: 20).isActive = true
         linkLabel.centerYAnchor.constraint(equalTo: linkView.centerYAnchor).isActive = true
+        linkLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         linkTextField.leadingAnchor.constraint(equalTo: linkLabel.trailingAnchor, constant: 10).isActive = true
-        linkTextField.trailingAnchor.constraint(equalTo: linkView.trailingAnchor, constant: -195).isActive = true
+        linkTextField.trailingAnchor.constraint(equalTo: linkView.trailingAnchor, constant: -20).isActive = true
         linkTextField.centerYAnchor.constraint(equalTo: linkView.centerYAnchor, constant: 1).isActive = true
         
         //MARK: note
@@ -390,9 +392,10 @@ class WishView: UIView, UITextFieldDelegate {
         
         noteLabel.leadingAnchor.constraint(equalTo: noteView.leadingAnchor, constant: 20).isActive = true
         noteLabel.centerYAnchor.constraint(equalTo: noteView.centerYAnchor).isActive = true
+        noteLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         noteTextField.leadingAnchor.constraint(equalTo: noteLabel.trailingAnchor, constant: 10).isActive = true
-        noteTextField.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -195).isActive = true
+        noteTextField.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -20).isActive = true
         noteTextField.centerYAnchor.constraint(equalTo: noteView.centerYAnchor, constant: 1).isActive = true
         
         //MARK: items

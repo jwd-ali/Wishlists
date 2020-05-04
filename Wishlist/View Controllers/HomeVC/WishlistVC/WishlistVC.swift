@@ -179,6 +179,9 @@ class WishlistViewController: UIViewController {
     var menueTableViewHeight: CGFloat?
     var bottomConstraint: NSLayoutConstraint?
     
+    // iPhone 8: width = 375.0
+    let screenSize = UIScreen.main.bounds.size
+    
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,6 +221,7 @@ class WishlistViewController: UIViewController {
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+
     }
     
     var hasBottomNotch: Bool {
@@ -269,51 +273,48 @@ class WishlistViewController: UIViewController {
         view.addSubview(self.emptyWishlistImage)
         view.addSubview(self.emptyWishlistLabel)
         
-        NSLayoutConstraint.activate([
-            
-
-            // constrain wishlistView
-            wishlistBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            wishlistBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            wishlistBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            wishlistBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            
-            wishlistView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160.0),
-            wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            wishlistView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            wishlistView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            
-            // constrain wishTableView
-            theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 40.0),
-            theTableView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            theTableView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            theTableView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        // constrain wishlistView
+        wishlistBackgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        wishlistBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        wishlistBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        wishlistBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        // constrain wishlistImage
+        wishlistImage.topAnchor.constraint(equalTo: dismissWishlistViewButton.bottomAnchor, constant: 20).isActive = true
+        wishlistImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        let imageWidth = wishlistImage.widthAnchor.constraint(equalToConstant: 0.24 * self.screenSize.width)
+        imageWidth.isActive = true
+        wishlistImage.heightAnchor.constraint(equalTo: wishlistImage.widthAnchor).isActive = true
+         
+        wishlistView.topAnchor.constraint(equalTo: wishlistImage.bottomAnchor, constant: -(imageWidth.constant/4)).isActive = true
+        wishlistView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        wishlistView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        wishlistView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        // constrain wishTableView
+        theTableView.view.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: 40.0).isActive = true
+        theTableView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        theTableView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        theTableView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+       
+        // constrain dismissButton
+        dismissWishlistViewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        dismissWishlistViewButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+        
+        // constrain menueButton
+        menueButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        menueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25.0).isActive = true
            
-            // constrain dismissButton
-            dismissWishlistViewButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            dismissWishlistViewButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            
-            // constrain menueButton
-            menueButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            menueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25.0),
-            
-            // constrain wishlistImage
-            wishlistImage.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -70),
-            wishlistImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            wishlistImage.widthAnchor.constraint(equalToConstant: 90),
-            wishlistImage.heightAnchor.constraint(equalToConstant: 90),
-            
-            //constrain wishlistlabel
-            wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -40),
-            wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 100),
-            
-            addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            addWishButton.widthAnchor.constraint(equalToConstant: 60),
-            addWishButton.heightAnchor.constraint(equalToConstant: 60),
-            
-        ])
+        //constrain wishlistlabel
+        wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -40).isActive = true
+        wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.trailingAnchor, constant: 10).isActive = true
+        wishlistLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        
+        addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        addWishButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        addWishButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+
         //MARK: constrain createListView
         self.view.addSubview(self.createListView)
         
@@ -324,11 +325,11 @@ class WishlistViewController: UIViewController {
         self.createListView.isHidden = true
         
         //MARK: constrain emptyTableView
-        let screenSize = UIScreen.main.bounds.size
+        
         
         emptyWishlistImage.centerYAnchor.constraint(equalTo: wishlistView.centerYAnchor, constant: -50).isActive = true
         emptyWishlistImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        emptyWishlistImage.heightAnchor.constraint(equalToConstant: screenSize.height / 5).isActive = true
+        emptyWishlistImage.heightAnchor.constraint(equalToConstant: self.screenSize.height / 5).isActive = true
         emptyWishlistImage.widthAnchor.constraint(equalToConstant: screenSize.width - 60).isActive = true
 
         emptyWishlistLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
