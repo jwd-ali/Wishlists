@@ -92,7 +92,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     let addButton: UIButton = {
         let v = UIButton()
-        v.setImage(UIImage(named: "addButtonSimple"), for: .normal)
+        v.setImage(UIImage(named: "addButtonLight"), for: .normal)
         v.imageView?.contentMode = .scaleAspectFill
         v.contentHorizontalAlignment = .fill
         v.contentVerticalAlignment = .fill

@@ -326,6 +326,7 @@ class WhishCell: UITableViewCell {
         
         // set ContainerView width and add 10 for spacing between items and image
         imageContainerWidthConstraint = imageContainerView.widthAnchor.constraint(equalToConstant: wishImageWidthConstraint.constant + 10)
+        imageContainerWidthConstraint.priority = .defaultHigh
         imageContainerWidthConstraint.isActive = true
     }
     

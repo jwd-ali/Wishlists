@@ -309,9 +309,9 @@ class WishlistViewController: UIViewController {
             wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.leadingAnchor, constant: 100),
             
             addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40),
-            addWishButton.widthAnchor.constraint(equalToConstant: 70),
-            addWishButton.heightAnchor.constraint(equalToConstant: 70),
+            addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            addWishButton.widthAnchor.constraint(equalToConstant: 60),
+            addWishButton.heightAnchor.constraint(equalToConstant: 60),
             
         ])
         //MARK: constrain createListView
