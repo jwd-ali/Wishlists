@@ -14,7 +14,7 @@ protocol ImagePickerDelegate {
 }
 
 protocol AddWishDelegate {
-    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
+    func addWishComplete(wishName: String, selectedWishlistIDX: Int, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
 }
 
 class WishView: UIView, UITextFieldDelegate {
@@ -286,6 +286,8 @@ class WishView: UIView, UITextFieldDelegate {
     
         priceTextField.delegate = self
         priceTextField.placeholder = updateAmount()
+        
+        dropDownButton.dropView.selectedWishlistDelegate = self
     }
     
     required init(coder: NSCoder) {
@@ -617,6 +619,7 @@ class WishView: UIView, UITextFieldDelegate {
 
 extension WishView: SelectedWishlistProtocol {
     func didSelectWishlist(idx: Int) {
+        print(idx)
         self.selectedWishlistIDX = idx
     }
 }

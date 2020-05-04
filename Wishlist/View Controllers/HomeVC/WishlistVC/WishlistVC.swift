@@ -62,6 +62,8 @@ class WishlistViewController: UIViewController {
        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
        return v
    }()
+    
+    
    
    let wishlistLabel: UILabel = {
        let v = UILabel()
@@ -210,19 +212,19 @@ class WishlistViewController: UIViewController {
         
         bottomConstraint = self.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         
-        self.menueTableViewHeight = CGFloat(menueOptions.count * 50)
-        self.menueTableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 40, right: 0)
-        self.menueTableView.layer.cornerRadius = 5
-        self.menueTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        self.menueTableView.reloadData()
-        self.view.layoutIfNeeded()
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+    }
+    
+    var hasBottomNotch: Bool {
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            return UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 > 20
+        }
+        return false
     }
     
     var keyboardHeight = CGFloat(0)
@@ -377,6 +379,16 @@ class WishlistViewController: UIViewController {
     
     //MARK: setupMenueTableView
     func setupMenueTableView(){
+        if hasBottomNotch {
+            self.menueTableViewHeight = CGFloat(menueOptions.count * 50 + 50)
+        } else {
+            self.menueTableViewHeight = CGFloat(menueOptions.count * 50)
+        }
+        menueTableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        menueTableView.layer.cornerRadius = 5
+        menueTableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        menueTableView.reloadData()
+        view.layoutIfNeeded()
         menueTableView.isScrollEnabled = true
         menueTableView.delegate = self
         menueTableView.dataSource = self
@@ -628,14 +640,14 @@ extension WishlistViewController: DeleteWishDelegate {
 
 //MARK: AddWishDelegate
 extension WishlistViewController: AddWishDelegate {
-    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
-        
-        self.dataSourceArray[selectedWishlistIDX!].wishes.append(Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
+    
+    func addWishComplete(wishName: String, selectedWishlistIDX: Int, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        self.dataSourceArray[selectedWishlistIDX].wishes.append(Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
         
         
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
-            wishList.wishes.append(Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
+            wishList.wishes.append(Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
             
             theTableView.wishData = wishList.wishes
             theTableView.tableView.beginUpdates()
@@ -647,6 +659,7 @@ extension WishlistViewController: AddWishDelegate {
         
         dismissWishView()
     }
+
     
     func updateLastRow() {
         DispatchQueue.main.async {

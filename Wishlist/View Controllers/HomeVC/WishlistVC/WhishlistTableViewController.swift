@@ -10,13 +10,9 @@ import UIKit
 
 class WhishlistTableViewController: UITableViewController {
 
-    public var wishData = [
-        Wish(name: "Ultra Boost Kith Aspen", link: "www.adidas.com", price: "180,00€", note: "EU 44 / US 10", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false),
-        
-//        Wish(withWishName: "Apple Hoodie", link: "www.adidas.com", price: "180,00€", note: "US 44", image: UIImage(named: "testImage")!, checked: false)
-    ]
+
     
-//    public var wishData = [Wish]()
+    public var wishData = [Wish]()
     
     var tableViewIsEmpty: ((Bool) -> Void)?
 
@@ -25,8 +21,6 @@ class WhishlistTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.tableView.rowHeight = 140
         
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableView.automaticDimension
@@ -37,9 +31,6 @@ class WhishlistTableViewController: UITableViewController {
         
         self.tableView.register(WhishCell.self, forCellReuseIdentifier: WhishCell.reuseID)
         
-        // add top inset for tableview
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
     }
 
     // MARK: - Table view data source

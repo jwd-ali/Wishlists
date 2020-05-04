@@ -15,7 +15,7 @@ class MenueOptionCell: UITableViewCell {
     lazy var theTitle: UILabel = {
        let v = UILabel()
         v.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
-        v.textColor = .white
+        v.textColor = .darkCustom
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -23,7 +23,7 @@ class MenueOptionCell: UITableViewCell {
     lazy var theImage: UIImageView = {
         let v = UIImageView()
         v.image = v.image?.withRenderingMode(.alwaysTemplate)
-        v.tintColor = UIColor.white
+        v.tintColor = UIColor.darkCustom
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -31,7 +31,7 @@ class MenueOptionCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .darkCustom
+        self.backgroundColor = .white
         
         // add image
         self.contentView.addSubview(theImage)
