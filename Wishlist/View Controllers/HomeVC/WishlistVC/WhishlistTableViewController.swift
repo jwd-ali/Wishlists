@@ -63,21 +63,18 @@ class WhishlistTableViewController: UITableViewController {
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.noteView.isHidden = false
         }
         if currentWish.price == "" {
             cell.priceView.isHidden = true
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.priceView.isHidden = false
         }
         if currentWish.link == "" {
             cell.linkView.isHidden = true
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.linkView.isHidden = false
         }
         
         if !currentWish.image.hasContent {
@@ -86,8 +83,7 @@ class WhishlistTableViewController: UITableViewController {
             cell.set(image: currentWish.image)
             cell.imageContainerView.isHidden = false
         }
-        
-        
+    
         // everything empty -> hide secondary StackView
         if currentWish.note.isEmpty
             && currentWish.price.isEmpty
@@ -106,9 +102,6 @@ class WhishlistTableViewController: UITableViewController {
             || currentWish.image.hasContent {
             cell.secondaryStackViewHeightConstraint.constant = 90
             cell.secondaryStackView.isHidden = false
-
-        } else {
-            cell.secondaryStackView.isHidden = true
         }
         
         //cell.wishImage.image = currentWish.image

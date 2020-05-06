@@ -24,10 +24,11 @@ extension UserDefaults {
     }
     
     func getDataSourceArray() -> [Wishlist]? {
-        if let data = UserDefaults.standard.value(forKey: Keys.dataSourceKey) as? Data {
-            if let dataSourceArray = try? PropertyListDecoder().decode(Array<Wishlist>.self, from: data) as [Wishlist] {
-                return dataSourceArray
-            }
+        if let data = UserDefaults(suiteName: UserDefaults.Keys.groupKey)!.value(forKey: Keys.dataSourceKey) as? Data {
+            if let dataSourceArray =
+                try? PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as[Wishlist] {
+                    return dataSourceArray
+                }
         }
         return nil
     }
