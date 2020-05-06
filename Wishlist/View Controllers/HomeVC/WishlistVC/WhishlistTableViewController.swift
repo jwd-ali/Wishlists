@@ -63,24 +63,28 @@ class WhishlistTableViewController: UITableViewController {
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.noteView.isHidden = false
         }
         if currentWish.price == "" {
             cell.priceView.isHidden = true
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.priceView.isHidden = false
         }
         if currentWish.link == "" {
             cell.linkView.isHidden = true
         } else {
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.linkView.isHidden = false
         }
         
         if !currentWish.image.hasContent {
             cell.imageContainerView.isHidden = true
         }else {
             cell.set(image: currentWish.image)
+            cell.imageContainerView.isHidden = false
         }
         
         
@@ -91,6 +95,8 @@ class WhishlistTableViewController: UITableViewController {
             && !currentWish.image.hasContent {
 
             cell.secondaryStackView.isHidden = true
+        } else {
+            cell.secondaryStackView.isHidden = false
         }
         
         // Image or third StackView is filled -> show secondary StackView + activate constraint with height
@@ -101,9 +107,11 @@ class WhishlistTableViewController: UITableViewController {
             cell.secondaryStackViewHeightConstraint.constant = 90
             cell.secondaryStackView.isHidden = false
 
+        } else {
+            cell.secondaryStackView.isHidden = true
         }
         
-        cell.wishImage.image = currentWish.image
+        //cell.wishImage.image = currentWish.image
         
         cell.label.text = currentWish.name
         
