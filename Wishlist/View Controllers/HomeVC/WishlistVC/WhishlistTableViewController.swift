@@ -115,7 +115,7 @@ class WhishlistTableViewController: UITableViewController {
         // tapping the checkbox in the wish cell will call back here
         // and we tell the delegate to delete the wish
         cell.deleteWishCallback = {
-            self.deleteWishDelegate?.deleteWish(indexPath.row)
+            self.deleteWishDelegate?.deleteWish(indexPath)
         }
         
         return cell

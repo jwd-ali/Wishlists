@@ -12,7 +12,7 @@ import Hero
 
 // allows wish table view (and cell) to update wish list data
 protocol DeleteWishDelegate {
-    func deleteWish(_ idx: Int)
+    func deleteWish(_ idx: IndexPath)
 }
 
 // allow MainVC to recieve updated datasource array
@@ -624,17 +624,12 @@ class WishlistViewController: UIViewController {
 }
 
 extension WishlistViewController: DeleteWishDelegate {
-    func deleteWish(_ idx: Int){
-//        // remove the wish from the user's currently selected wishlist
-//        wishList.wishData.remove(at: idx)
-//        // set the updated data as the data for the table view
-//        theTableView.wishData = wishList.wishData
-//        theTableView.tableView.beginUpdates()
-//        theTableView.tableView.deleteRows(at: [
-//            (NSIndexPath(row: idx, section: 0) as IndexPath)], with: .right)
-//        theTableView.tableView.endUpdates()
-//        // reload data so index is updated
-//        theTableView.tableView.reloadData()
+    func deleteWish(_ idx: IndexPath){
+        // remove the wish from the user's currently selected wishlist
+        wishList.wishes.remove(at: idx.row)
+        // set the updated data as the data for the table view
+        theTableView.wishData = wishList.wishes
+        self.theTableView.tableView.deleteRows(at: [idx], with: .automatic)
         print("deleted")
     }
 }

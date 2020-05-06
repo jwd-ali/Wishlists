@@ -26,8 +26,8 @@ enum ColorMode: String {
 }
 
 extension UIColor {
-    
-    static let darkCustom = UIColor(red: 31.0/255.0, green: 32.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+    static let darkCustom = UIColor(red: 36.0/255.0, green: 37.0/255.0, blue: 39.0/255.0, alpha: 1.0)
+    static let blueCustom = UIColor(red: 69.0/255.0, green: 111.0/255.0, blue: 126.0/255.0, alpha: 1.0)
 }
 
 struct Color: Codable {

@@ -207,6 +207,13 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     var keyboardHeight = CGFloat(0)
@@ -228,9 +235,31 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                         }, completion: nil)
             }
             
+            
             if !self.createListView.isHidden {
                 UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
                     self.createListView.bottomConstraint.constant -= (self.keyboardHeight + self.createListView.bottomConstraint.constant + 10)
+                    self.view.layoutIfNeeded()
+                    }, completion: nil)
+            }
+            
+        }
+    }
+    
+    //MARK: keyboardWillShow
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
+            
+            let screenHeight = UIScreen.main.bounds.height
+            if !self.createListView.isHidden {
+                UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
+                    self.createListView.bottomConstraint.constant = -(screenHeight/3)
                     self.view.layoutIfNeeded()
                     }, completion: nil)
             }
@@ -334,7 +363,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     func createNewListView(){
         
         createListView.isHidden = false
-        createListView.wishlistNameTextField.becomeFirstResponder()
         
         for view in self.createListView.subviews as [UIView] {
             view.alpha = 0

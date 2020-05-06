@@ -57,7 +57,7 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.placeholder = "Wunschliste"
         v.textColor = .darkCustom
-        v.tintColor = .white
+        v.tintColor = .lightGray
         v.font = UIFont(name: "AvenirNext-Bold", size: 19)
         v.textAlignment = .center
         v.placeholderColor(color: UIColor.lightGray)
@@ -73,8 +73,8 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitle("Liste erstellen", for: .normal)
         v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
-        v.setTitleColor(.darkCustom, for: .normal)
-        v.backgroundColor = UIColor.white
+        v.setTitleColor(.white, for: .normal)
+        v.backgroundColor = UIColor.blueCustom
         v.layer.cornerRadius = 3
         v.addTarget(self, action: #selector(createListTapped), for: .touchUpInside)
         return v
@@ -111,8 +111,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
         setupViews()
         
         wishlistNameTextField.delegate = self
-        
-//        currentImage = Constants.Wishlist.images[self.currentImageIndex]
         
         setButtonTitleWithWishlistMode()
         

@@ -315,6 +315,11 @@ class WhishCell: UITableViewCell {
         noteLabel.topAnchor.constraint(equalTo: noteView.topAnchor).isActive = true
         noteLabel.leadingAnchor.constraint(equalTo: noteImage.trailingAnchor, constant: 10).isActive = true
         noteLabel.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -10).isActive = true
+        
+        // set ContainerView width and add 10 for spacing between items and image
+        imageContainerWidthConstraint = imageContainerView.widthAnchor.constraint(equalToConstant: wishImageWidthConstraint.constant + 10)
+        imageContainerWidthConstraint.priority = .defaultHigh
+        imageContainerWidthConstraint.isActive = true
                 
     }
     
@@ -323,11 +328,8 @@ class WhishCell: UITableViewCell {
         let ratio = image.size.width / image.size.height
         wishImage.image = image
         wishImageWidthConstraint.constant = ratio * wishImageHeight
-        
-        // set ContainerView width and add 10 for spacing between items and image
-        imageContainerWidthConstraint = imageContainerView.widthAnchor.constraint(equalToConstant: wishImageWidthConstraint.constant + 10)
-        imageContainerWidthConstraint.priority = .defaultHigh
-        imageContainerWidthConstraint.isActive = true
+
+        imageContainerWidthConstraint.constant = wishImageWidthConstraint.constant + 10
     }
     
     @objc func checkButtonTapped(){
