@@ -629,7 +629,7 @@ extension WishlistViewController: DeleteWishDelegate {
         wishList.wishes.remove(at: idx.row)
         // set the updated data as the data for the table view
         theTableView.wishData = wishList.wishes
-        self.theTableView.tableView.deleteRows(at: [idx], with: .automatic)
+        self.theTableView.tableView.deleteRows(at: [idx], with: .right)
         print("deleted")
     }
 }

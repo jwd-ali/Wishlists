@@ -54,65 +54,80 @@ class WhishlistTableViewController: UITableViewController {
         
         let currentWish = self.wishData[indexPath.row]
         
-        // reset height constraint
-        cell.secondaryStackViewHeightConstraint.constant = 0
-        cell.thrirdStackViewHeightConstraint.constant = 0
-        
-        if currentWish.note == "" {
-            cell.noteView.isHidden = true
-        } else {
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-        }
-        if currentWish.price == "" {
-            cell.priceView.isHidden = true
-        } else {
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-        }
-        if currentWish.link == "" {
-            cell.linkView.isHidden = true
-        } else {
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-        }
-        
-        if !currentWish.image.hasContent {
-            cell.imageContainerView.isHidden = true
-        }else {
-            cell.set(image: currentWish.image)
-            cell.imageContainerView.isHidden = false
-        }
-    
-        // everything empty -> hide secondary StackView
-        if currentWish.note.isEmpty
-            && currentWish.price.isEmpty
-            && currentWish.link.isEmpty
-            && !currentWish.image.hasContent {
-
-            cell.secondaryStackView.isHidden = true
-        } else {
-            cell.secondaryStackView.isHidden = false
-        }
-        
-        // Image or third StackView is filled -> show secondary StackView + activate constraint with height
-        if (!currentWish.note.isEmpty
-            && !currentWish.price.isEmpty
-            && !currentWish.link.isEmpty)
-            || currentWish.image.hasContent {
-            cell.secondaryStackViewHeightConstraint.constant = 90
-            cell.secondaryStackView.isHidden = false
-        }
-        
-        //cell.wishImage.image = currentWish.image
-        
         cell.label.text = currentWish.name
         
         cell.linkLabel.text = currentWish.link
         cell.priceLabel.text = currentWish.price
         cell.noteLabel.text = currentWish.note
-        cell.backgroundColor = .clear
+        cell.wishImage.image = currentWish.image
         
+        cell.setupLoadingAnimation()
+        
+        // reset height constraint
+
+        cell.secondaryStackViewHeightConstraint.constant = 0
+        cell.secondaryStackView.isHidden = true
+        cell.thrirdStackViewHeightConstraint.constant = 0
+        cell.thirdStackView.isHidden = true
+        
+        cell.imageContainerWidthConstraint.constant = 0
+        cell.imageContainerHeightConstraint.constant = 0
+        cell.wishImageWidthConstraint.constant = 0
+        cell.imageHeightConstraint.constant = 0
+        cell.imageContainerView.isHidden = true
+        
+        cell.priceView.isHidden = true
+        cell.priceViewHeightConstraint.constant = 0
+        cell.linkView.isHidden = true
+        cell.linkViewHeightConstraint.constant = 0
+        cell.noteView.isHidden = true
+        cell.noteViewHeightConstraint.constant = 0
+
+        
+        if currentWish.image.hasContent {
+            cell.secondaryStackView.isHidden = false
+            cell.secondaryStackViewHeightConstraint.constant = cell.rowHeightThirdStackView * 3
+            cell.imageContainerView.isHidden = false
+            
+            let ratio = currentWish.image.size.width / currentWish.image.size.height
+            cell.wishImage.image = currentWish.image
+            cell.wishImageWidthConstraint.constant = ratio * cell.wishImageHeight
+            cell.imageContainerWidthConstraint.constant = cell.wishImageWidthConstraint.constant + 10
+            cell.imageContainerHeightConstraint.constant = cell.rowHeightThirdStackView * 3
+            cell.imageHeightConstraint.constant = cell.wishImageHeight
+        }
+        
+        if currentWish.price != "" {
+            cell.priceView.isHidden = false
+            cell.priceViewHeightConstraint.constant = cell.rowHeightThirdStackView
+            
+            cell.secondaryStackView.isHidden = false
+            cell.thirdStackView.isHidden = false
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+        }
+        
+        if currentWish.link != "" {
+            cell.linkView.isHidden = false
+            cell.linkViewHeightConstraint.constant = cell.rowHeightThirdStackView
+            
+            cell.secondaryStackView.isHidden = false
+            cell.thirdStackView.isHidden = false
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+        }
+        
+        if currentWish.note != "" {
+            cell.noteView.isHidden = false
+            cell.noteViewHeightConstraint.constant = cell.rowHeightThirdStackView
+            
+            cell.secondaryStackView.isHidden = false
+            cell.thirdStackView.isHidden = false
+            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+        }
+        
+            
         // tapping the checkbox in the wish cell will call back here
         // and we tell the delegate to delete the wish
         cell.deleteWishCallback = {
