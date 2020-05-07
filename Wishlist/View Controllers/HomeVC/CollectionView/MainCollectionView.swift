@@ -18,8 +18,14 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let w = theCollectionView.frame.width
-            return CGSize(width: w, height: 160)
+        let w = theCollectionView.frame.width
+        // based on iPhone SE 2 Width: 315 Height: 160 ScreenHeight: 667
+        var h = w / 2.1
+        if h > 160 {
+            h = 160
+        }
+        
+        return CGSize(width: w, height: h)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -38,9 +44,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
            cell.wishlistImage.image = dataSourceArray[indexPath.item].image
 
            cell.priceLabel.textColor = dataSourceArray[indexPath.item].textColor
-           cell.priceEuroLabel.textColor = dataSourceArray[indexPath.item].textColor
            cell.wishCounterLabel.textColor = dataSourceArray[indexPath.item].textColor
-           cell.wünscheLabel.textColor = dataSourceArray[indexPath.item].textColor
+//           cell.wünscheLabel.textColor = dataSourceArray[indexPath.item].textColor
 
            // set background color
            cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color

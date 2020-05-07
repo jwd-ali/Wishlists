@@ -40,6 +40,7 @@ class ContentCell: UICollectionViewCell {
         v.font = UIFont(name: "AvenirNext-Bold", size: 26)
         v.textColor = .white
         v.textAlignment = .left
+        v.minimumScaleFactor = 0.5
         return v
     }()
     
@@ -55,17 +56,8 @@ class ContentCell: UICollectionViewCell {
     let wishCounterLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "0"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
-        v.textColor = .white
-        v.textAlignment = .center
-        return v
-    }()
-    
-    let wünscheLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Wünsche"
+        v.text = "0\n Wünsche"
+        v.numberOfLines = 2
         v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.textColor = .white
         v.textAlignment = .center
@@ -84,17 +76,7 @@ class ContentCell: UICollectionViewCell {
     let priceLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "0.00"
-        v.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
-        v.textColor = .white
-        v.textAlignment = .center
-        return v
-    }()
-    
-    let priceEuroLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "€"
+        v.text = "0.00€"
         v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
         v.textColor = .white
         v.textAlignment = .center
@@ -102,12 +84,9 @@ class ContentCell: UICollectionViewCell {
     }()
     
     
-    
-    
     let wishlistImage: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
-//        v.image = UIImage(named: "iconRoundedImage")
         v.contentMode = .scaleAspectFit
         return v
     }()
@@ -133,7 +112,9 @@ class ContentCell: UICollectionViewCell {
    
  
     func commonInit() -> Void {
-
+        
+        let spacingBetweenViews = CGFloat(7)
+        
         contentView.addSubview(cellLabel)
         contentView.addSubview(theView)
                 
@@ -142,65 +123,65 @@ class ContentCell: UICollectionViewCell {
         
         theView.addSubview(wishCounterView)
         wishCounterView.addSubview(wishCounterLabel)
-        wishCounterView.addSubview(wünscheLabel)
+//        wishCounterView.addSubview(wünscheLabel)
 
         theView.addSubview(priceView)
         priceView.addSubview(priceLabel)
-        priceView.addSubview(priceEuroLabel)
         
         contentView.addSubview(buttonView)
 
         
-//
-        // constrain label to all 4 sides
-        NSLayoutConstraint.activate([
-            
-            theView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            theView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            theView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            theView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
+        theView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        theView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        theView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        theView.heightAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
 
-            buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            buttonView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
- 
-            cellLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        buttonView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        buttonView.heightAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
 
-            
-            imageView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100),
-            
-            wishlistImage.topAnchor.constraint(equalTo: imageView.topAnchor),
-            wishlistImage.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-            wishlistImage.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            wishlistImage.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            
-            wishCounterView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor),
-            wishCounterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -60),
-            wishCounterView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
-            wishCounterView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            wishCounterLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
-            wishCounterLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: -5),
-            
-            wünscheLabel.centerXAnchor.constraint(equalTo: wishCounterView.centerXAnchor),
-            wünscheLabel.centerYAnchor.constraint(equalTo: wishCounterView.centerYAnchor, constant: 15),
-            
-            priceView.topAnchor.constraint(equalTo: wishCounterView.bottomAnchor, constant: 7),
-            priceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            priceView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 7),
-            priceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            priceLabel.centerXAnchor.constraint(equalTo: priceView.centerXAnchor, constant: 3),
-            priceLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor),
-    
-            priceEuroLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 2),
-            priceEuroLabel.centerYAnchor.constraint(equalTo: priceView.centerYAnchor, constant: 1),
-        ])
+        cellLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        let labelHeight = cellLabel.heightAnchor.constraint(equalToConstant: 20)
+        labelHeight.isActive = true
+        
+        imageView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor, constant:  8).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -100).isActive = true
+        
+        
+        wishlistImage.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        wishlistImage.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+        wishlistImage.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        wishlistImage.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        
+        let contentViewHeight = self.frame.size.height
+        print(contentViewHeight)
+        wishCounterView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        wishCounterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -(contentViewHeight - labelHeight.constant) / 2).isActive = true
+        wishCounterView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: spacingBetweenViews).isActive = true
+        wishCounterView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        
+        wishCounterLabel.topAnchor.constraint(equalTo: wishCounterView.topAnchor).isActive = true
+        wishCounterLabel.leadingAnchor.constraint(equalTo: wishCounterView.leadingAnchor).isActive = true
+        wishCounterLabel.trailingAnchor.constraint(equalTo: wishCounterView.trailingAnchor).isActive = true
+        wishCounterLabel.bottomAnchor.constraint(equalTo: wishCounterView.bottomAnchor).isActive = true
+        
+        
+        priceView.topAnchor.constraint(equalTo: wishCounterView.bottomAnchor, constant: spacingBetweenViews).isActive = true
+        priceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        priceView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: spacingBetweenViews).isActive = true
+        priceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        
+        priceLabel.topAnchor.constraint(equalTo: priceView.topAnchor).isActive = true
+        priceLabel.leadingAnchor.constraint(equalTo: priceView.leadingAnchor).isActive = true
+        priceLabel.trailingAnchor.constraint(equalTo: priceView.trailingAnchor).isActive = true
+        priceLabel.bottomAnchor.constraint(equalTo: priceView.bottomAnchor).isActive = true
+        
+        
         buttonView.addTarget(self, action: #selector(customWishlistTapped(_:)), for: .touchUpInside)
     }
     

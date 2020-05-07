@@ -93,11 +93,6 @@ class AddItemCell: UICollectionViewCell {
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),    
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             
-//            plusLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            plusLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
-//            plusLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            plusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
             
         ])
         btn.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
