@@ -71,8 +71,6 @@ class WishlistViewController: UIViewController {
        v.font = UIFont(name: "AvenirNext-Bold", size: 26)
        v.textAlignment = .left
        v.textColor = .white
-       v.adjustsFontSizeToFitWidth = true
-       v.minimumScaleFactor = 0.5
        v.translatesAutoresizingMaskIntoConstraints = false
        return v
    }()
@@ -261,6 +259,11 @@ class WishlistViewController: UIViewController {
     
     //MARK: setupViews
     func setupViews(){
+        
+        let screenWidth = UIScreen.main.bounds.width
+        let fontSizeAdjustment = screenWidth / 414.0
+        wishlistLabel.font = UIFont(name: "AvenirNext-Bold", size: (26.0 * fontSizeAdjustment))
+        
         view.addSubview(wishlistBackgroundView)
         view.addSubview(dismissWishlistViewButton)
         view.addSubview(menueButton)

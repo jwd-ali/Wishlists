@@ -40,7 +40,7 @@ class ContentCell: UICollectionViewCell {
         v.font = UIFont(name: "AvenirNext-Bold", size: 26)
         v.textColor = .white
         v.textAlignment = .left
-        v.minimumScaleFactor = 0.5
+        v.backgroundColor = .cyan
         return v
     }()
     
@@ -115,6 +115,11 @@ class ContentCell: UICollectionViewCell {
         
         let spacingBetweenViews = CGFloat(7)
         
+        let screenWidth = UIScreen.main.bounds.width
+        let fontSizeAdjustment = screenWidth / 414.0
+        cellLabel.font = UIFont(name: "AvenirNext-Bold", size: (26.0 * fontSizeAdjustment))
+        
+        
         contentView.addSubview(cellLabel)
         contentView.addSubview(theView)
                 
@@ -123,7 +128,6 @@ class ContentCell: UICollectionViewCell {
         
         theView.addSubview(wishCounterView)
         wishCounterView.addSubview(wishCounterLabel)
-//        wishCounterView.addSubview(wünscheLabel)
 
         theView.addSubview(priceView)
         priceView.addSubview(priceLabel)
@@ -144,7 +148,7 @@ class ContentCell: UICollectionViewCell {
         cellLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        let labelHeight = cellLabel.heightAnchor.constraint(equalToConstant: 20)
+        let labelHeight = cellLabel.heightAnchor.constraint(equalToConstant: 23)
         labelHeight.isActive = true
         
         imageView.topAnchor.constraint(equalTo: cellLabel.bottomAnchor, constant:  8).isActive = true
@@ -159,7 +163,6 @@ class ContentCell: UICollectionViewCell {
         wishlistImage.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         
         let contentViewHeight = self.frame.size.height
-        print(contentViewHeight)
         wishCounterView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
         wishCounterView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -(contentViewHeight - labelHeight.constant) / 2).isActive = true
         wishCounterView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: spacingBetweenViews).isActive = true
