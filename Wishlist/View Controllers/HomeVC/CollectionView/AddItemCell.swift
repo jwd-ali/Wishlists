@@ -18,7 +18,6 @@ class AddItemCell: UICollectionViewCell {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.setTitleColor(.darkGray, for: .normal)
-        v.titleLabel?.font = UIFont.systemFont(ofSize: 40.0)
         return v
     }()
     
@@ -37,17 +36,7 @@ class AddItemCell: UICollectionViewCell {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Tippen, um neue Wishlist zu erstellen"
         v.numberOfLines = 0
-        v.font = UIFont(name: "AvenirNext-Regular", size: 17)
-        v.textColor = .white
-        v.textAlignment = .center
-        return v
-    }()
-    
-    let plusLabel: UILabel = {
-       let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "+"
-        v.font = UIFont(name: "AvenirNext-Bold", size: 30)
+        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textColor = .white
         v.textAlignment = .center
         return v
@@ -71,7 +60,6 @@ class AddItemCell: UICollectionViewCell {
         contentView.addSubview(borderView)
         contentView.addSubview(btn)
         contentView.addSubview(label)
-//        contentView.addSubview(plusLabel)
         
         
 
@@ -87,7 +75,6 @@ class AddItemCell: UICollectionViewCell {
             borderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             borderView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
-//e
             label.centerXAnchor.constraint(equalTo: borderView.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: borderView.centerYAnchor),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),    

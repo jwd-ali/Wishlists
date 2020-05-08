@@ -30,52 +30,53 @@ class WishlistViewController: UIViewController {
         return v
        }()
        
-   let wishlistView: UIView = {
+    let wishlistView: UIView = {
        let v = UIView()
        v.translatesAutoresizingMaskIntoConstraints = false
        v.backgroundColor = .white
        v.layer.cornerRadius = 30
        v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
        return v
-   }()
-   
-   lazy var theTableView: WhishlistTableViewController = {
+    }()
+
+    lazy var theTableView: WhishlistTableViewController = {
       let v = WhishlistTableViewController()
        v.view.layer.masksToBounds = true
        v.view.backgroundColor = .clear
        v.view.translatesAutoresizingMaskIntoConstraints = false
        return v
-   }()
-   
-   let dismissWishlistViewButton: UIButton = {
+    }()
+
+    let dismissWishlistViewButton: UIButton = {
        let v = UIButton()
        v.setImage(UIImage(named: "dismissButton"), for: .normal)
        v.translatesAutoresizingMaskIntoConstraints = false
        v.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
        return v
-   }()
-   
-   let menueButton: UIButton = {
+    }()
+
+    let menueButton: UIButton = {
        let v = UIButton()
        v.setImage(UIImage(named: "menueButton"), for: .normal)
        v.translatesAutoresizingMaskIntoConstraints = false
        v.addTarget(self, action: #selector(menueButtonTapped), for: .touchUpInside)
        return v
-   }()
-    
-    
-   
-   let wishlistLabel: UILabel = {
+    }()
+
+
+
+    let wishlistLabel: UILabel = {
        let v = UILabel()
        v.text = "Wishlist"
        v.font = UIFont(name: "AvenirNext-Bold", size: 26)
        v.textAlignment = .left
        v.textColor = .white
        v.translatesAutoresizingMaskIntoConstraints = false
+    v.adjustsFontSizeToFitWidth = true
        return v
-   }()
-   
-   let wishlistImage: UIImageView = {
+    }()
+
+    let wishlistImage: UIImageView = {
        let v = UIImageView()
        v.image = UIImage(named: "iconRoundedImage")
        v.layer.shadowOpacity = 1
@@ -84,7 +85,7 @@ class WishlistViewController: UIViewController {
        v.layer.shadowColor = UIColor.darkGray.cgColor
        v.translatesAutoresizingMaskIntoConstraints = false
        return v
-   }()
+    }()
     
     let addWishButton: UIButton = {
         let v = UIButton()
@@ -260,9 +261,9 @@ class WishlistViewController: UIViewController {
     //MARK: setupViews
     func setupViews(){
         
-        let screenWidth = UIScreen.main.bounds.width
-        let fontSizeAdjustment = screenWidth / 414.0
-        wishlistLabel.font = UIFont(name: "AvenirNext-Bold", size: (26.0 * fontSizeAdjustment))
+//        let screenWidth = UIScreen.main.bounds.width
+//        let fontSizeAdjustment = screenWidth / 414.0
+//        wishlistLabel.font = UIFont(name: "AvenirNext-Bold", size: (26.0 * fontSizeAdjustment))
         
         view.addSubview(wishlistBackgroundView)
         view.addSubview(dismissWishlistViewButton)
@@ -309,9 +310,9 @@ class WishlistViewController: UIViewController {
         menueButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25.0).isActive = true
            
         //constrain wishlistlabel
-        wishlistLabel.topAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -40).isActive = true
+        wishlistLabel.bottomAnchor.constraint(equalTo: wishlistView.topAnchor, constant: -3).isActive = true
         wishlistLabel.leadingAnchor.constraint(equalTo: wishlistImage.trailingAnchor, constant: 10).isActive = true
-        wishlistLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        wishlistLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         
         addWishButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         addWishButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
