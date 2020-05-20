@@ -84,21 +84,47 @@ class ShadowRoundedImageView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        imageLayer.frame = bounds
+        imageLayer.mask = shapeAsMask
+        shadowLayer.shadowPath = (image == nil) ? nil : shapeAsPath
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         clipsToBounds = false
         backgroundColor = .clear
 
         self.layer.addSublayer(shadowLayer)
         self.layer.addSublayer(imageLayer) // (in that order)
-
-        imageLayer.frame = bounds
+        
         imageLayer.contentsGravity = .resizeAspect // (as preferred)
-
-        imageLayer.mask = shapeAsMask
-        shadowLayer.shadowPath = (image == nil) ? nil : shapeAsPath
-
+        
         shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
         shadowLayer.shadowColor = UIColor.darkCustom.cgColor
         shadowLayer.shadowRadius = 3
         shadowLayer.shadowOpacity = 0.80
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class ShadowView: UIView {
+    override var bounds: CGRect {
+        didSet {
+            setupShadow()
+        }
+    }
+
+    private func setupShadow() {
+        self.layer.cornerRadius = 5
+        self.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        self.layer.shadowRadius = 3
+        self.layer.shadowOpacity = 0.8
+        self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 5, height: 5)).cgPath
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
     }
 }

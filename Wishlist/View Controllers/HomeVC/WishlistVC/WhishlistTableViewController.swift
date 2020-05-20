@@ -61,7 +61,7 @@ class WhishlistTableViewController: UITableViewController {
         cell.noteLabel.text = currentWish.note
         cell.wishImage.image = currentWish.image
         
-        cell.setupLoadingAnimation()
+        cell.setupSuccessAnimation()
         
         // reset height constraint
 
@@ -75,6 +75,10 @@ class WhishlistTableViewController: UITableViewController {
         cell.wishImageWidthConstraint.constant = 0
         cell.imageHeightConstraint.constant = 0
         cell.imageContainerView.isHidden = true
+        
+        cell.shadowLayerWidthConstraint.constant = 0
+        cell.shadowHeightConstraint.constant = 0
+        cell.shadowLayer.isHidden = true
         
         cell.priceView.isHidden = true
         cell.priceViewHeightConstraint.constant = 0
@@ -95,6 +99,10 @@ class WhishlistTableViewController: UITableViewController {
             cell.imageContainerWidthConstraint.constant = cell.wishImageWidthConstraint.constant + 10
             cell.imageContainerHeightConstraint.constant = cell.rowHeightThirdStackView * 3
             cell.imageHeightConstraint.constant = cell.wishImageHeight
+            
+            cell.shadowLayerWidthConstraint.constant = cell.wishImageWidthConstraint.constant
+            cell.shadowHeightConstraint.constant = cell.imageContainerHeightConstraint.constant
+            cell.shadowLayer.isHidden = false
         }
         
         if currentWish.price != "" {
