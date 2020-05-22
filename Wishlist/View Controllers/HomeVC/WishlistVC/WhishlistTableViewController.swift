@@ -64,7 +64,7 @@ class WhishlistTableViewController: UITableViewController {
         cell.setupSuccessAnimation()
         
         // reset height constraint
-
+        cell.mainStackViewHeightConstraint.constant = cell.labelHeightConatraint.constant
         cell.secondaryStackViewHeightConstraint.constant = 0
         cell.secondaryStackView.isHidden = true
         cell.thrirdStackViewHeightConstraint.constant = 0
@@ -81,11 +81,11 @@ class WhishlistTableViewController: UITableViewController {
         cell.shadowLayer.isHidden = true
         
         cell.priceView.isHidden = true
-        cell.priceViewHeightConstraint.constant = 0
+//        cell.priceViewHeightConstraint.constant = 0
         cell.linkView.isHidden = true
-        cell.linkViewHeightConstraint.constant = 0
+//        cell.linkViewHeightConstraint.constant = 0
         cell.noteView.isHidden = true
-        cell.noteViewHeightConstraint.constant = 0
+//        cell.noteViewHeightConstraint.constant = 0
 
         
         if currentWish.image.hasContent {
@@ -107,7 +107,7 @@ class WhishlistTableViewController: UITableViewController {
         
         if currentWish.price != "" {
             cell.priceView.isHidden = false
-            cell.priceViewHeightConstraint.constant = cell.rowHeightThirdStackView
+//            cell.priceViewHeightConstraint.constant = cell.rowHeightThirdStackView
             
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
@@ -117,7 +117,7 @@ class WhishlistTableViewController: UITableViewController {
         
         if currentWish.link != "" {
             cell.linkView.isHidden = false
-            cell.linkViewHeightConstraint.constant = cell.rowHeightThirdStackView
+//            cell.linkViewHeightConstraint.constant = cell.rowHeightThirdStackView
             
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
@@ -127,13 +127,16 @@ class WhishlistTableViewController: UITableViewController {
         
         if currentWish.note != "" {
             cell.noteView.isHidden = false
-            cell.noteViewHeightConstraint.constant = cell.rowHeightThirdStackView
+//            cell.noteViewHeightConstraint.constant = cell.rowHeightThirdStackView
             
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
             cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
+        
+        cell.mainStackViewHeightConstraint.constant += cell.secondaryStackViewHeightConstraint.constant
+        print(cell.mainStackViewHeightConstraint.constant)
         
             
         // tapping the checkbox in the wish cell will call back here
