@@ -198,16 +198,16 @@ class CustomShareViewController: UIViewController {
         prevButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -30).isActive = true
         prevButton.topAnchor.constraint(equalTo: swipeImageView.bottomAnchor, constant: 30).isActive = true
         
-        //MARK: constrain wishView
-        transparentView.frame = self.view.frame
-        self.view.addSubview(transparentView)
-        transparentView.alpha = 0
-        
-        self.view.addSubview(self.wishView)
-        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        wishConstraint = wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        wishConstraint.isActive = true
+//        //MARK: constrain wishView
+//        transparentView.frame = self.view.frame
+//        self.view.addSubview(transparentView)
+//        transparentView.alpha = 0
+//
+//        self.view.addSubview(self.wishView)
+//        wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+//        wishConstraint = wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+//        wishConstraint.isActive = true
         
     }
     
@@ -245,22 +245,33 @@ class CustomShareViewController: UIViewController {
                         OpenGraphDataDownloader.shared.fetchOGData(urlString: urlString) { result in
                             switch result {
                             case let .success(data, _):
-                                // do something
+                                
+                                // get productTitle
                                 guard let title = data.pageTitle else { return }
             
                                 print(title)
                                 
+                                // get productImage
                                 guard let imageURL = data.imageUrl else { return }
                                 UIImage.loadFrom(url: imageURL, completion: { (image) in
+                                    print("yeet1")
+                                    
+                                    guard let image = image else { return }
+                                    
                                     self.swipeImageView.image = image
+                                    
+                                    self.imagesArray.append(image)
+                                      
+                                    
                                 })
+                                
                             case let .failure(error, _):
                                 // do something
-                                print(error.localizedDescription)
+                                print("OpenGraph-error: " + error.localizedDescription)
                             }
                             
                         }
-                        
+                        print("yeet2")
                         self.doStuff(html: html)
                     }
                 }
@@ -269,17 +280,25 @@ class CustomShareViewController: UIViewController {
     
     func doStuff(html: String?){
         
-        var imageCounter = 0
-        
         do {
             let doc: Document = try SwiftSoup.parse(html ?? "")
-
+            
             let priceClasses: Elements? = try doc.select("[class~=(?i)price]")
+            
+            var price = Double(0.0)
 
                 for priceClass: Element in priceClasses!.array() {
-                let priceText : String = try priceClass.text()
-                print(try priceClass.className())
-                print("pricetext: \(priceText)")
+                    let priceText : String = try! priceClass.text()
+
+                    var priceTrimmed = priceText.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)
+                    priceTrimmed = priceTrimmed.replacingOccurrences(of: ",", with: ".")
+                    
+                    if let doublePrice = Double(priceTrimmed) {
+                        price += doublePrice
+                        let rounded = Double(round(100*price)/100)
+                        print("price: \(rounded)")
+                    }
+
             }
 
             let srcs: Elements = try doc.select("img[src]")
@@ -294,11 +313,10 @@ class CustomShareViewController: UIViewController {
                         
                         if let image = image {
                             self.imagesArray.append(image)
-                            imageCounter += 1
                             
-                            if imageCounter == 1 {
+                            if self.imagesArray.count == 1 {
                                 self.swipeImageView.image = self.imagesArray[0]
-                            }else if imageCounter == 2 {
+                            }else {
                                 self.prevButton.isEnabled = true
                                 self.nextButton.isEnabled = true
                             }
