@@ -22,8 +22,8 @@ class WhishlistTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 100
+//        tableView.rowHeight = UITableView.automaticDimension
         
 
         // disable didSelectAt
@@ -47,6 +47,10 @@ class WhishlistTableViewController: UITableViewController {
         return wishData.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -64,10 +68,10 @@ class WhishlistTableViewController: UITableViewController {
         cell.setupSuccessAnimation()
         
         // reset height constraint
-        cell.mainStackViewHeightConstraint.constant = cell.labelHeightConatraint.constant
+//        cell.mainStackViewHeightConstraint.constant = cell.labelHeightConatraint.constant
         cell.secondaryStackViewHeightConstraint.constant = 0
         cell.secondaryStackView.isHidden = true
-        cell.thrirdStackViewHeightConstraint.constant = 0
+//        cell.thrirdStackViewHeightConstraint.constant = 0
         cell.thirdStackView.isHidden = true
         
         cell.imageContainerWidthConstraint.constant = 0
@@ -76,9 +80,9 @@ class WhishlistTableViewController: UITableViewController {
         cell.imageHeightConstraint.constant = 0
         cell.imageContainerView.isHidden = true
         
-        cell.shadowLayerWidthConstraint.constant = 0
-        cell.shadowHeightConstraint.constant = 0
-        cell.shadowLayer.isHidden = true
+//        cell.shadowLayerWidthConstraint.constant = 0
+//        cell.shadowHeightConstraint.constant = 0
+//        cell.shadowLayer.isHidden = true
         
         cell.priceView.isHidden = true
 //        cell.priceViewHeightConstraint.constant = 0
@@ -100,11 +104,11 @@ class WhishlistTableViewController: UITableViewController {
             cell.imageContainerHeightConstraint.constant = cell.rowHeightThirdStackView * 3
             cell.imageHeightConstraint.constant = cell.wishImageHeight
             
-            cell.shadowLayerWidthConstraint.constant = cell.wishImageWidthConstraint.constant
-            cell.shadowHeightConstraint.constant = cell.imageContainerHeightConstraint.constant
-            cell.shadowLayer.isHidden = false
+//            cell.shadowLayerWidthConstraint.constant = cell.wishImageWidthConstraint.constant
+//            cell.shadowHeightConstraint.constant = cell.imageContainerHeightConstraint.constant
+//            cell.shadowLayer.isHidden = false
         }
-        
+            
         if currentWish.price != "" {
             cell.priceView.isHidden = false
 //            cell.priceViewHeightConstraint.constant = cell.rowHeightThirdStackView
@@ -112,7 +116,7 @@ class WhishlistTableViewController: UITableViewController {
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
         
         if currentWish.link != "" {
@@ -122,7 +126,7 @@ class WhishlistTableViewController: UITableViewController {
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         }
         
         if currentWish.note != "" {
@@ -132,11 +136,13 @@ class WhishlistTableViewController: UITableViewController {
             cell.secondaryStackView.isHidden = false
             cell.thirdStackView.isHidden = false
             cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-        }
+//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
         
-        cell.mainStackViewHeightConstraint.constant += cell.secondaryStackViewHeightConstraint.constant
-        print(cell.mainStackViewHeightConstraint.constant)
+        }
+//        cell.mainStackViewHeightConstraint.constant = 150
+//        print(cell.mainStackViewHeightConstraint.constant)
+        
+        print(cell.frame.height)
         
             
         // tapping the checkbox in the wish cell will call back here

@@ -85,13 +85,11 @@ class ShadowRoundedImageView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        
         imageLayer.frame = bounds
         imageLayer.mask = shapeAsMask
         shadowLayer.shadowPath = (image == nil) ? nil : shapeAsPath
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        
         clipsToBounds = false
         backgroundColor = .clear
 
@@ -106,9 +104,14 @@ class ShadowRoundedImageView: UIView {
         shadowLayer.shadowOpacity = 0.80
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
 }
 
 class ShadowView: UIView {

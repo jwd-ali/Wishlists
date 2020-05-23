@@ -87,11 +87,12 @@ class WhishCell: UITableViewCell {
         return v
     }()
     
-    let shadowLayer: ShadowView = {
-        let v = ShadowView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+//    let shadowLayer: ShadowView = {
+//        let v = ShadowView()
+//        v.translatesAutoresizingMaskIntoConstraints = false
+//        return v
+//    }()
+    
     var shadowLayerWidthConstraint: NSLayoutConstraint!
     var shadowHeightConstraint: NSLayoutConstraint!
     
@@ -257,7 +258,7 @@ class WhishCell: UITableViewCell {
         
         // 2nd StackView
         secondaryStackView.addArrangedSubview(imageContainerView)
-        imageContainerView.addSubview(shadowLayer)
+//        imageContainerView.addSubview(shadowLayer)
         imageContainerView.addSubview(wishImage)
         
         secondaryStackViewHeightConstraint = secondaryStackView.heightAnchor.constraint(equalToConstant: 90)
@@ -298,16 +299,16 @@ class WhishCell: UITableViewCell {
         imageHeightConstraint.priority = .defaultHigh
         imageHeightConstraint.isActive = true
         
-        shadowLayer.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor).isActive = true
-        shadowLayer.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
-        shadowLayer.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -10).isActive = true
+//        shadowLayer.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor).isActive = true
+//        shadowLayer.topAnchor.constraint(equalTo: wishImage.topAnchor).isActive = true
+//        shadowLayer.bottomAnchor.constraint(equalTo: wishImage.bottomAnchor).isActive = true
         
-        shadowLayerWidthConstraint = shadowLayer.widthAnchor.constraint(equalToConstant: wishImageHeight)
-        shadowLayerWidthConstraint.isActive = true
-        
-        shadowHeightConstraint = shadowLayer.heightAnchor.constraint(equalToConstant: wishImageHeight)
-        shadowHeightConstraint.priority = .defaultHigh
-        shadowHeightConstraint.isActive = true
+//        shadowLayerWidthConstraint = shadowLayer.widthAnchor.constraint(equalToConstant: wishImageHeight)
+//        shadowLayerWidthConstraint.isActive = true
+//        
+//        shadowHeightConstraint = shadowLayer.heightAnchor.constraint(equalToConstant: wishImageHeight)
+//        shadowHeightConstraint.priority = .defaultHigh
+//        shadowHeightConstraint.isActive = true
         
 //        // contrain priceView
 //        priceViewHeightConstraint = priceView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView)
