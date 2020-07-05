@@ -30,15 +30,11 @@ extension CustomShareViewController {
         wishView.disableButton()
         wishView.wishNameTextField.text = ""
         wishView.priceTextField.text = ""
-        wishView.linkTextField.text = ""
         wishView.noteTextField.text = ""
         wishView.wishImageView.image = nil
         wishView.amount = 0
         
         onImageButtonTappedClosure()
-        onPriceButtonTappedClosure()
-        onLinkButtonTappedClosure()
-        onNoteButtonTappedClosure()
         
         transparentView.gestureRecognizers?.forEach {
             self.transparentView.removeGestureRecognizer($0)
@@ -67,65 +63,7 @@ extension CustomShareViewController {
         }
     }
     
-    //MARK: onPriceButtonClosure
-    func onPriceButtonTappedClosure(){
-        self.wishView.onPriceButtonTapped = { [unowned self] height, isHidden in
-            
-            if isHidden {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant -= height
-                    self.wishView.priceTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-                
-            } else {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant += height
-                    self.wishView.wishNameTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-            }
-        }
-    }
-    //MARK: onLinkButtonTappedClosure
-    func onLinkButtonTappedClosure(){
-       self.wishView.onLinkButtonTapped = { [unowned self] height, isHidden in
-            if isHidden {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant -= height
-                    self.wishView.linkTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-                
-            } else {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant += height
-                    self.wishView.wishNameTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-            }
-        }
-    }
-    
-    //MARK: onNoteButtonTappedClosure
-    func onNoteButtonTappedClosure(){
-       self.wishView.onNoteButtonTapped = { [unowned self] height, isHidden in
-            if isHidden {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant -= height
-                    self.wishView.noteTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-                
-            } else {
-                UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-                    self.wishConstraint.constant += height
-                    self.wishView.wishNameTextField.becomeFirstResponder()
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
-            }
-        }
-    }
+
     
     //MARK: dismissWishView
     @objc func dismissWishView() {
@@ -141,10 +79,10 @@ extension CustomShareViewController {
             self.view.layoutIfNeeded()
 
         }) { (done) in
-            self.wishView.priceView.isHidden = true
-            self.wishView.linkView.isHidden = true
-            self.wishView.noteView.isHidden = true
-            self.wishView.imageContainerView.isHidden = true
+//            self.wishView.priceView.isHidden = true
+//            self.wishView.linkView.isHidden = true
+////            self.wishView.noteView.isHidden = true
+//            self.wishView.imageContainerView.isHidden = true
         }
         
     }
