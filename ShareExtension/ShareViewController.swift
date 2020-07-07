@@ -10,50 +10,30 @@ import UIKit
 import Social
 import SwiftSoup
 import URLEmbeddedView
-
+import Lottie
 
 class CustomShareViewController: UIViewController {
-    
-    let visualEffectView: UIVisualEffectView = {
-        let blurrEffect = UIBlurEffect(style: .light)
-        let v = UIVisualEffectView(effect: blurrEffect)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    let backButton: UIButton = {
-        let v = UIButton()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.setImage(UIImage(named:"dismissButton"), for: .normal)
-        v.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
-        return v
-    }()
-    
-    let actionButton: UIButton = {
-        let v = UIButton(type: .system)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.setTitle("Action", for: .normal)
-        v.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 23)
-        v.titleLabel?.textColor = .white
-        v.setTitleColor(.white, for: .normal)
-        v.backgroundColor = UIColor.darkGray
-        v.layer.cornerRadius = 3
-        v.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
-        return v
-    }()
-    
-    let swipeImageView: UIImageView = {
-        let v = UIImageView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .cyan
-        v.contentMode = .scaleAspectFit
-        v.isUserInteractionEnabled = true
-        return v
-    }()
     
     let wishView: WishView = {
         let v = WishView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let cancelButton: UIButton = {
+        let v = UIButton(type: .system)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
+        v.setBackgroundImage(UIImage(systemName: "xmark.square.fill"), for: .normal)
+        v.tintColor = .darkCustom
+        return v
+    }()
+    
+    let cancelImage: UIImageView = {
+        let v = UIImageView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.image = UIImage(systemName: "xmark.square.fill")
+        v.tintColor = .darkCustom
         return v
     }()
     
@@ -67,7 +47,6 @@ class CustomShareViewController: UIViewController {
     
     var theWish: Wish!
     
-    
     var imagesArray = [UIImage]()
 
     var currentImageIndex = 0
@@ -77,6 +56,9 @@ class CustomShareViewController: UIViewController {
     var dropOptions = [DropDownOption]()
     var dataSourceArray = [Wishlist]()
     
+    var keyboardHeight = CGFloat(0)
+    
+    let logoAnimation = AnimationView(name: "LoadingAnimation")
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -87,8 +69,11 @@ class CustomShareViewController: UIViewController {
         
         setupViews()
         
-//        prevButton.isEnabled = false
-//        nextButton.isEnabled = false
+        wishView.prevButton.isEnabled = false
+        wishView.nextButton.isEnabled = false
+        
+        self.wishView.onPrevButtonTapped = self.prevButtonTappedClosure
+        self.wishView.onNextButtonTapped = self.nextButtonTappedClosure
         
         self.wishView.addWishDelegate = self
         
@@ -109,23 +94,20 @@ class CustomShareViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+            
     }
     
-    @objc func nextButtonTappedClosure(){
+    func nextButtonTappedClosure(){
         if imagesArray.count != 0 {
             currentImage = imagesArray[self.currentImageIndex]
             currentImageIndex = (currentImageIndex + 1) % imagesArray.count
-            UIView.transition(with: self.swipeImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
+            UIView.transition(with: self.wishView.wishImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.wishView.wishImageView.image = self.imagesArray[self.currentImageIndex]
             })
         }
     }
     
-    @objc func prevButtonTappedClosure(){
-        self.wishView.onPrevButtonTapped = {
-            print("prev")
-        }
+    func prevButtonTappedClosure(){
         if imagesArray.count != 0 {
             currentImage = imagesArray[self.currentImageIndex]
             
@@ -135,25 +117,28 @@ class CustomShareViewController: UIViewController {
                 currentImageIndex = (currentImageIndex - 1) % imagesArray.count
             }
             
-            UIView.transition(with: self.swipeImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                self.swipeImageView.image = self.imagesArray[self.currentImageIndex]
+            UIView.transition(with: self.wishView.wishImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.wishView.wishImageView.image = self.imagesArray[self.currentImageIndex]
             })
         }
     }
 
     //MARK: setupViews
     private func setupViews(){
-        //MARK: constrain wishView
-        transparentView.frame = self.view.frame
-        self.view.addSubview(transparentView)
-        transparentView.alpha = 0
-
-        self.view.addSubview(self.wishView)
-        wishView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        view.addSubview(wishView)
+        wishView.heightAnchor.constraint(equalToConstant: 220).isActive = true
         wishView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         wishView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         wishConstraint = wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         wishConstraint.isActive = true
+        
+        view.addSubview(cancelButton)        
+        cancelButton.bottomAnchor.constraint(equalTo: wishView.topAnchor, constant: -5).isActive = true
+        cancelButton.trailingAnchor.constraint(equalTo: wishView.trailingAnchor, constant: -10).isActive = true
+        cancelButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    
     }
     
     // hide keyboard, wenn user außerhalb toucht
@@ -161,19 +146,36 @@ class CustomShareViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    
     @objc func keyboardWillShow(notification: NSNotification) {
-        print("1")
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
+            
+            UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
+                        self.wishConstraint.constant = -(self.keyboardHeight)
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        print("2")
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            self.keyboardHeight = keyboardRectangle.height
+            
+            let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+
+            let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey]
+            
+            UIView.animate(withDuration: duration as! TimeInterval, delay: 0, options: UIView.AnimationOptions(rawValue: UIView.AnimationOptions.RawValue(truncating: curve as! NSNumber)), animations: {
+                        self.wishConstraint.constant = 0
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
         }
     }
     
@@ -223,7 +225,6 @@ class CustomShareViewController: UIViewController {
                                 // get productImage
                                 guard let imageURL = data.imageUrl else { return }
                                 UIImage.loadFrom(url: imageURL, completion: { (image) in
-                                    print("yeet1")
                                     
                                     guard let image = image else { return }
                                     
@@ -236,15 +237,13 @@ class CustomShareViewController: UIViewController {
                                 
                                 
                             case let .failure(error, _):
-                                // do something
                                 print("OpenGraph-error: " + error.localizedDescription)
                             }
                             
                         }
                         
                         DispatchQueue.main.async {
-                          print("yeet2")
-                          self.doStuff(html: html)
+                          self.getContent(html: html)
                         }
                         
                     }
@@ -252,39 +251,19 @@ class CustomShareViewController: UIViewController {
             }
     }
     
-    func doStuff(html: String?){
+    func getContent(html: String?){
         
         do {
             let doc: Document = try SwiftSoup.parse(html ?? "")
-            
-            self.wishView.priceTextField.text = getPrice(doc: doc)
-
-            let srcs: Elements = try doc.select("img[src]")
-            let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
-
-            for imageName in srcsStringArray {
-                if (imageName?.matches("^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$"))! {
-                    
-                    guard let url = URL(string: imageName!) else { return }
-                    
-                    UIImage.loadFrom(url: url) { image in
-                        
-                        if let image = image {
-                            self.imagesArray.append(image)
-                            
-                            if self.imagesArray.count == 1 {
-                                self.swipeImageView.image = self.imagesArray[0]
-                            }else {
-//                                self.prevButton.isEnabled = true
-//                                self.nextButton.isEnabled = true
-                            }
-                            
-                        } else {
-                            print("Image '\(String(describing: imageName))' does not exist!")
-                        }
-                    }
-                }
+            // set price if not 0
+            let price = Int(getPrice(doc: doc))
+            if price != 0 {
+                self.wishView.amount = Int(getPrice(doc: doc))
+                self.wishView.priceTextField.text = self.wishView.updateAmount()
             }
+            
+            getImages(doc: doc)
+            
         } catch Exception.Error( _, let message) {
             print(message)
         } catch {
@@ -295,6 +274,34 @@ class CustomShareViewController: UIViewController {
         
     }
     
+    func getImages(doc: Document) {
+        let srcs: Elements? = try? doc.select("img[src]")
+        let srcsStringArray: [String?] = srcs!.array().map { try? $0.attr("src").description }
+
+        for imageName in srcsStringArray {
+            if (imageName?.matches("^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$"))! {
+                
+                guard let url = URL(string: imageName!) else { return }
+                
+                UIImage.loadFrom(url: url) { image in
+                    
+                    if let image = image {
+                        self.imagesArray.append(image)
+                        
+                        if self.imagesArray.count == 1 {
+                            self.wishView.wishImageView.image = self.imagesArray[0]
+                        }else {
+                            self.wishView.prevButton.isEnabled = true
+                            self.wishView.nextButton.isEnabled = true
+                        }
+                        
+                    } else {
+                        print("Image '\(String(describing: imageName))' does not exist!")
+                    }
+                }
+            }
+        }
+    }
     
     func getHTMLfromURL(url: URL?) -> String{
         let myURLString = url
@@ -313,14 +320,14 @@ class CustomShareViewController: UIViewController {
         return ""
     }
     
-    func getPrice(doc: Document) -> String {
+    func getPrice(doc: Document) -> Double {
         let priceClasses: Elements? = try? doc.select("[class~=(?i)price]")
         
-        guard (priceClasses?.first()) != nil else { return "" }
+        guard (priceClasses?.first()) != nil else { return 0.00 }
         
         var price = Double(0.0)
         
-        guard  let priceText : String = try! priceClasses?.first()!.text() else { return "" }
+        guard  let priceText : String = try! priceClasses?.first()!.text() else { return 0.00 }
         
         var priceTrimmed = priceText.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)
         priceTrimmed = priceTrimmed.replacingOccurrences(of: ",", with: ".")
@@ -328,13 +335,11 @@ class CustomShareViewController: UIViewController {
         if let doublePrice = Double(priceTrimmed) {
             price += doublePrice
             let rounded = Double(round(100*price)/100)
-            print("price: \(rounded)")
-            let roundedText: String = String(format:"%.2f", rounded)
-            print(roundedText)
-            return roundedText
+            // return value * 100 so updateAmount calculates correct Int Value
+            return rounded*100
         }
         
-        return ""
+        return 0.00
     }
     
     

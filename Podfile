@@ -34,7 +34,8 @@ target 'ShareExtension' do
  
  use_frameworks!
 
-    pod 'SwiftSoup'
-    pod 'URLEmbeddedView'
+	pod 'SwiftSoup'
+	pod 'URLEmbeddedView'
+	pod 'Lottie'	
 
 end

@@ -38,6 +38,12 @@ class WishView: UIView, UITextFieldDelegate {
         v.layer.cornerRadius = 5
         return v
     }()
+    
+    let shadowView: ShadowView = {
+        let v = ShadowView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
         
     let deleteImageButton: UIButton = {
         let v = UIButton()
@@ -59,6 +65,8 @@ class WishView: UIView, UITextFieldDelegate {
         v.keyboardAppearance = .default
         v.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.adjustsFontSizeToFitWidth = true
+        v.minimumFontSize = 17
         return v
     }()
     
@@ -115,7 +123,6 @@ class WishView: UIView, UITextFieldDelegate {
         v.placeholder = "Notiz hinzufügen"
         v.textColor = .darkCustom
         v.tintColor = .darkCustom
-//        v.placeholderColor(color: UIColor.lightGray)
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -192,13 +199,19 @@ class WishView: UIView, UITextFieldDelegate {
         wishNameTextField.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20).isActive = true
         
         //MARK: image
+        backgroundView.addSubview(shadowView)
         backgroundView.addSubview(wishImageView)
         backgroundView.addSubview(deleteImageButton)
         
         wishImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         wishImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        wishImageView.topAnchor.constraint(equalTo: wishNameTextField.bottomAnchor, constant: 20).isActive = true
+        wishImageView.topAnchor.constraint(equalTo: wishNameTextField.bottomAnchor, constant: 25).isActive = true
         wishImageView.leadingAnchor.constraint(equalTo: wishNameTextField.leadingAnchor).isActive = true
+        
+        shadowView.heightAnchor.constraint(equalTo: wishImageView.heightAnchor).isActive = true
+        shadowView.widthAnchor.constraint(equalTo: wishImageView.widthAnchor).isActive = true
+        shadowView.topAnchor.constraint(equalTo: wishImageView.topAnchor).isActive = true
+        shadowView.leadingAnchor.constraint(equalTo: wishImageView.leadingAnchor).isActive = true
     
         deleteImageButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         deleteImageButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -212,7 +225,6 @@ class WishView: UIView, UITextFieldDelegate {
         priceLabel.leadingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: 30).isActive = true
         priceLabel.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: 10).isActive = true
         priceLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        priceLabel.backgroundColor = .cyan
         
         priceTextField.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 10).isActive = true
         priceTextField.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -30).isActive = true
@@ -225,9 +237,7 @@ class WishView: UIView, UITextFieldDelegate {
         noteLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor).isActive = true
         noteLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 10).isActive = true
         noteLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        noteLabel.backgroundColor = .cyan
-        
-        
+     
         noteTextField.leadingAnchor.constraint(equalTo: noteLabel.trailingAnchor, constant: 10).isActive = true
         noteTextField.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -30).isActive = true
         noteTextField.topAnchor.constraint(equalTo: noteLabel.topAnchor).isActive = true
@@ -338,11 +348,11 @@ class WishView: UIView, UITextFieldDelegate {
     }
     
     @objc func prevButtonTapped(){
-
+        self.onPrevButtonTapped?()
     }
     
     @objc func nextButtonTapped(){
-        
+        self.onNextButtonTapped?()
     }
     
     //MARK: wishButtonTapped
