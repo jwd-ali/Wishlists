@@ -37,9 +37,12 @@ class CustomShareViewController: UIViewController {
         return v
     }()
     
-    let transparentView: UIView = {
+    let coverView: UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        v.backgroundColor = .white
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.layer.cornerRadius = 10
+        v.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return v
     }()
     
@@ -90,6 +93,8 @@ class CustomShareViewController: UIViewController {
             print("error 1")
         }
         
+        setUpLoadingAnimation()
+        
         actionButtonTapped()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -139,6 +144,26 @@ class CustomShareViewController: UIViewController {
         cancelButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
         cancelButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     
+    }
+    func setUpLoadingAnimation(){
+        
+        view.addSubview(coverView)
+        coverView.topAnchor.constraint(equalTo: wishView.topAnchor).isActive = true
+        coverView.leadingAnchor.constraint(equalTo: wishView.leadingAnchor).isActive = true
+        coverView.trailingAnchor.constraint(equalTo: wishView.trailingAnchor).isActive = true
+        coverView.bottomAnchor.constraint(equalTo: wishView.bottomAnchor).isActive = true
+        
+        logoAnimation.contentMode = .scaleAspectFit
+        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
+        coverView.addSubview(logoAnimation)
+        
+        logoAnimation.centerXAnchor.constraint(equalTo: coverView.centerXAnchor).isActive = true
+        logoAnimation.centerYAnchor.constraint(equalTo: coverView.centerYAnchor).isActive = true
+        logoAnimation.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        logoAnimation.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        logoAnimation.loopMode = .loop
+        logoAnimation.play()
+        
     }
     
     // hide keyboard, wenn user außerhalb toucht

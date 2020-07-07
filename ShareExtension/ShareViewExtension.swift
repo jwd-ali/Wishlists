@@ -35,19 +35,6 @@ extension CustomShareViewController {
         wishView.amount = 0
         
         onImageButtonTappedClosure()
-        
-        transparentView.gestureRecognizers?.forEach {
-            self.transparentView.removeGestureRecognizer($0)
-        }
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissWishView))
-        transparentView.addGestureRecognizer(tapGesture)
-        
-        transparentView.alpha = 0
-        
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
-            self.transparentView.alpha = 0.6
-        }, completion: nil)
 
     }
     
@@ -74,7 +61,6 @@ extension CustomShareViewController {
         
         self.wishView.endEditing(true)
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
-            self.transparentView.alpha = 0
             self.wishConstraint.constant = 0
             self.view.layoutIfNeeded()
 

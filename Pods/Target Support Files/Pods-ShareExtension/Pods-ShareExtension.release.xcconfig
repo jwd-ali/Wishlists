@@ -1,8 +1,8 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView" "${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup/SwiftSoup.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView/URLEmbeddedView.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftSoup/SwiftSoup.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/URLEmbeddedView/URLEmbeddedView.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/lottie-ios/Lottie.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks' '@executable_path/../../Frameworks'
-OTHER_LDFLAGS = $(inherited) -framework "CoreData" -framework "CoreGraphics" -framework "SwiftSoup" -framework "UIKit" -framework "URLEmbeddedView"
+OTHER_LDFLAGS = $(inherited) -framework "CoreData" -framework "CoreGraphics" -framework "Lottie" -framework "QuartzCore" -framework "SwiftSoup" -framework "UIKit" -framework "URLEmbeddedView"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

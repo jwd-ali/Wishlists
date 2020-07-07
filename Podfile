@@ -36,6 +36,6 @@ target 'ShareExtension' do
 
 	pod 'SwiftSoup'
 	pod 'URLEmbeddedView'
-	pod 'Lottie'	
+	pod 'lottie-ios'	
 
 end
