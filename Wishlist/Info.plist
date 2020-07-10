@@ -19,6 +19,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ckbusiness.Wishlists</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>open</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb3614478241959215</string>

@@ -270,8 +270,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.showErrorPopUp(description: error!.localizedDescription)
             }else {
                 // correct acount details -> login
-                UserDefaults.standard.setIsLoggedIn(value: true)
-                UserDefaults.standard.synchronize()
+                if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                    defaults.setIsLoggedIn(value: false)
+                    defaults.synchronize()
+                }
                 // stop animation
                 self.logoAnimation.stop()
                 // transition to Home-ViewController

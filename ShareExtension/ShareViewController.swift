@@ -61,7 +61,7 @@ class CustomShareViewController: UIViewController {
     
     var keyboardHeight = CGFloat(0)
     
-    let logoAnimation = AnimationView(name: "LoadingAnimation")
+    let loadingAnimation = AnimationView(name: "LoadingAnimation")
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -69,9 +69,7 @@ class CustomShareViewController: UIViewController {
 
         self.view.backgroundColor = .clear
         self.navigationController?.isNavigationBarHidden = true
-        
-        setupViews()
-        
+            
         wishView.prevButton.isEnabled = false
         wishView.nextButton.isEnabled = false
         
@@ -79,27 +77,43 @@ class CustomShareViewController: UIViewController {
         self.wishView.onNextButtonTapped = self.nextButtonTappedClosure
         
         self.wishView.addWishDelegate = self
-        
+      
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-            if let data = defaults.getDataSourceArray() {
-                dataSourceArray = data
-                defaults.synchronize()
-                print(dataSourceArray[0].name)
-            }else {
-                print("error 2")
+            print(defaults.isLoggedIn())
+            if defaults.isLoggedIn(){
+                if let data = defaults.getDataSourceArray(){
+                    setupViews()
+                    setUpLoadingAnimation()
+                    self.dataSourceArray = data
+                    defaults.synchronize()
+                    print(dataSourceArray[0].name)
+                    loadData {
+                        DispatchQueue.main.async {
+                          self.hideLoadingView()
+                        }
+                    }
+                } else {
+                    print("Error getting dataSourceArray")
+                }
+            } else {
+                userIsNotLoggedInAlert()
+                self.loadingAnimation.stop()
+                self.loadingAnimation.removeFromSuperview()
             }
             
         } else {
             print("error 1")
         }
-        
-        setUpLoadingAnimation()
-        
-        actionButtonTapped()
-        
+   
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
             
+    }
+    
+    fileprivate func isLoggedIn() -> Bool {
+        let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey)!
+        print("yeet:  \(defaults.isLoggedIn())")
+        return defaults.isLoggedIn()
     }
     
     func nextButtonTappedClosure(){
@@ -127,6 +141,30 @@ class CustomShareViewController: UIViewController {
             })
         }
     }
+    
+    func userIsNotLoggedInAlert(){
+        let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich an deiner Wishlists-App an, um dir Wünsche zu speichern.", preferredStyle: .alert)
+        
+        let signInAction = UIAlertAction(title: "Anmelden", style: .default) { (alert) in
+            let myAppUrl = NSURL(string: "open://")!
+            self.extensionContext?.open(myAppUrl as URL, completionHandler: { (success) in
+                if (!success) {
+                    // let the user know it failed
+                    print("fail!")
+                }
+            })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Abbrechen", style: .default) { (alert) in
+            self.cancelAction()
+        }
+
+        
+        alertcontroller.addAction(cancelAction)
+        alertcontroller.addAction(signInAction)
+        
+        self.present(alertcontroller, animated: true)
+    }
 
     //MARK: setupViews
     private func setupViews(){
@@ -145,6 +183,8 @@ class CustomShareViewController: UIViewController {
         cancelButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     
     }
+    
+    //MARK: setupLoadingAnimation
     func setUpLoadingAnimation(){
         
         view.addSubview(coverView)
@@ -153,24 +193,31 @@ class CustomShareViewController: UIViewController {
         coverView.trailingAnchor.constraint(equalTo: wishView.trailingAnchor).isActive = true
         coverView.bottomAnchor.constraint(equalTo: wishView.bottomAnchor).isActive = true
         
-        logoAnimation.contentMode = .scaleAspectFit
-        logoAnimation.translatesAutoresizingMaskIntoConstraints = false
-        coverView.addSubview(logoAnimation)
+        loadingAnimation.contentMode = .scaleAspectFit
+        loadingAnimation.translatesAutoresizingMaskIntoConstraints = false
+        coverView.addSubview(loadingAnimation)
         
-        logoAnimation.centerXAnchor.constraint(equalTo: coverView.centerXAnchor).isActive = true
-        logoAnimation.centerYAnchor.constraint(equalTo: coverView.centerYAnchor).isActive = true
-        logoAnimation.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        logoAnimation.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        logoAnimation.loopMode = .loop
-        logoAnimation.play()
+        loadingAnimation.centerXAnchor.constraint(equalTo: coverView.centerXAnchor).isActive = true
+        loadingAnimation.centerYAnchor.constraint(equalTo: coverView.centerYAnchor).isActive = true
+        loadingAnimation.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        loadingAnimation.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        loadingAnimation.loopMode = .loop
+        loadingAnimation.play()
         
     }
+    
+    //MARK: hideLoadingView
+    func hideLoadingView (){
+        coverView.removeFromSuperview()
+        loadingAnimation.stop()
+    }
+    
+    //MARK: keyboardHandling
     
     // hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -215,8 +262,8 @@ class CustomShareViewController: UIViewController {
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
     
-    @objc func actionButtonTapped(){
-            print("yeet")
+    //MARK: loadData
+    func loadData(finished: @escaping () -> Void){
         
             var html: String?
             
@@ -227,48 +274,37 @@ class CustomShareViewController: UIViewController {
                     if (url as? URL) != nil {
                         
                         html = (self.getHTMLfromURL(url: url as? URL))
-                                    
                         print(url as Any)
-                        
                         let directoryURL = url as! NSURL
-                        
                         let urlString: String = directoryURL.absoluteString!
                         
                         OpenGraphDataDownloader.shared.fetchOGData(urlString: urlString) { result in
                             switch result {
                             case let .success(data, _):
-                                
                                 // get productTitle
                                 guard let title = data.pageTitle else { return }
-            
                                 print(title)
-                                
                                 DispatchQueue.main.async {
                                     self.wishView.wishNameTextField.text = title
                                 }
-                                
                                 // get productImage
                                 guard let imageURL = data.imageUrl else { return }
                                 UIImage.loadFrom(url: imageURL, completion: { (image) in
                                     
                                     guard let image = image else { return }
-                                    
                                     self.wishView.wishImageView.image = image
-                                    
                                     self.imagesArray.append(image)
-                                      
-                                    
+                    
+                                    finished()
                                 })
-                                
-                                
+                      
                             case let .failure(error, _):
+                                finished()
                                 print("OpenGraph-error: " + error.localizedDescription)
                             }
-                            
                         }
-                        
                         DispatchQueue.main.async {
-                          self.getContent(html: html)
+                            self.getContentFromHTML(html: html)
                         }
                         
                     }
@@ -276,7 +312,7 @@ class CustomShareViewController: UIViewController {
             }
     }
     
-    func getContent(html: String?){
+    func getContentFromHTML(html: String?){
         
         do {
             let doc: Document = try SwiftSoup.parse(html ?? "")
@@ -293,7 +329,6 @@ class CustomShareViewController: UIViewController {
             print(message)
         } catch {
             print("error")
-                
         }
         
         
@@ -309,7 +344,7 @@ class CustomShareViewController: UIViewController {
                 guard let url = URL(string: imageName!) else { return }
                 
                 UIImage.loadFrom(url: url) { image in
-                    
+           
                     if let image = image {
                         self.imagesArray.append(image)
                         

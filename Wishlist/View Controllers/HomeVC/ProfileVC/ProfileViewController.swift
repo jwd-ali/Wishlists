@@ -52,8 +52,17 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func signoutButtonTapped() {
-        UserDefaults.standard.setIsLoggedIn(value: false)
-        UserDefaults.standard.synchronize()
+        
+        // save dataSourceArray in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setIsLoggedIn(value: false)
+            defaults.setDataSourceArray(data: nil)
+            defaults.setDropOptions(dropOptions: nil)
+            defaults.synchronize()
+        } else {
+            print("error Main")
+        }
+        
         
         let firstLaunchVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstLaunchVC")
         

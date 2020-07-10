@@ -181,7 +181,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 
                 // save dataSourceArray in UserDefaults
                 if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                    defaults.setDataSourceArray(data: dataArray as! [Wishlist])
+                    defaults.setIsLoggedIn(value: true)
+                    defaults.setDataSourceArray(data: self.dataSourceArray)
+                    defaults.setDropOptions(dropOptions: self.dropOptions)
                     defaults.synchronize()
                 } else {
                     print("error Main")
@@ -581,8 +583,24 @@ extension MainViewController: CreateListDelegate {
             
             self.dataSourceArray.append(Wishlist(name: listName, image: listImage, wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: newIndex))
             
+            // save dataSourceArray in UserDefaults
+            if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                defaults.setDataSourceArray(data: self.dataSourceArray)
+                defaults.synchronize()
+            } else {
+                print("error appending datasource")
+            }
+
              // append created list to drop down options
              self.dropOptions.append(DropDownOption(name: listName, image: listImage))
+            
+            // save dataSourceArray in UserDefaults
+            if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                defaults.setDropOptions(dropOptions: self.dropOptions)
+                defaults.synchronize()
+            } else {
+                print("error appending dropoptions")
+            }
              
              // reload the collection view
             self.theCollectionView.reloadData()

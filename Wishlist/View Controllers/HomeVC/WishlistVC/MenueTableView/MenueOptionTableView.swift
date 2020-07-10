@@ -152,6 +152,14 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         self.wishList = Wishlist(name: listName, image: listImage, wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
         
         self.dataSourceArray[self.currentWishListIDX] = self.wishList
+        // save dataSourceArray in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setDataSourceArray(data: self.dataSourceArray)
+            defaults.synchronize()
+        } else {
+            print("error saving changes")
+        }
+
         
         
         self.wishlistImage.image = listImage
@@ -161,6 +169,14 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         self.dropOptions[self.currentWishListIDX].name = listName
         self.dropOptions[self.currentWishListIDX].image = listImage
         self.wishView.dropDownButton.dropView.tableView.reloadData()
+        
+        // save dataSourceArray in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setDropOptions(dropOptions: self.dropOptions)
+            defaults.synchronize()
+        } else {
+            print("error saving dropoptions")
+        }
 
     }
 }

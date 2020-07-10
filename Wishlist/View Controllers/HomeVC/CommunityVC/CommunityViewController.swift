@@ -78,6 +78,25 @@ class CommunityViewController: UIViewController {
         swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
         self.view.addGestureRecognizer(swipeLeft)
         // Do any additional setup after loading the view, typically from a nib.
+        
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            print(defaults.isLoggedIn())
+            if defaults.isLoggedIn(){
+                if let data = defaults.getDataSourceArray(){
+                    
+                    defaults.synchronize()
+                    print(data[0].name)
+
+                } else {
+                    print("Error getting dataSourceArray")
+                }
+            } else {
+                print("yeet")
+            }
+            
+        } else {
+            print("error 1")
+        }
     }
     
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {

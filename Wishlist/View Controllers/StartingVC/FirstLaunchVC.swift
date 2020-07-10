@@ -191,6 +191,13 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
         
         setUpDocumentsLabel()
         
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            print(defaults.isLoggedIn())
+            defaults.synchronize()
+        } else {
+            print("error Main")
+        }
+        
     }
     
     func setupViewsDon(){
@@ -547,10 +554,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                         } else {
                                             
                                             // set user status to logged-in
-                                            UserDefaults.standard.setIsLoggedIn(value: true)
-                                            UserDefaults.standard.synchronize()
-
-                                            //transition to home
+                                            if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                                                defaults.setIsLoggedIn(value: false)
+                                                defaults.synchronize()
+                                            }
+                                         //transition to home
                                             self.transitionToHome()
                                         }
                                     })
@@ -632,8 +640,10 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                             } else {
                                 
                                 // set user status to logged-in
-                                UserDefaults.standard.setIsLoggedIn(value: true)
-                                UserDefaults.standard.synchronize()
+                                if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                                    defaults.setIsLoggedIn(value: false)
+                                    defaults.synchronize()
+                                }
 
                                 //transition to home
                                 self.transitionToHome()
@@ -691,8 +701,10 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                             Utilities.showErrorPopUp(labelContent: "Fehler beim Apple-Login", description: error!.localizedDescription)
                         } else {
                             
-                            UserDefaults.standard.setIsLoggedIn(value: true)
-                            UserDefaults.standard.synchronize()
+                            if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                                defaults.setIsLoggedIn(value: false)
+                                defaults.synchronize()
+                            }
 
                             self.transitionToHome()
                         }

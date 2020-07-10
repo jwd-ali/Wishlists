@@ -14,20 +14,43 @@ extension UserDefaults {
         public static let groupKey = "group.wishlists-app.wishlists"
         
         public static let dataSourceKey = "dataSourceKey"
+        
+        public static let dropOptionsKey = "dropOptionsKey"
     }
     
-
-    
-    func setDataSourceArray(data: [Wishlist]){
+    func setDataSourceArray(data: [Wishlist]?){
         set(try? PropertyListEncoder().encode(data), forKey: Keys.dataSourceKey)
         synchronize()
     }
     
+
     func getDataSourceArray() -> [Wishlist]? {
-        if let data = UserDefaults(suiteName: UserDefaults.Keys.groupKey)!.value(forKey: Keys.dataSourceKey) as? Data {
-            if let dataSourceArray =
-                try? PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as[Wishlist] {
-                    return dataSourceArray
+    do {
+        guard let data = self.value(forKey: Keys.dataSourceKey) as? Data else {
+            // if there is exception or there is no value
+            return nil
+        }
+        guard let dataSourceArray = try PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as? [Wishlist]
+            else { return nil
+            }
+        return dataSourceArray
+
+        } catch {
+
+        }
+        return nil
+    }
+    
+    func setDropOptions(dropOptions: [DropDownOption]?) {
+        set(try? PropertyListEncoder().encode(dropOptions), forKey: Keys.dataSourceKey)
+        synchronize()
+    }
+    
+    func getDropOptions() -> [DropDownOption]? {
+        if let data = self.value(forKey: Keys.dropOptionsKey) as? Data {
+            if let dropDownOptions =
+                try? PropertyListDecoder().decode(Array < DropDownOption > .self, from: data) as[DropDownOption] {
+                    return dropDownOptions
                 }
         }
         return nil
