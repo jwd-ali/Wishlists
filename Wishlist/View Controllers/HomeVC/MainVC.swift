@@ -179,15 +179,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.addButton.isEnabled = true
                 self.activityIndicator.stopAnimating()
                 
-                // save dataSourceArray in UserDefaults
+//                 save data to userDefaults
                 if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
                     defaults.setIsLoggedIn(value: true)
                     defaults.setDataSourceArray(data: self.dataSourceArray)
                     defaults.setDropOptions(dropOptions: self.dropOptions)
                     defaults.synchronize()
                 } else {
-                    print("error Main")
+                    print("error setting userdefaults")
                 }
+                
             }
         }
         
@@ -440,9 +441,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 //
 //            // update selectedWishlistIDX
 //            makeWishView.selectedWishlistIDX = currentWishListIDX
-        
-        
-  
     }
     
     //MARK: onImageButtonTappedClosure

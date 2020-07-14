@@ -25,24 +25,17 @@ extension UserDefaults {
     
 
     func getDataSourceArray() -> [Wishlist]? {
-    do {
-        guard let data = self.value(forKey: Keys.dataSourceKey) as? Data else {
-            // if there is exception or there is no value
-            return nil
-        }
-        guard let dataSourceArray = try PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as? [Wishlist]
-            else { return nil
-            }
-        return dataSourceArray
-
-        } catch {
-
+        if let data = self.value(forKey: Keys.dataSourceKey) as? Data {
+            if let dataSourceArray =
+                try? PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as[Wishlist] {
+                    return dataSourceArray
+                }
         }
         return nil
     }
     
     func setDropOptions(dropOptions: [DropDownOption]?) {
-        set(try? PropertyListEncoder().encode(dropOptions), forKey: Keys.dataSourceKey)
+        set(try? PropertyListEncoder().encode(dropOptions), forKey: Keys.dropOptionsKey)
         synchronize()
     }
     

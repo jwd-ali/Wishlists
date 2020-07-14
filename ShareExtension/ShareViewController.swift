@@ -82,15 +82,21 @@ class CustomShareViewController: UIViewController {
             print(defaults.isLoggedIn())
             if defaults.isLoggedIn(){
                 if let data = defaults.getDataSourceArray(){
-                    setupViews()
-                    setUpLoadingAnimation()
-                    self.dataSourceArray = data
-                    defaults.synchronize()
-                    print(dataSourceArray[0].name)
-                    loadData {
-                        DispatchQueue.main.async {
-                          self.hideLoadingView()
+                    if let dropOptions = defaults.getDropOptions(){
+                        setupViews()
+                        setUpLoadingAnimation()
+                        self.dataSourceArray = data
+                        self.dropOptions = dropOptions
+                        defaults.synchronize()
+//                        print(dropOptions[0].name)
+//                        print(dataSourceArray[0].name)
+                        loadData {
+                            DispatchQueue.main.async {
+                              self.hideLoadingView()
+                            }
                         }
+                    } else {
+                        print("error getting dropOptions")
                     }
                 } else {
                     print("Error getting dataSourceArray")
@@ -108,12 +114,6 @@ class CustomShareViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
             
-    }
-    
-    fileprivate func isLoggedIn() -> Bool {
-        let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey)!
-        print("yeet:  \(defaults.isLoggedIn())")
-        return defaults.isLoggedIn()
     }
     
     func nextButtonTappedClosure(){
@@ -143,26 +143,11 @@ class CustomShareViewController: UIViewController {
     }
     
     func userIsNotLoggedInAlert(){
-        let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich an deiner Wishlists-App an, um dir Wünsche zu speichern.", preferredStyle: .alert)
-        
-        let signInAction = UIAlertAction(title: "Anmelden", style: .default) { (alert) in
-            let myAppUrl = NSURL(string: "open://")!
-            self.extensionContext?.open(myAppUrl as URL, completionHandler: { (success) in
-                if (!success) {
-                    // let the user know it failed
-                    print("fail!")
-                }
-            })
-        }
-        
-        let cancelAction = UIAlertAction(title: "Abbrechen", style: .default) { (alert) in
+        let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich an deiner Wishlists-App an, um deine Wünsche zu speichern.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Ok", style: .default) { (alert) in
             self.cancelAction()
         }
-
-        
         alertcontroller.addAction(cancelAction)
-        alertcontroller.addAction(signInAction)
-        
         self.present(alertcontroller, animated: true)
     }
 
@@ -213,7 +198,6 @@ class CustomShareViewController: UIViewController {
     }
     
     //MARK: keyboardHandling
-    
     // hide keyboard, wenn user außerhalb toucht
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -311,7 +295,7 @@ class CustomShareViewController: UIViewController {
                 }
             }
     }
-    
+    //MARK: getContent
     func getContentFromHTML(html: String?){
         
         do {
@@ -333,7 +317,7 @@ class CustomShareViewController: UIViewController {
         
         
     }
-    
+    //MARK: getImages
     func getImages(doc: Document) {
         let srcs: Elements? = try? doc.select("img[src]")
         let srcsStringArray: [String?] = srcs!.array().map { try? $0.attr("src").description }
@@ -379,7 +363,7 @@ class CustomShareViewController: UIViewController {
         
         return ""
     }
-    
+    //MARK: getPrice
     func getPrice(doc: Document) -> Double {
         let priceClasses: Elements? = try? doc.select("[class~=(?i)price]")
         

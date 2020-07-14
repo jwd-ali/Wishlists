@@ -69,16 +69,6 @@ class CommunityViewController: UIViewController {
         setupView()
         super.viewDidLoad()
         
-        
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
-        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
-        self.view.addGestureRecognizer(swipeRight)
-
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
-        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
-        self.view.addGestureRecognizer(swipeLeft)
-        // Do any additional setup after loading the view, typically from a nib.
-        
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
             print(defaults.isLoggedIn())
             if defaults.isLoggedIn(){
@@ -98,36 +88,6 @@ class CommunityViewController: UIViewController {
             print("error 1")
         }
     }
-    
-    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
-
-        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-
-
-            switch swipeGesture.direction {
-            case UISwipeGestureRecognizer.Direction.left:
-                if currentImage == images.count - 1 {
-                    currentImage = 0
-
-                }else{
-                    currentImage += 1
-                }
-                theImageView.image = images[currentImage]
-
-            case UISwipeGestureRecognizer.Direction.right:
-                if currentImage == 0 {
-                    currentImage = images.count - 1
-                }else{
-                    currentImage -= 1
-                }
-                theImageView.image = images[currentImage]
-            default:
-                break
-            }
-        }
-    }
-    
-    
     
     func setupView() {
         
