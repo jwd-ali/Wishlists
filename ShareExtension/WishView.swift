@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+protocol ImagePickerDelegate {
+    func showImagePickerControllerActionSheet()
+}
 
 protocol AddWishDelegate {
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?)
@@ -34,7 +37,7 @@ class WishView: UIView, UITextFieldDelegate {
         v.translatesAutoresizingMaskIntoConstraints = false
         v.layer.masksToBounds = true
         v.contentMode = .scaleAspectFill
-        v.backgroundColor = .cyan
+        v.backgroundColor = .black
         v.layer.cornerRadius = 5
         return v
     }()
@@ -161,11 +164,29 @@ class WishView: UIView, UITextFieldDelegate {
         v.addTarget(self, action: #selector(prevButtonTapped), for: .touchUpInside)
         return v
     }()
+    
+    let addImageButton: UIButton = {
+        let v = UIButton()
+        v.translatesAutoresizingMaskIntoConstraints = false
+//        v.setImage(UIImage(named: "photo"), for: .normal)
+        v.setTitle("Bild hinzufügen", for: .normal)
+        v.setTitleColor(UIColor.lightGray, for: .normal)
+        v.titleLabel?.font =  UIFont(name: "AvenirNext-DemiBold", size: 13)
+        v.titleLabel?.numberOfLines = 0
+        v.titleLabel?.textAlignment = .center
+        v.layer.borderColor = UIColor.darkCustom.cgColor
+        v.layer.borderWidth = 1
+        v.layer.cornerRadius = 3
+        v.addTarget(self, action: #selector(addImageButtonTapped), for: .touchUpInside)
+        return v
+    }()
     var onPrevButtonTapped: (() -> Void)?
     
     var dataSourceArray = [Wishlist]()
     
     var addWishDelegate: AddWishDelegate?
+    
+    var imagePickerDelegate: ImagePickerDelegate?
     
     var selectedWishlistIDX: Int?
     
@@ -177,7 +198,10 @@ class WishView: UIView, UITextFieldDelegate {
     
         priceTextField.delegate = self
         priceTextField.placeholder = updateAmount()
-    
+        
+        showAddImageButton()
+        hideImageView()
+        
     }
     
     required init(coder: NSCoder) {
@@ -202,6 +226,7 @@ class WishView: UIView, UITextFieldDelegate {
         backgroundView.addSubview(shadowView)
         backgroundView.addSubview(wishImageView)
         backgroundView.addSubview(deleteImageButton)
+        backgroundView.addSubview(addImageButton)
         
         wishImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         wishImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -217,6 +242,12 @@ class WishView: UIView, UITextFieldDelegate {
         deleteImageButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         deleteImageButton.topAnchor.constraint(equalTo: wishImageView.topAnchor, constant: -10).isActive = true
         deleteImageButton.trailingAnchor.constraint(equalTo: wishImageView.trailingAnchor, constant: 10).isActive = true
+        
+        addImageButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        addImageButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        addImageButton.topAnchor.constraint(equalTo: wishNameTextField.bottomAnchor, constant: 25).isActive = true
+        addImageButton.leadingAnchor.constraint(equalTo: wishNameTextField.leadingAnchor).isActive = true
+        addImageButton.isHidden = true
         
         //MARK: price
         backgroundView.addSubview(priceLabel)
@@ -267,7 +298,7 @@ class WishView: UIView, UITextFieldDelegate {
         wishButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         wishButton.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20).isActive = true
         wishButton.centerYAnchor.constraint(equalTo: prevButton.centerYAnchor).isActive = true
-        
+        disableButton()
     }
     
     //MARK: Helper for DropDownTableView
@@ -337,14 +368,42 @@ class WishView: UIView, UITextFieldDelegate {
     }
     
     @objc func deleteImageButtonTapped(){
-//        UIView.animate(withDuration: 0.25) {
-//            self.imageContainerView.alpha = 0
-//            self.imageContainerView.isHidden = true
-//            self.deleteImageButton.isHidden = true
-//            self.wishImageView.isHidden = true
-//            self.theStackView.layoutIfNeeded()
-//        }
-//        self.onImageButtonTapped?(imageContainerView.frame.height, false)
+        hideImageView()
+        showAddImageButton()
+    }
+    
+    func setImageFromPhotos(image: UIImage){
+        wishImageView.image = image
+        hideAddImageButton()
+        showImageView()
+    }
+    
+    func showAddImageButton(){
+        addImageButton.isHidden = false
+    }
+    
+    func hideAddImageButton(){
+        addImageButton.isHidden = true
+    }
+    
+    @objc func addImageButtonTapped(){
+        self.imagePickerDelegate?.showImagePickerControllerActionSheet()
+    }
+    
+    func hideImageView(){
+        shadowView.isHidden = true
+        wishImageView.isHidden = true
+        deleteImageButton.isHidden = true
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+    }
+    
+    func showImageView(){
+        shadowView.isHidden = false
+        wishImageView.isHidden = false
+        deleteImageButton.isHidden = false
+        prevButton.isHidden = false
+        nextButton.isHidden = false
     }
     
     @objc func prevButtonTapped(){

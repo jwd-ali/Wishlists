@@ -77,22 +77,36 @@ class CustomShareViewController: UIViewController {
         self.wishView.onNextButtonTapped = self.nextButtonTappedClosure
         
         self.wishView.addWishDelegate = self
+        self.wishView.imagePickerDelegate = self
       
+        setDataIfUserIsLoggedIn()
+   
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+            
+    }
+    
+    //MARK: set Data
+    func setDataIfUserIsLoggedIn(){
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
             print(defaults.isLoggedIn())
             if defaults.isLoggedIn(){
                 if let data = defaults.getDataSourceArray(){
                     if let dropOptions = defaults.getDropOptions(){
+                        defaults.synchronize()
                         setupViews()
                         setUpLoadingAnimation()
                         self.dataSourceArray = data
                         self.dropOptions = dropOptions
-                        defaults.synchronize()
-//                        print(dropOptions[0].name)
-//                        print(dataSourceArray[0].name)
+                        self.wishView.dropDown?.dropOptions = dropOptions
+                        // set dropDownButton image and label to first wishlists image and label
+                        self.wishView.dropDownButton.listImage.image = self.dataSourceArray[0].image
+                        self.wishView.dropDownButton.label.text = self.dataSourceArray[0].name
+                        print(dropOptions[0].name)
+                        print(dataSourceArray[0].name)
                         loadData {
                             DispatchQueue.main.async {
-                              self.hideLoadingView()
+                                self.hideLoadingView()
                             }
                         }
                     } else {
@@ -110,10 +124,6 @@ class CustomShareViewController: UIViewController {
         } else {
             print("error 1")
         }
-   
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-            
     }
     
     func nextButtonTappedClosure(){
@@ -143,7 +153,7 @@ class CustomShareViewController: UIViewController {
     }
     
     func userIsNotLoggedInAlert(){
-        let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich an deiner Wishlists-App an, um deine Wünsche zu speichern.", preferredStyle: .alert)
+        let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich in deiner Wishlists-App an, um deine Wünsche zu speichern.", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Ok", style: .default) { (alert) in
             self.cancelAction()
         }
@@ -266,22 +276,25 @@ class CustomShareViewController: UIViewController {
                             switch result {
                             case let .success(data, _):
                                 // get productTitle
-                                guard let title = data.pageTitle else { return }
+                                guard let title = data.pageTitle else {finished(); return}
                                 print(title)
                                 DispatchQueue.main.async {
                                     self.wishView.wishNameTextField.text = title
+                                    self.wishView.enableButton()
                                 }
                                 // get productImage
-                                guard let imageURL = data.imageUrl else { return }
+                                guard let imageURL = data.imageUrl else {finished(); return }
                                 UIImage.loadFrom(url: imageURL, completion: { (image) in
                                     
                                     guard let image = image else { return }
                                     self.wishView.wishImageView.image = image
                                     self.imagesArray.append(image)
-                    
+                                    self.wishView.hideAddImageButton()
+                                    self.wishView.showImageView()
                                     finished()
                                 })
-                      
+                                finished()
+                                
                             case let .failure(error, _):
                                 finished()
                                 print("OpenGraph-error: " + error.localizedDescription)
@@ -331,6 +344,8 @@ class CustomShareViewController: UIViewController {
            
                     if let image = image {
                         self.imagesArray.append(image)
+                        self.wishView.showImageView()
+                        self.wishView.hideAddImageButton()
                         
                         if self.imagesArray.count == 1 {
                             self.wishView.wishImageView.image = self.imagesArray[0]
@@ -387,6 +402,49 @@ class CustomShareViewController: UIViewController {
     }
     
     
+}
+
+
+// MARK: ImagePickerController
+extension CustomShareViewController: ImagePickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // delegate function
+    func showImagePickerControllerActionSheet() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        // choose Alert Options
+        let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .photoLibrary)
+        }
+        let cameraAction = UIAlertAction(title: "Foto aufnehmen", style: .default) { (action) in
+            self.showImagePickerController(sourceType: .camera)
+        }
+        let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
+        // Add the actions to your actionSheet
+        actionSheet.addAction(photoLibraryActionn)
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(cancelAction)
+        // Present the controller
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func showImagePickerController(sourceType: UIImagePickerController.SourceType) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        imagePickerController.sourceType = sourceType
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.imagesArray.append(editedImage)
+            self.wishView.setImageFromPhotos(image: editedImage)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.imagesArray.append(originalImage)
+            self.wishView.setImageFromPhotos(image: originalImage)
+        }
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 

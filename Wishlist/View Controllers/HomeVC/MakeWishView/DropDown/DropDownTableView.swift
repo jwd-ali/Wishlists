@@ -138,6 +138,7 @@ class DropDownBtn: UIButton, DropDownProtocol {
         self.addSubview(label)
         self.label.leadingAnchor.constraint(equalTo: self.listImage.leadingAnchor, constant: 32).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.label.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
         dropView = DropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
         dropView.delegate = self
