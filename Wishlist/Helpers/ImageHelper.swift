@@ -96,22 +96,13 @@ class ShadowRoundedImageView: UIView {
         self.layer.addSublayer(shadowLayer)
         self.layer.addSublayer(imageLayer) // (in that order)
         
-        imageLayer.contentsGravity = .resizeAspect // (as preferred)
+        imageLayer.contentsGravity = .resizeAspectFill // (as preferred)
         
         shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
         shadowLayer.shadowColor = UIColor.darkCustom.cgColor
         shadowLayer.shadowRadius = 3
         shadowLayer.shadowOpacity = 0.80
     }
-    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
 }
 
 class ShadowView: UIView {

@@ -109,7 +109,7 @@ class WishView: UIView, UITextFieldDelegate {
         v.backgroundColor = .clear
         v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.contentMode = .scaleAspectFit
+        v.contentMode = .scaleAspectFill
         v.backgroundColor = .cyan
         return v
     }()
@@ -140,7 +140,6 @@ class WishView: UIView, UITextFieldDelegate {
         let v = UITextField()
         v.backgroundColor = .clear
         v.placeholder = "Was wünschst du dir?"
-//        v.placeholderColor(color: .lightGray)
         v.textColor = .darkCustom
         v.font = UIFont(name: "AvenirNext-Bold", size: 19)
         v.tintColor = .darkCustom
@@ -187,7 +186,6 @@ class WishView: UIView, UITextFieldDelegate {
         v.placeholder = "Preis hinzufügen"
         v.textColor = .darkCustom
         v.tintColor = .darkCustom
-//        v.placeholderColor(color: UIColor.lightGray)
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textAlignment = .right
         v.keyboardType = .numberPad
@@ -222,7 +220,6 @@ class WishView: UIView, UITextFieldDelegate {
         v.placeholder = "Link hinzufügen"
         v.textColor = .darkCustom
         v.tintColor = .darkCustom
-//        v.placeholderColor(color: UIColor.lightGray)
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -255,7 +252,6 @@ class WishView: UIView, UITextFieldDelegate {
         v.placeholder = "Notiz hinzufügen"
         v.textColor = .darkCustom
         v.tintColor = .darkCustom
-//        v.placeholderColor(color: UIColor.lightGray)
         v.font = UIFont(name: "AvenirNext-Regular", size: 15)
         v.textAlignment = .right
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -292,13 +288,6 @@ class WishView: UIView, UITextFieldDelegate {
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: set
-    func set(image: UIImage) {
-        let ratio = image.size.width / image.size.height
-        wishImageView.image = image
-        wishImageViewWidthConstraint.constant = ratio * wishImageViewHeight
     }
     
     //MARK: setupViews

@@ -12,7 +12,7 @@ class WhishlistTableViewController: UITableViewController {
    
     public var wishData = [Wish]()
     
-    public var wishDataTest = [Wish]()
+//    public var wishDataTest = [Wish]()
     
     var tableViewIsEmpty: ((Bool) -> Void)?
 
@@ -22,22 +22,22 @@ class WhishlistTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
-        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
+//        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(), checkedStatus: false))
         // disable didSelectAt
         self.tableView.allowsSelection = false
         
@@ -51,12 +51,12 @@ class WhishlistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if wishDataTest.count == 0 {
+        if wishData.count == 0 {
             tableViewIsEmpty?(true)
         } else {
             tableViewIsEmpty?(false)
         }
-        return wishDataTest.count
+        return wishData.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -67,7 +67,7 @@ class WhishlistTableViewController: UITableViewController {
       
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
         
-        let currentWish = self.wishDataTest[indexPath.row]
+        let currentWish = self.wishData[indexPath.row]
         
         cell.label.text = currentWish.name
         

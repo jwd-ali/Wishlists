@@ -720,7 +720,7 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
         
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             
-            self.wishView.set(image: editedImage)
+            self.wishView.wishImageView.image = editedImage
             
             UIView.animate(withDuration: 0.25) {
                 self.wishView.imageContainerView.alpha = 1
@@ -732,7 +732,7 @@ extension WishlistViewController: ImagePickerDelegate, UIImagePickerControllerDe
 
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
 
-            self.wishView.set(image: originalImage)
+            self.wishView.wishImageView.image = originalImage
             
             UIView.animate(withDuration: 0.25) {
                 self.wishView.imageContainerView.alpha = 1
