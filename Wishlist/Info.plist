@@ -67,7 +67,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Erlaube Wishlist Zugriff auf Kamera</string>
+	<string>Erlaube Wishlists Zugriff auf Kamera</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

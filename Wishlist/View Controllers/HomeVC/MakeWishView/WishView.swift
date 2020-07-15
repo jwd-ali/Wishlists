@@ -316,8 +316,8 @@ class WishView: UIView, UITextFieldDelegate {
         
         wishView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        wishButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        wishButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        wishButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        wishButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         wishButton.trailingAnchor.constraint(equalTo: wishView.trailingAnchor, constant: -20).isActive = true
         wishButton.centerYAnchor.constraint(equalTo: wishView.centerYAnchor, constant: 10).isActive = true
         
@@ -611,7 +611,7 @@ class WishView: UIView, UITextFieldDelegate {
         let name = self.wishNameTextField.text!
         let listIDX = self.selectedWishlistIDX!
         let image = self.wishImageView.image ?? UIImage()
-        let link = self.linkTextField.text ?? ""
+        let link = self.linkTextField.text ?? "kein Link hinzugefügt"
         let price = self.priceTextField.text ?? ""
         let note = self.noteTextField.text ?? ""
         

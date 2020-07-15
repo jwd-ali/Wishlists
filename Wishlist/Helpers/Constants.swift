@@ -43,7 +43,7 @@ struct Constants: Equatable {
             
         }
         
-        static let darkTextColorIndexes = [2,3,6]
+        static let darkTextColorIndexes = [2,3]
         
         static let images: [UIImage] = [
             UIImage(named: "avocadoImage")!,        // 0
@@ -52,14 +52,14 @@ struct Constants: Equatable {
             UIImage(named: "christmasImage")!,      // 3
             UIImage(named: "dressImage")!,          // 4
             UIImage(named: "giftImage")!,           // 5
-            UIImage(named: "goalImage")!,
-            UIImage(named: "rollerImage")!,         // 6
-            UIImage(named: "shirtImage")!,          // 7
-            UIImage(named: "shoeImage")!,           // 8
-            UIImage(named: "travelImage-2")!,       // 9
-            UIImage(named: "travelImage-1")!,       //10
-            UIImage(named: "technikImage")!,
-            UIImage(named: "iconRoundedImage")!,
+            UIImage(named: "goalImage")!,           // 6
+            UIImage(named: "rollerImage")!,         // 7
+            UIImage(named: "shirtImage")!,          // 8
+            UIImage(named: "shoeImage")!,           // 9
+            UIImage(named: "travelImage-2")!,       // 10
+            UIImage(named: "travelImage-1")!,       // 11
+            UIImage(named: "technikImage")!,        // 12
+            UIImage(named: "iconRoundedImage")!,    // 13
         ]
         
         static let freeImages: [UIImage] = [

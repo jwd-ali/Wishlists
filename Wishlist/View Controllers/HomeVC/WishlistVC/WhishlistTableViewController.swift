@@ -9,10 +9,10 @@
 import UIKit
 
 class WhishlistTableViewController: UITableViewController {
-
-
-    
+   
     public var wishData = [Wish]()
+    
+    public var wishDataTest = [Wish]()
     
     var tableViewIsEmpty: ((Bool) -> Void)?
 
@@ -21,11 +21,23 @@ class WhishlistTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        tableView.estimatedRowHeight = 100
-//        tableView.rowHeight = UITableView.automaticDimension
-        
 
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "asdf", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "2344", note: "", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "adidas.com", price: "", note: "", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "2344", note: "", image: UIImage(named: "testImageShoes-1")!, checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "asdf", image: UIImage(), checkedStatus: false))
+        wishDataTest.append(Wish(name: "yeet", link: "", price: "", note: "", image: UIImage(), checkedStatus: false))
         // disable didSelectAt
         self.tableView.allowsSelection = false
         
@@ -39,12 +51,12 @@ class WhishlistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if wishData.count == 0 {
+        if wishDataTest.count == 0 {
             tableViewIsEmpty?(true)
         } else {
             tableViewIsEmpty?(false)
         }
-        return wishData.count
+        return wishDataTest.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,98 +64,61 @@ class WhishlistTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
+      
         let cell = tableView.dequeueReusableCell(withIdentifier: WhishCell.reuseID, for: indexPath) as! WhishCell
         
-        let currentWish = self.wishData[indexPath.row]
+        let currentWish = self.wishDataTest[indexPath.row]
         
         cell.label.text = currentWish.name
         
-        cell.linkLabel.text = currentWish.link
+        if currentWish.link.isEmpty {
+            cell.linkLabel.text = "Link hinzugügen"
+        }  else {
+            cell.linkLabel.text = "Link öffnen"
+        }
         cell.priceLabel.text = currentWish.price
         cell.noteLabel.text = currentWish.note
         cell.wishImage.image = currentWish.image
         
         cell.setupSuccessAnimation()
         
-        // reset height constraint
-//        cell.mainStackViewHeightConstraint.constant = cell.labelHeightConatraint.constant
+        cell.noteView.isHidden = false
+        cell.priceView.isHidden = false
+        cell.linkView.isHidden = false
+        cell.imageContainerView.isHidden = false
         cell.secondaryStackViewHeightConstraint.constant = 0
-        cell.secondaryStackView.isHidden = true
-//        cell.thrirdStackViewHeightConstraint.constant = 0
-        cell.thirdStackView.isHidden = true
+        cell.thirdHelperViewHeightConstraint.constant = 0
         
-        cell.imageContainerWidthConstraint.constant = 0
-        cell.imageContainerHeightConstraint.constant = 0
-        cell.wishImageWidthConstraint.constant = 0
-        cell.imageHeightConstraint.constant = 0
-        cell.imageContainerView.isHidden = true
-        
-//        cell.shadowLayerWidthConstraint.constant = 0
-//        cell.shadowHeightConstraint.constant = 0
-//        cell.shadowLayer.isHidden = true
-        
-        cell.priceView.isHidden = true
-//        cell.priceViewHeightConstraint.constant = 0
-        cell.linkView.isHidden = true
-//        cell.linkViewHeightConstraint.constant = 0
-        cell.noteView.isHidden = true
-//        cell.noteViewHeightConstraint.constant = 0
-
-        
-        if currentWish.image.hasContent {
-            cell.secondaryStackView.isHidden = false
-            cell.secondaryStackViewHeightConstraint.constant = cell.rowHeightThirdStackView * 3
-            cell.imageContainerView.isHidden = false
-            
-            let ratio = currentWish.image.size.width / currentWish.image.size.height
-            cell.wishImage.image = currentWish.image
-            cell.wishImageWidthConstraint.constant = ratio * cell.wishImageHeight
-            cell.imageContainerWidthConstraint.constant = cell.wishImageWidthConstraint.constant + 10
-            cell.imageContainerHeightConstraint.constant = cell.rowHeightThirdStackView * 3
-            cell.imageHeightConstraint.constant = cell.wishImageHeight
-            
-//            cell.shadowLayerWidthConstraint.constant = cell.wishImageWidthConstraint.constant
-//            cell.shadowHeightConstraint.constant = cell.imageContainerHeightConstraint.constant
-//            cell.shadowLayer.isHidden = false
-        }
-            
-        if currentWish.price != "" {
-            cell.priceView.isHidden = false
-//            cell.priceViewHeightConstraint.constant = cell.rowHeightThirdStackView
-            
-            cell.secondaryStackView.isHidden = false
-            cell.thirdStackView.isHidden = false
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+        if !currentWish.image.hasContent {
+            cell.imageContainerView.isHidden = true
+            if currentWish.price != "" {
+                cell.thirdHelperViewHeightConstraint.constant += 30
+                cell.secondaryStackViewHeightConstraint.constant += 30
+            }
+            if currentWish.link != "" {
+                cell.thirdHelperViewHeightConstraint.constant += 30
+                cell.secondaryStackViewHeightConstraint.constant += 30
+            }
+            if currentWish.note != "" {
+                cell.thirdHelperViewHeightConstraint.constant += 30
+                cell.secondaryStackViewHeightConstraint.constant += 30
+            }
+        } else {
+            cell.secondaryStackViewHeightConstraint.constant = 90
+            cell.thirdHelperViewHeightConstraint.constant = 90
         }
         
-        if currentWish.link != "" {
-            cell.linkView.isHidden = false
-//            cell.linkViewHeightConstraint.constant = cell.rowHeightThirdStackView
-            
-            cell.secondaryStackView.isHidden = false
-            cell.thirdStackView.isHidden = false
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
+        if currentWish.price == "" {
+            cell.priceView.isHidden = true
         }
         
-        if currentWish.note != "" {
-            cell.noteView.isHidden = false
-//            cell.noteViewHeightConstraint.constant = cell.rowHeightThirdStackView
-            
-            cell.secondaryStackView.isHidden = false
-            cell.thirdStackView.isHidden = false
-            cell.secondaryStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-//            cell.thrirdStackViewHeightConstraint.constant += cell.rowHeightThirdStackView
-        
+        if currentWish.link == "" {
+            cell.linkView.isHidden = true
         }
-//        cell.mainStackViewHeightConstraint.constant = 150
-//        print(cell.mainStackViewHeightConstraint.constant)
         
-        print(cell.frame.height)
-        
+        if currentWish.note == "" {
+            cell.noteView.isHidden = true
+        }
             
         // tapping the checkbox in the wish cell will call back here
         // and we tell the delegate to delete the wish

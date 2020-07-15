@@ -17,7 +17,6 @@ class WhishCell: UITableViewCell {
     let mainStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .orange)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -27,7 +26,6 @@ class WhishCell: UITableViewCell {
     let secondaryStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .horizontal
-        v.addBackgroundColorWithTopCornerRadius(color: .cyan)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -37,12 +35,19 @@ class WhishCell: UITableViewCell {
     let thirdStackView: UIStackView = {
         let v = UIStackView()
         v.axis = .vertical
-        v.addBackgroundColorWithTopCornerRadius(color: .red)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     var thrirdStackViewHeightConstraint: NSLayoutConstraint!
+    
+    let thirdHelperView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    var thirdHelperViewHeightConstraint: NSLayoutConstraint!
     
     let rowHeightThirdStackView = CGFloat(30)
     
@@ -75,23 +80,21 @@ class WhishCell: UITableViewCell {
     }()
     
     var imageContainerWidthConstraint: NSLayoutConstraint!
-    var imageContainerHeightConstraint: NSLayoutConstraint!
     
     let wishImage: UIImageView = {
         let v = UIImageView()
-        v.backgroundColor = .clear
         v.layer.masksToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.contentMode = .scaleAspectFit
+        v.contentMode = .scaleAspectFill
         v.layer.cornerRadius = 3
         return v
     }()
     
-//    let shadowLayer: ShadowView = {
-//        let v = ShadowView()
-//        v.translatesAutoresizingMaskIntoConstraints = false
-//        return v
-//    }()
+    let shadowLayer: ShadowView = {
+        let v = ShadowView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
     var shadowLayerWidthConstraint: NSLayoutConstraint!
     var shadowHeightConstraint: NSLayoutConstraint!
@@ -104,12 +107,9 @@ class WhishCell: UITableViewCell {
     //MARK: priceStack
     let priceView: UIView = {
         let v = UIView()
-        v.backgroundColor = .blue
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-//
-//    var priceViewHeightConstraint: NSLayoutConstraint!
     
     let priceImage: UIImageView = {
         let v = UIImageView()
@@ -124,7 +124,7 @@ class WhishCell: UITableViewCell {
         let v = UILabel()
         v.backgroundColor = .clear
         v.textColor = .darkCustom
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.font = UIFont(name: "AvenirNext-Medium", size: 15)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -134,25 +134,23 @@ class WhishCell: UITableViewCell {
     //MARK: linkStack
     let linkView: UIView = {
         let v = UIView()
-        v.backgroundColor = .lightGray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-//    var linkViewHeightConstraint: NSLayoutConstraint!
-    
     let linkLabel: UITextView = {
             let v = UITextView()
             v.backgroundColor = .clear
-            v.text = "Link"
-            v.textColor = .darkCustom
-            v.font = UIFont(name: "AvenirNext-Regular", size: 15)
             v.textAlignment = .left
             v.isSelectable = false
             v.isScrollEnabled = false
             let padding = v.textContainer.lineFragmentPadding
             v.textContainerInset =  UIEdgeInsets(top: 0, left: -padding, bottom: 0, right: -padding)
-    //        v.attributedText = NSAttributedString(string: "", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+            v.attributedText = NSAttributedString(string: "Link öffnen", attributes:
+                [.underlineStyle: NSUnderlineStyle.single.rawValue,
+                 NSAttributedString.Key.font: UIFont(name: "AvenirNext-Medium", size: 15)!,
+                NSAttributedString.Key.foregroundColor: UIColor.darkCustom])
+            
             v.translatesAutoresizingMaskIntoConstraints = false
             return v
         }()
@@ -169,18 +167,15 @@ class WhishCell: UITableViewCell {
     //MARK: noteStack
     let noteView: UIView = {
         let v = UIView()
-        v.backgroundColor = .gray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
-//    var noteViewHeightConstraint: NSLayoutConstraint!
     
     let noteLabel: UILabel = {
         let v = UILabel()
         v.backgroundColor = .clear
         v.textColor = .darkCustom
-        v.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        v.font = UIFont(name: "AvenirNext-Medium", size: 15)
         v.textAlignment = .left
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -234,16 +229,11 @@ class WhishCell: UITableViewCell {
         
         // main StackView
         mainStackView.addArrangedSubview(label)
-        mainStackView.addArrangedSubview(secondaryStackView)
         
         mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         mainStackView.leadingAnchor.constraint(equalTo: checkButton.trailingAnchor, constant: 15).isActive = true
         mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        
-        mainStackViewHeightConstraint = mainStackView.heightAnchor.constraint(equalToConstant: 50)
-        mainStackViewHeightConstraint.priority = .defaultHigh
-        mainStackViewHeightConstraint.isActive = true
         
         //constrain wish label
         labelHeightConatraint = label.heightAnchor.constraint(equalToConstant: 50)
@@ -255,66 +245,48 @@ class WhishCell: UITableViewCell {
         checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         checkButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         checkButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        // 2nd StackView
-        secondaryStackView.addArrangedSubview(imageContainerView)
-//        imageContainerView.addSubview(shadowLayer)
-        imageContainerView.addSubview(wishImage)
-        
+    
+        mainStackView.addArrangedSubview(secondaryStackView)
         secondaryStackViewHeightConstraint = secondaryStackView.heightAnchor.constraint(equalToConstant: 90)
         secondaryStackViewHeightConstraint.priority = .defaultHigh
         secondaryStackViewHeightConstraint.isActive = true
         
-        secondaryStackView.addArrangedSubview(thirdStackView)
+        secondaryStackView.addArrangedSubview(imageContainerView)
+        imageContainerWidthConstraint = imageContainerView.widthAnchor.constraint(equalToConstant: 90)
+        imageContainerWidthConstraint.priority = .defaultHigh
+        imageContainerWidthConstraint.isActive = true
+        imageContainerView.addSubview(shadowLayer)
+        shadowLayer.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        shadowLayer.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        shadowLayer.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
+        shadowLayer.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor, constant: -10).isActive = true
+        imageContainerView.addSubview(wishImage)
+        wishImage.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        wishImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
+        wishImage.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor, constant: -10).isActive = true
         
-        // 3rd StackView
-        thrirdStackViewHeightConstraint = thirdStackView.heightAnchor.constraint(equalToConstant: 90)
-        thrirdStackViewHeightConstraint.priority = .defaultHigh
-        thrirdStackViewHeightConstraint.isActive = true
+        secondaryStackView.addArrangedSubview(thirdHelperView)
+        thirdHelperView.addSubview(thirdStackView)
+        thirdHelperViewHeightConstraint = thirdHelperView.heightAnchor.constraint(equalToConstant: 90)
+        thirdHelperViewHeightConstraint.priority = .defaultHigh
+        thirdHelperViewHeightConstraint.isActive = true
         
         thirdStackView.addArrangedSubview(priceView)
+        priceView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         priceView.addSubview(priceImage)
         priceView.addSubview(priceLabel)
         
         thirdStackView.addArrangedSubview(linkView)
+        linkView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         linkView.addSubview(linkImage)
         linkView.addSubview(linkLabel)
         
         thirdStackView.addArrangedSubview(noteView)
+        noteView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         noteView.addSubview(noteImage)
         noteView.addSubview(noteLabel)
     
-        imageContainerHeightConstraint = imageContainerView.heightAnchor.constraint(equalToConstant: 90)
-        imageContainerHeightConstraint.priority = .defaultHigh
-        imageContainerHeightConstraint.isActive = true
-        
-        wishImage.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor).isActive = true
-        wishImage.topAnchor.constraint(equalTo: imageContainerView.topAnchor).isActive = true
-        wishImage.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: -10).isActive = true
-        
-        wishImageWidthConstraint = wishImage.widthAnchor.constraint(equalToConstant: wishImageHeight)
-        wishImageWidthConstraint.isActive = true
-        
-        imageHeightConstraint = wishImage.heightAnchor.constraint(equalToConstant: wishImageHeight)
-        imageHeightConstraint.priority = .defaultHigh
-        imageHeightConstraint.isActive = true
-        
-//        shadowLayer.leadingAnchor.constraint(equalTo: wishImage.leadingAnchor).isActive = true
-//        shadowLayer.topAnchor.constraint(equalTo: wishImage.topAnchor).isActive = true
-//        shadowLayer.bottomAnchor.constraint(equalTo: wishImage.bottomAnchor).isActive = true
-        
-//        shadowLayerWidthConstraint = shadowLayer.widthAnchor.constraint(equalToConstant: wishImageHeight)
-//        shadowLayerWidthConstraint.isActive = true
-//        
-//        shadowHeightConstraint = shadowLayer.heightAnchor.constraint(equalToConstant: wishImageHeight)
-//        shadowHeightConstraint.priority = .defaultHigh
-//        shadowHeightConstraint.isActive = true
-        
-//        // contrain priceView
-//        priceViewHeightConstraint = priceView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView)
-//        priceViewHeightConstraint.priority = .defaultHigh
-//        priceViewHeightConstraint.isActive = true
-        
         priceImage.topAnchor.constraint(equalTo: priceView.topAnchor).isActive = true
         priceImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
         priceImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -324,11 +296,6 @@ class WhishCell: UITableViewCell {
         priceLabel.leadingAnchor.constraint(equalTo: priceImage.trailingAnchor, constant: 10).isActive = true
         priceLabel.trailingAnchor.constraint(equalTo: priceView.trailingAnchor, constant: -10).isActive = true
         
-//        // constrain linkView
-//        linkViewHeightConstraint = linkView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView)
-//        linkViewHeightConstraint.priority = .defaultHigh
-//        linkViewHeightConstraint.isActive = true
-        
         linkImage.topAnchor.constraint(equalTo: linkView.topAnchor).isActive = true
         linkImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
         linkImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -337,11 +304,6 @@ class WhishCell: UITableViewCell {
         linkLabel.topAnchor.constraint(equalTo: linkView.topAnchor).isActive = true
         linkLabel.leadingAnchor.constraint(equalTo: linkImage.trailingAnchor, constant: 10).isActive = true
         linkLabel.trailingAnchor.constraint(equalTo: linkView.trailingAnchor, constant: -10).isActive = true
-
-//        // constrain noteView   
-//        noteViewHeightConstraint = noteView.heightAnchor.constraint(equalToConstant: rowHeightThirdStackView)
-//        noteViewHeightConstraint.priority = .defaultHigh
-//        noteViewHeightConstraint.isActive = true
         
         noteImage.topAnchor.constraint(equalTo: noteView.topAnchor).isActive = true
         noteImage.leadingAnchor.constraint(equalTo: thirdStackView.leadingAnchor).isActive = true
@@ -351,21 +313,7 @@ class WhishCell: UITableViewCell {
         noteLabel.topAnchor.constraint(equalTo: noteView.topAnchor).isActive = true
         noteLabel.leadingAnchor.constraint(equalTo: noteImage.trailingAnchor, constant: 10).isActive = true
         noteLabel.trailingAnchor.constraint(equalTo: noteView.trailingAnchor, constant: -10).isActive = true
-        
-        // set ContainerView width and add 10 for spacing between items and image
-        imageContainerWidthConstraint = imageContainerView.widthAnchor.constraint(equalToConstant: wishImageWidthConstraint.constant + 10)
-        imageContainerWidthConstraint.priority = .defaultHigh
-        imageContainerWidthConstraint.isActive = true
                 
-    }
-    
-    //MARK: set
-    func set(image: UIImage) {
-        let ratio = image.size.width / image.size.height
-        wishImage.image = image
-        wishImageWidthConstraint.constant = ratio * wishImageHeight
-
-        imageContainerWidthConstraint.constant = wishImageWidthConstraint.constant + 10
     }
     
     @objc func checkButtonTapped(){
@@ -379,7 +327,6 @@ class WhishCell: UITableViewCell {
     }
     
 }
-
 
 // extension for "check" function
 extension UITableViewCell {
