@@ -14,22 +14,21 @@ extension MainViewController {
     
     func saveWish() {
         // get name from current Whishlist
-//        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
-//        let wishIDX = self.selectedWishlistIDX
-//
-//        // auto create "wünsche" - collection and add Wish with name
-//        let db = Firestore.firestore()
-//        let userID = Auth.auth().currentUser!.uid
-//        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.popUpView.popUpTextField.text!).setData(["name": self.popUpView.popUpTextField.text!, "wishIDX": wishIDX!], completion: { (error) in
-//            if error != nil{
-//                print("Error saving Wish")
-//            }
-//        })
+        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
+        let wishIDX = self.selectedWishlistIDX
+
+        // auto create "wünsche" - collection and add Wish with name
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.wishView.wishNameTextField.text!).setData(["name": self.wishView.wishNameTextField, "wishIDX": wishIDX!], completion: { (error) in
+            if error != nil{
+                print("Error saving Wish")
+            }
+        })
     }
     
     func retrieveUserDataFromDB() -> Void {
         getWishlists()
-        
     }
     
 
@@ -83,12 +82,16 @@ extension MainViewController {
                     print(error.localizedDescription)
                 } else {
                     // append every Wish to array at wishIDX
-//                    for document in querySnapshot!.documents {
-//                        let documentData = document.data()
-//                        let wishName = documentData["name"]
-//                        let wishIDX = documentData["wishIDX"]
-//                        self.dataSourceArray[wishIDX as! Int].wishData.append(Wish(withWishName: wishName as! String, link: "", price: 0, note: "", checked: false))
-//                    }
+                    for document in querySnapshot!.documents {
+                        let documentData = document.data()
+                        let name = documentData["name"] as! String
+                        let link = documentData["link"] as! String
+                        let price = documentData["price"] as! String
+                        let note = documentData["note"] as! String
+                        let image = UIImage()
+                        let wishIDX = documentData["wishlistIDX"]
+                        self.dataSourceArray[wishIDX as! Int].wishes.append(Wish(name: name, link: link, price: price, note: note, image: image, checkedStatus: false))
+                    }
                 }
             }
         }
@@ -248,10 +251,65 @@ class DataHandler {
         }
     }
     
+    //MARK: saveWish
+    static func saveWish(dataSourceArray: [Wishlist], selectedWishlistIdx: Int, wish: Wish) {
+        // get name from current Whishlist
+        let wishListName = dataSourceArray[selectedWishlistIdx].name
+
+        // auto create "wünsche" - collection and add Wish with name
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        
+        self.getWishCounter { (success, counter) in
+            if success && counter != nil {
+                guard let counter = counter as? Int else {
+                    Utilities.showErrorPopUp(labelContent: "Fehler", description: "Wunsch konnte nicht gespeichert werden")
+                    return
+                }
+                
+                let batch = db.batch()
+                
+                // update listCounter
+                let userRef = Firestore.firestore().collection("users").document(userID)
+                batch.updateData(["wishCounter": counter + 1], forDocument: userRef)
+                
+                // save wishlist with properties
+                let wishRef = db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(wish.name)
+                batch.setData(["name": wish.name, "link": wish.link, "price": wish.price, "note": wish.note, "wishlistIDX": selectedWishlistIdx, "wishCounter": counter], forDocument: wishRef)
+                
+                batch.commit { (error) in
+                    if let error = error {
+                        Utilities.showErrorPopUp(labelContent: "Wunsch konnte nicht gespeichert werden", description: error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
+    //MARK: getWishCounter
+    static func getWishCounter(finished: @escaping (_ done: Bool, _ counter: Any?) -> Void) {
+             
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        
+        let docRef = db.collection("users").document(userID)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let property = document.get("wishCounter")
+                finished(true, property as! Int)
+            } else {
+                print("Document does not exist")
+                finished(false, nil)
+            }
+        }
+    }
+    
     //MARK: signUpWithSocial
     static func signUpWithSocial(credentials: Any?, username: String, finished: @escaping (_ done: Bool) -> Void) {
         
         let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+        let wishCounter = 1 // initialize wish counter to 1 for sorting wishes when retrieving
         let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
 
         guard let credentials = credentials as? AuthCredential else {
@@ -271,7 +329,7 @@ class DataHandler {
                 
                 // Set username and uid for user
                 let userRef = Firestore.firestore().collection("users").document(userId)
-                batch.setData(["username": username, "uid": userId, "listCounter": listCounter], forDocument: userRef)
+                batch.setData(["username": username, "uid": userId, "listCounter": listCounter, "wishCounter": wishCounter], forDocument: userRef)
 
                 // create empty 'Main Wishlist' with index 1 for sorting
                 let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
@@ -309,6 +367,7 @@ class DataHandler {
             if let userId = result?.user.uid { // successfully signed in
                 
                 let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+                let wishCounter = 1 // initialize wish counter to 1 for sorting wishes when retrieving
                 let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
                 
                 let db = Firestore.firestore()
@@ -317,7 +376,7 @@ class DataHandler {
                 
                 // Set username and uid for user
                 let userRef = Firestore.firestore().collection("users").document(userId)
-                batch.setData(["username": username, "uid": userId, "listCounter": listCounter], forDocument: userRef)
+                batch.setData(["username": username, "uid": userId, "listCounter": listCounter, "wishCounter": wishCounter], forDocument: userRef)
 
                 // create empty 'Main Wishlist' with index 1 for sorting
                 let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")
@@ -345,11 +404,12 @@ class DataHandler {
         let batch = db.batch()
         let userId = Auth.auth().currentUser!.uid
         let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
+        let wishCounter = 1 // initialize wish counter to 1 for sorting wishes when retrieving
         let imageArrayIDX = Constants.Wishlist.getCurrentImageIndex(image: UIImage(named: "iconRoundedImage")!)
         
         // Set username and uid for user
         let userRef = Firestore.firestore().collection("users").document(userId)
-        batch.setData(["username": username, "uid": userId, "listCounter": listCounter], forDocument: userRef)
+        batch.setData(["username": username, "uid": userId, "listCounter": listCounter, "wishCounter": wishCounter], forDocument: userRef)
 
         // create empty 'Main Wishlist' with index 1 for sorting
         let listRef = db.collection("users").document(userId).collection("wishlists").document("Main Wishlist")

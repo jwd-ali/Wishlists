@@ -667,8 +667,9 @@ extension MainViewController: SelectedWishlistProtocol{
 extension MainViewController: AddWishDelegate {
     func addWishComplete(wishName: String, selectedWishlistIDX: Int, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
         
-        self.dataSourceArray[selectedWishlistIDX].wishes.append(Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
-        
+        let wishToAdd = Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false)
+        self.dataSourceArray[selectedWishlistIDX].wishes.append(wishToAdd)
+        DataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX, wish: wishToAdd)
         self.dismissWishView()
     }
 }

@@ -284,7 +284,6 @@ class CreateNewListView: UIView, UITextFieldDelegate {
             textColor = Constants.Wishlist.textColor.darkGray
         }
         
-        
         switch self.wishlistMode {
         case .isChanging:
             DataHandler.updateWishlist(wishListName: wishlistNameTextField.text!, oldListName: self.oldListName!, imageArrayIDX: currentImageIndex, wishListIDX: self.wishList!.index, textColor: textColor)

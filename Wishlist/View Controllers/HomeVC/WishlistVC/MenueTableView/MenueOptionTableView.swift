@@ -152,9 +152,16 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         self.wishList = Wishlist(name: listName, image: listImage, wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIndex], textColor: textColor, index: self.wishList.index)
         
         self.dataSourceArray[self.currentWishListIDX] = self.wishList
+        
+        // update drop down options
+        self.dropOptions[self.currentWishListIDX].name = listName
+        self.dropOptions[self.currentWishListIDX].image = listImage
+        self.wishView.dropDownButton.dropView.tableView.reloadData()
+        
         // save dataSourceArray in UserDefaults
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
             defaults.setDataSourceArray(data: self.dataSourceArray)
+            defaults.setDropOptions(dropOptions: self.dropOptions)
             defaults.synchronize()
         } else {
             print("error saving changes")
@@ -165,10 +172,7 @@ extension WishlistViewController: ChangeListDelegate, CloseNewListViewDelegate {
         self.wishlistImage.image = listImage
         self.wishlistLabel.text = listName
        
-        // update drop down options
-        self.dropOptions[self.currentWishListIDX].name = listName
-        self.dropOptions[self.currentWishListIDX].image = listImage
-        self.wishView.dropDownButton.dropView.tableView.reloadData()
+        
         
         // save dataSourceArray in UserDefaults
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {

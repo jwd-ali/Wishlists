@@ -642,9 +642,12 @@ extension WishlistViewController: DeleteWishDelegate {
 extension WishlistViewController: AddWishDelegate {
     
     func addWishComplete(wishName: String, selectedWishlistIDX: Int, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
-        self.dataSourceArray[selectedWishlistIDX].wishes.append(Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
         
+        let wishToAdd = Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false)
         
+        self.dataSourceArray[selectedWishlistIDX].wishes.append(wishToAdd)
+        DataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX, wish: wishToAdd)
+
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {
             wishList.wishes.append(Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false))
@@ -654,9 +657,7 @@ extension WishlistViewController: AddWishDelegate {
             theTableView.tableView.insertRows(at: [
                 (NSIndexPath(row: theTableView.wishData.count-1, section: 0) as IndexPath)], with: .left)
             theTableView.tableView.endUpdates()
-        
         }
-        
         dismissWishView()
     }
 
@@ -670,7 +671,6 @@ extension WishlistViewController: AddWishDelegate {
             self.theTableView.tableView.endUpdates()
 
             self.theTableView.tableView.layoutIfNeeded()
-//            self.theTableView.tableView()
 
             self.theTableView.tableView.scrollToRow(at: lastIndexPath,
                                        at: UITableView.ScrollPosition.bottom,

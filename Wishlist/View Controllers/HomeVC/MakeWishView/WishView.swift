@@ -600,7 +600,7 @@ class WishView: UIView, UITextFieldDelegate {
         let name = self.wishNameTextField.text!
         let listIDX = self.selectedWishlistIDX!
         let image = self.wishImageView.image ?? UIImage()
-        let link = self.linkTextField.text ?? "kein Link hinzugefügt"
+        let link = self.linkTextField.text ?? ""
         let price = self.priceTextField.text ?? ""
         let note = self.noteTextField.text ?? ""
         
@@ -611,7 +611,6 @@ class WishView: UIView, UITextFieldDelegate {
 
 extension WishView: SelectedWishlistProtocol {
     func didSelectWishlist(idx: Int) {
-        print(idx)
         self.selectedWishlistIDX = idx
     }
 }
