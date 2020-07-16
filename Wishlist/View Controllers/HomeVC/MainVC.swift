@@ -171,24 +171,28 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         theCollectionView.isHidden = true
         DataHandler.getWishlists { (success, dataArray, dropOptionsArray)  in
             if success && dataArray != nil {
-                self.shouldAnimateCells = true
                 self.dataSourceArray = dataArray as! [Wishlist]
-                self.theCollectionView.isHidden = false
-                self.theCollectionView.reloadData()
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
-                self.addButton.isEnabled = true
-                self.activityIndicator.stopAnimating()
-                
-//                 save data to userDefaults
-                if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                    defaults.setIsLoggedIn(value: true)
-                    defaults.setDataSourceArray(data: self.dataSourceArray)
-                    defaults.setDropOptions(dropOptions: self.dropOptions)
-                    defaults.synchronize()
-                } else {
-                    print("error setting userdefaults")
-                }
-                
+                DataHandler.getWishes(dataSourceArray: self.dataSourceArray) { (success, dataSourceArrayWithWishes) in
+                    if success {
+                        self.dataSourceArray = dataSourceArrayWithWishes
+                        self.shouldAnimateCells = true
+                        self.theCollectionView.isHidden = false
+                        self.theCollectionView.reloadData()
+                        self.addButton.isEnabled = true
+                        self.activityIndicator.stopAnimating()
+                                        
+                        // save data to userDefaults
+                        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                            defaults.setIsLoggedIn(value: true)
+                            defaults.setDataSourceArray(data: self.dataSourceArray)
+                            defaults.setDropOptions(dropOptions: self.dropOptions)
+                            defaults.synchronize()
+                        } else {
+                            print("error setting userdefaults")
+                        }
+                    }
+                }  
             }
         }
         

@@ -79,20 +79,38 @@ extension MainViewController {
         
         
         for list in self.dataSourceArray {
-             db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").getDocuments() { ( querySnapshot, error) in
+            db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").order(by: "wishCounter").getDocuments() { ( querySnapshot, error) in
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
                     // append every Wish to array at wishIDX
                     for document in querySnapshot!.documents {
                         let documentData = document.data()
-                        let name = documentData["name"] as! String
-                        let link = documentData["link"] as! String
-                        let price = documentData["price"] as! String
-                        let note = documentData["note"] as! String
-                        let image = UIImage()
-                        let wishIDX = documentData["wishlistIDX"]
-                        self.dataSourceArray[wishIDX as! Int].wishes.append(Wish(name: name, link: link, price: price, note: note, image: image, checkedStatus: false))
+                        guard let name = documentData["name"] as? String,
+                            let link = documentData["link"] as? String,
+                            let price = documentData["price"] as? String,
+                            let note = documentData["note"] as? String,
+                            let imageUrlString = document["imageUrl"] as? String,
+                            let wishIDX = documentData["wishlistIDX"] as? Int,
+                            let imageUrl = URL(string: imageUrlString)
+                        else {
+                            print("error getting wish")
+                            return
+                        }
+                        let imageView = UIImageView()
+                        imageView.image = UIImage()
+                        if !imageUrlString.isEmpty {
+                            let resource = ImageResource(downloadURL: imageUrl)
+                            imageView.kf.setImage(with: resource) { (result) in
+                                switch result {
+                                case .success(_):
+                                    print("success")
+                                case .failure(_):
+                                    print("fail")
+                                }
+                            }
+                        }
+                        self.dataSourceArray[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
                     }
                 }
             }
@@ -134,6 +152,52 @@ class DataHandler {
                     dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
                 }
                 completion(true, dataSourceArray, dropOptions)
+            }
+        }
+    }
+    
+    //MARK: getWishes
+    static func getWishes(dataSourceArray: [Wishlist], completion: @escaping (_ success: Bool, _ dataArray: [Wishlist]) -> Void){
+        
+        var dataSourceArrayWithWishes = dataSourceArray
+        
+        let db = Firestore.firestore()
+        let userID = Auth.auth().currentUser!.uid
+        
+        for list in dataSourceArray {
+            db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").order(by: "wishCounter").getDocuments() { ( querySnapshot, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    completion(false, dataSourceArrayWithWishes)
+                } else {
+                    // append every Wish to array at wishIDX
+                    for document in querySnapshot!.documents {
+                        let documentData = document.data()
+                        let name = documentData["name"] as? String ?? ""
+                        let link = documentData["link"] as? String ?? ""
+                        let price = documentData["price"] as? String ?? ""
+                        let note = documentData["note"] as? String ?? ""
+                        let imageUrlString = document["imageUrl"] as? String ?? ""
+                        let wishIDX = documentData["wishlistIDX"] as? Int ?? 0
+                        
+                        let imageView = UIImageView()
+                        imageView.image = UIImage()
+                        if let imageUrl = URL(string: imageUrlString) {
+                            let resource = ImageResource(downloadURL: imageUrl)
+                            imageView.kf.setImage(with: resource) { (result) in
+                                switch result {
+                                case .success(_):
+                                    print("success")
+                                case .failure(_):
+                                    print("fail")
+                                }
+                            }
+                        }
+                        print(1)
+                        dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
+                    }
+                    completion(true, dataSourceArrayWithWishes)
+                }
             }
         }
     }
