@@ -199,6 +199,9 @@ PODS:
   - Firebase/Firestore (6.21.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 1.11.2)
+  - Firebase/Storage (6.21.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.6.0)
   - FirebaseAnalytics (6.4.0):
     - FirebaseCore (~> 6.6)
     - FirebaseInstallations (~> 1.1)
@@ -248,6 +251,10 @@ PODS:
     - FirebaseCore (~> 6.6)
     - GoogleUtilities/UserDefaults (~> 6.5)
     - PromisesObjC (~> 1.2)
+  - FirebaseStorage (3.6.1):
+    - FirebaseAuthInterop (~> 1.1)
+    - FirebaseCore (~> 6.6)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleAppMeasurement (6.4.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -305,6 +312,9 @@ PODS:
   - GTMSessionFetcher/Full (1.3.1):
     - GTMSessionFetcher/Core (= 1.3.1)
   - Hero (1.5.0)
+  - Kingfisher (5.14.1):
+    - Kingfisher/Core (= 5.14.1)
+  - Kingfisher/Core (5.14.1)
   - LBTAComponents (1.1)
   - leveldb-library (1.22)
   - lottie-ios (3.1.6)
@@ -331,8 +341,10 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Firestore
+  - Firebase/Storage
   - GoogleSignIn
   - Hero
+  - Kingfisher (~> 5.0)
   - LBTAComponents
   - lottie-ios
   - RevealingSplashView
@@ -359,6 +371,7 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseFirestore
     - FirebaseInstallations
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -369,6 +382,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - Hero
+    - Kingfisher
     - LBTAComponents
     - leveldb-library
     - lottie-ios
@@ -398,6 +412,7 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 0144e0706a4761f1b0e8679572eba8095ddb59be
   FirebaseFirestore: 71925e62a5d1cbfaff46aa4d5107e525cc48356a
   FirebaseInstallations: acb3216eb9784d3b1d2d2d635ff74fa892cc0c44
+  FirebaseStorage: f4f39ae834a7145963b913f54e2f24a9db1d8fac
   GoogleAppMeasurement: 6e68a94d0eaeb1d73ef6b0ed4f7334e29d63ae29
   GoogleDataTransport: b29a21d813e906014ca16c00897827e40e4a24ab
   GoogleDataTransportCCTSupport: 6f15a89b0ca35d6fa523e1f752ef818588885988
@@ -408,6 +423,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   Hero: b7385b75e7259da62f4f85462f59a5082d66b058
+  Kingfisher: 8050bc6f7f68cbf3908bd04df7ccbac188f6d6d6
   LBTAComponents: 2e7719683ddcf1cdf7280700438c0c6a5f7da550
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
@@ -420,6 +436,6 @@ SPEC CHECKSUMS:
   SwiftSoup: e5af192bc99be8398d5f93e15ff6a3c80ba81de1
   URLEmbeddedView: 3fe17ae535d2b8d38c3b08ab8ba0aea5efe5d1cd
 
-PODFILE CHECKSUM: bae1edfbf17afc484c4a4177c10e5f380aa11455
+PODFILE CHECKSUM: 8e4b3652f35e034a77622b4fc86a5de7c47ebf72
 
 COCOAPODS: 1.8.4

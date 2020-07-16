@@ -24,6 +24,9 @@ target 'Wishlists' do
 	pod 'GoogleSignIn'
 	pod 'SkeletonView'
 	pod 'SwiftSoup'
+	pod 'Firebase/Storage'
+	pod 'Kingfisher', '~> 5.0'
+
 
 # add pods for desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods 

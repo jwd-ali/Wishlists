@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseStorage
+import Kingfisher
 
 extension MainViewController {
     
@@ -256,7 +258,7 @@ class DataHandler {
         // get name from current Whishlist
         let wishListName = dataSourceArray[selectedWishlistIdx].name
 
-        // auto create "wünsche" - collection and add Wish with name
+        // auto create "wünsche" - collection and add wish
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
         
@@ -275,13 +277,78 @@ class DataHandler {
                 
                 // save wishlist with properties
                 let wishRef = db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(wish.name)
-                batch.setData(["name": wish.name, "link": wish.link, "price": wish.price, "note": wish.note, "wishlistIDX": selectedWishlistIdx, "wishCounter": counter], forDocument: wishRef)
                 
-                batch.commit { (error) in
-                    if let error = error {
-                        Utilities.showErrorPopUp(labelContent: "Wunsch konnte nicht gespeichert werden", description: error.localizedDescription)
+                // check if wish has image: if yes -> wait for uplaod else commit batch
+                if wish.image.hasContent {
+                    uploadImage(wish: wish, wishListName: wishListName) { (success, urlString) in
+                        if success {
+                            batch.setData(["name": wish.name,
+                                           "link": wish.link,
+                                           "price": wish.price,
+                                           "note": wish.note,
+                                           "wishlistIDX": selectedWishlistIdx,
+                                           "wishCounter": counter,
+                                           "imageUrl": urlString],
+                                          forDocument: wishRef)
+                            batch.commit { (error) in
+                                if let error = error {
+                                    Utilities.showErrorPopUp(labelContent: "Wunsch konnte nicht gespeichert werden", description: error.localizedDescription)
+                                }
+                            }
+                        }
+                        
+                    }
+                } else {
+                    // set data with empty image url
+                    batch.setData(["name": wish.name, "link": wish.link, "price": wish.price, "note": wish.note, "wishlistIDX": selectedWishlistIdx, "wishCounter": counter, "imageUrl": ""], forDocument: wishRef)
+                    batch.commit { (error) in
+                        if let error = error {
+                            Utilities.showErrorPopUp(labelContent: "Wunsch konnte nicht gespeichert werden", description: error.localizedDescription)
+                        }
                     }
                 }
+            }
+        }
+    }
+    
+    static func uploadImage(wish: Wish, wishListName: String, finished: @escaping (_ success: Bool, _ resultString: String) -> Void){
+        
+        guard let imageData = wish.image.jpegData(compressionQuality: 1.0) else { finished(false, ""); return }
+        // create unique imageName
+        let imageName = UUID().uuidString
+        
+        let imageRef = Storage.storage().reference().child("images").child(imageName)
+        imageRef.putData(imageData, metadata: nil) { (metaData, err) in
+            if err != nil {
+                finished(false, "")
+                return
+            }
+            imageRef.downloadURL { (url, err) in
+                if err != nil {
+                    finished(false, "")
+                    return
+                }
+                
+                guard let url = url else {
+                    finished(false, "")
+                    return
+                }
+                let urlString = url.absoluteString
+                finished(true, urlString)
+                
+//                let db = Firestore.firestore()
+//                let userID = Auth.auth().currentUser!.uid
+//
+//                let wishRef = db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(wish.name)
+//                wishRef.setData(["imageUrl": urlString]) { (err) in
+//                    if err != nil{
+//                        print("err")
+//                        finished(false)
+//                        return
+//                    } else {
+//                        finished(true)
+//                    }
+//                }
             }
         }
     }
