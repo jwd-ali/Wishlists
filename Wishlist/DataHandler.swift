@@ -170,8 +170,11 @@ class DataHandler {
                     print(error.localizedDescription)
                     completion(false, dataSourceArrayWithWishes)
                 } else {
+                    // dispatch group to make sure completion only fires when for loop is finished
+                    let group = DispatchGroup()
                     // append every Wish to array at wishIDX
                     for document in querySnapshot!.documents {
+                        group.enter()
                         let documentData = document.data()
                         let name = documentData["name"] as? String ?? ""
                         let link = documentData["link"] as? String ?? ""
@@ -187,16 +190,23 @@ class DataHandler {
                             imageView.kf.setImage(with: resource) { (result) in
                                 switch result {
                                 case .success(_):
-                                    print("success")
+                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
+                                    group.leave()
                                 case .failure(_):
+                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: UIImage(), checkedStatus: false))
                                     print("fail")
+                                    group.leave()
                                 }
                             }
+                        } else {
+                            dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
+                            group.leave()
                         }
-                        print(1)
-                        dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
                     }
-                    completion(true, dataSourceArrayWithWishes)
+                    // for loop is finished -> fire completion
+                    group.notify(queue: DispatchQueue.main) {
+                        completion(true, dataSourceArrayWithWishes)
+                    }
                 }
             }
         }
