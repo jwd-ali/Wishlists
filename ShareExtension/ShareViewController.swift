@@ -64,6 +64,28 @@ class CustomShareViewController: UIViewController {
     
     let loadingAnimation = AnimationView(name: "LoadingAnimation")
     
+    let confettiAnimation = AnimationView(name: "confetti")
+    let successAnimation = AnimationView(name: "successAnimation")
+    
+    let successLabel: UILabel = {
+        let v = UILabel()
+        v.textColor = .darkCustom
+        v.text = "Wunsch hinzugefüt"
+        v.textAlignment = .center
+        v.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let v = UIActivityIndicatorView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.style = UIActivityIndicatorView.Style.large
+        v.color = .gray
+        v.hidesWhenStopped = true
+        return v
+    }()
+    
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,6 +210,10 @@ class CustomShareViewController: UIViewController {
         wishConstraint = wishView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         wishConstraint.isActive = true
         
+        view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: wishView.centerYAnchor).isActive = true
+        
         view.addSubview(cancelButton)        
         cancelButton.bottomAnchor.constraint(equalTo: wishView.topAnchor, constant: -5).isActive = true
         cancelButton.trailingAnchor.constraint(equalTo: wishView.trailingAnchor, constant: -10).isActive = true
@@ -216,6 +242,31 @@ class CustomShareViewController: UIViewController {
         loadingAnimation.loopMode = .loop
         loadingAnimation.play()
         
+    }
+    
+    //MARK: setupLoadingAnimation
+    func setUpSuccessAnimation(){
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.endEditing(true)
+            self.wishConstraint.constant = 220
+        }, completion: nil)
+        successAnimation.contentMode = .scaleAspectFit
+        successAnimation.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(successAnimation)
+        
+        successAnimation.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        successAnimation.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        successAnimation.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        let screenHeight = UIScreen.main.bounds.size.height
+        successAnimation.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: screenHeight*0.22).isActive = true
+        
+        view.addSubview(successLabel)
+        successLabel.topAnchor.constraint(equalTo: successAnimation.bottomAnchor, constant: -125).isActive = true
+        successLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    
+        confettiAnimation.loopMode = .playOnce
+
     }
     
     //MARK: hideLoadingView
@@ -467,8 +518,12 @@ extension CustomShareViewController: ImagePickerDelegate, UIImagePickerControlle
 
 //MARK: AddWishDelegate
 extension CustomShareViewController: AddWishDelegate {
+    
     func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
-        print("ok")
+        self.view.endEditing(true)
+        self.activityIndicator.startAnimating()
+        self.view.isUserInteractionEnabled = false
+        self.wishView.wishButton.isEnabled = false
         let wishToAdd = Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false)
         self.dataSourceArray[selectedWishlistIDX!].wishes.append(wishToAdd)
         // save dataSourceArray with new wish in UserDefaults
@@ -481,13 +536,22 @@ extension CustomShareViewController: AddWishDelegate {
         ShareExtensionDataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX!, wish: wishToAdd){ (success) in
             if success {
                 print("yey")
-                self.doneAction()
+                self.activityIndicator.stopAnimating()
+                self.setUpSuccessAnimation()
+                self.successAnimation.play { (completion) in
+                    if completion {
+                        self.doneAction()
+                    }
+                }
             } else {
                 print(":(")
+                self.activityIndicator.stopAnimating()
                 self.showErrorAlert()
+                self.wishView.wishButton.isEnabled = true
             }
         }
     }
+    
 }
 
 

@@ -422,7 +422,6 @@ class WishView: UIView, UITextFieldDelegate {
     //MARK: wishButtonTapped
     @objc func wishButtonTapped(){
        print("wishButtonTapped")
-         
         let name = self.wishNameTextField.text ?? ""
         let listIDX = self.selectedWishlistIDX ?? 0
         let image = self.wishImageView.image ?? UIImage()
