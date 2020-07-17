@@ -36,29 +36,29 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        
        // if indexPath.item is less than data count, return a "Content" cell
-       if indexPath.item < dataSourceArray.count {
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCell.reuseID, for: indexPath) as! ContentCell
-           // set cell label
-           cell.cellLabel.text = dataSourceArray[indexPath.item].name
-           // set cell image
-           cell.wishlistImage.image = dataSourceArray[indexPath.item].image
+        if indexPath.item < dataSourceArray.count {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContentCell.reuseID, for: indexPath) as! ContentCell
+            // set cell label
+            cell.cellLabel.text = dataSourceArray[indexPath.item].name
+            // set cell image
+            cell.wishlistImage.image = dataSourceArray[indexPath.item].image
 
-           cell.priceLabel.textColor = dataSourceArray[indexPath.item].textColor
-           cell.wishCounterLabel.textColor = dataSourceArray[indexPath.item].textColor
-//           cell.wünscheLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.priceLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.wishCounterLabel.textColor = dataSourceArray[indexPath.item].textColor
+            cell.wishCounterLabel.text = String(dataSourceArray[indexPath.item].wishes.count) + "\n Wünsche"
 
-           // set background color
-           cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
-           cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
-           cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
-           
-           let heroID = "wishlistImageIDX\(indexPath.item)"
-           cell.wishlistImage.heroID = heroID
-           
-           let addButtonHeroID = "addWishButtonID"
-           self.addButton.heroID = addButtonHeroID
-           
-           cell.customWishlistTapCallback = {
+            // set background color
+            cell.imageView.backgroundColor = dataSourceArray[indexPath.item].color
+            cell.wishCounterView.backgroundColor = dataSourceArray[indexPath.item].color
+            cell.priceView.backgroundColor = dataSourceArray[indexPath.item].color
+
+            let heroID = "wishlistImageIDX\(indexPath.item)"
+            cell.wishlistImage.heroID = heroID
+
+            let addButtonHeroID = "addWishButtonID"
+            self.addButton.heroID = addButtonHeroID
+
+            cell.customWishlistTapCallback = {
                // track selected index
                self.currentWishListIDX = indexPath.item
                    
@@ -76,15 +76,15 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
                vc.addWishButton.heroID = addButtonHeroID
                // allow MainVC to recieve updated datasource array
                vc.dismissWishlistDelegate = self
-            
+
                vc.selectedWishlistIDX = indexPath.item
-            
+
                vc.theTableView.tableView.reloadData()
                self.present(vc, animated: true, completion: nil)
                
-           }
-           
-           return cell
+            }
+
+            return cell
        }
        
        // past the end of the data count, so return an "Add Item" cell

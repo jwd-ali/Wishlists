@@ -19,6 +19,7 @@
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)com.ckbusiness.Wishlists</string>
+		<string>$(AppIdentifierPrefix)com.ckbusiness.group.wishlists-app.wishlists</string>
 	</array>
 </dict>
 </plist>

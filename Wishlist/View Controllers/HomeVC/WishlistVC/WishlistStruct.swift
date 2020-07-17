@@ -55,5 +55,4 @@ struct Wishlist: Codable {
         try container.encode(index, forKey: .index)
         try container.encode(image.pngData(), forKey: .image)
     }
-
 }

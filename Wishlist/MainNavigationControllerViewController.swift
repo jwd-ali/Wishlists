@@ -20,6 +20,12 @@ class MainNavigationControllerViewController: UINavigationController {
     }
     
     fileprivate func isLoggedIn() -> Bool {
-        return UserDefaults.standard.isLoggedIn()
+        // save data to userDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            return defaults.isLoggedIn()
+        } else {
+            print("error getting logged in userdefaults")
+            return false
+        }
     }
 }

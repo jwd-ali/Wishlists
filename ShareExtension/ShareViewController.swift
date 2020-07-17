@@ -11,6 +11,7 @@ import Social
 import SwiftSoup
 import URLEmbeddedView
 import Lottie
+import Firebase
 
 class CustomShareViewController: UIViewController {
     
@@ -66,6 +67,8 @@ class CustomShareViewController: UIViewController {
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FirebaseApp.configure()
 
         self.view.backgroundColor = .clear
         self.navigationController?.isNavigationBarHidden = true
@@ -75,6 +78,7 @@ class CustomShareViewController: UIViewController {
         
         self.wishView.onPrevButtonTapped = self.prevButtonTappedClosure
         self.wishView.onNextButtonTapped = self.nextButtonTappedClosure
+        self.wishView.onDeleteImageButtonTapped = self.onDeleteImageButtonTappedClosure
         
         self.wishView.addWishDelegate = self
         self.wishView.imagePickerDelegate = self
@@ -116,7 +120,7 @@ class CustomShareViewController: UIViewController {
                     print("Error getting dataSourceArray")
                 }
             } else {
-                userIsNotLoggedInAlert()
+                showUserIsNotLoggedInAlert()
                 self.loadingAnimation.stop()
                 self.loadingAnimation.removeFromSuperview()
             }
@@ -124,6 +128,10 @@ class CustomShareViewController: UIViewController {
         } else {
             print("error 1")
         }
+    }
+    
+    func onDeleteImageButtonTappedClosure() {
+        self.wishView.wishImageView.image = UIImage()
     }
     
     func nextButtonTappedClosure(){
@@ -151,11 +159,20 @@ class CustomShareViewController: UIViewController {
             })
         }
     }
-    
-    func userIsNotLoggedInAlert(){
+    //MARK: showAlerts
+    func showUserIsNotLoggedInAlert(){
         let alertcontroller = UIAlertController(title: "Du bist nicht angemeldet.", message: "Melde dich in deiner Wishlists-App an, um deine Wünsche zu speichern.", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Ok", style: .default) { (alert) in
             self.cancelAction()
+        }
+        alertcontroller.addAction(cancelAction)
+        self.present(alertcontroller, animated: true)
+    }
+    
+    func showErrorAlert(){
+        let alertcontroller = UIAlertController(title: "Fehler", message: "Dein Wunsch konnte nicht gespeichert werden. Bitte überprüfe deine Internetverbindung und versuche es nochmal.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Ok", style: .default) { (alert) in
+            return
         }
         alertcontroller.addAction(cancelAction)
         self.present(alertcontroller, animated: true)
@@ -271,7 +288,8 @@ class CustomShareViewController: UIViewController {
                         print(url as Any)
                         let directoryURL = url as! NSURL
                         let urlString: String = directoryURL.absoluteString!
-                        
+                        // save url to wish
+                        self.wishView.link = urlString
                         OpenGraphDataDownloader.shared.fetchOGData(urlString: urlString) { result in
                             switch result {
                             case let .success(data, _):
@@ -444,6 +462,31 @@ extension CustomShareViewController: ImagePickerDelegate, UIImagePickerControlle
             self.wishView.setImageFromPhotos(image: originalImage)
         }
         dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: AddWishDelegate
+extension CustomShareViewController: AddWishDelegate {
+    func addWishComplete(wishName: String?, selectedWishlistIDX: Int?, wishImage: UIImage?, wishLink: String?, wishPrice: String?, wishNote: String?) {
+        print("ok")
+        let wishToAdd = Wish(name: wishName!, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false)
+        self.dataSourceArray[selectedWishlistIDX!].wishes.append(wishToAdd)
+        // save dataSourceArray with new wish in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setDataSourceArray(data: self.dataSourceArray)
+            defaults.synchronize()
+        } else {
+            print("error wish to datasource")
+        }
+        ShareExtensionDataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX!, wish: wishToAdd){ (success) in
+            if success {
+                print("yey")
+                self.doneAction()
+            } else {
+                print(":(")
+                self.showErrorAlert()
+            }
+        }
     }
 }
 

@@ -552,10 +552,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                             self.resetButton(button: self.facebookButton, buttonTitle: "Mit Facebook fortfahren")
                                             Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
                                         } else {
-                                            
+                                            let uid = Auth.auth().currentUser!.uid
                                             // set user status to logged-in
                                             if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                                                defaults.setIsLoggedIn(value: false)
+                                                defaults.setIsLoggedIn(value: true)
+                                                defaults.setUid(uid: uid)
                                                 defaults.synchronize()
                                             }
                                          //transition to home
@@ -638,10 +639,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                                 self.resetButton(button: self.googleButton, buttonTitle: "Mit Google fortfahren")
                                 Utilities.showErrorPopUp(labelContent: "Fehler beim Login", description: error!.localizedDescription)
                             } else {
-                                
+                               let uid = Auth.auth().currentUser!.uid
                                 // set user status to logged-in
                                 if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                                    defaults.setIsLoggedIn(value: false)
+                                    defaults.setIsLoggedIn(value: true)
+                                    defaults.setUid(uid: uid)
                                     defaults.synchronize()
                                 }
 
@@ -701,8 +703,11 @@ class FirstLaunchViewController: UIViewController, UITextFieldDelegate, GIDSignI
                             Utilities.showErrorPopUp(labelContent: "Fehler beim Apple-Login", description: error!.localizedDescription)
                         } else {
                             
+                            let uid = Auth.auth().currentUser!.uid
+                            // set user status to logged-in
                             if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                                defaults.setIsLoggedIn(value: false)
+                                defaults.setIsLoggedIn(value: true)
+                                defaults.setUid(uid: uid)
                                 defaults.synchronize()
                             }
 

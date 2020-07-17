@@ -53,11 +53,12 @@ class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc func signoutButtonTapped() {
         
-        // save dataSourceArray in UserDefaults
+        // reset dataSourceArray in UserDefaults
         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
             defaults.setIsLoggedIn(value: false)
             defaults.setDataSourceArray(data: nil)
             defaults.setDropOptions(dropOptions: nil)
+            defaults.setUid(uid: "")
             defaults.synchronize()
         } else {
             print("error Main")

@@ -16,6 +16,17 @@ extension UserDefaults {
         public static let dataSourceKey = "dataSourceKey"
         
         public static let dropOptionsKey = "dropOptionsKey"
+        
+        public static let uid = "uidKey"
+    }
+    
+    func setUid(uid: String){
+        set(uid, forKey: Keys.uid)
+        synchronize()
+    }
+    
+    func getUid() -> String? {
+        return string(forKey: Keys.uid)
     }
     
     func setDataSourceArray(data: [Wishlist]?){
@@ -26,10 +37,15 @@ extension UserDefaults {
 
     func getDataSourceArray() -> [Wishlist]? {
         if let data = self.value(forKey: Keys.dataSourceKey) as? Data {
+            do {
+                _ = try PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as [Wishlist]
+            } catch let error {
+                print(error)
+            }
             if let dataSourceArray =
                 try? PropertyListDecoder().decode(Array < Wishlist > .self, from: data) as[Wishlist] {
                     return dataSourceArray
-                }
+                } 
         }
         return nil
     }

@@ -15,9 +15,9 @@ struct Wish: Codable {
     public var link: String
     public var price: String
     public var note: String
-    public var image: UIImage
+    public var image: UIImage?
 
-    init(name: String, link: String, price: String, note: String, image: UIImage, checkedStatus: Bool) {
+    init(name: String, link: String, price: String, note: String, image: UIImage? = nil, checkedStatus: Bool) {
         self.name = name
         self.checkedStatus = checkedStatus
         self.link = link
@@ -39,11 +39,9 @@ struct Wish: Codable {
         price = try values.decode(String.self, forKey: .price)
         note = try values.decode(String.self, forKey: .note)
 
-        let data = try values.decode(Data.self, forKey: .image)
-        guard let image = UIImage(data: data) else {
-            throw DecodingError.dataCorruptedError(forKey: .image, in: values, debugDescription: "Invalid image data")
+        if let data = try? values.decode(Data.self, forKey: .image), let image = UIImage(data: data) {
+             self.image = image
         }
-        self.image = image
     }
 
     func encode(to encoder: Encoder) throws {
@@ -54,6 +52,8 @@ struct Wish: Codable {
         try container.encode(link, forKey: .link)
         try container.encode(price, forKey: .price)
         try container.encode(note, forKey: .note)
-        try container.encode(image.pngData(), forKey: .image)
+        if let img = image , let im = img.pngData() {
+          try container.encode(im, forKey: .image)
+        }
     }
 }

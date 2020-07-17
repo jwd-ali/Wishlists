@@ -270,8 +270,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.showErrorPopUp(description: error!.localizedDescription)
             }else {
                 // correct acount details -> login
+                let uid = Auth.auth().currentUser!.uid
+                // set user status to logged-in
                 if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
-                    defaults.setIsLoggedIn(value: false)
+                    defaults.setIsLoggedIn(value: true)
+                    defaults.setUid(uid: uid)
                     defaults.synchronize()
                 }
                 // stop animation

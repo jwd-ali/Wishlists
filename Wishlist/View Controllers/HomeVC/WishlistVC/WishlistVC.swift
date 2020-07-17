@@ -647,6 +647,13 @@ extension WishlistViewController: AddWishDelegate {
         
         self.dataSourceArray[selectedWishlistIDX].wishes.append(wishToAdd)
         DataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX, wish: wishToAdd)
+        // save dataSourceArray with new wish in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setDataSourceArray(data: self.dataSourceArray)
+            defaults.synchronize()
+        } else {
+            print("error wish to datasource")
+        }
 
         // only update current list if selectedWishlist is currentWishlist
         if selectedWishlistIDX == currentWishListIDX {

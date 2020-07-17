@@ -57,6 +57,8 @@ class WishView: UIView, UITextFieldDelegate {
         return v
     }()
     
+    var onDeleteImageButtonTapped: (() -> Void)?
+    
     let wishNameTextField: UITextField = {
         let v = UITextField()
         v.backgroundColor = .clear
@@ -189,6 +191,8 @@ class WishView: UIView, UITextFieldDelegate {
     var imagePickerDelegate: ImagePickerDelegate?
     
     var selectedWishlistIDX: Int?
+    
+    var link = ""
     
     //MARK: Init
     override init(frame: CGRect) {
@@ -368,6 +372,7 @@ class WishView: UIView, UITextFieldDelegate {
     }
     
     @objc func deleteImageButtonTapped(){
+        self.onDeleteImageButtonTapped?()
         hideImageView()
         showAddImageButton()
     }
@@ -421,11 +426,11 @@ class WishView: UIView, UITextFieldDelegate {
         let name = self.wishNameTextField.text ?? ""
         let listIDX = self.selectedWishlistIDX ?? 0
         let image = self.wishImageView.image ?? UIImage()
-//        let link = self.linkTextField.text ?? ""
+        let link = self.link
         let price = self.priceTextField.text ?? ""
         let note = self.noteTextField.text ?? ""
 
-        self.addWishDelegate?.addWishComplete(wishName: name, selectedWishlistIDX: listIDX, wishImage: image, wishLink: "", wishPrice: price, wishNote: note)
+        self.addWishDelegate?.addWishComplete(wishName: name, selectedWishlistIDX: listIDX, wishImage: image, wishLink: link, wishPrice: price, wishNote: note)
     }
     
 }

@@ -175,6 +175,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
                 DataHandler.getWishes(dataSourceArray: self.dataSourceArray) { (success, dataSourceArrayWithWishes) in
                     if success {
+                        for wish in dataSourceArrayWithWishes[0].wishes {
+                            print(wish.name)
+                        }
                         self.dataSourceArray = dataSourceArrayWithWishes
                         self.shouldAnimateCells = true
                         self.theCollectionView.isHidden = false
@@ -185,17 +188,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                         // save data to userDefaults
                         if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
                             defaults.setIsLoggedIn(value: true)
-                            defaults.setDataSourceArray(data: self.dataSourceArray)
+                            let uid = Auth.auth().currentUser!.uid
+                            defaults.setUid(uid: uid)
+                            defaults.setDataSourceArray(data: dataSourceArrayWithWishes)
                             defaults.setDropOptions(dropOptions: self.dropOptions)
                             defaults.synchronize()
                         } else {
                             print("error setting userdefaults")
                         }
                     }
-                }  
+                }
             }
         }
-        
         // register the two cell classes for reuse
         theCollectionView.register(ContentCell.self, forCellWithReuseIdentifier: ContentCell.reuseID)
         theCollectionView.register(AddItemCell.self, forCellWithReuseIdentifier: AddItemCell.reuseID)
@@ -435,16 +439,6 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             self.transparentView.alpha = 0.6
         }, completion: nil)
-
-//            makeWishView.addWishDelegate = self
-//
-//            makeWishView.imageButtonDelegate = self
-//
-//            // pass data array
-//            makeWishView.dataSourceArray = self.dataSourceArray
-//
-//            // update selectedWishlistIDX
-//            makeWishView.selectedWishlistIDX = currentWishListIDX
     }
     
     //MARK: onImageButtonTappedClosure
@@ -674,6 +668,13 @@ extension MainViewController: AddWishDelegate {
         let wishToAdd = Wish(name: wishName, link: wishLink!, price: wishPrice!, note: wishNote!, image: wishImage!, checkedStatus: false)
         self.dataSourceArray[selectedWishlistIDX].wishes.append(wishToAdd)
         DataHandler.saveWish(dataSourceArray: self.dataSourceArray, selectedWishlistIdx: selectedWishlistIDX, wish: wishToAdd)
+        // save dataSourceArray with new wish in UserDefaults
+        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+            defaults.setDataSourceArray(data: self.dataSourceArray)
+            defaults.synchronize()
+        } else {
+            print("error wish to datasource")
+        }
         self.dismissWishView()
     }
 }

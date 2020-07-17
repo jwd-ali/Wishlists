@@ -12,112 +12,6 @@ import Firebase
 import FirebaseStorage
 import Kingfisher
 
-extension MainViewController {
-    
-    func saveWish() {
-        // get name from current Whishlist
-        let wishListName = self.dataSourceArray[self.selectedWishlistIDX!].name
-        let wishIDX = self.selectedWishlistIDX
-
-        // auto create "wünsche" - collection and add Wish with name
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(self.wishView.wishNameTextField.text!).setData(["name": self.wishView.wishNameTextField, "wishIDX": wishIDX!], completion: { (error) in
-            if error != nil{
-                print("Error saving Wish")
-            }
-        })
-    }
-    
-    func retrieveUserDataFromDB() -> Void {
-        getWishlists()
-    }
-    
-
-    //MARK: getWishlists
-    func getWishlists() {
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        db.collection("users").document(userID).collection("wishlists").order(by: "listIDX").getDocuments() { ( querySnapshot, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }else {
-                // get all documents from "wishlists"-collection and save attributes
-                for document in querySnapshot!.documents {
-                    let documentData = document.data()
-                    let listName = documentData["name"]
-                    let listImageIDX = documentData["imageIDX"]
-                    let textColor = documentData["textColor"]
-                    let index = documentData["listIDX"]
-                    
-                    guard let color = ColorMode(rawValue: textColor as! String) else {
-                        print("handle invalid color error");
-                        return
-                    }
-
-                    let colorUnwrapped = color.create
-                        
-                    self.dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
-                    
-                    self.dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
-                    
-                    
-                    // reload collectionView and tableView
-                    self.theCollectionView.reloadData()
-                    
-                }
-            }
-            self.theCollectionView.isHidden = false
-            self.getWishes()
-        }
-    }
-    
-    func getWishes() {
-        
-        let db = Firestore.firestore()
-        let userID = Auth.auth().currentUser!.uid
-        
-        
-        for list in self.dataSourceArray {
-            db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").order(by: "wishCounter").getDocuments() { ( querySnapshot, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    // append every Wish to array at wishIDX
-                    for document in querySnapshot!.documents {
-                        let documentData = document.data()
-                        guard let name = documentData["name"] as? String,
-                            let link = documentData["link"] as? String,
-                            let price = documentData["price"] as? String,
-                            let note = documentData["note"] as? String,
-                            let imageUrlString = document["imageUrl"] as? String,
-                            let wishIDX = documentData["wishlistIDX"] as? Int,
-                            let imageUrl = URL(string: imageUrlString)
-                        else {
-                            print("error getting wish")
-                            return
-                        }
-                        let imageView = UIImageView()
-                        imageView.image = UIImage()
-                        if !imageUrlString.isEmpty {
-                            let resource = ImageResource(downloadURL: imageUrl)
-                            imageView.kf.setImage(with: resource) { (result) in
-                                switch result {
-                                case .success(_):
-                                    print("success")
-                                case .failure(_):
-                                    print("fail")
-                                }
-                            }
-                        }
-                        self.dataSourceArray[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
-                    }
-                }
-            }
-        }
-    }
-}
-
 class DataHandler {
     
     //MARK: getWishlists
@@ -133,8 +27,10 @@ class DataHandler {
                 Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
                 completion(false, nil, nil)
             }else {
+                let group = DispatchGroup()
                 // get all documents from "wishlists"-collection and save attributes
                 for document in querySnapshot!.documents {
+                    group.enter()
                     let documentData = document.data()
                     let listName = documentData["name"]
                     let listImageIDX = documentData["imageIDX"]
@@ -150,8 +46,12 @@ class DataHandler {
                         
                     dataSourceArray.append(Wishlist(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int], wishes: [Wish](), color: Constants.Wishlist.customColors[listImageIDX as! Int], textColor: colorUnwrapped, index: index as! Int))
                     dropOptions.append(DropDownOption(name: listName as! String, image: Constants.Wishlist.images[listImageIDX as! Int]))
+                    group.leave()
                 }
-                completion(true, dataSourceArray, dropOptions)
+                // for loop is finished -> fire completion
+                group.notify(queue: DispatchQueue.main) {
+                    completion(true, dataSourceArray, dropOptions)
+                }
             }
         }
     }
@@ -353,7 +253,7 @@ class DataHandler {
                 let wishRef = db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(wish.name)
                 
                 // check if wish has image: if yes -> wait for uplaod else commit batch
-                if wish.image.hasContent {
+                if wish.image != nil && wish.image!.hasContent {
                     uploadImage(wish: wish, wishListName: wishListName) { (success, urlString) in
                         if success {
                             batch.setData(["name": wish.name,
@@ -384,10 +284,10 @@ class DataHandler {
             }
         }
     }
-    
+    //MARK: uploadImage
     static func uploadImage(wish: Wish, wishListName: String, finished: @escaping (_ success: Bool, _ resultString: String) -> Void){
         
-        guard let imageData = wish.image.jpegData(compressionQuality: 1.0) else { finished(false, ""); return }
+        guard let imageData = wish.image?.jpegData(compressionQuality: 1.0) else { finished(false, ""); return }
         // create unique imageName
         let imageName = UUID().uuidString
         
@@ -409,20 +309,6 @@ class DataHandler {
                 }
                 let urlString = url.absoluteString
                 finished(true, urlString)
-                
-//                let db = Firestore.firestore()
-//                let userID = Auth.auth().currentUser!.uid
-//
-//                let wishRef = db.collection("users").document(userID).collection("wishlists").document(wishListName).collection("wünsche").document(wish.name)
-//                wishRef.setData(["imageUrl": urlString]) { (err) in
-//                    if err != nil{
-//                        print("err")
-//                        finished(false)
-//                        return
-//                    } else {
-//                        finished(true)
-//                    }
-//                }
             }
         }
     }
@@ -482,8 +368,13 @@ class DataHandler {
                         Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
                         finished(false)
                     } else {
-                        UserDefaults.standard.setIsLoggedIn(value: true)
-                        UserDefaults.standard.synchronize()
+                        let uid = Auth.auth().currentUser!.uid
+                        // set user status to logged-in
+                        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                            defaults.setIsLoggedIn(value: true)
+                            defaults.setUid(uid: uid)
+                            defaults.synchronize()
+                        }
                         finished(true) // sign-in process complete
                     }
                 }
@@ -529,8 +420,18 @@ class DataHandler {
                         Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
                         finished(false)
                     } else {
-                        UserDefaults.standard.setIsLoggedIn(value: true)
-                        UserDefaults.standard.synchronize()
+                        do {
+                            try Auth.auth().useUserAccessGroup(UserDefaults.Keys.groupKey)
+                        } catch let error as NSError {
+                          print("Error changing user access group: %@", error)
+                        }
+                        let uid = Auth.auth().currentUser!.uid
+                        // set user status to logged-in
+                        if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                            defaults.setIsLoggedIn(value: true)
+                            defaults.setUid(uid: uid)
+                            defaults.synchronize()
+                        }
                         finished(true) // sign-in process complete
                     }
                 }
@@ -543,6 +444,11 @@ class DataHandler {
         
         let db = Firestore.firestore()
         let batch = db.batch()
+        do {
+            try Auth.auth().useUserAccessGroup(UserDefaults.Keys.groupKey)
+        } catch let error as NSError {
+          print("Error changing user access group: %@", error)
+        }
         let userId = Auth.auth().currentUser!.uid
         let listCounter = 1 // initialize list index to 1 for sorting when retrieving lists
         let wishCounter = 1 // initialize wish counter to 1 for sorting wishes when retrieving
@@ -562,8 +468,13 @@ class DataHandler {
                 Utilities.showErrorPopUp(labelContent: "Fehler", description: error.localizedDescription)
                 finished(false)
             } else {
-                UserDefaults.standard.setIsLoggedIn(value: true)
-                UserDefaults.standard.synchronize()
+                let uid = Auth.auth().currentUser!.uid
+                // set user status to logged-in
+                if let defaults = UserDefaults(suiteName: UserDefaults.Keys.groupKey) {
+                    defaults.setIsLoggedIn(value: true)
+                    defaults.setUid(uid: uid)
+                    defaults.synchronize()
+                }
                 finished(true) // sign-in process complete
             }
         }

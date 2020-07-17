@@ -39,6 +39,13 @@ target 'ShareExtension' do
 
 	pod 'SwiftSoup'
 	pod 'URLEmbeddedView'
-	pod 'lottie-ios'	
+	pod 'lottie-ios'
+	pod 'Firebase/Analytics'
+	pod 'Firebase/Auth'
+	pod 'Firebase/Core'
+	pod 'Firebase/Firestore'
+	pod 'Firebase/Database'
+	pod 'Firebase/Storage'
+	pod 'Kingfisher', '~> 5.0'	
 
 end

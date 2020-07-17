@@ -89,7 +89,7 @@ class WhishlistTableViewController: UITableViewController {
         cell.secondaryStackViewHeightConstraint.constant = 0
         cell.thirdHelperViewHeightConstraint.constant = 0
         
-        if !currentWish.image.hasContent {
+        if currentWish.image == nil || !currentWish.image!.hasContent {
             cell.imageContainerView.isHidden = true
             if currentWish.price != "" {
                 cell.thirdHelperViewHeightConstraint.constant += 30
