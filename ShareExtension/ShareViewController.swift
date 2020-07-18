@@ -484,13 +484,9 @@ extension CustomShareViewController: ImagePickerDelegate, UIImagePickerControlle
         let photoLibraryActionn = UIAlertAction(title: "Aus Album wählen", style: .default) { (action) in
             self.showImagePickerController(sourceType: .photoLibrary)
         }
-        let cameraAction = UIAlertAction(title: "Foto aufnehmen", style: .default) { (action) in
-            self.showImagePickerController(sourceType: .camera)
-        }
         let cancelAction = UIAlertAction(title: "Zurück", style: .cancel, handler: nil)
         // Add the actions to your actionSheet
         actionSheet.addAction(photoLibraryActionn)
-        actionSheet.addAction(cameraAction)
         actionSheet.addAction(cancelAction)
         // Present the controller
         self.present(actionSheet, animated: true, completion: nil)
