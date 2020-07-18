@@ -63,8 +63,7 @@ class DataHandler {
         
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-        let imageView = UIImageView()
-        imageView.image = UIImage()
+        
         for list in dataSourceArray {
             db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").order(by: "wishCounter").getDocuments() { ( querySnapshot, error) in
                 if let error = error {
@@ -72,52 +71,46 @@ class DataHandler {
                     completion(false, dataSourceArrayWithWishes)
                 } else {
                     // dispatch group to make sure completion only fires when for loop is finished
-                    let dispatchGroup = DispatchGroup()
-                    let dispatchQueue = DispatchQueue(label: "queue")
-                    let dispatchSemaphore = DispatchSemaphore(value: 0)
+                    let group = DispatchGroup()
+                    let dispatchSemaphore = DispatchSemaphore(value: 1)
                     // append every Wish to array at wishIDX
-                    dispatchQueue.async {
-                        for document in querySnapshot!.documents {
-                            dispatchGroup.enter()
-                            let documentData = document.data()
-                            let name = documentData["name"] as? String ?? ""
-                            let link = documentData["link"] as? String ?? ""
-                            let price = documentData["price"] as? String ?? ""
-                            let note = documentData["note"] as? String ?? ""
-                            let imageUrlString = document["imageUrl"] as? String ?? ""
-                            let wishIDX = documentData["wishlistIDX"] as? Int ?? 0
-                            
-                            // valid imageUrl -> download image
-                            if let imageUrl = URL(string: imageUrlString) {
-                                let resource = ImageResource(downloadURL: imageUrl)
-                                imageView.kf.setImage(with: resource) { (result) in
-                                    switch result {
-                                    case .success(_):
-                                        dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
-                                        dispatchSemaphore.signal()
-                                        dispatchGroup.leave()
-                                    case .failure(_):
-                                        dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: UIImage(), checkedStatus: false))
-                                        print("fail")
-                                        dispatchSemaphore.signal()
-                                        dispatchGroup.leave()
-                                    }
-                                }
+                    for document in querySnapshot!.documents {
+
+                        let documentData = document.data()
+                        let name = documentData["name"] as? String ?? ""
+                        let link = documentData["link"] as? String ?? ""
+                        let price = documentData["price"] as? String ?? ""
+                        let note = documentData["note"] as? String ?? ""
+                        let imageUrlString = document["imageUrl"] as? String ?? ""
+                        let wishIDX = documentData["wishlistIDX"] as? Int ?? 0
+                        
+                        let imageView = UIImageView()
+                        imageView.image = UIImage()
+                        if let imageUrl = URL(string: imageUrlString) {
+                            group.enter()
+                            let resource = ImageResource(downloadURL: imageUrl)
+                            imageView.kf.setImage(with: resource) { (result) in
                                 
-                            } else {
-                                // no iage to downlaod -> append empty iage
-                                dispatchSemaphore.wait()
-                                dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: UIImage(), checkedStatus: false))
-                                dispatchGroup.leave()
+                                defer{ group.leave() }
+                                
+                                switch result {
+                                case .success(_):
+                                    print("success")
+                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
+                                case .failure(_):
+                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: UIImage(), checkedStatus: false))
+                                    print("fail")
+                                }
+                                dispatchSemaphore.signal()
                             }
+                            dispatchSemaphore.wait()
+                        } else {
+                            dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
                         }
                     }
-                    
                     // for loop is finished -> fire completion
-                    dispatchGroup.notify(queue: dispatchQueue) {
-                        DispatchQueue.main.async {
-                            completion(true, dataSourceArrayWithWishes)
-                        }
+                    group.notify(queue: DispatchQueue.main) {
+                        completion(true, dataSourceArrayWithWishes)
                     }
                 }
             }
