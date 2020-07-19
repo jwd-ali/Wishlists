@@ -175,9 +175,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.dropOptions = dropOptionsArray as! [DropDownOption]
                 DataHandler.getWishes(dataSourceArray: self.dataSourceArray) { (success, dataSourceArrayWithWishes) in
                     if success {
-//                        for wish in dataSourceArrayWithWishes[0].wishes {
-//                            print(wish.name)
-//                        }
+                        for wish in dataSourceArrayWithWishes[0].wishes {
+                            print(wish.name)
+                        }
                         self.dataSourceArray = dataSourceArrayWithWishes
                         self.shouldAnimateCells = true
                         self.theCollectionView.isHidden = false

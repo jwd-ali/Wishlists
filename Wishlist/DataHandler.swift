@@ -56,6 +56,7 @@ class DataHandler {
         }
     }
     
+
     //MARK: getWishes
     static func getWishes(dataSourceArray: [Wishlist], completion: @escaping (_ success: Bool, _ dataArray: [Wishlist]) -> Void){
         
@@ -63,57 +64,72 @@ class DataHandler {
         
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
-        
+        let group = DispatchGroup()
+        let dispatchSemaphore = DispatchSemaphore(value: 0)
         for list in dataSourceArray {
+            group.enter()
             db.collection("users").document(userID).collection("wishlists").document(list.name).collection("wünsche").order(by: "wishCounter").getDocuments() { ( querySnapshot, error) in
+                
+                defer {
+                    print("leaving scope:\(String(describing: querySnapshot?.count))")
+                    group.leave()
+                }
+                
                 if let error = error {
                     print(error.localizedDescription)
                     completion(false, dataSourceArrayWithWishes)
                 } else {
                     // dispatch group to make sure completion only fires when for loop is finished
-                    let group = DispatchGroup()
-                    let dispatchSemaphore = DispatchSemaphore(value: 1)
                     // append every Wish to array at wishIDX
-                    for document in querySnapshot!.documents {
-
-                        let documentData = document.data()
-                        let name = documentData["name"] as? String ?? ""
-                        let link = documentData["link"] as? String ?? ""
-                        let price = documentData["price"] as? String ?? ""
-                        let note = documentData["note"] as? String ?? ""
-                        let imageUrlString = document["imageUrl"] as? String ?? ""
-                        let wishIDX = documentData["wishlistIDX"] as? Int ?? 0
-                        
-                        let imageView = UIImageView()
-                        imageView.image = UIImage()
-                        if let imageUrl = URL(string: imageUrlString) {
+                    let dispatchQueue = DispatchQueue(label: "taskQueue")
+                    dispatchQueue.async {
+                        for document in querySnapshot!.documents {
                             group.enter()
-                            let resource = ImageResource(downloadURL: imageUrl)
-                            imageView.kf.setImage(with: resource) { (result) in
-                                
-                                defer{ group.leave() }
-                                
-                                switch result {
-                                case .success(_):
-                                    print("success")
-                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
-                                case .failure(_):
-                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: UIImage(), checkedStatus: false))
-                                    print("fail")
-                                }
-                                dispatchSemaphore.signal()
+                            
+                            let documentData = document.data()
+                            let name = documentData["name"] as? String ?? ""
+                            let link = documentData["link"] as? String ?? ""
+                            let price = documentData["price"] as? String ?? ""
+                            let note = documentData["note"] as? String ?? ""
+                            let imageUrlString = document["imageUrl"] as? String ?? ""
+                            let wishIDX = documentData["wishlistIDX"] as? Int ?? 0
+                
+                            if let imageUrl = URL(string: imageUrlString) {
+                                KingfisherManager.shared.retrieveImage(with: imageUrl, options: nil, progressBlock: nil, completionHandler: { result in
+                                    
+                                    var image = UIImage()
+                                    
+                                    switch result {
+                                    case .success(let abc):
+                                        image = abc.image
+                                        
+                                    case .failure(let error):
+                                        print(error)
+                                        break
+                                    }
+                                    print("yeet2" + name)
+                                    dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: image, checkedStatus: false))
+                                    print("Signal for next one")
+                                    
+                                    dispatchSemaphore.signal()
+                                    group.leave()
+                                    
+                                })
+                                print("wait for next one")
+                                dispatchSemaphore.wait()
+                            } else {
+                                print("yeet1" + name)
+                                dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: nil, checkedStatus: false))
                             }
-                            dispatchSemaphore.wait()
-                        } else {
-                            dataSourceArrayWithWishes[wishIDX].wishes.append(Wish(name: name, link: link, price: price, note: note, image: imageView.image!, checkedStatus: false))
                         }
-                    }
-                    // for loop is finished -> fire completion
-                    group.notify(queue: DispatchQueue.main) {
-                        completion(true, dataSourceArrayWithWishes)
                     }
                 }
             }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            print("notify")
+            completion(true, dataSourceArrayWithWishes)
         }
     }
     //MARK: getListCounter
